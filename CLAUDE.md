@@ -26,6 +26,7 @@ Each role runs in a separate Claude Code window by opening its subdirectory:
 | Tester | `roles/tester/` | Test cases, bug reports, coverage |
 | Data Engineer | `roles/data-engineer/` | YouTube API, screenplay parser, data pipeline |
 | Reporter | `roles/reporter/` | Activity logs, documentation, memory consolidation |
+| Builder | `roles/builder/` | Git, GitHub, infrastructure provisioning, Vercel deployment |
 
 ## Shared Data Pool
 All roles read/write to `../../.shared/` (relative to their role directory):

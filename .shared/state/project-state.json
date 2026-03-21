@@ -55,5 +55,23 @@
       "applied_by": "data-engineer"
     }
   ],
-  "last_updated": "2026-03-22T00:00:00Z"
+  "ui_polish": {
+    "status": "complete",
+    "completed_at": "2026-03-22",
+    "items_completed": [
+      "P0: 3-2-1 countdown in RecordClient",
+      "P0: split view already present in record/page.tsx",
+      "P0: GPT-4o Vision bug fixed — frame capture pipeline",
+      "P1: FeedbackPage video comparison row",
+      "P2: ClipCard play button hover overlay",
+      "P2: ClipCard duration badge moved to thumbnail",
+      "P2: NavBar active route highlighting",
+      "P2: NavBar mobile hamburger drawer",
+      "P2: FeedbackPage widened to max-w-4xl",
+      "P2: Score ring dynamic color (green/amber/red)",
+      "P2: FeedbackPoller rotating coaching tips"
+    ],
+    "build": "clean — 0 TypeScript errors, 0 Next.js build errors"
+  },
+  "last_updated": "2026-03-22T01:00:00Z"
 }

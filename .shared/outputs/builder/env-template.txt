@@ -1,0 +1,17 @@
+# seeneyu — Environment Variables Template
+# Copy this to D:/Claude Projects/seeneyu/.env.local and fill in the values.
+# NEVER commit .env.local to git.
+#
+# Where to get each value:
+#   DATABASE_URL      → neon.tech → your project → Connection Details → Pooled connection string
+#   DIRECT_URL        → neon.tech → your project → Connection Details → Direct connection string
+#   YOUTUBE_API_KEY   → console.cloud.google.com → APIs & Services → Credentials → API key
+#                        (enable: YouTube Data API v3)
+#   OPENAI_API_KEY    → platform.openai.com → API keys → Create new secret key
+#   BLOB_READ_WRITE_TOKEN → vercel.com → Storage → your Blob store → .env.local tab
+
+DATABASE_URL="postgresql://USER:PASS@HOST/DB?sslmode=require&pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgresql://USER:PASS@HOST/DB?sslmode=require"
+YOUTUBE_API_KEY="AIza..."
+OPENAI_API_KEY="sk-proj-..."
+BLOB_READ_WRITE_TOKEN="vercel_blob_rw_..."

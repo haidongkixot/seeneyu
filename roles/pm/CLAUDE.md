@@ -18,6 +18,7 @@ Read: ../../.shared/signals/designer.json     ← monitor for context
 Read: ../../.shared/signals/tester.json       ← monitor for context
 Read: ../../.shared/signals/data-engineer.json
 Read: ../../.shared/signals/reporter.json
+Read: ../../.shared/signals/builder.json      ← monitor for context
 ```
 
 ### Step 2: Read project state
@@ -109,6 +110,8 @@ Read: ../../.shared/state/milestones.json
 | Design spec ready for implementation | reporter (log it) |
 | Bug blocking a milestone | pm (yourself, note it as blocker) |
 | Phase change | all roles (fyi) |
+| Deploy task (env vars, GitHub, Vercel) | builder |
+| Deploy complete → smoke test | tester |
 
 ---
 

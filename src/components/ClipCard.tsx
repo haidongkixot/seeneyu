@@ -41,10 +41,21 @@ export function ClipCard({ clip }: ClipCardProps) {
           onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl }}
           loading="lazy"
         />
+        {/* Play button overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+          <div className="w-12 h-12 rounded-full bg-accent-400 flex items-center justify-center shadow-glow-sm">
+            <Play size={20} fill="currentColor" className="text-text-inverse ml-0.5" />
+          </div>
+        </div>
         {/* Badges overlay */}
         <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end pointer-events-none">
           <SkillBadge skill={clip.skillCategory} size="sm" />
-          <DifficultyPill difficulty={clip.difficulty} size="sm" />
+          <div className="flex items-center gap-1.5">
+            <span className="bg-black/60 text-white text-xs font-mono px-1.5 py-0.5 rounded">
+              {formatDuration(duration)}
+            </span>
+            <DifficultyPill difficulty={clip.difficulty} size="sm" />
+          </div>
         </div>
       </div>
 
@@ -62,10 +73,10 @@ export function ClipCard({ clip }: ClipCardProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/6 mt-auto">
-          <span className="flex items-center gap-1 text-text-tertiary text-xs font-mono">
+        <div className="pt-3 border-t border-white/6 mt-auto">
+          <span className="flex items-center gap-1 text-text-tertiary text-xs">
             <Play size={12} strokeWidth={2} />
-            {formatDuration(duration)}
+            <span>Watch &amp; Mimic</span>
           </span>
         </div>
       </div>

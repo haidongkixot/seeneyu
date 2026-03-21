@@ -75,6 +75,22 @@
       ],
       "timestamp": "2026-03-22T00:00:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_004",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M6-p1-p2-polish-complete",
+      "message": "All remaining P1 and P2 items from designer's M6 UI review are now implemented. Summary: (P1 #3) FeedbackPage video comparison row — YouTube embed + user recording side-by-side below AI Tips. (P2 #4) ClipCard duration badge moved to thumbnail overlay (bg-black/60 pill, bottom-right). (P2 #5) ClipCard play button hover overlay — centered 48px amber circle with Play icon, fades in on hover. (P2 #6) NavBar active route highlighting via usePathname(). (P2 #7) NavBar mobile hamburger drawer at 768px breakpoint — slide-down with all nav links. (P2 #8) FeedbackPage widened to max-w-4xl. (P2 #9) Score ring dynamic color — green ≥80, amber 50-79, red <50. (P2 #10) FeedbackPoller rotating coaching tips — cycles every 3s during processing wait. All 10 issues from ui-review-m6.md are now closed.",
+      "files_changed": [
+        "src/components/ClipCard.tsx",
+        "src/components/NavBar.tsx",
+        "src/app/feedback/[sessionId]/page.tsx",
+        "src/app/feedback/[sessionId]/FeedbackPoller.tsx"
+      ],
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "unread"
     }
   ]
 }

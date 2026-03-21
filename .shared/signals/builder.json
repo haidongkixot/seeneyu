@@ -1,0 +1,21 @@
+{
+  "signals": [
+    {
+      "id": "sig_pm_builder_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "M6-deploy",
+      "priority": "high",
+      "message": "M6 is the final launch milestone. All application code is complete (M3–M5 done). Your job: get seeneyu live on Vercel. Follow the M6 Deployment Runbook in your CLAUDE.md step by step. Use deployment-state.json to checkpoint progress. 4 env vars are needed before anything can run: DATABASE_URL+DIRECT_URL (Neon), YOUTUBE_API_KEY (Google Cloud), OPENAI_API_KEY (OpenAI), BLOB_READ_WRITE_TOKEN (Vercel Blob). Important: do NOT commit .env.local to git. After deploy: run health checks, signal Tester with deploy URL for smoke tests, signal PM when M6 is complete.",
+      "context": "Read project-state.json for current blockers. Read milestones.json to confirm M0–M5 complete. The app is a Next.js 14 App Router project — Vercel will auto-detect the framework.",
+      "blockers_to_resolve": [
+        "DATABASE_URL not set — create Neon project, run prisma db push",
+        "YOUTUBE_API_KEY not set — run roles/data-engineer/pipelines verify script",
+        "OPENAI_API_KEY not set — add from OpenAI platform",
+        "BLOB_READ_WRITE_TOKEN not set — create Vercel Blob store"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "unread"
+    }
+  ]
+}

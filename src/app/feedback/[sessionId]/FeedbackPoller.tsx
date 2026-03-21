@@ -3,12 +3,24 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Sparkles } from 'lucide-react'
 
+const TIPS = [
+  'Maintaining eye contact signals confidence and builds trust.',
+  'Open posture communicates approachability and openness.',
+  'Nodding at key moments shows active engagement.',
+  'Varied vocal pace keeps listeners engaged and emphasizes key points.',
+  'A well-timed pause is more powerful than filling silence.',
+  'Leaning slightly forward signals genuine interest.',
+  'Mirroring the other person\'s posture builds rapport.',
+  'Stillness during disagreement projects calm authority.',
+]
+
 interface FeedbackPollerProps {
   sessionId: string
 }
 
 export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
   const [dots, setDots] = useState('.')
+  const [tipIndex, setTipIndex] = useState(0)
 
   const poll = useCallback(async () => {
     const res = await fetch(`/api/sessions/${sessionId}/feedback`)
@@ -29,6 +41,13 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
     return () => clearInterval(interval)
   }, [poll])
 
+  useEffect(() => {
+    const tipInterval = setInterval(() => {
+      setTipIndex(i => (i + 1) % TIPS.length)
+    }, 3000)
+    return () => clearInterval(tipInterval)
+  }, [])
+
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-6" aria-live="polite">
       <div className="w-16 h-16 bg-accent-400/10 rounded-full flex items-center justify-center">
@@ -46,6 +65,10 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
             style={{ animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite` }}
           />
         ))}
+      </div>
+      <div className="max-w-xs text-center bg-bg-surface border border-white/8 rounded-xl px-5 py-3 transition-all duration-500">
+        <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-1">Coaching Tip</p>
+        <p className="text-text-secondary text-sm leading-relaxed">{TIPS[tipIndex]}</p>
       </div>
     </div>
   )

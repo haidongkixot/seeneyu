@@ -1,0 +1,25 @@
+{
+  "target": "production",
+  "last_updated": "2026-03-22T01:00:00Z",
+  "github_repo": null,
+  "vercel_project": null,
+  "vercel_url": null,
+  "steps": {
+    "env_file_local":       "pending",
+    "youtube_verification": "complete",
+    "db_push":              "pending",
+    "db_seed":              "pending",
+    "npm_build_verify":     "complete",
+    "github_repo_setup":    "pending",
+    "github_push":          "pending",
+    "vercel_project_link":  "pending",
+    "vercel_env_vars":      "pending",
+    "vercel_deploy":        "pending",
+    "health_check":         "pending"
+  },
+  "notes": [
+    "youtube_verification: All 15 YouTube IDs verified via YouTube Data API v3. clips-seed.json updated — zero NEEDS_VERIFICATION entries. Completed by data-engineer 2026-03-22.",
+    "npm_build_verify: `npx next build` passes cleanly — 0 TypeScript errors, 0 lint errors, all 9 routes compile. Verified by data-engineer 2026-03-22.",
+    "env_file_local: YOUTUBE_API_KEY already in .env.local. Still needed: DATABASE_URL, DIRECT_URL, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN."
+  ]
+}
