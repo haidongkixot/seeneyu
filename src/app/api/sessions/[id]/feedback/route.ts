@@ -3,7 +3,7 @@ import OpenAI from 'openai'
 import { prisma } from '@/lib/prisma'
 import type { FeedbackResult } from '@/lib/types'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' })
 
 const SKILL_DIMENSIONS: Record<string, string[]> = {
   'eye-contact':            ['Gaze Duration', 'Break Direction', 'Eye Opening', 'Consistency'],
@@ -77,7 +77,7 @@ export async function POST(
 
     const startMs = Date.now()
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o',
       max_tokens: 800,
       messages: [
