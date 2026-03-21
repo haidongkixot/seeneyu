@@ -58,11 +58,22 @@ export async function POST(
 
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     if (!session.recordingUrl) return NextResponse.json({ error: 'No recording' }, { status: 400 })
+    if (!session.frameUrls) return NextResponse.json({ error: 'No frames captured for analysis' }, { status: 422 })
 
     await prisma.userSession.update({ where: { id }, data: { status: 'feedback_pending' } })
 
     const dimensions = SKILL_DIMENSIONS[session.clip.skillCategory] ?? SKILL_DIMENSIONS['eye-contact']
     const prompt = buildPrompt(session.clip.skillCategory, session.clip.annotation, dimensions)
+
+    // GPT-4o Vision requires images, not video.
+    // Frame snapshots were captured client-side during recording and stored in Vercel Blob.
+    const frameUrls: string[] = session.frameUrls ? JSON.parse(session.frameUrls as string) : []
+
+    if (frameUrls.length === 0) {
+      // No frames captured — cannot analyze
+      await prisma.userSession.update({ where: { id }, data: { status: 'failed' } })
+      return NextResponse.json({ error: 'No frame images available for analysis' }, { status: 422 })
+    }
 
     const startMs = Date.now()
 
@@ -73,14 +84,12 @@ export async function POST(
         {
           role: 'user',
           content: [
-            {
-              type: 'text',
-              text: prompt,
-            },
-            {
-              type: 'image_url',
-              image_url: { url: session.recordingUrl, detail: 'low' },
-            },
+            { type: 'text', text: prompt },
+            // Send up to 4 frames — each is a JPEG snapshot from the recording
+            ...frameUrls.map((url) => ({
+              type: 'image_url' as const,
+              image_url: { url, detail: 'low' as const },
+            })),
           ],
         },
       ],
@@ -117,8 +126,8 @@ export async function POST(
       where: { id },
       data: {
         status: 'complete',
-        feedback,
-        scores: { overallScore: feedback.overallScore, dimensions: feedback.dimensions },
+        feedback: JSON.parse(JSON.stringify(feedback)),
+        scores: JSON.parse(JSON.stringify({ overallScore: feedback.overallScore, dimensions: feedback.dimensions })),
         completedAt: new Date(),
       },
     })

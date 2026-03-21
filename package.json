@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "verify": "cd roles/data-engineer/pipelines && tsx verify-youtube-ids.ts"
   },
   "dependencies": {
     "next": "^14.2.0",

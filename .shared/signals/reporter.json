@@ -51,6 +51,18 @@
       "priority": "normal",
       "timestamp": "2026-03-21T03:00:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_designer_reporter_uireview_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "ui-review-m6",
+      "message": "Designer session complete (2026-03-22). Conducted full UI review of M3–M5 implementation against design specs. 12 files reviewed. Overall quality: excellent. Found 2 P0 issues (RecordPage missing split view, missing countdown), 1 P1 (FeedbackPage missing video comparison), and 7 P2 polish items. Full report at .shared/outputs/design/ui-review-m6.md. PM signaled with P0 recommendations. Please log this review session.",
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m6.md"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "unread"
     }
   ]
 }

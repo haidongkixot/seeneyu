@@ -28,7 +28,7 @@ export default async function FeedbackPage({ params }: PageProps) {
       <NavBar />
 
       <main
-        className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-8"
+        className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-8"
         aria-label={`AI Feedback for ${session.clip.skillCategory}`}
       >
         {/* Nav */}
@@ -58,16 +58,36 @@ export default async function FeedbackPage({ params }: PageProps) {
             </Link>
           </div>
         ) : (
-          <FeedbackDisplay feedback={feedback!} clipId={session.clipId} />
+          <FeedbackDisplay
+            feedback={feedback!}
+            clipId={session.clipId}
+            youtubeVideoId={session.clip.youtubeVideoId}
+            startSec={session.clip.startSec}
+            endSec={session.clip.endSec}
+            recordingUrl={session.recordingUrl}
+          />
         )}
       </main>
     </div>
   )
 }
 
-function FeedbackDisplay({ feedback, clipId }: { feedback: FeedbackResult; clipId: string }) {
+interface FeedbackDisplayProps {
+  feedback: FeedbackResult
+  clipId: string
+  youtubeVideoId: string
+  startSec: number
+  endSec: number
+  recordingUrl: string | null
+}
+
+function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, recordingUrl }: FeedbackDisplayProps) {
   const score = feedback.overallScore
-  const scoreColor = score >= 85 ? '#22c55e' : score >= 70 ? '#fbbf24' : score >= 50 ? '#f59e0b' : '#ef4444'
+
+  // Ring color changes by score tier
+  const ringStart = score >= 80 ? '#4ade80' : score >= 50 ? '#fbbf24' : '#f87171'
+  const ringEnd   = score >= 80 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626'
+  const scoreColor = ringStart
 
   // SVG ring constants
   const r = 54; const cx = 60; const circumference = 2 * Math.PI * r
@@ -80,8 +100,8 @@ function FeedbackDisplay({ feedback, clipId }: { feedback: FeedbackResult; clipI
         <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label={`Score: ${score} out of 100`}>
           <defs>
             <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fbbf24" />
-              <stop offset="100%" stopColor="#d97706" />
+              <stop offset="0%" stopColor={ringStart} />
+              <stop offset="100%" stopColor={ringEnd} />
             </linearGradient>
           </defs>
           <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
@@ -155,6 +175,39 @@ function FeedbackDisplay({ feedback, clipId }: { feedback: FeedbackResult; clipI
               <p className="text-text-secondary text-sm leading-relaxed">{tip.body}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Video comparison — reference clip + your recording */}
+      <div>
+        <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-4">Compare</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-text-tertiary">Reference clip</span>
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-bg-inset">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?start=${startSec}&end=${endSec}&controls=1&rel=0&modestbranding=1`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="youtube-iframe"
+                title="Reference clip"
+              />
+            </div>
+          </div>
+          {recordingUrl && (
+            <div className="flex flex-col gap-2">
+              <span className="text-xs text-text-tertiary">Your recording</span>
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-bg-inset">
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  src={recordingUrl}
+                  controls
+                  playsInline
+                  className="w-full h-full object-cover scale-x-[-1]"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

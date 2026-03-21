@@ -44,6 +44,36 @@
         ".shared/outputs/data/schemas/schemas.ts"
       ],
       "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_tester_002",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "condition-cleared",
+      "task": "M2-youtube-ids-verified",
+      "message": "M2 tester condition CLEARED. All 15 YouTube video IDs have been verified via YouTube Data API v3. clips-seed.json updated — zero NEEDS_VERIFICATION entries remain. Bad matches were corrected (clip_002 Social Network deposition, clip_009 Marriage Story fight, clip_011 Any Given Sunday locker room speech, clip_013 Legally Blonde Elle Wins). 3 clips with duration mismatches had timestamps adjusted. The M2 condition for full sign-off is now met. DB seed can proceed once DATABASE_URL is configured.",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        ".shared/outputs/data/checkpoints/pipeline-checkpoint.json"
+      ],
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_003",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M6-p0-fixes-review",
+      "message": "Three fixes applied — please review before M6 tester sign-off. (1) CRITICAL — GPT-4o Vision bug: feedback/route.ts was sending a .webm video URL to Vision API, which only accepts images. Fixed: RecordClient now captures JPEG frames via Canvas during recording, sessions/route.ts uploads them to Vercel Blob, feedback/route.ts uses frameUrls array for Vision. Schema change: `frameUrls String? @db.Text` added to UserSession — run `npm run db:push` to apply. (2) 3-2-1 countdown: RecordClient.tsx now has `countdown` state. 'Start Recording' triggers 3→2→1 overlay at 800ms/tick before recording starts. (3) Split view: confirmed already implemented in record/page.tsx — YouTube left, webcam right. P0 #1 was not a regression.",
+      "files_changed": [
+        "src/app/library/[clipId]/record/RecordClient.tsx",
+        "src/app/api/sessions/route.ts",
+        "src/app/api/sessions/[id]/feedback/route.ts",
+        "prisma/schema.prisma"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
       "status": "unread"
     }
   ]

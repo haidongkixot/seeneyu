@@ -5,8 +5,17 @@
 seeneyu is a body language coaching web app. Users watch Hollywood movie clips, mimic the skill shown, record themselves, get AI feedback, and repeat.
 
 ## Current Phase
-**Phase 0: COMPLETE** → **Phase 1 (Design System): ACTIVE**
-PM needs to assign M1 tasks to Designer.
+**Phase 5-launch: ACTIVE** — All code complete. Blocked on env var configuration by user.
+
+| Milestone | Status |
+|---|---|
+| M0 Setup | ✅ Complete |
+| M1 Design System | ✅ Complete |
+| M2 Data Pipeline (15 clips) | ✅ Complete (YouTube IDs need verification) |
+| M3 Clip Library UI | ✅ Complete |
+| M4 Coaching Loop | ✅ Complete |
+| M5 AI Feedback Engine | ✅ Complete |
+| M6 MVP Launch Ready | 🔄 Blocked — needs env vars + deploy |
 
 ## Tech Stack (1-liner each)
 - **App**: Next.js 14 App Router, TypeScript

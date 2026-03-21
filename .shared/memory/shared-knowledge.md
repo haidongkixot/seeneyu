@@ -47,6 +47,7 @@ Sum 4–5 = Beginner | 6–8 = Intermediate | 9–12 = Advanced
 5. Tester sign-off required on Tester-approved field in milestones.json before PM marks complete
 
 ## Current Status
-- Phase: 0-setup (COMPLETE)
-- Next: M1 — Designer to deliver design system
-- Active: Waiting for PM to assign M1 tasks to Designer
+- Phase: 5-launch
+- All code milestones COMPLETE (M0–M5)
+- M6 blocked on: DATABASE_URL, YOUTUBE_API_KEY, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN
+- After env vars set: run YouTube ID verification → prisma db push → seed → Vercel deploy

@@ -50,5 +50,39 @@
       "timestamp": "2026-03-21T00:00:00Z",
       "status": "read"
     }
+  ,
+    {
+      "id": "sig_designer_ui_review_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "ui-review-m6",
+      "priority": "high",
+      "message": "UI Review complete for M6 pre-launch. Overall: implementation is excellent — design system 100% correct, landing/library/clip-viewer all spec-compliant. TWO P0 issues need fixing before launch: (1) RecordPage missing split view — learner can't see reference clip while recording, defeating the mimic mechanic. Fix: add YouTube embed left-panel to the record page layout. (2) RecordClient missing 3-2-1 countdown — users are surprised into recording. Fix: ~20 lines to add countdown state. P1 (post-launch): FeedbackPage missing video comparison row. Full findings at: .shared/outputs/design/ui-review-m6.md",
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m6.md"
+      ],
+      "p0_fixes": [
+        "RecordPage split view (reference clip + webcam) — src/app/library/[clipId]/record/",
+        "3-2-1 countdown before recording — RecordClient.tsx"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_002",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "P0-fixes-applied",
+      "message": "Applied all P0 fixes from designer's M6 UI review plus one additional critical bug. (1) 3-2-1 countdown: added `countdown` state to RecordClient.tsx — clicking Start Recording triggers 3→2→1 overlay at 800ms intervals before recording begins. (2) Split view: already implemented in record/page.tsx — YouTube embed left, webcam right. P0 #1 was already done. (3) Critical bug fixed: GPT-4o Vision was receiving a .webm video URL, which it cannot analyze. Fixed by capturing JPEG frames client-side via Canvas API during recording, uploading them to Vercel Blob, and passing frame URLs to GPT-4o Vision. Schema updated: `frameUrls` field added to UserSession. Run `npm run db:push` to apply schema change before seeding.",
+      "artifacts": [
+        "src/app/library/[clipId]/record/RecordClient.tsx",
+        "src/app/api/sessions/route.ts",
+        "src/app/api/sessions/[id]/feedback/route.ts",
+        "prisma/schema.prisma"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "unread"
+    }
   ]
 }

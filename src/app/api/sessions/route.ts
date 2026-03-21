@@ -18,19 +18,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Clip not found' }, { status: 404 })
     }
 
-    // Upload to Vercel Blob
-    const filename = `recordings/${clipId}/${Date.now()}.webm`
-    const blob = await put(filename, recording, {
+    const ts = Date.now()
+
+    // Upload recording to Vercel Blob
+    const blob = await put(`recordings/${clipId}/${ts}.webm`, recording, {
       access: 'public',
       contentType: 'video/webm',
     })
 
-    // Create session
+    // Upload frame snapshots (sent as frame_0, frame_1, … by RecordClient)
+    const frameUrls: string[] = []
+    for (let i = 0; i < 4; i++) {
+      const frame = formData.get(`frame_${i}`) as File | null
+      if (!frame) break
+      const frameBlob = await put(`frames/${clipId}/${ts}_${i}.jpg`, frame, {
+        access: 'public',
+        contentType: 'image/jpeg',
+      })
+      frameUrls.push(frameBlob.url)
+    }
+
+    // Create session record
     const session = await prisma.userSession.create({
       data: {
         clipId,
         recordingUrl: blob.url,
         recordingKey: blob.pathname,
+        frameUrls: frameUrls.length > 0 ? JSON.stringify(frameUrls) : null,
         status: 'uploaded',
       },
     })
