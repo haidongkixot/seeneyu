@@ -15,6 +15,22 @@
         "BLOB_READ_WRITE_TOKEN not set — create Vercel Blob store"
       ],
       "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_handoff_builder_001",
+      "from": "orchestrator",
+      "type": "handoff",
+      "task": "M6-deploy-resume",
+      "priority": "high",
+      "message": "Resuming M6 deployment. Significant progress made — read ALL notes below before acting.\n\nCOMPLETED SO FAR:\n1. npm install — done (459 packages)\n2. prisma generate — done\n3. Build errors fixed — TypeScript Prisma Json type cast (JSON.parse workaround), lazy OpenAI client init (getOpenAI() fn)\n4. next.config.mjs — Vercel Blob image hostname added\n5. package.json — postinstall: prisma generate added, verify script added\n6. Git committed and pushed to: https://github.com/haidongkixot/seeneyu.git (branch: master)\n7. Vercel project already linked (projectId: prj_d5GBBZRuoiyM5wteZAcIH8kKqMhW)\n8. Vercel deploy succeeded — app is LIVE at: https://seeneyu.vercel.app\n9. YOUTUBE_API_KEY — added to Vercel env vars via `vercel env add`\n\nSTILL NEEDED (user will provide values, add via `vercel env add <KEY> production`):\n- DATABASE_URL (Neon pooled connection string)\n- DIRECT_URL (Neon direct connection string)\n- OPENAI_API_KEY\n- BLOB_READ_WRITE_TOKEN\n\nONCE ALL 4 ENV VARS ARE PROVIDED:\n1. Add each to Vercel: echo \"<value>\" | vercel env add <KEY> production\n2. Redeploy: vercel --prod --yes\n3. Push schema: npm run db:push\n4. Seed database: npm run db:seed\n5. Verify seed: check https://seeneyu.vercel.app/library loads 15 clips\n6. Signal Tester to run smoke tests on live URL\n7. Signal PM that M6 is complete\n\nIMPORTANT CONTEXT:\n- .env.local is gitignored — never commit it\n- clips-seed.json has all 15 YouTube IDs already verified (no NEEDS_VERIFICATION entries)\n- Build passes clean locally and on Vercel\n- All 9 routes deploy successfully\n- The app shows UI correctly but /library and /feedback pages will error until DATABASE_URL is set",
+      "artifacts": [
+        "https://seeneyu.vercel.app",
+        "https://vercel.com/haidongkixots-projects/seeneyu",
+        ".shared/outputs/data/clips-seed.json",
+        "prisma/seed.ts"
+      ],
+      "timestamp": "2026-03-22T02:00:00Z",
       "status": "unread"
     }
   ]
