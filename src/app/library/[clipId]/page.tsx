@@ -1,0 +1,122 @@
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { prisma } from '@/lib/prisma'
+import { NavBar } from '@/components/NavBar'
+import { SkillBadge } from '@/components/SkillBadge'
+import { DifficultyPill } from '@/components/DifficultyPill'
+import { ClipViewerClient } from './ClipViewerClient'
+import type { SkillCategory, Difficulty } from '@/lib/types'
+import { ArrowLeft } from 'lucide-react'
+
+interface PageProps {
+  params: Promise<{ clipId: string }>
+}
+
+function formatDuration(seconds: number) {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
+export default async function ClipViewerPage({ params }: PageProps) {
+  const { clipId } = await params
+
+  const clip = await prisma.clip.findUnique({
+    where: { id: clipId, isActive: true },
+    include: { annotations: { orderBy: { atSecond: 'asc' } } },
+  })
+
+  if (!clip) notFound()
+
+  const duration = clip.endSec - clip.startSec
+
+  return (
+    <div className="min-h-screen bg-bg-base">
+      <NavBar />
+
+      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
+        {/* Back */}
+        <Link
+          href="/library"
+          className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150 mb-6"
+        >
+          <ArrowLeft size={16} />
+          Back to Library
+        </Link>
+
+        {/* Video player */}
+        <ClipViewerClient
+          youtubeVideoId={clip.youtubeVideoId}
+          startSec={clip.startSec}
+          endSec={clip.endSec}
+          annotations={clip.annotations.map(a => ({
+            id: a.id,
+            atSecond: a.atSecond,
+            note: a.note,
+            type: a.type as 'eye_contact' | 'posture' | 'gesture' | 'voice' | 'expression',
+          }))}
+        />
+
+        {/* Clip info */}
+        <div className="flex items-start justify-between flex-wrap gap-4 mt-6">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm text-text-tertiary">
+              {clip.movieTitle}{clip.year ? ` (${clip.year})` : ''}
+              {clip.characterName ? ` · ${clip.characterName}` : ''}
+            </p>
+            <h1 className="text-xl font-semibold text-text-primary mt-0.5 leading-snug">
+              {clip.sceneDescription}
+            </h1>
+            <p className="text-sm text-text-secondary mt-2 leading-relaxed max-w-prose">
+              {clip.annotation}
+            </p>
+            {clip.contextNote && (
+              <p className="text-xs text-text-tertiary mt-2 leading-relaxed max-w-prose italic">
+                {clip.contextNote}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
+            <SkillBadge skill={clip.skillCategory as SkillCategory} />
+            <DifficultyPill difficulty={clip.difficulty as Difficulty} />
+            <span className="text-xs font-mono text-text-tertiary bg-bg-elevated rounded-pill px-2.5 py-1">
+              {formatDuration(duration)}
+            </span>
+          </div>
+        </div>
+
+        {/* Observation checklist */}
+        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 mt-6 shadow-card">
+          <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-4">
+            What to observe
+          </p>
+          <ObservationChecklist annotations={clip.annotations.map(a => ({ note: a.note, type: a.type }))} />
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
+          <Link
+            href={`/library/${clipId}/record`}
+            className="bg-accent-400 text-text-inverse rounded-pill px-8 py-3.5 font-semibold hover:bg-accent-500 hover:shadow-glow transition-all duration-150 flex items-center gap-2"
+          >
+            I&apos;m Ready to Mimic →
+          </Link>
+        </div>
+      </main>
+    </div>
+  )
+}
+
+function ObservationChecklist({ annotations }: { annotations: { note: string; type: string }[] }) {
+  const items = annotations.slice(0, 4)
+  return (
+    <div className="flex flex-col gap-3">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-start gap-3">
+          <span className="text-text-tertiary text-lg leading-none mt-0.5">☐</span>
+          <p className="text-sm text-text-primary leading-relaxed">{item.note}</p>
+        </div>
+      ))}
+    </div>
+  )
+}

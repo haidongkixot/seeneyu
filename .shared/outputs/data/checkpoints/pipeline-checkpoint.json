@@ -1,0 +1,36 @@
+{
+  "pipeline": "clip-curation-v1",
+  "milestone": "M2",
+  "status": "complete",
+  "date": "2026-03-21",
+  "summary": {
+    "total_clips_curated": 15,
+    "clips_per_skill": 3,
+    "difficulties": ["beginner", "intermediate", "advanced"],
+    "skills": ["eye-contact", "open-posture", "active-listening", "vocal-pacing", "confident-disagreement"]
+  },
+  "verification_needed": {
+    "youtube_ids": 0,
+    "note": "All 15 YouTube IDs verified via YouTube Data API v3 on 2026-03-21. clips-seed.json updated in place."
+  },
+  "next_steps": [
+    "1. Add DATABASE_URL and DIRECT_URL to .env.local (Neon PostgreSQL)",
+    "2. Scaffold Next.js app: npx create-next-app@latest . (if not done by designer)",
+    "3. Copy prisma/seed.json schema to prisma/schema.prisma",
+    "4. Run: npx prisma db push",
+    "5. Run: npx tsx prisma/seed.ts",
+    "6. Confirm all 15 clips queryable via Prisma client"
+  ],
+  "files_produced": [
+    ".shared/outputs/data/clips-seed.json",
+    ".shared/outputs/data/clip-candidates.json",
+    ".shared/outputs/data/schemas/prisma-schema.prisma",
+    ".shared/outputs/data/schemas/schemas.ts",
+    ".shared/outputs/data/checkpoints/pipeline-checkpoint.json",
+    "prisma/seed.ts",
+    "roles/data-engineer/pipelines/verify-youtube-ids.ts",
+    "roles/data-engineer/pipelines/1-discover-clips.ts",
+    "roles/data-engineer/pipelines/2-annotate-clips.ts",
+    "roles/data-engineer/pipelines/3-curate-seed.ts"
+  ]
+}

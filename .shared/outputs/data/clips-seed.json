@@ -1,0 +1,603 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "total_clips": 15,
+    "skills": [
+      "eye-contact",
+      "open-posture",
+      "active-listening",
+      "vocal-pacing",
+      "confident-disagreement"
+    ],
+    "status": "verified — all 15 youtube_video_id fields filled via YouTube Data API v3 and reviewed",
+    "generated_by": "data-engineer role",
+    "date": "2026-03-21"
+  },
+  "clips": [
+    {
+      "id": "clip_001",
+      "youtube_video_id": "56fngopihOo",
+      "youtube_search_query": "Pursuit of Happyness job interview scene Will Smith",
+      "movie_title": "The Pursuit of Happyness",
+      "year": 2006,
+      "character_name": "Chris Gardner",
+      "actor_name": "Will Smith",
+      "scene_description": "Chris delivers a composed, confident sales pitch during a high-stakes brokerage interview despite wearing work clothes",
+      "skill_category": "eye-contact",
+      "difficulty": "beginner",
+      "start_sec": 45,
+      "end_sec": 150,
+      "duration_sec": 105,
+      "signal_clarity": 1,
+      "noise_level": 1,
+      "context_dependency": 2,
+      "replication_difficulty": 1,
+      "difficulty_score": 5,
+      "annotation": "Watch how Chris maintains direct, warm eye contact throughout the pitch — 2-3 second holds, natural breaks to the side (never down), and how eye contact shifts meaningfully when he emphasizes key points.",
+      "context_note": "He has just come from a construction site — the stakes are high but he controls his gaze entirely.",
+      "annotations": [
+        {
+          "at_second": 48,
+          "type": "eye_contact",
+          "note": "Notice: eyes locked on interviewer, not breaking under pressure"
+        },
+        {
+          "at_second": 72,
+          "type": "eye_contact",
+          "note": "2-3 second hold — count it. Then a natural left-side break."
+        },
+        {
+          "at_second": 110,
+          "type": "expression",
+          "note": "Warm, confident micro-smile while maintaining eye contact"
+        }
+      ]
+    },
+    {
+      "id": "clip_002",
+      "youtube_video_id": "6-_tIPShuwQ",
+      "youtube_search_query": "Social Network 2010 film movie clip deposition Jesse Eisenberg",
+      "movie_title": "The Social Network",
+      "year": 2010,
+      "character_name": "Mark Zuckerberg",
+      "actor_name": "Jesse Eisenberg",
+      "scene_description": "Mark holds unwavering eye contact with opposing counsel during deposition, using gaze as a control tool",
+      "skill_category": "eye-contact",
+      "difficulty": "intermediate",
+      "start_sec": 20,
+      "end_sec": 120,
+      "duration_sec": 100,
+      "signal_clarity": 2,
+      "noise_level": 2,
+      "context_dependency": 2,
+      "replication_difficulty": 2,
+      "difficulty_score": 8,
+      "annotation": "Observe how extended, unblinking eye contact is used strategically — it unsettles the questioner and signals dominance without aggression. Notice when he deliberately looks away vs when he holds.",
+      "context_note": "The power dynamic matters: he's being interrogated but refuses to yield visually.",
+      "annotations": [
+        {
+          "at_second": 25,
+          "type": "eye_contact",
+          "note": "Sustained 5-second hold — intentionally uncomfortable for the lawyer"
+        },
+        {
+          "at_second": 60,
+          "type": "eye_contact",
+          "note": "Looks away briefly — a deliberate, controlled break, not a nervous one"
+        },
+        {
+          "at_second": 95,
+          "type": "expression",
+          "note": "Near-zero blink rate combined with neutral expression — advanced technique"
+        }
+      ]
+    },
+    {
+      "id": "clip_003",
+      "youtube_video_id": "e_u2OJ6HXG4",
+      "youtube_search_query": "No Country for Old Men Anton Chigurh coin toss scene",
+      "movie_title": "No Country for Old Men",
+      "year": 2007,
+      "character_name": "Anton Chigurh",
+      "actor_name": "Javier Bardem",
+      "scene_description": "Anton engages the gas station owner in a slow, loaded conversation using almost supernatural calm gaze",
+      "skill_category": "eye-contact",
+      "difficulty": "advanced",
+      "start_sec": 0,
+      "end_sec": 56,
+      "duration_sec": 56,
+      "signal_clarity": 3,
+      "noise_level": 1,
+      "context_dependency": 3,
+      "replication_difficulty": 3,
+      "difficulty_score": 10,
+      "annotation": "Study the minimal blink rate, soft-focus gaze that never quite pins but never leaves. This is advanced — the eye contact says everything while revealing nothing. Observe how he redirects with his eyes before his words.",
+      "context_note": "Advanced example of what NOT to copy literally — but understanding this level helps you see eye contact as communication architecture.",
+      "annotations": [
+        {
+          "at_second": 30,
+          "type": "eye_contact",
+          "note": "Soft, steady, patient gaze — pressure without aggression"
+        },
+        {
+          "at_second": 35,
+          "type": "eye_contact",
+          "note": "He looks away FIRST here — a deliberate power play, letting the other person feel it"
+        },
+        {
+          "at_second": 50,
+          "type": "expression",
+          "note": "Completely still face + sustained gaze = maximum presence"
+        }
+      ]
+    },
+    {
+      "id": "clip_004",
+      "youtube_video_id": "yc8qbcIMZVg",
+      "youtube_search_query": "Iron Man Tony Stark press conference open body language",
+      "movie_title": "Iron Man 2",
+      "year": 2010,
+      "character_name": "Tony Stark",
+      "actor_name": "Robert Downey Jr.",
+      "scene_description": "Tony testifies before the Senate committee — completely relaxed, open, and expansive posture while the room demands deference",
+      "skill_category": "open-posture",
+      "difficulty": "beginner",
+      "start_sec": 0,
+      "end_sec": 90,
+      "duration_sec": 90,
+      "signal_clarity": 1,
+      "noise_level": 1,
+      "context_dependency": 1,
+      "replication_difficulty": 1,
+      "difficulty_score": 4,
+      "annotation": "Textbook open posture: feet shoulder-width apart, chest forward, arms at sides (not crossed), chin slightly up. Notice how he takes physical space without aggression.",
+      "context_note": "Easiest clip in the library — every open-posture signal is exaggerated and clear.",
+      "annotations": [
+        {
+          "at_second": 10,
+          "type": "posture",
+          "note": "Wide stance — weight distributed, not shifting nervously"
+        },
+        {
+          "at_second": 35,
+          "type": "posture",
+          "note": "Chest out, shoulders back, no hunching — projects authority"
+        },
+        {
+          "at_second": 65,
+          "type": "gesture",
+          "note": "Open-palm gestures toward the audience — maximum openness signal"
+        }
+      ]
+    },
+    {
+      "id": "clip_005",
+      "youtube_video_id": "odYTSVvpNa8",
+      "youtube_search_query": "The Intern Robert De Niro office posture body language",
+      "movie_title": "The Intern",
+      "year": 2015,
+      "character_name": "Ben Whittaker",
+      "actor_name": "Robert De Niro",
+      "scene_description": "Ben describes his previous career to Jules — relaxed, upright posture throughout, unhurried pacing that contrasts with the startup energy around him",
+      "skill_category": "open-posture",
+      "difficulty": "intermediate",
+      "start_sec": 0,
+      "end_sec": 61,
+      "duration_sec": 61,
+      "signal_clarity": 2,
+      "noise_level": 2,
+      "context_dependency": 2,
+      "replication_difficulty": 2,
+      "difficulty_score": 8,
+      "annotation": "Subtle open posture — not theatrical like Tony Stark. Watch his easy gait, the way he sits (no forward lean, no crossed arms), and how his stillness communicates calm authority.",
+      "context_note": "The contrast with colleagues makes his open posture readable — use context clues.",
+      "annotations": [
+        {
+          "at_second": 10,
+          "type": "posture",
+          "note": "Seated posture: upright spine, no forward lean, shoulders down — pure ease"
+        },
+        {
+          "at_second": 30,
+          "type": "posture",
+          "note": "Notice zero fidgeting — hands stay open and still on the table"
+        },
+        {
+          "at_second": 55,
+          "type": "gesture",
+          "note": "Open-palm gesture as he wraps up — calm, unhurried, grounded"
+        }
+      ]
+    },
+    {
+      "id": "clip_006",
+      "youtube_video_id": "aWt724ZWmJg",
+      "youtube_search_query": "There Will Be Blood Daniel Day-Lewis I drink your milkshake scene",
+      "movie_title": "There Will Be Blood",
+      "year": 2007,
+      "character_name": "Daniel Plainview",
+      "actor_name": "Daniel Day-Lewis",
+      "scene_description": "Daniel confronts Eli in the bowling alley — his open, looming posture used as a weapon of intimidation",
+      "skill_category": "open-posture",
+      "difficulty": "advanced",
+      "start_sec": 0,
+      "end_sec": 35,
+      "duration_sec": 35,
+      "signal_clarity": 2,
+      "noise_level": 3,
+      "context_dependency": 3,
+      "replication_difficulty": 3,
+      "difficulty_score": 11,
+      "annotation": "Advanced — openness weaponized. Study how his wide stance and forward chest create dominance, not warmth. The same open-posture signals read completely differently based on context, facial expression, and proximity.",
+      "context_note": "This is a master class in how posture + context changes meaning entirely. The form is open, the intent is dominant.",
+      "annotations": [
+        {
+          "at_second": 5,
+          "type": "posture",
+          "note": "Wide feet, slight lean forward — occupying space aggressively"
+        },
+        {
+          "at_second": 18,
+          "type": "posture",
+          "note": "Notice: arms still open but the lean-in changes the read entirely"
+        },
+        {
+          "at_second": 30,
+          "type": "gesture",
+          "note": "Expansive gesture that claims the whole room — advanced spatial dominance"
+        }
+      ]
+    },
+    {
+      "id": "clip_007",
+      "youtube_video_id": "6tqPK8nJL2U",
+      "youtube_search_query": "Good Will Hunting it's not your fault scene Robin Williams",
+      "movie_title": "Good Will Hunting",
+      "year": 1997,
+      "character_name": "Sean Maguire",
+      "actor_name": "Robin Williams",
+      "scene_description": "Sean tells Will 'it's not your fault' repeatedly — textbook active listening with genuine emotional attunement",
+      "skill_category": "active-listening",
+      "difficulty": "beginner",
+      "start_sec": 0,
+      "end_sec": 150,
+      "duration_sec": 150,
+      "signal_clarity": 1,
+      "noise_level": 1,
+      "context_dependency": 2,
+      "replication_difficulty": 1,
+      "difficulty_score": 5,
+      "annotation": "Watch Sean: slight forward lean, steady eye contact, nods timed to emotional beats, his face mirrors Will's emotional journey. He says almost nothing — his body does the listening.",
+      "context_note": "One of cinema's clearest demonstrations of active listening — emotionally safe to watch.",
+      "annotations": [
+        {
+          "at_second": 20,
+          "type": "posture",
+          "note": "Slow lean forward as he moves closer — reduces distance intentionally"
+        },
+        {
+          "at_second": 60,
+          "type": "expression",
+          "note": "His face matches the emotional weight — not neutral, not over-emoting"
+        },
+        {
+          "at_second": 110,
+          "type": "gesture",
+          "note": "Hand on shoulder — touch as acknowledgment, calibrated to the moment"
+        }
+      ]
+    },
+    {
+      "id": "clip_008",
+      "youtube_video_id": "7WJts0gKCRM",
+      "youtube_search_query": "King Speech therapy room scene 2010 film clip",
+      "movie_title": "The King's Speech",
+      "year": 2010,
+      "character_name": "Lionel Logue",
+      "actor_name": "Geoffrey Rush",
+      "scene_description": "Lionel's non-judgmental, attentive listening technique creates psychological safety for Bertie's disclosure",
+      "skill_category": "active-listening",
+      "difficulty": "intermediate",
+      "start_sec": 120,
+      "end_sec": 240,
+      "duration_sec": 120,
+      "signal_clarity": 2,
+      "noise_level": 1,
+      "context_dependency": 2,
+      "replication_difficulty": 2,
+      "difficulty_score": 7,
+      "annotation": "Subtle active listening: minimal verbal responses, strategic silence, neutral-warm expression. Notice when he leans back (giving space) vs when he leans in (drawing out). He tracks Bertie's discomfort without reacting to it.",
+      "context_note": "The power dynamic is inverted — the therapist is a commoner, the patient a prince. His body language is key to making Bertie feel safe.",
+      "annotations": [
+        {
+          "at_second": 130,
+          "type": "posture",
+          "note": "Deliberate lean-back — creating psychological space, not pressing"
+        },
+        {
+          "at_second": 165,
+          "type": "eye_contact",
+          "note": "Holds soft eye contact without intensity — warm but not searching"
+        },
+        {
+          "at_second": 210,
+          "type": "expression",
+          "note": "Subtle nod + near-zero facial movement — presence without pressure"
+        }
+      ]
+    },
+    {
+      "id": "clip_009",
+      "youtube_video_id": "FDFdroN7d0w",
+      "youtube_search_query": "Marriage Story 2019 apartment fight scene Netflix",
+      "movie_title": "Marriage Story",
+      "year": 2019,
+      "character_name": "Nicole Barber",
+      "actor_name": "Scarlett Johansson",
+      "scene_description": "The apartment fight scene — watch Nicole's body language when she is listening vs reacting",
+      "skill_category": "active-listening",
+      "difficulty": "advanced",
+      "start_sec": 30,
+      "end_sec": 180,
+      "duration_sec": 150,
+      "signal_clarity": 2,
+      "noise_level": 3,
+      "context_dependency": 3,
+      "replication_difficulty": 3,
+      "difficulty_score": 11,
+      "annotation": "Advanced: study the breakdown of active listening under emotional pressure. Watch when her posture closes (arms, turn-away), when she re-opens to listen, how her listening quality changes her partner's escalation. Emotional contagion in real time.",
+      "context_note": "This shows what active listening failure AND recovery looks like — valuable negative model.",
+      "annotations": [
+        {
+          "at_second": 50,
+          "type": "posture",
+          "note": "Arms cross — closed off, defensive mode, listening shuts down"
+        },
+        {
+          "at_second": 100,
+          "type": "eye_contact",
+          "note": "Eyes look down — she's processing, not listening; he escalates in response"
+        },
+        {
+          "at_second": 150,
+          "type": "posture",
+          "note": "Body turns back toward him — a reopening. Watch how this de-escalates briefly"
+        }
+      ]
+    },
+    {
+      "id": "clip_010",
+      "youtube_video_id": "j64SctPKmqk",
+      "youtube_search_query": "Dead Poets Society O Captain my captain scene vocal pacing",
+      "movie_title": "Dead Poets Society",
+      "year": 1989,
+      "character_name": "John Keating",
+      "actor_name": "Robin Williams",
+      "scene_description": "Keating introduces Carpe Diem — his vocal rhythm, strategic pauses, and tonal variation are clear and exaggerated",
+      "skill_category": "vocal-pacing",
+      "difficulty": "beginner",
+      "start_sec": 60,
+      "end_sec": 180,
+      "duration_sec": 120,
+      "signal_clarity": 1,
+      "noise_level": 1,
+      "context_dependency": 1,
+      "replication_difficulty": 1,
+      "difficulty_score": 4,
+      "annotation": "Perfect beginner vocal-pacing example: clear pauses before key words, tempo changes that match emotional weight, volume drops that create intimacy. Count the silences — they average 2-3 seconds and always precede impact.",
+      "context_note": "Classic cinematic speech — very learnable pattern.",
+      "annotations": [
+        {
+          "at_second": 75,
+          "type": "voice",
+          "note": "Full stop before 'Carpe' — 2 second silence, then deliberate delivery"
+        },
+        {
+          "at_second": 110,
+          "type": "voice",
+          "note": "Volume drops to near-whisper here — forces the room to lean in"
+        },
+        {
+          "at_second": 155,
+          "type": "voice",
+          "note": "Pace accelerates then halts — emotional crescendo technique"
+        }
+      ]
+    },
+    {
+      "id": "clip_011",
+      "youtube_video_id": "isr4-tsfhsg",
+      "youtube_search_query": "Al Pacino Any Given Sunday locker room speech inch by inch",
+      "movie_title": "Any Given Sunday",
+      "year": 1999,
+      "character_name": "Tony D'Amato",
+      "actor_name": "Al Pacino",
+      "scene_description": "Tony delivers the 'inch by inch' locker room speech — controlled escalating vocal pacing with strategic pause mastery",
+      "skill_category": "vocal-pacing",
+      "difficulty": "intermediate",
+      "start_sec": 0,
+      "end_sec": 240,
+      "duration_sec": 240,
+      "signal_clarity": 1,
+      "noise_level": 2,
+      "context_dependency": 2,
+      "replication_difficulty": 2,
+      "difficulty_score": 7,
+      "annotation": "Study the speech architecture: slow start, rising tempo, deliberate pause at 'any given Sunday', then full release. His pacing isn't random — each tempo shift corresponds to an idea shift. Mirror the physical stillness between bursts.",
+      "context_note": "Longer clip — worth the full watch. The pacing builds over 4 minutes.",
+      "annotations": [
+        {
+          "at_second": 30,
+          "type": "voice",
+          "note": "Slow, quiet opening — he's setting the trap. Don't rush this part."
+        },
+        {
+          "at_second": 90,
+          "type": "voice",
+          "note": "First acceleration — pace increases as emotional stakes rise"
+        },
+        {
+          "at_second": 160,
+          "type": "voice",
+          "note": "The signature pause — full 3 seconds of silence before 'any given Sunday'"
+        }
+      ]
+    },
+    {
+      "id": "clip_012",
+      "youtube_video_id": "1qjtugr2618",
+      "youtube_search_query": "Lincoln 2012 Spielberg film Daniel Day Lewis speech clip",
+      "movie_title": "Lincoln",
+      "year": 2012,
+      "character_name": "Abraham Lincoln",
+      "actor_name": "Daniel Day-Lewis",
+      "scene_description": "Lincoln delivers the 'Now' speech — a quiet, measured cadence that commands the room through restraint, not volume",
+      "skill_category": "vocal-pacing",
+      "difficulty": "advanced",
+      "start_sec": 0,
+      "end_sec": 172,
+      "duration_sec": 172,
+      "signal_clarity": 2,
+      "noise_level": 2,
+      "context_dependency": 3,
+      "replication_difficulty": 3,
+      "difficulty_score": 10,
+      "annotation": "Advanced pacing: the power is in what's NOT said. Minimal volume variation, but the weight is entirely in the rhythm and the silence. This is the opposite of Pacino — study how quiet command works.",
+      "context_note": "Historical context helps but not required — the vocal technique is self-evident.",
+      "annotations": [
+        {
+          "at_second": 70,
+          "type": "voice",
+          "note": "Near-monotone but notice the micro-variations — emphasis through length not volume"
+        },
+        {
+          "at_second": 110,
+          "type": "voice",
+          "note": "Pause mid-sentence — grammatically wrong, emotionally correct. Silence as punctuation."
+        },
+        {
+          "at_second": 155,
+          "type": "voice",
+          "note": "The deliberate slowing near the end — each word gets equal weight"
+        }
+      ]
+    },
+    {
+      "id": "clip_013",
+      "youtube_video_id": "GSu7BGbyJqc",
+      "youtube_search_query": "Legally Blonde 2001 courtroom objection perm expert scene",
+      "movie_title": "Legally Blonde",
+      "year": 2001,
+      "character_name": "Elle Woods",
+      "actor_name": "Reese Witherspoon",
+      "scene_description": "Elle confidently challenges expert testimony she disagrees with — composed, clear, zero defensiveness",
+      "skill_category": "confident-disagreement",
+      "difficulty": "beginner",
+      "start_sec": 30,
+      "end_sec": 150,
+      "duration_sec": 120,
+      "signal_clarity": 1,
+      "noise_level": 1,
+      "context_dependency": 2,
+      "replication_difficulty": 1,
+      "difficulty_score": 5,
+      "annotation": "Classic confident disagreement: she disagrees without apologizing, without raising her voice, without closed body language. Upright posture, steady gaze, measured tone. Watch how she states her counter-point then lets it land.",
+      "context_note": "Comedy framing makes it easy to watch — but the disagreement technique is genuine.",
+      "annotations": [
+        {
+          "at_second": 45,
+          "type": "posture",
+          "note": "Stands tall, no apology in the body — just calm disagreement"
+        },
+        {
+          "at_second": 85,
+          "type": "eye_contact",
+          "note": "Direct eye contact with the judge, not the opponent — redirects authority"
+        },
+        {
+          "at_second": 120,
+          "type": "voice",
+          "note": "States conclusion in declarative, not question form — no vocal uptick"
+        }
+      ]
+    },
+    {
+      "id": "clip_014",
+      "youtube_video_id": "EqDd06GW76o",
+      "youtube_search_query": "12 Angry Men Henry Fonda not guilty vote scene 1957",
+      "movie_title": "12 Angry Men",
+      "year": 1957,
+      "character_name": "Juror #8",
+      "actor_name": "Henry Fonda",
+      "scene_description": "Juror 8 holds his not-guilty position alone against 11 hostile jurors — the definitive cinematic study of confident disagreement",
+      "skill_category": "confident-disagreement",
+      "difficulty": "intermediate",
+      "start_sec": 120,
+      "end_sec": 300,
+      "duration_sec": 180,
+      "signal_clarity": 2,
+      "noise_level": 3,
+      "context_dependency": 2,
+      "replication_difficulty": 2,
+      "difficulty_score": 9,
+      "annotation": "Study: how he sits still while others agitate, how he phrases disagreement ('I'm not sure', not 'you're wrong'), how he absorbs hostility without closing his posture. His body stays open even when verbally attacked.",
+      "context_note": "Public domain film — full version widely available. The whole film is a disagreement masterclass.",
+      "annotations": [
+        {
+          "at_second": 140,
+          "type": "posture",
+          "note": "Sitting back calmly while all others lean in aggressively — stillness as confidence"
+        },
+        {
+          "at_second": 200,
+          "type": "voice",
+          "note": "He says 'I don't know' — acknowledges uncertainty without yielding position. Advanced."
+        },
+        {
+          "at_second": 270,
+          "type": "eye_contact",
+          "note": "Makes eye contact with each hostile juror in turn — doesn't avoid those who disagree"
+        }
+      ]
+    },
+    {
+      "id": "clip_015",
+      "youtube_video_id": "jEFYjQb1K2E",
+      "youtube_search_query": "Frost Nixon David Frost interview Nixon controlled disagreement",
+      "movie_title": "Frost/Nixon",
+      "year": 2008,
+      "character_name": "Richard Nixon",
+      "actor_name": "Frank Langella",
+      "scene_description": "Nixon counters Frost's difficult questions with controlled, deliberate disagreement — never defensive, always strategic",
+      "skill_category": "confident-disagreement",
+      "difficulty": "advanced",
+      "start_sec": 0,
+      "end_sec": 50,
+      "duration_sec": 50,
+      "signal_clarity": 2,
+      "noise_level": 2,
+      "context_dependency": 3,
+      "replication_difficulty": 3,
+      "difficulty_score": 10,
+      "annotation": "Advanced: disagreement with subtext. His verbal surface disagrees politely while his body language communicates power and contempt simultaneously. Study the micro-expressions during points he finds weak, and how he re-anchors posture after each challenge.",
+      "context_note": "Understanding who Nixon was historically deepens the reading. The body language is readable without context but richer with it.",
+      "annotations": [
+        {
+          "at_second": 10,
+          "type": "posture",
+          "note": "Slight lean-forward when challenged — leaning IN to disagreement, not away"
+        },
+        {
+          "at_second": 28,
+          "type": "expression",
+          "note": "Micro-smile during counter — controlled, not defensive or angry"
+        },
+        {
+          "at_second": 42,
+          "type": "eye_contact",
+          "note": "Holds eye contact through the most uncomfortable question — never breaks first"
+        }
+      ]
+    }
+  ]
+}

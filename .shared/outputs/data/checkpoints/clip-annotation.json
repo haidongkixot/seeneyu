@@ -1,0 +1,12 @@
+{
+  "pipeline": "clip-annotation",
+  "status": "in-progress",
+  "last_processed": null,
+  "total_items": 15,
+  "completed_items": 0,
+  "output_file": "../../.shared/outputs/data/clip-annotations.json",
+  "errors": [],
+  "started_at": null,
+  "updated_at": "2026-03-21T00:00:00Z",
+  "note": "Awaiting clip-discovery to complete first. Requires OPENAI_API_KEY."
+}

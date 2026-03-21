@@ -1,0 +1,45 @@
+{
+  "decisions": [
+    {
+      "id": "dec_001",
+      "decision": "Use Next.js App Router with TypeScript as the application framework",
+      "rationale": "Team familiarity, server components for data fetching, excellent Vercel integration",
+      "alternatives_considered": ["Vite + React SPA", "Remix"],
+      "decided_by": "user",
+      "timestamp": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "dec_002",
+      "decision": "Embed YouTube clips via IFrame API — never self-host video",
+      "rationale": "Zero hosting cost, no copyright risk, YouTube handles CDN and playback",
+      "alternatives_considered": ["Cloudflare Stream", "Mux", "S3 + CloudFront"],
+      "constraint": "Clips must remain publicly available on YouTube; if removed, clip breaks",
+      "decided_by": "user",
+      "timestamp": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "dec_003",
+      "decision": "File-based shared state for multi-agent coordination (.shared/ directory)",
+      "rationale": "Works across separate Claude Code windows without external services, persists between sessions, human-readable",
+      "alternatives_considered": ["Redis pub/sub", "SQLite", "Single shared CLAUDE.md"],
+      "decided_by": "user",
+      "timestamp": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "dec_004",
+      "decision": "Use GPT-4o Vision for user recording feedback analysis",
+      "rationale": "Best multimodal model for analyzing body language in video frames",
+      "alternatives_considered": ["MediaPipe pose estimation", "Peer review", "Claude vision"],
+      "decided_by": "user",
+      "timestamp": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "dec_005",
+      "decision": "MVP scope: 5 skills × 3 difficulty levels = 15 clips minimum",
+      "rationale": "Enough to validate full coaching loop without over-investing in content before product-market fit",
+      "skills": ["eye-contact", "open-posture", "active-listening", "vocal-pacing", "confident-disagreement"],
+      "decided_by": "user",
+      "timestamp": "2026-03-21T00:00:00Z"
+    }
+  ]
+}

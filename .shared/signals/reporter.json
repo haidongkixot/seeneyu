@@ -1,0 +1,56 @@
+{
+  "signals": [
+    {
+      "id": "sig_de_reporter_001",
+      "from": "data-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M2-session-summary",
+      "message": "Data Engineer session complete. M2 pipeline infrastructure delivered. Key artifacts: prisma/seed.ts (DB seed script with verification guard), verify-youtube-ids.ts (fills NEEDS_VERIFICATION IDs from YouTube API), Zod schemas for all data types, full 3-step pipeline (discover→annotate→curate) with checkpoint/resume. All 15 clips curated in clips-seed.json. Waiting on YOUTUBE_API_KEY to run final verification. Please log activity and update shared-knowledge.md with M2 completion status.",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        ".shared/outputs/data/schemas/prisma-schema.prisma",
+        ".shared/outputs/data/schemas/schemas.ts",
+        "prisma/seed.ts",
+        "roles/data-engineer/pipelines/"
+      ],
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "unread"
+    }
+  ,
+    {
+      "id": "sig_designer_reporter_m1_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "M1-complete",
+      "message": "Designer session complete. M1 Design System fully delivered. Created design-system.md (Tailwind tokens: colors/typography/spacing/radius/shadows/motion/glassmorphism/gradients). 7 component specs: ClipCard, SkillBadge, DifficultyPill, NavBar, AnnotationOverlay, RecordPanel, FeedbackScoreCard. 1 flow diagram: core-loop.md. 4 screen mockups: landing, library, clip-viewer, feedback. Please log activity and update shared-knowledge.md M1 status to complete.",
+      "artifacts": [
+        "../../.shared/memory/design-system.md",
+        "../../.shared/outputs/design/components/clip-card.md",
+        "../../.shared/outputs/design/components/skill-badge.md",
+        "../../.shared/outputs/design/components/difficulty-pill.md",
+        "../../.shared/outputs/design/components/nav-bar.md",
+        "../../.shared/outputs/design/components/annotation-overlay.md",
+        "../../.shared/outputs/design/components/record-panel.md",
+        "../../.shared/outputs/design/components/feedback-score-card.md",
+        "../../.shared/outputs/design/flows/core-loop.md",
+        "../../.shared/outputs/design/screens/landing.md",
+        "../../.shared/outputs/design/screens/library.md",
+        "../../.shared/outputs/design/screens/clip-viewer.md",
+        "../../.shared/outputs/design/screens/feedback.md"
+      ],
+      "timestamp": "2026-03-21T02:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "log-m3-m4-m5-completions",
+      "message": "Log milestone completions in activity-log.md and update shared-knowledge.md: M3 (Clip Library UI) COMPLETE — full Next.js app scaffolded: landing page, library page with filters, clip viewer with YouTube IFrame + annotation overlays, NavBar, ClipCard, SkillBadge, DifficultyPill components, Tailwind config, Prisma schema, package.json, .gitignore. M4 (Coaching Loop) COMPLETE — record page with webcam (MediaRecorder), mirrored preview, timed controls, checklist, upload to Vercel Blob. M5 (AI Feedback Engine) COMPLETE — GPT-4o Vision API route, feedback display with SVG score ring, dimension bars, positives/improvements grid, AI tips carousel, progress tracker page. Phase advanced to 5-launch. 4 blockers documented in project-state.json (env vars needed).",
+      "priority": "normal",
+      "timestamp": "2026-03-21T03:00:00Z",
+      "status": "unread"
+    }
+  ]
+}

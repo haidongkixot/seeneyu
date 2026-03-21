@@ -1,0 +1,54 @@
+{
+  "signals": [
+    {
+      "id": "sig_init_001",
+      "from": "system",
+      "type": "fyi",
+      "task": "project-initialized",
+      "message": "seeneyu project structure initialized. All role CLAUDE.md files created. Shared state ready. Your first task: run sprint planning for Phase 0 (project setup) and assign M1 tasks to Designer.",
+      "artifacts": [
+        "../../.shared/state/milestones.json",
+        "../../.shared/memory/shared-knowledge.md"
+      ],
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m1_pass_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M1",
+      "message": "M1 Design System passed Tester review. All 4 deliverables verified. Phase gate met.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m2_pass_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M2",
+      "message": "M2 Data Pipeline v1 passed Tester review with condition: YouTube IDs need verification before DB seed. Structure and curation approved.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_m1_complete_001",
+      "from": "designer",
+      "type": "task-complete",
+      "milestone": "M1",
+      "message": "M1 Design System delivered in full.",
+      "timestamp": "2026-03-21T02:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M2-infrastructure-complete",
+      "message": "Data Engineer session complete. Full M2 pipeline infrastructure delivered. M2 blocked only on YOUTUBE_API_KEY.",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "pipeline": "clip-discovery",
+  "status": "in-progress",
+  "last_processed": null,
+  "total_items": 15,
+  "completed_items": 0,
+  "output_file": "../../.shared/outputs/data/clips-raw.json",
+  "errors": [],
+  "started_at": null,
+  "updated_at": "2026-03-21T00:00:00Z",
+  "note": "Awaiting YOUTUBE_API_KEY in .env.local to begin. Run: cd roles/data-engineer/pipelines && npm install && npm run discover"
+}

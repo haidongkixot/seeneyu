@@ -1,0 +1,23 @@
+{
+  "name": "seeneyu-data-pipelines",
+  "version": "1.0.0",
+  "description": "Data Engineer pipeline scripts for seeneyu",
+  "type": "module",
+  "scripts": {
+    "verify": "tsx verify-youtube-ids.ts",
+    "discover": "tsx 1-discover-clips.ts",
+    "annotate": "tsx 2-annotate-clips.ts",
+    "curate": "tsx 3-curate-seed.ts",
+    "pipeline": "tsx run-all.ts"
+  },
+  "dependencies": {
+    "zod": "^3",
+    "openai": "^4",
+    "dotenv": "^16"
+  },
+  "devDependencies": {
+    "tsx": "^4",
+    "typescript": "^5",
+    "@types/node": "^20"
+  }
+}

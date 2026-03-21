@@ -1,0 +1,27 @@
+{
+  "pipeline": "youtube-verify",
+  "status": "complete",
+  "last_processed": "clip_015",
+  "total_items": 15,
+  "completed_items": 15,
+  "output_file": "D:\\Claude Projects\\seeneyu\\.shared\\outputs\\data\\clips-seed.json",
+  "errors": [
+    {
+      "item_id": "clip_005",
+      "error": "No suitable results",
+      "timestamp": "2026-03-21T16:41:39.471Z"
+    },
+    {
+      "item_id": "clip_008",
+      "error": "No search results",
+      "timestamp": "2026-03-21T16:41:43.394Z"
+    },
+    {
+      "item_id": "clip_012",
+      "error": "No search results",
+      "timestamp": "2026-03-21T16:41:48.658Z"
+    }
+  ],
+  "started_at": "2026-03-21T16:41:31.358Z",
+  "updated_at": "2026-03-21T16:41:53.702Z"
+}

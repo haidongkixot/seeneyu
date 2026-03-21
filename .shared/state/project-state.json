@@ -1,0 +1,43 @@
+{
+  "project": "seeneyu",
+  "description": "Body language & communication coaching app using Hollywood movie clips",
+  "phase": "5-launch",
+  "active_tasks": [
+    {
+      "id": "task_m6_launch",
+      "milestone": "M6",
+      "role": "pm",
+      "task": "deploy-and-configure",
+      "description": "Configure environment variables, verify YouTube IDs, run DB migrations, seed, deploy to Vercel",
+      "status": "awaiting-user",
+      "assigned_at": "2026-03-21T03:00:00Z"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "blocker_001",
+      "description": "YouTube video IDs in clips-seed.json all marked NEEDS_VERIFICATION — requires YOUTUBE_API_KEY and pipeline run",
+      "blocking": "M6 DB seed",
+      "resolution": "Add YOUTUBE_API_KEY to .env.local, run: cd roles/data-engineer/pipelines && npm install && npm run verify"
+    },
+    {
+      "id": "blocker_002",
+      "description": "DATABASE_URL not set — Prisma cannot connect to Neon",
+      "blocking": "M6 DB push and seed",
+      "resolution": "Create Neon project, add DATABASE_URL and DIRECT_URL to .env.local, run: npx prisma db push"
+    },
+    {
+      "id": "blocker_003",
+      "description": "OPENAI_API_KEY not set — AI feedback will fail",
+      "blocking": "M5 AI feedback feature",
+      "resolution": "Add OPENAI_API_KEY to .env.local"
+    },
+    {
+      "id": "blocker_004",
+      "description": "BLOB_READ_WRITE_TOKEN not set — recording upload will fail",
+      "blocking": "M4 recording upload",
+      "resolution": "Create Vercel Blob store, add BLOB_READ_WRITE_TOKEN to .env.local"
+    }
+  ],
+  "last_updated": "2026-03-21T03:00:00Z"
+}

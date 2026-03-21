@@ -1,0 +1,103 @@
+{
+  "milestones": [
+    {
+      "id": "M0",
+      "name": "Project Setup",
+      "phase": "0-setup",
+      "status": "complete",
+      "owner": "pm",
+      "tester_approved": true,
+      "blocks": ["M1"],
+      "completed_at": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "M1",
+      "name": "Design System",
+      "phase": "1-foundation",
+      "status": "complete",
+      "owner": "designer",
+      "tester_approved": true,
+      "blocks": ["M2", "M3"],
+      "completed_at": "2026-03-21T02:00:00Z"
+    },
+    {
+      "id": "M2",
+      "name": "Data Pipeline v1",
+      "phase": "2-library",
+      "status": "complete",
+      "owner": "data-engineer",
+      "tester_approved": true,
+      "tester_condition": "YouTube video IDs must be verified before DB seed",
+      "blocks": ["M3"],
+      "completed_at": "2026-03-21T02:00:00Z"
+    },
+    {
+      "id": "M3",
+      "name": "Clip Library UI",
+      "phase": "2-library",
+      "status": "complete",
+      "owner": "pm",
+      "tester_approved": true,
+      "blocks": ["M4"],
+      "completed_at": "2026-03-21T03:00:00Z",
+      "deliverables": [
+        "src/app/layout.tsx",
+        "src/app/page.tsx",
+        "src/app/library/page.tsx",
+        "src/app/library/LibraryFilters.tsx",
+        "src/app/library/[clipId]/page.tsx",
+        "src/app/library/[clipId]/ClipViewerClient.tsx",
+        "src/components/ClipCard.tsx",
+        "src/components/SkillBadge.tsx",
+        "src/components/DifficultyPill.tsx",
+        "src/components/NavBar.tsx",
+        "src/lib/prisma.ts",
+        "src/lib/types.ts",
+        "tailwind.config.ts",
+        "prisma/schema.prisma",
+        "package.json"
+      ]
+    },
+    {
+      "id": "M4",
+      "name": "Coaching Loop",
+      "phase": "3-coaching-loop",
+      "status": "complete",
+      "owner": "pm",
+      "tester_approved": true,
+      "blocks": ["M5"],
+      "completed_at": "2026-03-21T03:00:00Z",
+      "deliverables": [
+        "src/app/library/[clipId]/record/page.tsx",
+        "src/app/library/[clipId]/record/RecordClient.tsx"
+      ]
+    },
+    {
+      "id": "M5",
+      "name": "AI Feedback Engine",
+      "phase": "4-feedback",
+      "status": "complete",
+      "owner": "pm",
+      "tester_approved": true,
+      "blocks": ["M6"],
+      "completed_at": "2026-03-21T03:00:00Z",
+      "deliverables": [
+        "src/app/api/sessions/route.ts",
+        "src/app/api/sessions/[id]/feedback/route.ts",
+        "src/app/feedback/[sessionId]/page.tsx",
+        "src/app/feedback/[sessionId]/FeedbackPoller.tsx",
+        "src/app/progress/page.tsx"
+      ]
+    },
+    {
+      "id": "M6",
+      "name": "MVP Launch Ready",
+      "phase": "5-launch",
+      "status": "in-progress",
+      "owner": "pm",
+      "tester_approved": false,
+      "blocks": [],
+      "note": "All code complete. Needs: (1) YouTube API key + ID verification, (2) DATABASE_URL + prisma db push + seed, (3) OPENAI_API_KEY, (4) BLOB_READ_WRITE_TOKEN, (5) Vercel deploy"
+    }
+  ]
+}

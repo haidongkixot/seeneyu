@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Clip {
+  id                    String   @id @default(cuid())
+  youtubeVideoId        String
+  startSec              Int
+  endSec                Int
+  movieTitle            String
+  year                  Int?
+  characterName         String?
+  actorName             String?
+  sceneDescription      String   @db.Text
+  skillCategory         String
+  difficulty            String
+  difficultyScore       Int
+  signalClarity         Int
+  noiseLevel            Int
+  contextDependency     Int
+  replicationDifficulty Int
+  annotation            String   @db.Text
+  contextNote           String?  @db.Text
+  isActive              Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  annotations Annotation[]
+  sessions    UserSession[]
+
+  @@index([skillCategory])
+  @@index([difficulty])
+  @@index([skillCategory, difficulty])
+}
+
+model Annotation {
+  id       String @id @default(cuid())
+  clipId   String
+  clip     Clip   @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  atSecond Int
+  note     String @db.Text
+  type     String
+
+  @@index([clipId])
+  @@index([clipId, atSecond])
+}
+
+model UserSession {
+  id           String    @id @default(cuid())
+  clipId       String
+  clip         Clip      @relation(fields: [clipId], references: [id])
+  recordingUrl String?
+  recordingKey String?
+  status       String    @default("recording")
+  feedback     Json?
+  scores       Json?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  completedAt  DateTime?
+
+  @@index([clipId])
+  @@index([status])
+  @@index([createdAt])
+}
