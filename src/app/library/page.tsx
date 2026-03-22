@@ -31,7 +31,7 @@ async function ClipGrid({ skill, difficulty }: { skill?: string; difficulty?: st
       startSec: true,
       endSec: true,
     },
-  })
+  }).catch(() => [] as never[])
 
   if (clips.length === 0) {
     return (
