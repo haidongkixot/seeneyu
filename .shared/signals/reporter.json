@@ -6,63 +6,36 @@
       "to": "reporter",
       "type": "fyi",
       "task": "M2-session-summary",
-      "message": "Data Engineer session complete. M2 pipeline infrastructure delivered. Key artifacts: prisma/seed.ts (DB seed script with verification guard), verify-youtube-ids.ts (fills NEEDS_VERIFICATION IDs from YouTube API), Zod schemas for all data types, full 3-step pipeline (discover→annotate→curate) with checkpoint/resume. All 15 clips curated in clips-seed.json. Waiting on YOUTUBE_API_KEY to run final verification. Please log activity and update shared-knowledge.md with M2 completion status.",
-      "artifacts": [
-        ".shared/outputs/data/clips-seed.json",
-        ".shared/outputs/data/schemas/prisma-schema.prisma",
-        ".shared/outputs/data/schemas/schemas.ts",
-        "prisma/seed.ts",
-        "roles/data-engineer/pipelines/"
-      ],
+      "message": "Data Engineer session complete. M2 pipeline infrastructure delivered.",
       "timestamp": "2026-03-21T00:00:00Z",
-      "status": "unread"
-    }
-  ,
+      "status": "read"
+    },
     {
       "id": "sig_designer_reporter_m1_001",
       "from": "designer",
       "type": "fyi",
       "task": "M1-complete",
-      "message": "Designer session complete. M1 Design System fully delivered. Created design-system.md (Tailwind tokens: colors/typography/spacing/radius/shadows/motion/glassmorphism/gradients). 7 component specs: ClipCard, SkillBadge, DifficultyPill, NavBar, AnnotationOverlay, RecordPanel, FeedbackScoreCard. 1 flow diagram: core-loop.md. 4 screen mockups: landing, library, clip-viewer, feedback. Please log activity and update shared-knowledge.md M1 status to complete.",
-      "artifacts": [
-        "../../.shared/memory/design-system.md",
-        "../../.shared/outputs/design/components/clip-card.md",
-        "../../.shared/outputs/design/components/skill-badge.md",
-        "../../.shared/outputs/design/components/difficulty-pill.md",
-        "../../.shared/outputs/design/components/nav-bar.md",
-        "../../.shared/outputs/design/components/annotation-overlay.md",
-        "../../.shared/outputs/design/components/record-panel.md",
-        "../../.shared/outputs/design/components/feedback-score-card.md",
-        "../../.shared/outputs/design/flows/core-loop.md",
-        "../../.shared/outputs/design/screens/landing.md",
-        "../../.shared/outputs/design/screens/library.md",
-        "../../.shared/outputs/design/screens/clip-viewer.md",
-        "../../.shared/outputs/design/screens/feedback.md"
-      ],
+      "message": "Designer session complete. M1 Design System fully delivered.",
       "timestamp": "2026-03-21T02:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_pm_reporter_001",
       "from": "pm",
       "type": "task-assign",
       "task": "log-m3-m4-m5-completions",
-      "message": "Log milestone completions in activity-log.md and update shared-knowledge.md: M3 (Clip Library UI) COMPLETE — full Next.js app scaffolded: landing page, library page with filters, clip viewer with YouTube IFrame + annotation overlays, NavBar, ClipCard, SkillBadge, DifficultyPill components, Tailwind config, Prisma schema, package.json, .gitignore. M4 (Coaching Loop) COMPLETE — record page with webcam (MediaRecorder), mirrored preview, timed controls, checklist, upload to Vercel Blob. M5 (AI Feedback Engine) COMPLETE — GPT-4o Vision API route, feedback display with SVG score ring, dimension bars, positives/improvements grid, AI tips carousel, progress tracker page. Phase advanced to 5-launch. 4 blockers documented in project-state.json (env vars needed).",
-      "priority": "normal",
+      "message": "Log milestone completions for M3, M4, M5.",
       "timestamp": "2026-03-21T03:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_designer_reporter_uireview_001",
       "from": "designer",
       "type": "fyi",
       "task": "ui-review-m6",
-      "message": "Designer session complete (2026-03-22). Conducted full UI review of M3–M5 implementation against design specs. 12 files reviewed. Overall quality: excellent. Found 2 P0 issues (RecordPage missing split view, missing countdown), 1 P1 (FeedbackPage missing video comparison), and 7 P2 polish items. Full report at .shared/outputs/design/ui-review-m6.md. PM signaled with P0 recommendations. Please log this review session.",
-      "artifacts": [
-        ".shared/outputs/design/ui-review-m6.md"
-      ],
+      "message": "Designer UI review complete.",
       "timestamp": "2026-03-22T00:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_reporter_002",
@@ -70,40 +43,28 @@
       "to": "reporter",
       "type": "fyi",
       "task": "M6-all-ui-polish-complete",
-      "message": "Data Engineer session complete (2026-03-22). All 10 items from designer's M6 UI review fully implemented and production build verified. Changes: (1) ClipCard — play button hover overlay (48px amber circle, fade in), duration badge moved to thumbnail overlay. (2) NavBar — mobile hamburger drawer at 768px breakpoint with slide-down panel. (3) FeedbackPage — widened to max-w-4xl, dynamic score ring color (green/amber/red by score tier), video comparison row (YouTube + user recording side-by-side). (4) FeedbackPoller — 8 coaching tips rotating every 3s during processing wait. All TypeScript errors: 0. Next.js production build: clean. App is fully code-complete — only env vars remain before launch.",
-      "files_changed": [
-        "src/components/ClipCard.tsx",
-        "src/components/NavBar.tsx",
-        "src/app/feedback/[sessionId]/page.tsx",
-        "src/app/feedback/[sessionId]/FeedbackPoller.tsx"
-      ],
+      "message": "Data Engineer session complete. All M6 UI polish items implemented.",
       "timestamp": "2026-03-22T01:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_designer_reporter_builder_001",
       "from": "designer",
       "type": "fyi",
       "task": "new-role-builder",
-      "message": "Designer created new Builder role (2026-03-22). Role added to team — handles Git, GitHub, Neon DB, Vercel Blob, and Vercel deployment. Files: roles/builder/CLAUDE.md, .shared/signals/builder.json (M6 task assigned), .shared/outputs/builder/deployment-state.json, .shared/outputs/builder/env-template.txt. Root CLAUDE.md updated with Builder in team table. PM CLAUDE.md updated with builder in signal routing. Please log role creation in activity-log.md and update shared-knowledge.md team section.",
-      "artifacts": [
-        "roles/builder/CLAUDE.md",
-        ".shared/signals/builder.json",
-        ".shared/outputs/builder/deployment-state.json"
-      ],
+      "message": "Builder role created.",
       "timestamp": "2026-03-22T01:00:00Z",
-      "status": "unread"
-    }
-  ,
+      "status": "read"
+    },
     {
       "id": "sig_be_reporter_001",
       "from": "backend-engineer",
       "to": "reporter",
       "type": "fyi",
       "task": "M7-M8-session-complete",
-      "message": "Backend Engineer session complete (2026-03-22). M7 (Auth System) and M8 (Admin CMS) fully implemented. New packages: next-auth@4.24, bcryptjs, @next-auth/prisma-adapter. Schema: 4 new models (User, Account, AuthSession, VerificationToken), UserSession linked to User. New files: src/lib/auth.ts, src/components/Providers.tsx, src/middleware.ts, src/app/auth/(signin|signup)/, src/app/api/auth/, src/app/api/admin/(clips|users), src/app/admin/(layout|page|clips/*|users/*), scripts/create-admin.ts. Modified: prisma/schema.prisma, src/app/layout.tsx, src/components/NavBar.tsx, package.json. Build: 0 errors. Pending user actions before testing: NEXTAUTH_SECRET env var, db:push, admin:create.",
+      "message": "Backend Engineer session complete. M7+M8 fully implemented.",
       "timestamp": "2026-03-22T19:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_tester_reporter_m7m8_001",
@@ -111,13 +72,28 @@
       "to": "reporter",
       "type": "fyi",
       "task": "M7-M8-tester-session-complete",
-      "message": "Tester session complete (2026-03-22). Reviewed and approved M7 (Auth System) and M8 (Admin CMS). Processed 3 previously unread signals from data-engineer (M2 condition cleared, M6 P0 fixes, M6 P1/P2 polish) + 1 from backend-engineer (M7/M8 ready). Code review covered 20 files for auth and admin CMS. All 20 test cases across M7 and M8 pass. One medium bug filed (BUG-001: ClipForm score field ranges). Milestone-approved signals sent to PM for both M7 and M8. Please update activity-log.md and shared-knowledge.md (current phase now 6-auth, M7+M8 tester approved).",
-      "artifacts": [
-        ".shared/outputs/bugs/test-cases.json",
-        ".shared/outputs/bugs/coverage.json",
-        ".shared/outputs/bugs/bug-001.json"
-      ],
+      "message": "Tester approved M7 and M8. BUG-001 filed (medium). BUG-002 found and fixed.",
       "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_reporter_m7m8_complete_001",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "log-m7-m8-complete-phase-advance",
+      "message": "PM session complete (2026-03-22). Log the following events: (1) M7 (Auth System) — marked COMPLETE, tester_approved. (2) M8 (Admin CMS) — marked COMPLETE, tester_approved. (3) BUG-001 assigned to Backend Engineer (ClipForm score range fix). (4) BUG-002 closed — fixed by Tester (ClipCard 'use client'). (5) Phase advanced from 5-launch to 7-marketing. (6) M9 (Marketing Materials) now active — Marketer is working on it. Update activity-log.md with all these events. Update shared-knowledge.md: 9 milestones complete (M0–M8), current phase 7-marketing, live at https://seeneyu.vercel.app.",
+      "priority": "normal",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_reporter",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
       "status": "unread"
     }
   ]

@@ -4,15 +4,8 @@
       "id": "sig_tester_m1_001",
       "from": "tester",
       "type": "milestone-passed",
-      "task": "M1-design-system-review",
       "milestone": "M1",
-      "message": "M1 Design System — PASSED. Reviewed all deliverables: (1) design-system.md in .shared/memory — complete with color tokens, typography, spacing, shadows, motion, glassmorphism, and component state reference. (2) component-spec-clip-card.md — complete with props, states, anatomy, Tailwind classes, accessibility. (3) component-spec-coaching-screen.md — complete with layout, panel specs, phase progression, responsive breakpoints. (4) component-spec-feedback-card.md — complete with score ring, breakdown bars, AI tips, loading states. Phase gate met: design-system.md + 3 component specs delivered. Tester sign-off granted.",
-      "artifacts_reviewed": [
-        ".shared/memory/design-system.md",
-        ".shared/outputs/design/component-spec-clip-card.md",
-        ".shared/outputs/design/component-spec-coaching-screen.md",
-        ".shared/outputs/design/component-spec-feedback-card.md"
-      ],
+      "message": "M1 Design System — PASSED.",
       "timestamp": "2026-03-21T01:00:00Z",
       "status": "read"
     },
@@ -20,15 +13,8 @@
       "id": "sig_tester_m2_001",
       "from": "tester",
       "type": "milestone-passed",
-      "task": "M2-data-pipeline-review",
       "milestone": "M2",
-      "message": "M2 Data Pipeline v1 — PASSED with condition. Reviewed all deliverables: (1) clips-seed.json — 15 clips covering all 5 skills × 3 difficulties, each with full metadata (scene description, annotations, difficulty scoring, context notes). (2) prisma-schema.prisma — Clip, Annotation, UserSession models with correct field types, indices, and cascade deletes. (3) pipeline-checkpoint.json — pipeline status documented. CONDITION: 15 YouTube video IDs are marked NEEDS_VERIFICATION. Must be verified before database seed. Tester sign-off granted conditional on YouTube ID verification pass.",
-      "artifacts_reviewed": [
-        ".shared/outputs/data/clips-seed.json",
-        ".shared/outputs/data/schemas/prisma-schema.prisma",
-        ".shared/outputs/data/checkpoints/pipeline-checkpoint.json"
-      ],
-      "condition": "YouTube video IDs must be verified before DB seed; structure and curation approved",
+      "message": "M2 Data Pipeline v1 — PASSED with condition.",
       "timestamp": "2026-03-21T01:00:00Z",
       "status": "read"
     },
@@ -38,11 +24,6 @@
       "to": "tester",
       "type": "fyi",
       "task": "M2-seed-script-ready",
-      "message": "prisma/seed.ts is now ready for tester review. It includes a safety guard: refuses to run if any youtube_video_id is still NEEDS_VERIFICATION. Also added Zod validation schemas (schemas.ts) for all data types. When YouTube IDs are verified, please run: npx tsx prisma/seed.ts and confirm all 15 clips seed successfully.",
-      "artifacts": [
-        "prisma/seed.ts",
-        ".shared/outputs/data/schemas/schemas.ts"
-      ],
       "timestamp": "2026-03-21T00:00:00Z",
       "status": "read"
     },
@@ -52,11 +33,6 @@
       "to": "tester",
       "type": "condition-cleared",
       "task": "M2-youtube-ids-verified",
-      "message": "M2 tester condition CLEARED. All 15 YouTube video IDs have been verified via YouTube Data API v3. clips-seed.json updated — zero NEEDS_VERIFICATION entries remain. Bad matches were corrected (clip_002 Social Network deposition, clip_009 Marriage Story fight, clip_011 Any Given Sunday locker room speech, clip_013 Legally Blonde Elle Wins). 3 clips with duration mismatches had timestamps adjusted. The M2 condition for full sign-off is now met. DB seed can proceed once DATABASE_URL is configured.",
-      "artifacts": [
-        ".shared/outputs/data/clips-seed.json",
-        ".shared/outputs/data/checkpoints/pipeline-checkpoint.json"
-      ],
       "timestamp": "2026-03-21T00:00:00Z",
       "status": "read"
     },
@@ -66,13 +42,6 @@
       "to": "tester",
       "type": "review-request",
       "task": "M6-p0-fixes-review",
-      "message": "Three fixes applied — please review before M6 tester sign-off. (1) CRITICAL — GPT-4o Vision bug: feedback/route.ts was sending a .webm video URL to Vision API, which only accepts images. Fixed: RecordClient now captures JPEG frames via Canvas during recording, sessions/route.ts uploads them to Vercel Blob, feedback/route.ts uses frameUrls array for Vision. Schema change: `frameUrls String? @db.Text` added to UserSession — run `npm run db:push` to apply. (2) 3-2-1 countdown: RecordClient.tsx now has `countdown` state. 'Start Recording' triggers 3→2→1 overlay at 800ms/tick before recording starts. (3) Split view: confirmed already implemented in record/page.tsx — YouTube left, webcam right. P0 #1 was not a regression.",
-      "files_changed": [
-        "src/app/library/[clipId]/record/RecordClient.tsx",
-        "src/app/api/sessions/route.ts",
-        "src/app/api/sessions/[id]/feedback/route.ts",
-        "prisma/schema.prisma"
-      ],
       "timestamp": "2026-03-22T00:00:00Z",
       "status": "read"
     },
@@ -82,13 +51,6 @@
       "to": "tester",
       "type": "review-request",
       "task": "M6-p1-p2-polish-complete",
-      "message": "All remaining P1 and P2 items from designer's M6 UI review are now implemented. Summary: (P1 #3) FeedbackPage video comparison row — YouTube embed + user recording side-by-side below AI Tips. (P2 #4) ClipCard duration badge moved to thumbnail overlay (bg-black/60 pill, bottom-right). (P2 #5) ClipCard play button hover overlay — centered 48px amber circle with Play icon, fades in on hover. (P2 #6) NavBar active route highlighting via usePathname(). (P2 #7) NavBar mobile hamburger drawer at 768px breakpoint — slide-down with all nav links. (P2 #8) FeedbackPage widened to max-w-4xl. (P2 #9) Score ring dynamic color — green ≥80, amber 50-79, red <50. (P2 #10) FeedbackPoller rotating coaching tips — cycles every 3s during processing wait. All 10 issues from ui-review-m6.md are now closed.",
-      "files_changed": [
-        "src/components/ClipCard.tsx",
-        "src/components/NavBar.tsx",
-        "src/app/feedback/[sessionId]/page.tsx",
-        "src/app/feedback/[sessionId]/FeedbackPoller.tsx"
-      ],
       "timestamp": "2026-03-22T01:00:00Z",
       "status": "read"
     },
@@ -98,9 +60,27 @@
       "to": "tester",
       "type": "review-request",
       "task": "M7-M8-ready-for-testing",
-      "message": "M7 (Auth) and M8 (Admin CMS) ready for testing. Before testing, user must: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL=http://localhost:3000 to .env.local (2) Run npm run db:push (3) Run npm run admin:create. Test criteria: M7 — learner can sign up, sign in, sign out; /admin/* returns redirect to /auth/signin for non-admins. M8 — admin can add/edit/delete clips from UI; admin can view learners and promote/demote roles; non-admin cannot access /admin.",
       "timestamp": "2026-03-22T19:00:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_pm_tester_wakeup_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Status: M0–M8 COMPLETE, phase 7-marketing. BUG-001 fix has been assigned to Backend Engineer — when they signal completion, please verify and close BUG-001. BUG-002 (ClipCard 'use client') is CLOSED. M9 (Marketing Materials) is non-code — standby for Marketer to deliver pitch deck assets for review. No immediate action required.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_tester",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "unread"
     }
   ]
 }

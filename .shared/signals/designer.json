@@ -5,11 +5,28 @@
       "from": "pm",
       "type": "task-assign",
       "task": "design-system",
-      "message": "Deliver the seeneyu Design System for M1. This unblocks all implementation work (M2, M3, M4). You need to produce: (1) design-system.md with color tokens, typography scale, spacing scale, dark UI conventions; (2) component spec: Clip Card (library grid item — thumbnail, skill badge, difficulty badge, title, duration); (3) component spec: Coaching Screen (two-panel layout — left: YouTube video + annotation overlay, right: webcam record panel + controls); (4) component spec: Feedback Card (score breakdown by dimension, AI tip text, retry CTA). All output files go in .shared/outputs/design/. The phase gate for M1 is: design-system.md exists + 3 component specs delivered.",
-      "context": "Read .shared/memory/shared-knowledge.md for full product context, skills taxonomy, and difficulty scoring. Tech stack: Next.js App Router, TypeScript, Tailwind CSS, dark UI (gray-900/950 base). The app is dark-themed — all specs must reflect this.",
-      "priority": "high",
+      "message": "Deliver the seeneyu Design System for M1.",
       "timestamp": "2026-03-21T00:00:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_pm_designer_wakeup_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Project status: M0–M8 all COMPLETE. App is live at https://seeneyu.vercel.app. Current phase: 7-marketing. M9 (Marketing Materials) is active — Marketer role is producing pitch deck + one-pager + outreach emails. BUG-001 fix assigned to Backend Engineer (ClipForm score ranges). No design tasks pending. FYI: BUG-002 (library page crash from missing 'use client' in ClipCard) was found and fixed. You may monitor ongoing work or stand by for the next phase.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_designer",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "unread"
     }
   ]
 }

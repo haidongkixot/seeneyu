@@ -49,8 +49,7 @@
       "message": "Data Engineer session complete. Full M2 pipeline infrastructure delivered. M2 blocked only on YOUTUBE_API_KEY.",
       "timestamp": "2026-03-21T00:00:00Z",
       "status": "read"
-    }
-  ,
+    },
     {
       "id": "sig_designer_ui_review_001",
       "from": "designer",
@@ -74,13 +73,7 @@
       "to": "pm",
       "type": "fyi",
       "task": "P0-fixes-applied",
-      "message": "Applied all P0 fixes from designer's M6 UI review plus one additional critical bug. (1) 3-2-1 countdown: added `countdown` state to RecordClient.tsx — clicking Start Recording triggers 3→2→1 overlay at 800ms intervals before recording begins. (2) Split view: already implemented in record/page.tsx — YouTube embed left, webcam right. P0 #1 was already done. (3) Critical bug fixed: GPT-4o Vision was receiving a .webm video URL, which it cannot analyze. Fixed by capturing JPEG frames client-side via Canvas API during recording, uploading them to Vercel Blob, and passing frame URLs to GPT-4o Vision. Schema updated: `frameUrls` field added to UserSession. Run `npm run db:push` to apply schema change before seeding.",
-      "artifacts": [
-        "src/app/library/[clipId]/record/RecordClient.tsx",
-        "src/app/api/sessions/route.ts",
-        "src/app/api/sessions/[id]/feedback/route.ts",
-        "prisma/schema.prisma"
-      ],
+      "message": "Applied all P0 fixes from designer's M6 UI review plus one additional critical bug.",
       "timestamp": "2026-03-22T00:00:00Z",
       "status": "read"
     },
@@ -89,28 +82,16 @@
       "from": "designer",
       "type": "fyi",
       "task": "new-role-created",
-      "message": "Builder role created by Designer. New role handles Git, GitHub, infrastructure provisioning (Neon, Vercel Blob), and Vercel deployment. Files created: roles/builder/CLAUDE.md (full runbook), .shared/signals/builder.json (M6 task assigned), .shared/outputs/builder/deployment-state.json (checkpoint), .shared/outputs/builder/env-template.txt. Root CLAUDE.md updated with Builder in team table. PM CLAUDE.md updated with builder signal queue + routing. Recommend: open roles/builder/ as a new Claude Code window to execute M6 deployment.",
-      "artifacts": [
-        "roles/builder/CLAUDE.md",
-        ".shared/signals/builder.json",
-        ".shared/outputs/builder/deployment-state.json",
-        ".shared/outputs/builder/env-template.txt"
-      ],
+      "message": "Builder role created by Designer.",
       "timestamp": "2026-03-22T01:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_pm_be_role_created_001",
       "from": "pm",
       "type": "fyi",
       "task": "new-role-created",
-      "message": "Backend Engineer role created. New role owns auth system (M7) and admin CMS (M8). Files created: roles/backend-engineer/CLAUDE.md (full spec), .shared/signals/backend-engineer.json (M7 task assigned), .shared/outputs/backend-engineer/progress.json (checkpoint). Milestones.json updated: M6 marked complete (deployed), M7 and M8 added for phase 6-auth. Open roles/backend-engineer/ as a new Claude Code window to begin M7.",
-      "artifacts": [
-        "roles/backend-engineer/CLAUDE.md",
-        ".shared/signals/backend-engineer.json",
-        ".shared/outputs/backend-engineer/progress.json",
-        ".shared/state/milestones.json"
-      ],
+      "message": "Backend Engineer role created.",
       "timestamp": "2026-03-22T18:00:00Z",
       "status": "read"
     },
@@ -120,45 +101,70 @@
       "to": "pm",
       "type": "fyi",
       "task": "M6-ui-review-all-items-closed",
-      "message": "All 10 items from designer's M6 UI review are now fully implemented. P0 critical bug (GPT-4o Vision), P0 countdown, P1 video comparison, and all 7 P2 polish items are done. ui-review-m6.md is fully cleared. App is ready for M6 final tester sign-off pending env var setup (DATABASE_URL, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN) and db:push + db:seed. No further code work needed from Data Engineer for M6.",
-      "artifacts": [
-        "src/components/ClipCard.tsx",
-        "src/components/NavBar.tsx",
-        "src/app/feedback/[sessionId]/page.tsx",
-        "src/app/feedback/[sessionId]/FeedbackPoller.tsx"
-      ],
+      "message": "All 10 items from designer's M6 UI review are now fully implemented. App is ready for M6 final tester sign-off.",
       "timestamp": "2026-03-22T01:00:00Z",
-      "status": "unread"
-    }
-  ,
+      "status": "read"
+    },
     {
       "id": "sig_be_pm_001",
       "from": "backend-engineer",
       "to": "pm",
       "type": "task-complete",
       "task": "M7-M8-auth-cms",
-      "message": "M7 (Auth System) and M8 (Admin CMS) fully implemented. Build: 0 TypeScript errors, 0 Next.js errors. Deliverables complete: (M7) next-auth v4 with credentials provider, User/Account/AuthSession/VerificationToken schema models, /auth/signin + /auth/signup pages, middleware protecting /admin/*, NavBar updated with avatar+signout, SessionProvider in layout, scripts/create-admin.ts + admin:create npm script. (M8) Admin layout with sidebar, dashboard stats, clips CRUD (list/create/edit/delete), users table with promote/demote, user detail + session history. PENDING USER ACTIONS: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL to .env.local (2) Run: npm run db:push (3) Run: npm run admin:create. See progress.json for full checkpoint.",
-      "artifacts": [
-        "src/lib/auth.ts",
-        "src/app/api/auth/[...nextauth]/route.ts",
-        "src/app/api/auth/signup/route.ts",
-        "src/app/auth/signin/",
-        "src/app/auth/signup/",
-        "src/middleware.ts",
-        "src/components/NavBar.tsx",
-        "src/app/layout.tsx",
-        "scripts/create-admin.ts",
-        "src/app/admin/",
-        "src/app/api/admin/",
-        "prisma/schema.prisma"
-      ],
-      "blockers": [
-        "NEXTAUTH_SECRET not yet added to .env.local — must add before testing auth",
-        "db:push not run — needs DATABASE_URL env var",
-        "admin:create not run — needs live DB"
-      ],
+      "message": "M7 (Auth System) and M8 (Admin CMS) fully implemented. Build: 0 TypeScript errors, 0 Next.js errors.",
       "timestamp": "2026-03-22T19:00:00Z",
-      "status": "unread"
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m7_approved_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "milestone-approved",
+      "milestone": "M7",
+      "message": "M7 Auth System — APPROVED. 10/10 test cases pass.",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m8_approved_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "milestone-approved",
+      "milestone": "M8",
+      "message": "M8 Admin CMS — APPROVED. 10/10 test cases pass. ONE MEDIUM BUG FILED (BUG-001): ClipForm score dimension fields allow 1–10 but model expects 1–3. Non-blocking.",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_001",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-complete",
+      "message": "Reporter session complete (2026-03-22). All documentation current.",
+      "timestamp": "2026-03-22T21:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_002",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-check-in",
+      "message": "Reporter check-in. All docs current. M7+M8 awaiting PM action.",
+      "timestamp": "2026-03-22T22:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_bug002_fixed_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "fyi",
+      "task": "BUG-002-critical-fixed",
+      "message": "BUG-002 (CRITICAL) found and fixed. Library page 'Couldn't load clips' error — ClipCard.tsx missing 'use client'. Fix applied, library page now renders all 15 clips.",
+      "bug_report": ".shared/outputs/bugs/bug-002.json",
+      "timestamp": "2026-03-22T23:00:00Z",
+      "status": "read"
     }
   ]
 }

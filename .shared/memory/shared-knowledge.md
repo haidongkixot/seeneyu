@@ -38,6 +38,8 @@ Sum 4–5 = Beginner | 6–8 = Intermediate | 9–12 = Advanced
 - **Tester**: test-cases.json, bug reports, coverage.json
 - **Data Engineer**: clip pipelines, .shared/outputs/data/
 - **Reporter**: activity-log.md, shared-knowledge.md (this file), onboarding.md
+- **Builder**: Git, GitHub, Neon DB, Vercel Blob, Vercel deployment — roles/builder/
+- **Backend Engineer**: auth system, admin CMS — roles/backend-engineer/
 
 ## Critical Constraints
 1. Never self-host video — YouTube IFrame only (store video_id + timestamps)
@@ -46,8 +48,18 @@ Sum 4–5 = Beginner | 6–8 = Intermediate | 9–12 = Advanced
 4. All decisions go to decisions.json (PM writes, Reporter summarizes)
 5. Tester sign-off required on Tester-approved field in milestones.json before PM marks complete
 
-## Current Status
-- Phase: 5-launch
-- All code milestones COMPLETE (M0–M5)
-- M6 blocked on: DATABASE_URL, YOUTUBE_API_KEY, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN
-- After env vars set: run YouTube ID verification → prisma db push → seed → Vercel deploy
+## Current Status (2026-03-22)
+- Phase: **6-auth**
+- M0–M6 COMPLETE. App live at https://seeneyu.vercel.app
+- M7 (Auth System): **TESTER APPROVED** — awaiting PM to mark complete after env vars + db:push
+- M8 (Admin CMS): **TESTER APPROVED** — awaiting PM to mark complete after env vars + db:push
+- Open bug: BUG-001 (medium) — ClipForm score fields use 1–10, should be 1–3 per dimension
+- Remaining env vars needed: NEXTAUTH_SECRET, NEXTAUTH_URL (+ DATABASE_URL, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN)
+
+## Key Technical Facts (added 2026-03-22)
+- GPT-4o Vision receives JPEG frames (not video): RecordClient captures frames via Canvas API during recording
+- UserSession.frameUrls field holds Vercel Blob URLs for frame images
+- NextAuth.js v4, credentials provider (email+password), roles: learner | admin
+- /admin/* routes protected by src/middleware.ts (redirects to /auth/signin)
+- Run `npm run admin:create` to seed first admin account after db:push
+- BUG-001: ClipForm dimension score fields should be min=1 max=3 (not 1–10); difficultyScore should be min=4 max=12

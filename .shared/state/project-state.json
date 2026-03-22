@@ -1,77 +1,66 @@
 {
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
-  "phase": "5-launch",
+  "phase": "7-marketing",
   "active_tasks": [
     {
-      "id": "task_m6_launch",
-      "milestone": "M6",
-      "role": "pm",
-      "task": "deploy-and-configure",
-      "description": "Configure environment variables, run DB migrations, seed, deploy to Vercel",
-      "status": "awaiting-user",
-      "assigned_at": "2026-03-21T03:00:00Z"
-    }
-  ],
-  "blockers": [
-    {
-      "id": "blocker_002",
-      "description": "DATABASE_URL not set — Prisma cannot connect to Neon",
-      "blocking": "M6 DB push and seed",
-      "resolution": "Create Neon project, add DATABASE_URL and DIRECT_URL to .env.local, then: npm run db:push && npm run db:seed"
+      "id": "task_m9_marketing",
+      "milestone": "M9",
+      "role": "marketer",
+      "task": "produce-vc-fundraising-package",
+      "description": "Brand brief, pitch deck (PPTX), one-pager, VC outreach emails, demo script",
+      "status": "in-progress",
+      "assigned_at": "2026-03-22T20:00:00Z"
     },
     {
-      "id": "blocker_003",
-      "description": "OPENAI_API_KEY not set — AI feedback will fail",
-      "blocking": "M5 AI feedback feature",
-      "resolution": "Add OPENAI_API_KEY to .env.local"
-    },
-    {
-      "id": "blocker_004",
-      "description": "BLOB_READ_WRITE_TOKEN not set — recording upload will fail",
-      "blocking": "M4 recording upload",
-      "resolution": "Create Vercel Blob store, add BLOB_READ_WRITE_TOKEN to .env.local"
+      "id": "task_bug001_fix",
+      "milestone": "M8",
+      "role": "backend-engineer",
+      "task": "fix-clipform-score-ranges",
+      "description": "BUG-001: ClipForm score dimension fields allow 1-10 but model expects 1-3. Fix input validation in admin clip form.",
+      "status": "assigned",
+      "assigned_at": "2026-03-22T22:30:00Z"
     }
   ],
+  "blockers": [],
   "resolved": [
     {
       "id": "blocker_001",
       "description": "YouTube video IDs — all 15 verified via YouTube Data API v3",
       "resolved_at": "2026-03-21",
       "resolved_by": "data-engineer"
-    }
-  ],
-  "code_fixes": [
+    },
     {
-      "id": "fix_001",
-      "description": "GPT-4o Vision requires images not video. Fixed: RecordClient.tsx now captures JPEG frames during recording via Canvas API. sessions/route.ts uploads frames to Vercel Blob. feedback/route.ts uses frame URLs for Vision analysis instead of webm URL.",
-      "files": [
-        "src/app/library/[clipId]/record/RecordClient.tsx",
-        "src/app/api/sessions/route.ts",
-        "src/app/api/sessions/[id]/feedback/route.ts",
-        "prisma/schema.prisma"
-      ],
-      "applied_at": "2026-03-22",
-      "applied_by": "data-engineer"
+      "id": "blocker_002",
+      "description": "DATABASE_URL — Neon DB connected, schema pushed, 15 clips seeded",
+      "resolved_at": "2026-03-22",
+      "resolved_by": "builder"
+    },
+    {
+      "id": "blocker_003",
+      "description": "OPENAI_API_KEY — set in Vercel env vars",
+      "resolved_at": "2026-03-22",
+      "resolved_by": "builder"
+    },
+    {
+      "id": "blocker_004",
+      "description": "BLOB_READ_WRITE_TOKEN — Vercel Blob store created",
+      "resolved_at": "2026-03-22",
+      "resolved_by": "builder"
     }
   ],
-  "ui_polish": {
-    "status": "complete",
-    "completed_at": "2026-03-22",
-    "items_completed": [
-      "P0: 3-2-1 countdown in RecordClient",
-      "P0: split view already present in record/page.tsx",
-      "P0: GPT-4o Vision bug fixed — frame capture pipeline",
-      "P1: FeedbackPage video comparison row",
-      "P2: ClipCard play button hover overlay",
-      "P2: ClipCard duration badge moved to thumbnail",
-      "P2: NavBar active route highlighting",
-      "P2: NavBar mobile hamburger drawer",
-      "P2: FeedbackPage widened to max-w-4xl",
-      "P2: Score ring dynamic color (green/amber/red)",
-      "P2: FeedbackPoller rotating coaching tips"
-    ],
-    "build": "clean — 0 TypeScript errors, 0 Next.js build errors"
-  },
-  "last_updated": "2026-03-22T01:00:00Z"
+  "open_bugs": [
+    {
+      "id": "BUG-001",
+      "severity": "medium",
+      "description": "ClipForm score dimension fields allow 1-10 but model expects 1-3",
+      "filed_by": "tester",
+      "assigned_to": "backend-engineer",
+      "blocking": false
+    }
+  ],
+  "milestones_complete": ["M0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+  "milestones_pending": ["M9"],
+  "deployed_url": "https://seeneyu.vercel.app",
+  "last_updated": "2026-03-22T22:30:00Z"
 }

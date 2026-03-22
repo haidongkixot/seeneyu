@@ -1,0 +1,19 @@
+{
+  "id": "BUG-002",
+  "severity": "critical",
+  "feature": "Clip Library — ClipCard",
+  "title": "ClipCard missing 'use client' — onError handler crashes SSR, library shows error boundary",
+  "steps_to_reproduce": [
+    "Navigate to /library (authenticated or not)"
+  ],
+  "expected": "Clip grid renders with all 15 clips",
+  "actual": "Library shows error boundary: 'Couldn't load clips — The library is temporarily unavailable.' ClipGrid throws during SSR because ClipCard uses onError={fn} (event handler) without 'use client' directive. Event handlers cannot be passed to client component props from a server component.",
+  "root_cause": "ClipCard.tsx uses onError on next/image for fallback thumbnail but lacks 'use client' directive. In Next.js App Router, server components cannot pass function props (event handlers) to client components. This throws at runtime during SSR of ClipGrid (inside Suspense), which propagates to the library error boundary.",
+  "fix": "Added 'use client' directive as first line of src/components/ClipCard.tsx. The page now streams all 15 clips correctly.",
+  "related_test": null,
+  "related_file": "src/components/ClipCard.tsx:1",
+  "status": "resolved",
+  "filed_at": "2026-03-22T00:00:00Z",
+  "resolved_at": "2026-03-22T00:00:00Z",
+  "note": "Build did NOT catch this — Next.js 14.2 does not detect client-boundary violations for event handlers at build time in all cases. This was only caught at runtime via SSR error."
+}

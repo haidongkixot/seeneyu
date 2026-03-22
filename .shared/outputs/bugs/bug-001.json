@@ -1,0 +1,19 @@
+{
+  "id": "BUG-001",
+  "severity": "medium",
+  "feature": "Admin CMS — ClipForm",
+  "title": "ClipForm score fields allow 1–10 but data model expects 1–3 per dimension",
+  "steps_to_reproduce": [
+    "Navigate to /admin/clips/new",
+    "Observe score fields: Difficulty Score, Signal Clarity, Noise Level, Context Dependency, Replication Difficulty",
+    "Note that each field accepts values 1–10"
+  ],
+  "expected": "Per shared-knowledge.md difficulty scoring system: each of the 4 dimension fields (Signal Clarity, Noise Level, Context Dependency, Replication Difficulty) should accept 1–3 only. Sum 4–5 = Beginner, 6–8 = Intermediate, 9–12 = Advanced.",
+  "actual": "ClipForm uses min=1 max=10 for all score fields, and defaults all to 5. An admin can enter values outside the 1–3 range that violate the intended scoring model.",
+  "impact": "Clips seeded via this form will have inconsistent difficulty scores that do not match the established taxonomy. The library filter and difficulty display may be misleading.",
+  "related_test": "TC-M8-003",
+  "related_file": "src/app/admin/clips/ClipForm.tsx:221-233",
+  "fix_suggestion": "Change dimension score fields (signalClarity, noiseLevel, contextDependency, replicationDifficulty) to min=1 max=3; change difficultyScore to min=4 max=12; update defaults accordingly.",
+  "status": "open",
+  "filed_at": "2026-03-22T00:00:00Z"
+}

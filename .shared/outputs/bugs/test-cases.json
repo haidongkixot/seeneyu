@@ -1,0 +1,310 @@
+{
+  "test_cases": [
+    {
+      "id": "TC-M7-001",
+      "milestone": "M7",
+      "feature": "Auth — Sign Up",
+      "scenario": "Learner can create a new account",
+      "steps": [
+        "Navigate to /auth/signup",
+        "Enter name, email, and password (≥8 chars)",
+        "Submit form"
+      ],
+      "expected": "Account created with role='learner', user auto-signed in, redirected to /library",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/auth/signup/page.tsx + src/app/api/auth/signup/route.ts"
+    },
+    {
+      "id": "TC-M7-002",
+      "milestone": "M7",
+      "feature": "Auth — Sign Up Validation",
+      "scenario": "Duplicate email rejected on sign up",
+      "steps": [
+        "POST /api/auth/signup with an already-registered email"
+      ],
+      "expected": "API returns 409 with error: 'Email already in use'",
+      "type": "api",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/api/auth/signup/route.ts:19-21"
+    },
+    {
+      "id": "TC-M7-003",
+      "milestone": "M7",
+      "feature": "Auth — Sign Up Validation",
+      "scenario": "Weak password rejected on sign up",
+      "steps": [
+        "Navigate to /auth/signup",
+        "Enter password shorter than 8 characters",
+        "Submit form"
+      ],
+      "expected": "Client shows 'Password must be at least 8 characters.' error; API also returns 400 via Zod",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/auth/signup/page.tsx:22-25 + src/app/api/auth/signup/route.ts (Zod schema)"
+    },
+    {
+      "id": "TC-M7-004",
+      "milestone": "M7",
+      "feature": "Auth — Sign In",
+      "scenario": "Learner can sign in with correct credentials",
+      "steps": [
+        "Navigate to /auth/signin",
+        "Enter valid email and password",
+        "Submit form"
+      ],
+      "expected": "Session created, user redirected to callbackUrl (default: /library)",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/auth/signin/SignInForm.tsx + src/lib/auth.ts"
+    },
+    {
+      "id": "TC-M7-005",
+      "milestone": "M7",
+      "feature": "Auth — Sign In",
+      "scenario": "Wrong credentials show error message",
+      "steps": [
+        "Navigate to /auth/signin",
+        "Enter incorrect password",
+        "Submit form"
+      ],
+      "expected": "Error message 'Invalid email or password.' shown; no redirect",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/auth/signin/SignInForm.tsx:31-34"
+    },
+    {
+      "id": "TC-M7-006",
+      "milestone": "M7",
+      "feature": "Auth — Sign Out",
+      "scenario": "Learner can sign out via NavBar",
+      "steps": [
+        "Sign in as learner",
+        "Click avatar button in NavBar",
+        "Click 'Sign out'"
+      ],
+      "expected": "Session destroyed, redirected to /, NavBar shows Sign In / Get Started buttons",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/components/NavBar.tsx:80"
+    },
+    {
+      "id": "TC-M7-007",
+      "milestone": "M7",
+      "feature": "Auth — Admin Route Protection (pages)",
+      "scenario": "Unauthenticated user cannot access /admin",
+      "steps": [
+        "Without signing in, navigate to /admin"
+      ],
+      "expected": "Redirected to /auth/signin (middleware + layout double-check)",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/middleware.ts + src/app/admin/layout.tsx:8-11"
+    },
+    {
+      "id": "TC-M7-008",
+      "milestone": "M7",
+      "feature": "Auth — Admin Route Protection (API)",
+      "scenario": "Non-admin API call to /api/admin/clips returns 401",
+      "steps": [
+        "Sign in as learner (role='learner')",
+        "GET /api/admin/clips"
+      ],
+      "expected": "Response: 401 { error: 'Unauthorized' }",
+      "type": "api",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/api/admin/clips/route.ts:6-12"
+    },
+    {
+      "id": "TC-M7-009",
+      "milestone": "M7",
+      "feature": "Auth — NavBar auth state",
+      "scenario": "NavBar shows correct UI based on auth state",
+      "steps": [
+        "Visit any page unauthenticated — observe NavBar",
+        "Sign in — observe NavBar"
+      ],
+      "expected": "Unauthenticated: 'Sign in' link + 'Get Started' button. Authenticated: avatar initials button with dropdown (name, role, sign out, Admin link if admin).",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/components/NavBar.tsx:54-104"
+    },
+    {
+      "id": "TC-M7-010",
+      "milestone": "M7",
+      "feature": "Auth — Admin user creation script",
+      "scenario": "create-admin.ts creates/upserts admin user",
+      "steps": [
+        "Set ADMIN_EMAIL and ADMIN_PASSWORD env vars",
+        "Run: npx tsx scripts/create-admin.ts"
+      ],
+      "expected": "User created with role='admin'; if exists, role and passwordHash updated",
+      "type": "data",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "scripts/create-admin.ts"
+    },
+    {
+      "id": "TC-M8-001",
+      "milestone": "M8",
+      "feature": "Admin CMS — Dashboard",
+      "scenario": "Admin sees stats dashboard",
+      "steps": [
+        "Sign in as admin",
+        "Navigate to /admin"
+      ],
+      "expected": "Dashboard shows total clips, learner count, completed session count. Quick action buttons: Add Clip, View Users.",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/page.tsx"
+    },
+    {
+      "id": "TC-M8-002",
+      "milestone": "M8",
+      "feature": "Admin CMS — Clips List",
+      "scenario": "Admin can browse and search clips",
+      "steps": [
+        "Navigate to /admin/clips",
+        "Observe clip table",
+        "Type in search box"
+      ],
+      "expected": "Clips listed with thumbnail, movie title, skill, difficulty, active status. Search filters by title and skill. Pagination for >20 clips.",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/clips/page.tsx"
+    },
+    {
+      "id": "TC-M8-003",
+      "milestone": "M8",
+      "feature": "Admin CMS — Add Clip",
+      "scenario": "Admin can create a new clip",
+      "steps": [
+        "Navigate to /admin/clips/new",
+        "Fill in all required fields (YouTube ID, movie title, scene description, annotation, startSec, endSec)",
+        "Submit form"
+      ],
+      "expected": "POST /api/admin/clips creates clip in DB; user redirected to /admin/clips; new clip appears in list",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/clips/ClipForm.tsx + src/app/api/admin/clips/route.ts:24-36"
+    },
+    {
+      "id": "TC-M8-004",
+      "milestone": "M8",
+      "feature": "Admin CMS — Edit Clip",
+      "scenario": "Admin can edit an existing clip",
+      "steps": [
+        "Click edit (pencil) icon on a clip in /admin/clips",
+        "Modify a field",
+        "Submit form"
+      ],
+      "expected": "PUT /api/admin/clips/[id] updates clip; redirected to /admin/clips",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/clips/[id]/edit/page.tsx + src/app/api/admin/clips/[id]/route.ts:25-37"
+    },
+    {
+      "id": "TC-M8-005",
+      "milestone": "M8",
+      "feature": "Admin CMS — Delete Clip",
+      "scenario": "Admin can delete a clip with confirmation",
+      "steps": [
+        "Click delete (trash) icon on a clip in /admin/clips",
+        "Confirm the dialog"
+      ],
+      "expected": "DELETE /api/admin/clips/[id] removes clip; clip disappears from list immediately",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/clips/page.tsx:38-42 + src/app/api/admin/clips/[id]/route.ts:39-50"
+    },
+    {
+      "id": "TC-M8-006",
+      "milestone": "M8",
+      "feature": "Admin CMS — Users List",
+      "scenario": "Admin can view all registered learners",
+      "steps": [
+        "Navigate to /admin/users"
+      ],
+      "expected": "Table shows name, email, role, joined date, session count. Learners have 'Promote' button, admins have 'Demote' button.",
+      "type": "ui",
+      "priority": "high",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/users/page.tsx"
+    },
+    {
+      "id": "TC-M8-007",
+      "milestone": "M8",
+      "feature": "Admin CMS — Manage Roles",
+      "scenario": "Admin can promote/demote user roles",
+      "steps": [
+        "On /admin/users, click 'Promote' for a learner",
+        "Confirm the dialog"
+      ],
+      "expected": "PATCH /api/admin/users updates role to 'admin'; badge in table updates immediately",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/users/page.tsx:26-37 + src/app/api/admin/users/route.ts:34-48"
+    },
+    {
+      "id": "TC-M8-008",
+      "milestone": "M8",
+      "feature": "Admin CMS — User Detail",
+      "scenario": "Admin can view individual learner session history",
+      "steps": [
+        "Click a learner's name on /admin/users",
+        "Observe /admin/users/[id]"
+      ],
+      "expected": "User detail shows name, email, role, join date, total sessions, session history table with movie, skill, status, score, date.",
+      "type": "ui",
+      "priority": "normal",
+      "status": "pass",
+      "reviewed_file": "src/app/admin/users/[id]/page.tsx"
+    },
+    {
+      "id": "TC-M8-009",
+      "milestone": "M8",
+      "feature": "Admin CMS — Access Control",
+      "scenario": "Non-admin learner cannot access /admin",
+      "steps": [
+        "Sign in as learner",
+        "Navigate to /admin"
+      ],
+      "expected": "Redirected to /auth/signin (middleware fires, layout double-checks)",
+      "type": "e2e",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/middleware.ts + src/app/admin/layout.tsx:8-11"
+    },
+    {
+      "id": "TC-M8-010",
+      "milestone": "M8",
+      "feature": "Admin CMS — Admin API protection",
+      "scenario": "API routes return 401 for non-admin learner",
+      "steps": [
+        "Sign in as learner",
+        "GET /api/admin/users",
+        "DELETE /api/admin/clips/[id]"
+      ],
+      "expected": "Both return 401 { error: 'Unauthorized' }",
+      "type": "api",
+      "priority": "critical",
+      "status": "pass",
+      "reviewed_file": "src/app/api/admin/users/route.ts:6-12 + src/app/api/admin/clips/[id]/route.ts:6-12"
+    }
+  ]
+}
