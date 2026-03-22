@@ -1,0 +1,15 @@
+{
+  "signals": [
+    {
+      "id": "sig_be_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "M7-auth-system",
+      "message": "You are the Backend Engineer for seeneyu. Your first milestone is M7: implement the full authentication system using NextAuth.js v4 with email+password credentials, role-based access (learner vs admin), middleware-protected /admin/* routes, and sign up / sign in pages. Follow your CLAUDE.md session protocol. Read the project state, then start from Step 1 of M7.",
+      "context": "../../.shared/state/project-state.json, ../../.shared/state/milestones.json, ../../prisma/schema.prisma, ../../src/lib/types.ts",
+      "priority": "high",
+      "timestamp": "2026-03-22T18:00:00Z",
+      "status": "unread"
+    }
+  ]
+}

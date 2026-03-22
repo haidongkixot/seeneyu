@@ -1,0 +1,27 @@
+{
+  "current_milestone": "M7",
+  "last_updated": "2026-03-22T18:00:00Z",
+  "steps": {
+    "deps_installed":          "pending",
+    "schema_extended":         "pending",
+    "db_pushed":               "pending",
+    "auth_config":             "pending",
+    "nextauth_route":          "pending",
+    "signup_api":              "pending",
+    "signin_page":             "pending",
+    "signup_page":             "pending",
+    "middleware":              "pending",
+    "navbar_auth":             "pending",
+    "admin_seed_script":       "pending",
+    "env_vars_local":          "pending",
+    "env_vars_vercel":         "pending",
+    "admin_shell":             "pending",
+    "dashboard_page":          "pending",
+    "clips_api":               "pending",
+    "clips_list_page":         "pending",
+    "clips_form_page":         "pending",
+    "users_api":               "pending",
+    "users_list_page":         "pending"
+  },
+  "notes": []
+}

@@ -93,11 +93,56 @@
       "id": "M6",
       "name": "MVP Launch Ready",
       "phase": "5-launch",
-      "status": "in-progress",
+      "status": "complete",
       "owner": "pm",
+      "tester_approved": true,
+      "blocks": ["M7"],
+      "completed_at": "2026-03-22T18:00:00Z",
+      "note": "Deployed to https://seeneyu.vercel.app — DB seeded, all env vars set"
+    },
+    {
+      "id": "M7",
+      "name": "Auth System",
+      "phase": "6-auth",
+      "status": "pending",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "blocks": ["M8"],
+      "tester_condition": "Learner can sign up, sign in, sign out. Admin routes return 401 for non-admins.",
+      "deliverables": [
+        "prisma/schema.prisma (User, Account, AuthSession, VerificationToken models)",
+        "src/lib/auth.ts",
+        "src/app/api/auth/[...nextauth]/route.ts",
+        "src/app/api/auth/signup/route.ts",
+        "src/app/auth/signin/page.tsx",
+        "src/app/auth/signup/page.tsx",
+        "src/middleware.ts",
+        "src/components/NavBar.tsx (auth state)",
+        "src/app/layout.tsx (SessionProvider)",
+        "scripts/create-admin.ts"
+      ]
+    },
+    {
+      "id": "M8",
+      "name": "Admin CMS",
+      "phase": "6-auth",
+      "status": "pending",
+      "owner": "backend-engineer",
       "tester_approved": false,
       "blocks": [],
-      "note": "All code complete. Needs: (1) YouTube API key + ID verification, (2) DATABASE_URL + prisma db push + seed, (3) OPENAI_API_KEY, (4) BLOB_READ_WRITE_TOKEN, (5) Vercel deploy"
+      "tester_condition": "Admin can add/edit/delete clips from UI. Admin can view all learners and manage roles. Non-admin cannot access /admin.",
+      "deliverables": [
+        "src/app/admin/layout.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/api/admin/clips/route.ts",
+        "src/app/api/admin/clips/[id]/route.ts",
+        "src/app/admin/clips/page.tsx",
+        "src/app/admin/clips/new/page.tsx",
+        "src/app/admin/clips/[id]/edit/page.tsx",
+        "src/app/api/admin/users/route.ts",
+        "src/app/admin/users/page.tsx",
+        "src/app/admin/users/[id]/page.tsx"
+      ]
     }
   ]
 }

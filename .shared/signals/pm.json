@@ -100,6 +100,21 @@
       "status": "unread"
     },
     {
+      "id": "sig_pm_be_role_created_001",
+      "from": "pm",
+      "type": "fyi",
+      "task": "new-role-created",
+      "message": "Backend Engineer role created. New role owns auth system (M7) and admin CMS (M8). Files created: roles/backend-engineer/CLAUDE.md (full spec), .shared/signals/backend-engineer.json (M7 task assigned), .shared/outputs/backend-engineer/progress.json (checkpoint). Milestones.json updated: M6 marked complete (deployed), M7 and M8 added for phase 6-auth. Open roles/backend-engineer/ as a new Claude Code window to begin M7.",
+      "artifacts": [
+        "roles/backend-engineer/CLAUDE.md",
+        ".shared/signals/backend-engineer.json",
+        ".shared/outputs/backend-engineer/progress.json",
+        ".shared/state/milestones.json"
+      ],
+      "timestamp": "2026-03-22T18:00:00Z",
+      "status": "read"
+    },
+    {
       "id": "sig_de_pm_003",
       "from": "data-engineer",
       "to": "pm",
