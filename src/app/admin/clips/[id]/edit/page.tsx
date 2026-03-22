@@ -1,10 +1,13 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ClipForm from '../../ClipForm'
+import { GenerateObservationGuide } from './GenerateObservationGuide'
 
 export default async function EditClipPage({ params }: { params: { id: string } }) {
   const clip = await prisma.clip.findUnique({ where: { id: params.id } })
   if (!clip) notFound()
+
+  const hasGuide = !!(clip as any).observationGuide
 
   const initial = {
     id: clip.id,
@@ -23,6 +26,7 @@ export default async function EditClipPage({ params }: { params: { id: string } 
     replicationDifficulty: clip.replicationDifficulty.toString(),
     annotation: clip.annotation,
     contextNote: clip.contextNote ?? '',
+    script: (clip as any).script ?? '',
     startSec: clip.startSec.toString(),
     endSec: clip.endSec.toString(),
     isActive: clip.isActive,
@@ -34,7 +38,23 @@ export default async function EditClipPage({ params }: { params: { id: string } 
         <h1 className="text-2xl font-bold text-text-primary">Edit Clip</h1>
         <p className="text-text-secondary text-sm mt-1">{clip.movieTitle}</p>
       </div>
+
       <ClipForm mode="edit" initial={initial} />
+
+      {/* Observation Guide generation */}
+      <div className="max-w-2xl mt-6">
+        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
+          <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-1">
+            Observation Guide
+          </p>
+          <p className="text-sm text-text-tertiary mb-4">
+            {hasGuide
+              ? 'Guide generated. Click to regenerate with updated clip data.'
+              : 'No guide yet. Generate one with AI — takes ~5 seconds.'}
+          </p>
+          <GenerateObservationGuide clipId={clip.id} hasGuide={hasGuide} />
+        </div>
+      </div>
     </div>
   )
 }

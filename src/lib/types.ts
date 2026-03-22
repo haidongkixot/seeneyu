@@ -37,6 +37,7 @@ export interface Clip {
   annotation: string
   contextNote: string | null
   script: string | null
+  observationGuide: ObservationGuide | null
   isActive: boolean
   annotations: ClipAnnotation[]
 }
@@ -50,6 +51,18 @@ export interface FeedbackTip {
   title: string
   body: string
   exerciseLink?: string
+}
+
+export interface ObservationMoment {
+  atSecond: number
+  technique: string
+  what: string
+  why: string
+}
+
+export interface ObservationGuide {
+  moments: ObservationMoment[]
+  headline: string
 }
 
 export interface ActionPlanStep {

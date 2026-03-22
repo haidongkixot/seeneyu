@@ -5,7 +5,8 @@ import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
 import { ClipViewerClient } from './ClipViewerClient'
-import type { SkillCategory, Difficulty } from '@/lib/types'
+import { ClipDetailTabs } from './ClipDetailTabs'
+import type { SkillCategory, Difficulty, ObservationGuide } from '@/lib/types'
 import { ArrowLeft } from 'lucide-react'
 
 interface PageProps {
@@ -29,6 +30,7 @@ export default async function ClipViewerPage({ params }: PageProps) {
   if (!clip) notFound()
 
   const duration = clip.endSec - clip.startSec
+  const observationGuide = ((clip as any).observationGuide ?? null) as ObservationGuide | null
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -57,7 +59,7 @@ export default async function ClipViewerPage({ params }: PageProps) {
           }))}
         />
 
-        {/* Clip info */}
+        {/* Clip info header */}
         <div className="flex items-start justify-between flex-wrap gap-4 mt-6">
           <div className="flex-1 min-w-0">
             <p className="text-sm text-text-tertiary">
@@ -67,14 +69,6 @@ export default async function ClipViewerPage({ params }: PageProps) {
             <h1 className="text-xl font-semibold text-text-primary mt-0.5 leading-snug">
               {clip.sceneDescription}
             </h1>
-            <p className="text-sm text-text-secondary mt-2 leading-relaxed max-w-prose">
-              {clip.annotation}
-            </p>
-            {clip.contextNote && (
-              <p className="text-xs text-text-tertiary mt-2 leading-relaxed max-w-prose italic">
-                {clip.contextNote}
-              </p>
-            )}
           </div>
           <div className="flex items-center gap-2 flex-wrap shrink-0">
             <SkillBadge skill={clip.skillCategory as SkillCategory} />
@@ -85,12 +79,17 @@ export default async function ClipViewerPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Observation checklist */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 mt-6 shadow-card">
-          <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-4">
-            What to observe
-          </p>
-          <ObservationChecklist annotations={clip.annotations.map(a => ({ note: a.note, type: a.type }))} />
+        {/* Watch / How It Works tabs */}
+        <div className="mt-6">
+          <ClipDetailTabs
+            clipId={clipId}
+            characterName={clip.characterName}
+            sceneDescription={clip.sceneDescription}
+            annotation={clip.annotation}
+            contextNote={clip.contextNote}
+            observationGuide={observationGuide}
+            annotations={clip.annotations.map(a => ({ note: a.note, type: a.type }))}
+          />
         </div>
 
         {/* Actions */}
@@ -103,20 +102,6 @@ export default async function ClipViewerPage({ params }: PageProps) {
           </Link>
         </div>
       </main>
-    </div>
-  )
-}
-
-function ObservationChecklist({ annotations }: { annotations: { note: string; type: string }[] }) {
-  const items = annotations.slice(0, 4)
-  return (
-    <div className="flex flex-col gap-3">
-      {items.map((item, i) => (
-        <div key={i} className="flex items-start gap-3">
-          <span className="text-text-tertiary text-lg leading-none mt-0.5">☐</span>
-          <p className="text-sm text-text-primary leading-relaxed">{item.note}</p>
-        </div>
-      ))}
     </div>
   )
 }
