@@ -78,18 +78,33 @@ model UserSession {
 // ── Auth models (NextAuth.js v4 Prisma adapter) ────────────────────────────
 
 model User {
-  id             String        @id @default(cuid())
-  email          String        @unique
-  name           String?
-  image          String?
-  role           String        @default("learner")
-  passwordHash   String?
-  emailVerified  DateTime?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  accounts       Account[]
-  authSessions   AuthSession[]
-  userSessions   UserSession[]
+  id                 String          @id @default(cuid())
+  email              String          @unique
+  name               String?
+  image              String?
+  role               String          @default("learner")
+  passwordHash       String?
+  emailVerified      DateTime?
+  onboardingComplete Boolean         @default(false)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  accounts           Account[]
+  authSessions       AuthSession[]
+  userSessions       UserSession[]
+  skillBaselines     SkillBaseline[]
+}
+
+model SkillBaseline {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillCategory String
+  level         String   // 'beginner' | 'intermediate' | 'advanced'
+  selfRating    String   // original self-report ('beginner' | 'intermediate' | 'advanced')
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, skillCategory])
+  @@index([userId])
 }
 
 model Account {

@@ -100,6 +100,33 @@ export interface MicroFeedback {
   detail: string
 }
 
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced'
+
+export interface SkillBaseline {
+  id: string
+  userId: string
+  skillCategory: SkillCategory
+  level: SkillLevel
+  selfRating: SkillLevel
+  createdAt: string
+}
+
+export interface SkillTrackNextClip {
+  id: string
+  title: string
+  thumbnailUrl: string
+  difficulty: Difficulty
+  skillCategory: SkillCategory
+}
+
+export interface SkillTrack {
+  skillCategory: SkillCategory
+  currentLevel: SkillLevel
+  clipsCompleted: number
+  clipsTotal: number
+  nextClip: SkillTrackNextClip | null
+}
+
 export interface UserSession {
   id: string
   clipId: string

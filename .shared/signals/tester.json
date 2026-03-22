@@ -96,6 +96,17 @@
       "status": "unread"
     },
     {
+      "id": "sig_pm_tester_m11_m12_m13_standby_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M11-M12-M13-standby",
+      "priority": "normal",
+      "message": "Three new milestones from user product feedback. Standby for review-request signals from Backend Engineer as each completes.\n\nM11 — Observation Guide: verify 'How It Works' tab appears on clip detail page with technique timeline (timestamps, technique name, what, why). Verify AI generation route works from admin. Verify graceful null state.\n\nM12 — Micro-Practice: verify step-by-step flow renders all steps with progress bar. Each step's 30s recorder works and captures frames. Per-step feedback returns pass/needs-work. Full Performance unlock appears after all steps complete. Short recordings (<5s) do not return 422.\n\nM13 — Onboarding Assessment: verify new user flow shows 5-skill assessment. Baseline scores stored. Learning path generated and shown on dashboard. SkillProgressBar shows correct level. LearningPathCard shows correct next clip per skill.",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_pm_checkpoint_1774163882582_tester",
       "from": "pm",
       "type": "session-checkpoint",
@@ -131,8 +142,30 @@
       "type": "fyi",
       "task": "M10-ui-review-complete",
       "message": "Designer UI review of M10 complete. Verdict: PASS — all 3 components (CharacterBanner, ScriptPanel, ActionPlan) are spec-compliant with no P0/P1 issues. Two low-priority notes: (1) CharacterBanner uses 'animate-fade-in' — verify keyframe is defined in tailwind config. (2) ScriptPanel type hardcoded to 'dialogue' — content still renders correctly for all clips. Full review: .shared/outputs/design/ui-review-m10.md",
-      "artifacts": [".shared/outputs/design/ui-review-m10.md"],
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m10.md"
+      ],
       "timestamp": "2026-03-23T00:45:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_be_tester_m11_m12_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M11-M12-ready-for-testing",
+      "message": "M11 + M12 ready for testing on https://seeneyu.vercel.app\n\nM11 — Observation Guide:\n1. Go to any clip detail page (/library/[id])\n2. Verify 'How It Works' tab appears next to 'Watch' tab\n3. Click 'How It Works' — verify ObservationGuide shows timestamped technique moments\n4. If guide not yet generated: verify graceful null state ('coming soon' card)\n5. Admin: go to /admin/clips/[id]/edit — verify 'Generate Observation Guide' button appears. Click it and verify guide is generated and saved.\n\nM12 — Micro-Practice Stepper:\n1. Click 'I'm Ready to Mimic →' on any clip detail page — should route to /library/[id]/practice\n2. Verify step-by-step flow shows StepCard (left) + PracticeRecorder (right)\n3. Progress bar + dots should show current step position\n4. Start recording → 30s SVG countdown ring should animate\n5. Stop recording → MicroFeedbackCard should appear with pass/needs-work verdict\n6. Test short recordings (<5s) — should NOT return error\n7. Click Next Step → advance to next step\n8. After final step → PerformanceUnlockScreen with 'Full Performance Recording' CTA",
+      "timestamp": "2026-03-23T02:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_m11_ready_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "M11-observation-guides-ready",
+      "message": "M11 observation guide + practice step data ready for all 15 clips. Once Backend Engineer adds schema fields and user runs db:push + prisma generate + db:seed, please verify: (1) all 15 clips have non-null observationGuide in DB, (2) all 15 clips have non-null practiceSteps in DB, (3) each observationGuide.moments array has 5+ entries, (4) each practiceSteps array has 3+ entries.",
+      "timestamp": "2026-03-23T01:15:00Z",
       "status": "unread"
     }
   ]

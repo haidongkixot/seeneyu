@@ -4,8 +4,9 @@ import { NextResponse } from 'next/server'
 export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token
-    const isAdminRoute = req.nextUrl.pathname.startsWith('/admin')
-    if (isAdminRoute && token?.role !== 'admin') {
+    const { pathname } = req.nextUrl
+
+    if (pathname.startsWith('/admin') && token?.role !== 'admin') {
       return NextResponse.redirect(new URL('/auth/signin', req.url))
     }
     return NextResponse.next()
@@ -18,5 +19,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/dashboard/:path*', '/onboarding/:path*', '/onboarding'],
 }

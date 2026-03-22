@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, TrendingUp, Menu, X, User, LogOut, ShieldCheck } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function NavBar() {
@@ -16,10 +16,15 @@ export function NavBar() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
-  const navLinks = [
+  const baseLinks = [
     { href: '/library', label: 'Library', Icon: Library },
-    { href: '/progress', label: 'Progress', Icon: TrendingUp },
   ]
+
+  const authLinks = session
+    ? [{ href: '/dashboard', label: 'My Path', Icon: LayoutDashboard }]
+    : []
+
+  const navLinks = [...baseLinks, ...authLinks]
 
   const userRole = (session?.user as any)?.role
   const initials = session?.user?.name
