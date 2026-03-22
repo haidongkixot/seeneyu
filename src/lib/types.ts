@@ -84,6 +84,22 @@ export interface FeedbackResult {
   processingMs: number
 }
 
+export interface PracticeStep {
+  id: string
+  clipId: string
+  stepNumber: number
+  skillFocus: string
+  instruction: string
+  tip: string | null
+  targetDurationSec: number
+}
+
+export interface MicroFeedback {
+  verdict: 'pass' | 'needs-work'
+  headline: string
+  detail: string
+}
+
 export interface UserSession {
   id: string
   clipId: string

@@ -95,7 +95,7 @@ export default async function ClipViewerPage({ params }: PageProps) {
         {/* Actions */}
         <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
           <Link
-            href={`/library/${clipId}/record`}
+            href={`/library/${clipId}/practice`}
             className="bg-accent-400 text-text-inverse rounded-pill px-8 py-3.5 font-semibold hover:bg-accent-500 hover:shadow-glow transition-all duration-150 flex items-center gap-2"
           >
             I&apos;m Ready to Mimic →
