@@ -1,27 +1,33 @@
 {
-  "current_milestone": "M7",
-  "last_updated": "2026-03-22T18:00:00Z",
+  "current_milestone": "M8",
+  "last_updated": "2026-03-22T19:00:00Z",
   "steps": {
-    "deps_installed":          "pending",
-    "schema_extended":         "pending",
+    "deps_installed":          "complete",
+    "schema_extended":         "complete",
     "db_pushed":               "pending",
-    "auth_config":             "pending",
-    "nextauth_route":          "pending",
-    "signup_api":              "pending",
-    "signin_page":             "pending",
-    "signup_page":             "pending",
-    "middleware":              "pending",
-    "navbar_auth":             "pending",
-    "admin_seed_script":       "pending",
+    "auth_config":             "complete",
+    "nextauth_route":          "complete",
+    "signup_api":              "complete",
+    "signin_page":             "complete",
+    "signup_page":             "complete",
+    "middleware":              "complete",
+    "navbar_auth":             "complete",
+    "admin_seed_script":       "complete",
     "env_vars_local":          "pending",
     "env_vars_vercel":         "pending",
-    "admin_shell":             "pending",
-    "dashboard_page":          "pending",
-    "clips_api":               "pending",
-    "clips_list_page":         "pending",
-    "clips_form_page":         "pending",
-    "users_api":               "pending",
-    "users_list_page":         "pending"
+    "admin_shell":             "complete",
+    "dashboard_page":          "complete",
+    "clips_api":               "complete",
+    "clips_list_page":         "complete",
+    "clips_form_page":         "complete",
+    "users_api":               "complete",
+    "users_list_page":         "complete"
   },
-  "notes": []
+  "notes": [
+    "db_pushed is pending — requires real DATABASE_URL and DIRECT_URL in .env.local. Run: npm run db:push after adding env vars.",
+    "env_vars_local is pending — user must add NEXTAUTH_SECRET (openssl rand -base64 32) and NEXTAUTH_URL=http://localhost:3000 to .env.local",
+    "env_vars_vercel is pending — user must set NEXTAUTH_SECRET and NEXTAUTH_URL=https://seeneyu.vercel.app in Vercel dashboard",
+    "After db:push, run: npm run admin:create to create the first admin account",
+    "Build verified: 0 TypeScript errors, 0 Next.js build errors"
+  ]
 }

@@ -11,31 +11,36 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "verify": "cd roles/data-engineer/pipelines && tsx verify-youtube-ids.ts"
+    "verify": "cd roles/data-engineer/pipelines && tsx verify-youtube-ids.ts",
+    "admin:create": "tsx scripts/create-admin.ts"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.7",
+    "@prisma/client": "^6.0.0",
+    "@vercel/blob": "^0.23.0",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.378.0",
     "next": "^14.2.0",
+    "next-auth": "^4.24.13",
+    "openai": "^4.47.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
+    "tailwind-merge": "^2.3.0",
     "typescript": "^5.4.0",
-    "@prisma/client": "^6.0.0",
-    "openai": "^4.47.0",
-    "@vercel/blob": "^0.23.0",
-    "zod": "^3.23.0",
-    "lucide-react": "^0.378.0",
-    "clsx": "^2.1.0",
-    "tailwind-merge": "^2.3.0"
+    "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.0.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.0",
     "prisma": "^6.0.0",
-    "tsx": "^4.11.0",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.0"
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.11.0"
   }
 }

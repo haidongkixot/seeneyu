@@ -94,5 +94,31 @@
       "timestamp": "2026-03-22T01:00:00Z",
       "status": "unread"
     }
+  ,
+    {
+      "id": "sig_be_reporter_001",
+      "from": "backend-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M7-M8-session-complete",
+      "message": "Backend Engineer session complete (2026-03-22). M7 (Auth System) and M8 (Admin CMS) fully implemented. New packages: next-auth@4.24, bcryptjs, @next-auth/prisma-adapter. Schema: 4 new models (User, Account, AuthSession, VerificationToken), UserSession linked to User. New files: src/lib/auth.ts, src/components/Providers.tsx, src/middleware.ts, src/app/auth/(signin|signup)/, src/app/api/auth/, src/app/api/admin/(clips|users), src/app/admin/(layout|page|clips/*|users/*), scripts/create-admin.ts. Modified: prisma/schema.prisma, src/app/layout.tsx, src/components/NavBar.tsx, package.json. Build: 0 errors. Pending user actions before testing: NEXTAUTH_SECRET env var, db:push, admin:create.",
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_tester_reporter_m7m8_001",
+      "from": "tester",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M7-M8-tester-session-complete",
+      "message": "Tester session complete (2026-03-22). Reviewed and approved M7 (Auth System) and M8 (Admin CMS). Processed 3 previously unread signals from data-engineer (M2 condition cleared, M6 P0 fixes, M6 P1/P2 polish) + 1 from backend-engineer (M7/M8 ready). Code review covered 20 files for auth and admin CMS. All 20 test cases across M7 and M8 pass. One medium bug filed (BUG-001: ClipForm score field ranges). Milestone-approved signals sent to PM for both M7 and M8. Please update activity-log.md and shared-knowledge.md (current phase now 6-auth, M7+M8 tester approved).",
+      "artifacts": [
+        ".shared/outputs/bugs/test-cases.json",
+        ".shared/outputs/bugs/coverage.json",
+        ".shared/outputs/bugs/bug-001.json"
+      ],
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "unread"
+    }
   ]
 }

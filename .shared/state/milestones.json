@@ -104,9 +104,16 @@
       "id": "M7",
       "name": "Auth System",
       "phase": "6-auth",
-      "status": "pending",
+      "status": "code-complete",
       "owner": "backend-engineer",
       "tester_approved": false,
+      "pending_user_actions": [
+        "Add NEXTAUTH_SECRET to .env.local (openssl rand -base64 32)",
+        "Add NEXTAUTH_URL=http://localhost:3000 to .env.local",
+        "Run: npx prisma db push",
+        "Run: npm run admin:create",
+        "Add NEXTAUTH_SECRET + NEXTAUTH_URL to Vercel env vars"
+      ],
       "blocks": ["M8"],
       "tester_condition": "Learner can sign up, sign in, sign out. Admin routes return 401 for non-admins.",
       "deliverables": [
@@ -123,10 +130,27 @@
       ]
     },
     {
+      "id": "M9",
+      "name": "Marketing Materials",
+      "phase": "7-marketing",
+      "status": "pending",
+      "owner": "marketer",
+      "tester_approved": false,
+      "blocks": [],
+      "tester_condition": "Pitch deck covers all 14 slides. One-pager fits one page. All P0 deliverables saved to .shared/outputs/marketer/.",
+      "deliverables": [
+        ".shared/outputs/marketer/brand-brief.md",
+        ".shared/outputs/marketer/seeneyu-pitch-deck.pptx",
+        ".shared/outputs/marketer/seeneyu-one-pager.md",
+        ".shared/outputs/marketer/vc-outreach-emails.md",
+        ".shared/outputs/marketer/demo-script.md"
+      ]
+    },
+    {
       "id": "M8",
       "name": "Admin CMS",
       "phase": "6-auth",
-      "status": "pending",
+      "status": "code-complete",
       "owner": "backend-engineer",
       "tester_approved": false,
       "blocks": [],

@@ -58,7 +58,7 @@
         ".shared/outputs/data/checkpoints/pipeline-checkpoint.json"
       ],
       "timestamp": "2026-03-21T00:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_tester_003",
@@ -74,7 +74,7 @@
         "prisma/schema.prisma"
       ],
       "timestamp": "2026-03-22T00:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_tester_004",
@@ -90,7 +90,17 @@
         "src/app/feedback/[sessionId]/FeedbackPoller.tsx"
       ],
       "timestamp": "2026-03-22T01:00:00Z",
-      "status": "unread"
+      "status": "read"
+    },
+    {
+      "id": "sig_be_tester_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M7-M8-ready-for-testing",
+      "message": "M7 (Auth) and M8 (Admin CMS) ready for testing. Before testing, user must: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL=http://localhost:3000 to .env.local (2) Run npm run db:push (3) Run npm run admin:create. Test criteria: M7 — learner can sign up, sign in, sign out; /admin/* returns redirect to /auth/signin for non-admins. M8 — admin can add/edit/delete clips from UI; admin can view learners and promote/demote roles; non-admin cannot access /admin.",
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "read"
     }
   ]
 }

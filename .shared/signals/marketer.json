@@ -1,0 +1,15 @@
+{
+  "signals": [
+    {
+      "id": "sig_mkt_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "P0-pitch-deck-and-materials",
+      "message": "You are the Marketer for seeneyu. Your first priority is producing the full VC fundraising package: (1) Brand Brief, (2) VC Pitch Deck as PPTX, (3) One-pager executive summary, (4) VC outreach email templates, (5) Demo script. Follow your CLAUDE.md session protocol exactly. Read shared-knowledge.md and your CLAUDE.md for full product context before writing anything. IMPORTANT: before generating the pitch deck, check if founder/team information is available. If not, write a request-info signal to pm.json asking for it — do not invent team details.",
+      "context": "../../.shared/memory/shared-knowledge.md, ../../.shared/outputs/marketer/brand-brief.md",
+      "priority": "high",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "unread"
+    }
+  ]
+}

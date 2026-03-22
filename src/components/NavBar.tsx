@@ -3,12 +3,15 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Library, TrendingUp, Menu, X } from 'lucide-react'
+import { useSession, signOut } from 'next-auth/react'
+import { Library, TrendingUp, Menu, X, User, LogOut, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function NavBar() {
   const pathname = usePathname()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [avatarOpen, setAvatarOpen] = useState(false)
+  const { data: session } = useSession()
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -17,6 +20,11 @@ export function NavBar() {
     { href: '/library', label: 'Library', Icon: Library },
     { href: '/progress', label: 'Progress', Icon: TrendingUp },
   ]
+
+  const userRole = (session?.user as any)?.role
+  const initials = session?.user?.name
+    ? session.user.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
+    : session?.user?.email?.[0]?.toUpperCase() ?? '?'
 
   return (
     <>
@@ -42,12 +50,58 @@ export function NavBar() {
               {label}
             </Link>
           ))}
-          <Link
-            href="/library"
-            className="ml-2 bg-accent-400 text-text-inverse rounded-pill px-4 py-1.5 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
-          >
-            Get Started
-          </Link>
+
+          {session ? (
+            <div className="relative ml-2">
+              <button
+                onClick={() => setAvatarOpen(o => !o)}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-400/20 text-accent-400 text-xs font-bold hover:bg-accent-400/30 transition-colors"
+                aria-label="Account menu"
+              >
+                {initials}
+              </button>
+              {avatarOpen && (
+                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-white/8 rounded-xl shadow-xl py-1 z-50">
+                  <div className="px-3 py-2 border-b border-white/8">
+                    <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
+                    <p className="text-xs text-text-muted capitalize">{userRole}</p>
+                  </div>
+                  {userRole === 'admin' && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setAvatarOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                    >
+                      <ShieldCheck size={14} />
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { setAvatarOpen(false); signOut({ callbackUrl: '/' }) }}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <LogOut size={14} />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 ml-2">
+              <Link
+                href="/auth/signin"
+                className="px-3 py-1.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay rounded-lg transition-all duration-150"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="bg-accent-400 text-text-inverse rounded-pill px-4 py-1.5 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
+              >
+                Get Started
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -79,13 +133,46 @@ export function NavBar() {
               {label}
             </Link>
           ))}
-          <Link
-            href="/library"
-            onClick={() => setDrawerOpen(false)}
-            className="mt-1 bg-accent-400 text-text-inverse rounded-pill px-4 py-2.5 text-sm font-semibold text-center hover:bg-accent-500 transition-all duration-150"
-          >
-            Get Started
-          </Link>
+
+          {session ? (
+            <>
+              {userRole === 'admin' && (
+                <Link
+                  href="/admin"
+                  onClick={() => setDrawerOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
+                >
+                  <ShieldCheck size={16} strokeWidth={1.5} />
+                  Admin
+                </Link>
+              )}
+              <button
+                onClick={() => { setDrawerOpen(false); signOut({ callbackUrl: '/' }) }}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
+              >
+                <LogOut size={16} strokeWidth={1.5} />
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth/signin"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
+              >
+                <User size={16} strokeWidth={1.5} />
+                Sign in
+              </Link>
+              <Link
+                href="/auth/signup"
+                onClick={() => setDrawerOpen(false)}
+                className="mt-1 bg-accent-400 text-text-inverse rounded-pill px-4 py-2.5 text-sm font-semibold text-center hover:bg-accent-500 transition-all duration-150"
+              >
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
       )}
     </>

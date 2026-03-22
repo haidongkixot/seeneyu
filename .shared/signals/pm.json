@@ -130,5 +130,35 @@
       "timestamp": "2026-03-22T01:00:00Z",
       "status": "unread"
     }
+  ,
+    {
+      "id": "sig_be_pm_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M7-M8-auth-cms",
+      "message": "M7 (Auth System) and M8 (Admin CMS) fully implemented. Build: 0 TypeScript errors, 0 Next.js errors. Deliverables complete: (M7) next-auth v4 with credentials provider, User/Account/AuthSession/VerificationToken schema models, /auth/signin + /auth/signup pages, middleware protecting /admin/*, NavBar updated with avatar+signout, SessionProvider in layout, scripts/create-admin.ts + admin:create npm script. (M8) Admin layout with sidebar, dashboard stats, clips CRUD (list/create/edit/delete), users table with promote/demote, user detail + session history. PENDING USER ACTIONS: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL to .env.local (2) Run: npm run db:push (3) Run: npm run admin:create. See progress.json for full checkpoint.",
+      "artifacts": [
+        "src/lib/auth.ts",
+        "src/app/api/auth/[...nextauth]/route.ts",
+        "src/app/api/auth/signup/route.ts",
+        "src/app/auth/signin/",
+        "src/app/auth/signup/",
+        "src/middleware.ts",
+        "src/components/NavBar.tsx",
+        "src/app/layout.tsx",
+        "scripts/create-admin.ts",
+        "src/app/admin/",
+        "src/app/api/admin/",
+        "prisma/schema.prisma"
+      ],
+      "blockers": [
+        "NEXTAUTH_SECRET not yet added to .env.local — must add before testing auth",
+        "db:push not run — needs DATABASE_URL env var",
+        "admin:create not run — needs live DB"
+      ],
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "unread"
+    }
   ]
 }
