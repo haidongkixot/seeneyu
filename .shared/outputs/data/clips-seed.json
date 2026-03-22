@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.0",
+    "version": "1.1",
     "total_clips": 15,
     "skills": [
       "eye-contact",
@@ -11,7 +11,8 @@
     ],
     "status": "verified — all 15 youtube_video_id fields filled via YouTube Data API v3 and reviewed",
     "generated_by": "data-engineer role",
-    "date": "2026-03-21"
+    "date": "2026-03-21",
+    "script_added": "2026-03-22 — script field added for M10. Eye-contact/open-posture/active-listening clips use numbered physical instructions; vocal-pacing/confident-disagreement clips use exact dialogue to recite."
   },
   "clips": [
     {
@@ -35,6 +36,7 @@
       "difficulty_score": 5,
       "annotation": "Watch how Chris maintains direct, warm eye contact throughout the pitch — 2-3 second holds, natural breaks to the side (never down), and how eye contact shifts meaningfully when he emphasizes key points.",
       "context_note": "He has just come from a construction site — the stakes are high but he controls his gaze entirely.",
+      "script": "1. Sit or stand tall with shoulders back and chin level — not tilted up or down.\n2. Look directly into the other person's eyes for 2–3 seconds, then break naturally to one side — never look down.\n3. When making a key point, hold eye contact a beat longer than feels comfortable.\n4. Let your expression stay warm — allow a slight, genuine smile to reach your eyes.",
       "annotations": [
         {
           "at_second": 48,
@@ -74,6 +76,7 @@
       "difficulty_score": 8,
       "annotation": "Observe how extended, unblinking eye contact is used strategically — it unsettles the questioner and signals dominance without aggression. Notice when he deliberately looks away vs when he holds.",
       "context_note": "The power dynamic matters: he's being interrogated but refuses to yield visually.",
+      "script": "1. Hold eye contact for 4–5 seconds without blinking — let the silence fill the space.\n2. When you choose to look away, do it slowly and deliberately — a choice, not a flinch.\n3. Keep your face neutral; let your eyes carry all the emotional weight.\n4. Return your gaze calmly after each break — unhurried, as if you were never unsettled.",
       "annotations": [
         {
           "at_second": 25,
@@ -113,6 +116,7 @@
       "difficulty_score": 10,
       "annotation": "Study the minimal blink rate, soft-focus gaze that never quite pins but never leaves. This is advanced — the eye contact says everything while revealing nothing. Observe how he redirects with his eyes before his words.",
       "context_note": "Advanced example of what NOT to copy literally — but understanding this level helps you see eye contact as communication architecture.",
+      "script": "1. Soften your focus — look at the person's whole face rather than locking onto one eye.\n2. Blink slowly and infrequently — perhaps once every five or six seconds.\n3. Hold complete stillness in your face and body while your eyes stay fully present.\n4. When you look away, do it with total intention — then return with exactly the same calm.",
       "annotations": [
         {
           "at_second": 30,
@@ -152,6 +156,7 @@
       "difficulty_score": 4,
       "annotation": "Textbook open posture: feet shoulder-width apart, chest forward, arms at sides (not crossed), chin slightly up. Notice how he takes physical space without aggression.",
       "context_note": "Easiest clip in the library — every open-posture signal is exaggerated and clear.",
+      "script": "1. Plant your feet shoulder-width apart, weight evenly distributed — resist any urge to shift or sway.\n2. Roll your shoulders back and let your chest open forward naturally.\n3. Keep your arms relaxed at your sides or use open-palm gestures — never cross them.\n4. Tilt your chin slightly up and hold it steady even when questioned or challenged.",
       "annotations": [
         {
           "at_second": 10,
@@ -191,6 +196,7 @@
       "difficulty_score": 8,
       "annotation": "Subtle open posture — not theatrical like Tony Stark. Watch his easy gait, the way he sits (no forward lean, no crossed arms), and how his stillness communicates calm authority.",
       "context_note": "The contrast with colleagues makes his open posture readable — use context clues.",
+      "script": "1. Sit fully upright — spine straight but not rigid, shoulders relaxed and down.\n2. Place both hands open and still on the table or your lap — no fidgeting, tapping, or clasping.\n3. Keep both feet flat on the floor; resist the urge to cross your legs or ankles.\n4. When you speak, stay physically still — let your words carry the energy, not your body.",
       "annotations": [
         {
           "at_second": 10,
@@ -230,6 +236,7 @@
       "difficulty_score": 11,
       "annotation": "Advanced — openness weaponized. Study how his wide stance and forward chest create dominance, not warmth. The same open-posture signals read completely differently based on context, facial expression, and proximity.",
       "context_note": "This is a master class in how posture + context changes meaning entirely. The form is open, the intent is dominant.",
+      "script": "1. Take a wider-than-normal stance — feet well outside shoulder-width, weight forward on the balls of your feet.\n2. Let your chest lead as you speak — forward and open, not sunken or protected.\n3. Use large, slow, open-palm gestures to claim space when making key points.\n4. Deliberately close the distance between you and the other person — move into their space with calm, unhurried intention.",
       "annotations": [
         {
           "at_second": 5,
@@ -269,6 +276,7 @@
       "difficulty_score": 5,
       "annotation": "Watch Sean: slight forward lean, steady eye contact, nods timed to emotional beats, his face mirrors Will's emotional journey. He says almost nothing — his body does the listening.",
       "context_note": "One of cinema's clearest demonstrations of active listening — emotionally safe to watch.",
+      "script": "1. Lean your upper body forward by about 10–15 degrees — signal that you are fully present and attentive.\n2. Let your face reflect the emotional weight of what you hear — not neutral, not over-emoting.\n3. Nod slowly and deliberately at emotional beats — once, meaningfully — not a constant bobbing motion.\n4. Keep your hands still and open; breathe calmly and resist the urge to respond before the other person is done.",
       "annotations": [
         {
           "at_second": 20,
@@ -308,6 +316,7 @@
       "difficulty_score": 7,
       "annotation": "Subtle active listening: minimal verbal responses, strategic silence, neutral-warm expression. Notice when he leans back (giving space) vs when he leans in (drawing out). He tracks Bertie's discomfort without reacting to it.",
       "context_note": "The power dynamic is inverted — the therapist is a commoner, the patient a prince. His body language is key to making Bertie feel safe.",
+      "script": "1. Alternate between leaning slightly back (creating space) and leaning gently forward (drawing the other person out) — read when each is needed.\n2. Hold soft, warm eye contact without intensity — present and attentive, not searching or penetrating.\n3. Keep your face minimally reactive — a subtle nod is sufficient; do not visibly react to surprising things you hear.\n4. Let silence sit for two to three seconds before responding — give what was said room to land before you fill the space.",
       "annotations": [
         {
           "at_second": 130,
@@ -347,6 +356,7 @@
       "difficulty_score": 11,
       "annotation": "Advanced: study the breakdown of active listening under emotional pressure. Watch when her posture closes (arms, turn-away), when she re-opens to listen, how her listening quality changes her partner's escalation. Emotional contagion in real time.",
       "context_note": "This shows what active listening failure AND recovery looks like — valuable negative model.",
+      "script": "1. Notice when your body closes — arms crossing, torso turning away — and consciously, deliberately reverse it.\n2. Drop your shoulders and unclench your jaw to signal that you are reopening to hear.\n3. Turn your torso back toward the speaker as a deliberate act of re-engagement — make it visible.\n4. Slow your breathing to steady yourself; your nervous system influences theirs.",
       "annotations": [
         {
           "at_second": 50,
@@ -386,6 +396,7 @@
       "difficulty_score": 4,
       "annotation": "Perfect beginner vocal-pacing example: clear pauses before key words, tempo changes that match emotional weight, volume drops that create intimacy. Count the silences — they average 2-3 seconds and always precede impact.",
       "context_note": "Classic cinematic speech — very learnable pattern.",
+      "script": "\"We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion.\"\n\n[Pause] \"Medicine, law, business, engineering — these are noble pursuits, and necessary to sustain life. But poetry, beauty, romance, love — these are what we stay alive for.\"\n\n[Long pause — look around the room] \"Carpe diem. Seize the day, boys. Make your lives extraordinary.\"",
       "annotations": [
         {
           "at_second": 75,
@@ -425,6 +436,7 @@
       "difficulty_score": 7,
       "annotation": "Study the speech architecture: slow start, rising tempo, deliberate pause at 'any given Sunday', then full release. His pacing isn't random — each tempo shift corresponds to an idea shift. Mirror the physical stillness between bursts.",
       "context_note": "Longer clip — worth the full watch. The pacing builds over 4 minutes.",
+      "script": "\"I don't know what to say, really. Three minutes to the biggest battle of our professional lives all comes down to today.\"\n\n[Pause] \"Life is a game of inches. So is football. Because in either game — life or football — the margin for error is so small. One half step too late or too early, and you don't quite make it. One half second too slow, too fast, and you don't quite catch it.\"\n\n[Building pace] \"The inches we need are everywhere around us. They're in every break of the game, every minute, every second. On this team — we fight for that inch. On this team, we tear ourselves and everyone around us to pieces for that inch.\" [Pause] \"Because we know, when we add up all those inches, that's going to make the difference between winning and losing.\"",
       "annotations": [
         {
           "at_second": 30,
@@ -464,6 +476,7 @@
       "difficulty_score": 10,
       "annotation": "Advanced pacing: the power is in what's NOT said. Minimal volume variation, but the weight is entirely in the rhythm and the silence. This is the opposite of Pacino — study how quiet command works.",
       "context_note": "Historical context helps but not required — the vocal technique is self-evident.",
+      "script": "\"I am the President of the United States, clothed in immense power. You will procure me these votes.\"\n\n[Long pause — let it sit] \"The fate of human dignity in our hands — blood has been spilled to afford us this moment.\"\n\n[Deliberate, each word separated] \"Now...\" [pause] \"Now.\" [pause] \"Now.\"",
       "annotations": [
         {
           "at_second": 70,
@@ -503,6 +516,7 @@
       "difficulty_score": 5,
       "annotation": "Classic confident disagreement: she disagrees without apologizing, without raising her voice, without closed body language. Upright posture, steady gaze, measured tone. Watch how she states her counter-point then lets it land.",
       "context_note": "Comedy framing makes it easy to watch — but the disagreement technique is genuine.",
+      "script": "\"Your Honor, I'd like to point out a contradiction in this testimony.\" [Pause — let the room focus] \"You've testified that you were in the shower when the gunshot occurred. But you also stated that you got a perm that same morning.\" [Pause] \"Any reputable stylist will tell you — you cannot get your hair wet for at least twenty-four hours after a perm, or the curls simply fall out.\" [beat] \"If both of those things are true... they cannot both be true.\"",
       "annotations": [
         {
           "at_second": 45,
@@ -542,6 +556,7 @@
       "difficulty_score": 9,
       "annotation": "Study: how he sits still while others agitate, how he phrases disagreement ('I'm not sure', not 'you're wrong'), how he absorbs hostility without closing his posture. His body stays open even when verbally attacked.",
       "context_note": "Public domain film — full version widely available. The whole film is a disagreement masterclass.",
+      "script": "\"Eleven of you were so sure so fast... I'm not saying he's innocent. I'm not sure. That's the point.\" [Pause — let the hostility hang] \"Maybe I'm wrong. Maybe I can be talked out of it. But I want to hear some talk.\"\n\n[calmly, not defensively] \"This boy has been in a cell for six months waiting for us. We owe him more than three minutes. We owe him a few words.\" [pause] \"I just want to talk.\"",
       "annotations": [
         {
           "at_second": 140,
@@ -581,6 +596,7 @@
       "difficulty_score": 10,
       "annotation": "Advanced: disagreement with subtext. His verbal surface disagrees politely while his body language communicates power and contempt simultaneously. Study the micro-expressions during points he finds weak, and how he re-anchors posture after each challenge.",
       "context_note": "Understanding who Nixon was historically deepens the reading. The body language is readable without context but richer with it.",
+      "script": "\"Now let me make one thing perfectly clear, Mr. Frost.\" [Pause — holds eye contact] \"I resent the implication of that question. I have been as forthcoming with this committee as any public official in modern history.\"\n\n[Slight lean forward] \"And frankly... I think the premise of what you're suggesting is not supported by the record. I suspect that on reflection — on careful reflection — you'll find the evidence does not bear that out.\" [pause, micro-smile] \"Shall we continue?\"",
       "annotations": [
         {
           "at_second": 10,

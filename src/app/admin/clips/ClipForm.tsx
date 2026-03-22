@@ -34,6 +34,7 @@ interface ClipFormData {
   replicationDifficulty: string
   annotation: string
   contextNote: string
+  script: string
   startSec: string
   endSec: string
   isActive: boolean
@@ -48,13 +49,14 @@ const EMPTY: ClipFormData = {
   sceneDescription: '',
   skillCategory: 'eye-contact',
   difficulty: 'beginner',
-  difficultyScore: '5',
-  signalClarity: '5',
-  noiseLevel: '5',
-  contextDependency: '5',
-  replicationDifficulty: '5',
+  difficultyScore: '8',
+  signalClarity: '2',
+  noiseLevel: '2',
+  contextDependency: '2',
+  replicationDifficulty: '2',
   annotation: '',
   contextNote: '',
+  script: '',
   startSec: '0',
   endSec: '30',
   isActive: true,
@@ -104,6 +106,7 @@ export default function ClipForm({ initial, mode }: Props) {
       replicationDifficulty: Number(form.replicationDifficulty),
       annotation: form.annotation,
       contextNote: form.contextNote || null,
+      script: form.script || null,
       startSec: Number(form.startSec),
       endSec: Number(form.endSec),
       isActive: form.isActive,
@@ -220,15 +223,15 @@ export default function ClipForm({ initial, mode }: Props) {
         {/* Scores */}
         <div className="grid grid-cols-2 gap-4">
           {([
-            ['difficultyScore', 'Difficulty Score (1–10)'],
-            ['signalClarity', 'Signal Clarity (1–10)'],
-            ['noiseLevel', 'Noise Level (1–10)'],
-            ['contextDependency', 'Context Dependency (1–10)'],
-            ['replicationDifficulty', 'Replication Difficulty (1–10)'],
-          ] as const).map(([field, label]) => (
+            ['difficultyScore', 'Difficulty Score (4–12)', 4, 12],
+            ['signalClarity', 'Signal Clarity (1–3)', 1, 3],
+            ['noiseLevel', 'Noise Level (1–3)', 1, 3],
+            ['contextDependency', 'Context Dependency (1–3)', 1, 3],
+            ['replicationDifficulty', 'Replication Difficulty (1–3)', 1, 3],
+          ] as const).map(([field, label, min, max]) => (
             <div key={field} className="flex flex-col gap-1.5">
               <label className={labelClass()}>{label}</label>
-              <input type="number" min={1} max={10} value={form[field]} onChange={e => set(field, e.target.value)} className={inputClass()} />
+              <input type="number" min={min} max={max} value={form[field]} onChange={e => set(field, e.target.value)} className={inputClass()} />
             </div>
           ))}
         </div>
@@ -254,6 +257,17 @@ export default function ClipForm({ initial, mode }: Props) {
             onChange={e => set('contextNote', e.target.value)}
             className={`${inputClass()} resize-y`}
             placeholder="Optional background context for this scene…"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass()}>Script / Dialogue</label>
+          <textarea
+            rows={3}
+            value={form.script}
+            onChange={e => set('script', e.target.value)}
+            className={`${inputClass()} resize-y`}
+            placeholder="The exact dialogue or action script the learner should perform…"
           />
         </div>
 

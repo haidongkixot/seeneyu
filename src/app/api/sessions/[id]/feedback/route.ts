@@ -13,13 +13,34 @@ const SKILL_DIMENSIONS: Record<string, string[]> = {
   'confident-disagreement': ['Posture Stability', 'Eye Contact Hold', 'Voice Steadiness', 'Open Body'],
 }
 
-function buildPrompt(skillCategory: string, annotation: string, dimensions: string[]): string {
+interface ClipContext {
+  skillCategory: string
+  annotation: string
+  characterName: string | null
+  actorName: string | null
+  movieTitle: string
+  sceneDescription: string
+  script?: string | null
+}
+
+function buildPrompt(clip: ClipContext, dimensions: string[]): string {
+  const characterLine = clip.characterName
+    ? `The learner was mimicking ${clip.characterName}${clip.actorName ? ` (${clip.actorName})` : ''} from ${clip.movieTitle}.`
+    : `The learner was practicing a scene from ${clip.movieTitle}.`
+
+  const scriptLine = clip.script
+    ? `\nScript/dialogue they were asked to perform: "${clip.script}"`
+    : ''
+
   return `You are an expert body language and communication coach analyzing a user's practice recording.
 
-The user was practicing: ${skillCategory.replace('-', ' ')}
-Reference behavior: ${annotation}
+${characterLine}
+Scene: ${clip.sceneDescription}${scriptLine}
 
-Analyze the video recording provided. Score the user on these 4 dimensions (0-10 each):
+The user was practicing: ${clip.skillCategory.replace('-', ' ')}
+Reference behavior: ${clip.annotation}
+
+Analyze the recording provided. Score the user on these 4 dimensions (0-10 each):
 ${dimensions.map((d, i) => `${i + 1}. ${d}`).join('\n')}
 
 Return a JSON object with EXACTLY this structure:
@@ -34,6 +55,11 @@ Return a JSON object with EXACTLY this structure:
   ],
   "positives": ["<specific thing 1>", "<specific thing 2>"],
   "improvements": ["<specific improvement 1>", "<specific improvement 2>"],
+  "steps": [
+    { "number": 1, "action": "<specific physical action, imperative>", "why": "<1 sentence reason>" },
+    { "number": 2, "action": "<specific physical action, imperative>", "why": "<1 sentence reason>" },
+    { "number": 3, "action": "<specific physical action, imperative>", "why": "<1 sentence reason>" }
+  ],
   "tips": [
     { "title": "<short tip title>", "body": "<2-3 sentence actionable tip>" },
     { "title": "<short tip title>", "body": "<2-3 sentence actionable tip>" },
@@ -41,7 +67,7 @@ Return a JSON object with EXACTLY this structure:
   ]
 }
 
-Be specific — reference what you actually see in the video. Be encouraging but honest.`
+Steps should be 3-5 ordered by priority (highest impact first). Be specific — reference what you actually see. Be encouraging but honest.`
 }
 
 export async function POST(
@@ -58,41 +84,33 @@ export async function POST(
 
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     if (!session.recordingUrl) return NextResponse.json({ error: 'No recording' }, { status: 400 })
-    if (!session.frameUrls) return NextResponse.json({ error: 'No frames captured for analysis' }, { status: 422 })
 
     await prisma.userSession.update({ where: { id }, data: { status: 'feedback_pending' } })
 
     const dimensions = SKILL_DIMENSIONS[session.clip.skillCategory] ?? SKILL_DIMENSIONS['eye-contact']
-    const prompt = buildPrompt(session.clip.skillCategory, session.clip.annotation, dimensions)
+    // Cast to ClipContext — script field added in M10 schema, available after db:push + generate
+    const clipCtx: ClipContext = { ...session.clip, script: (session.clip as any).script ?? null }
+    const prompt = buildPrompt(clipCtx, dimensions)
 
-    // GPT-4o Vision requires images, not video.
-    // Frame snapshots were captured client-side during recording and stored in Vercel Blob.
     const frameUrls: string[] = session.frameUrls ? JSON.parse(session.frameUrls as string) : []
-
-    if (frameUrls.length === 0) {
-      // No frames captured — cannot analyze
-      await prisma.userSession.update({ where: { id }, data: { status: 'failed' } })
-      return NextResponse.json({ error: 'No frame images available for analysis' }, { status: 422 })
-    }
+    const hasFrames = frameUrls.length > 0
 
     const startMs = Date.now()
 
+    const messageContent = hasFrames
+      ? [
+          { type: 'text' as const, text: prompt },
+          ...frameUrls.map((url) => ({
+            type: 'image_url' as const,
+            image_url: { url, detail: 'low' as const },
+          })),
+        ]
+      : [{ type: 'text' as const, text: prompt + '\n\n(No video frames available — evaluate based on context and provide general coaching guidance.)' }]
+
     const response = await getOpenAI().chat.completions.create({
-      model: 'gpt-4o',
-      max_tokens: 800,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            // Send up to 4 frames — each is a JPEG snapshot from the recording
-            ...frameUrls.map((url) => ({
-              type: 'image_url' as const,
-              image_url: { url, detail: 'low' as const },
-            })),
-          ],
-        },
-      ],
+      model: hasFrames ? 'gpt-4o' : 'gpt-4o',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: messageContent }],
     })
 
     const raw = response.choices[0]?.message?.content ?? ''
@@ -117,6 +135,7 @@ export async function POST(
 
     const feedback: FeedbackResult = {
       ...parsed,
+      steps: parsed.steps ?? [],
       nextClipId,
       modelUsed: 'gpt-4o',
       processingMs: Date.now() - startMs,

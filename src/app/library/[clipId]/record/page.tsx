@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
+import { CharacterBanner } from '@/components/CharacterBanner'
+import { ScriptPanel } from '@/components/ScriptPanel'
 import { RecordClient } from './RecordClient'
 import type { SkillCategory, Difficulty } from '@/lib/types'
 import { ArrowLeft } from 'lucide-react'
@@ -41,6 +43,18 @@ export default async function RecordPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* Character banner — full width above columns, only when character data is available */}
+      {clip.characterName && (
+        <div className="px-4 pt-4 lg:px-6 lg:pt-5">
+          <CharacterBanner
+            characterName={clip.characterName}
+            actorName={clip.actorName}
+            movieTitle={clip.movieTitle}
+            skillCategory={clip.skillCategory}
+          />
+        </div>
+      )}
+
       {/* Main split layout */}
       <main className="flex-1 flex flex-col lg:flex-row">
         {/* Left — Video */}
@@ -59,6 +73,14 @@ export default async function RecordPage({ params }: PageProps) {
             <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wide mb-2">Reference</p>
             <p className="text-sm text-text-secondary leading-relaxed">{clip.annotation}</p>
           </div>
+
+          {(clip as any).script && (
+            <ScriptPanel
+              type="dialogue"
+              content={(clip as any).script as string}
+              tip="Say this out loud while recording."
+            />
+          )}
         </div>
 
         {/* Right — Record */}

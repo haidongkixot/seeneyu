@@ -165,6 +165,75 @@
       "bug_report": ".shared/outputs/bugs/bug-002.json",
       "timestamp": "2026-03-22T23:00:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_designer_pm_m10_complete_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-UI-specs",
+      "milestone": "M10",
+      "message": "M10 UI specs delivered. Three components fully specified with ASCII mockups, Tailwind class lists, props interfaces, state definitions, accessibility notes, and page layout context.\n\nDeliverables:\n- CharacterBanner: coaching-card style banner for record page\n- ScriptPanel: dialogue/action script display for record page\n- ActionPlan: prioritized improvement steps for feedback page\n\nArtifact: .shared/outputs/design/m10-spec.md\nSignal sent to Backend Engineer to unblock implementation.",
+      "artifacts": [
+        ".shared/outputs/design/m10-spec.md"
+      ],
+      "timestamp": "2026-03-23T00:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_pm_m10_script_ready_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "checkpoint-saved",
+      "task": "M10-add-script-text-to-clips",
+      "status": "unread",
+      "message": "M10 script prep complete. All 15 clip scripts written and saved to .shared/outputs/data/clips-seed.json. Eye-contact/posture/listening clips use 4-step physical instruction lists; vocal-pacing/confident-disagreement clips use exact dialogue scripts. seed.ts update (3 lines) and npx prisma db seed will execute immediately once Backend Engineer signals that `script` field is live in schema. Checkpoint: .shared/outputs/data/checkpoints/m10-script-seeding.json",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        ".shared/outputs/data/checkpoints/m10-script-seeding.json"
+      ],
+      "blocking_on": "backend-engineer Task 1 (schema update) + Task 7 (signal to data-engineer)",
+      "timestamp": "2026-03-22T23:55:00Z"
+    },
+    {
+      "id": "sig_be_pm_m10_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-script-aware-coaching-loop",
+      "message": "M10 fully implemented. Build: 0 TypeScript errors.\n\nCompleted:\n- BUG-001 fixed: ClipForm score dimensions 1-3, difficultyScore 4-12\n- Schema: script String? @db.Text added to Clip\n- Types: ActionPlanStep + steps[] in FeedbackResult + script in Clip\n- Feedback API: character/script context in prompt, steps[] schema, no-frames fallback\n- tailwind.config.ts: fade-in-up keyframe\n- CharacterBanner + ScriptPanel components created\n- Record page: CharacterBanner + ScriptPanel\n- Feedback page: ActionPlan section\n- ClipForm: Script/Dialogue textarea\n- Data Engineer signaled: schema ready, pending user db:push\n\nPENDING USER ACTIONS:\n1. npm run db:push — apply script field to DB\n2. npx prisma generate — regenerate client\n(Casts in code will clean up automatically after regen)",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_pm_m10_complete_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-add-script-text-to-clips",
+      "message": "M10 script seeding task complete (code). All 15 clip scripts written to clips-seed.json. seed.ts updated with script field support + patch logic for already-seeded clips. Blocked only on user running: (1) npm run db:push, (2) npx prisma generate, (3) npx prisma db seed. After those three commands, all 15 clips will have script field populated in the database. Checkpoint: .shared/outputs/data/checkpoints/m10-script-seeding.json",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        "prisma/seed.ts"
+      ],
+      "pending_user_actions": [
+        "npm run db:push",
+        "npx prisma generate",
+        "npx prisma db seed"
+      ],
+      "timestamp": "2026-03-23T00:35:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_designer_pm_m10_review_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M10-ui-review-complete",
+      "message": "Designer UI review of M10 implementation complete. Verdict: PASS — all 3 components spec-compliant, no P0/P1 issues found. Two low-priority post-launch items logged: (1) CharacterBanner 'animate-fade-in' keyframe may need to be added to tailwind config. (2) ScriptPanel action-list mode not used for physical-skill clips — future improvement via adding scriptType field to Clip schema. Full review at: .shared/outputs/design/ui-review-m10.md. Tester has been notified.",
+      "artifacts": [".shared/outputs/design/ui-review-m10.md"],
+      "timestamp": "2026-03-23T00:45:00Z",
+      "status": "unread"
     }
   ]
 }

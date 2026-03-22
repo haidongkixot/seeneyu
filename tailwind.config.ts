@@ -140,10 +140,15 @@ const config: Config = {
           '0%':   { opacity: '0', transform: 'translateY(6px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'fade-in-up': {
+          '0%':   { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
-        shimmer:  'shimmer 1.5s infinite linear',
-        'fade-in':'fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        shimmer:      'shimmer 1.5s infinite linear',
+        'fade-in':    'fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'fade-in-up': 'fade-in-up 200ms cubic-bezier(0.34, 1.56, 0.64, 1) both',
       },
     },
   },

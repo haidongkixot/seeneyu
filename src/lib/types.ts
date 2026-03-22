@@ -36,6 +36,7 @@ export interface Clip {
   replicationDifficulty: number
   annotation: string
   contextNote: string | null
+  script: string | null
   isActive: boolean
   annotations: ClipAnnotation[]
 }
@@ -51,12 +52,19 @@ export interface FeedbackTip {
   exerciseLink?: string
 }
 
+export interface ActionPlanStep {
+  number: number
+  action: string
+  why: string
+}
+
 export interface FeedbackResult {
   overallScore: number          // 0–100
   summary: string
   dimensions: FeedbackDimension[]
   positives: string[]
   improvements: string[]
+  steps: ActionPlanStep[]
   tips: FeedbackTip[]
   nextClipId?: string
   modelUsed: string

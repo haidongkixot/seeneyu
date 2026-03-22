@@ -95,6 +95,16 @@
       "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
       "timestamp": "2026-03-22T07:18:02.581Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_be_reporter_m10_001",
+      "from": "backend-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M10-session-complete",
+      "message": "Backend Engineer M10 session complete. Deliverables: BUG-001 fix (ClipForm score ranges), schema script field, types update, feedback API enhancement (character context + steps + no-frames fallback), CharacterBanner component, ScriptPanel component, ActionPlan in feedback page, ClipForm script textarea, tailwind fade-in-up animation. Build: 0 TS errors. Awaiting user db:push + Data Engineer script seeding to be fully live.",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "unread"
     }
   ]
 }

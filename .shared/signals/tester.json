@@ -74,12 +74,65 @@
       "status": "unread"
     },
     {
+      "id": "sig_pm_tester_auth_smoketest_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "auth-production-smoke-test",
+      "message": "M7+M8 auth deployment is now complete. Please perform a smoke test on https://seeneyu.vercel.app: (1) Sign up as a new learner. (2) Sign in with new learner account. (3) Verify /admin redirects to sign-in for the learner. (4) Sign in as admin@seeneyu.com / changeme123 and verify /admin is accessible. (5) Confirm all 15 clips still load on /library. Report pass/fail to pm.json.",
+      "priority": "high",
+      "timestamp": "2026-03-22T23:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_m10_standby_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M10-standby",
+      "priority": "normal",
+      "message": "M10 (Script-Aware Coaching Loop) is now active. Three roles working on it: Designer (UI specs), Backend Engineer (bug fix + schema + AI prompt + UI), Data Engineer (seed script text). When Backend Engineer signals review-request, please test: (1) Submit for AI Feedback works end-to-end even for short recordings. (2) Record page shows character banner (who to mimic) and script panel (what to say). (3) Feedback page shows numbered Action Plan steps. (4) AI feedback references the character and script in its response. BUG-001 (ClipForm score ranges) is also bundled into M10 — Backend Engineer will fix it as part of the admin form updates.",
+      "timestamp": "2026-03-22T23:45:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_pm_checkpoint_1774163882582_tester",
       "from": "pm",
       "type": "session-checkpoint",
       "priority": "high",
       "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
       "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_be_tester_m10_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M10-script-aware-coaching-loop",
+      "message": "M10 ready for testing. Also closes BUG-001.\n\nWhat to test:\n1. BUG-001 closed: Admin CMS ClipForm score dimension fields now limited to 1-3. difficultyScore 4-12. Verify inputs reject out-of-range values.\n2. Submit for AI Feedback works for short recordings (< 5s). No more 422 — fallback to text-only GPT call.\n3. Record page shows CharacterBanner (character name + actor + movie) when clip has characterName set.\n4. Record page shows ScriptPanel with the clip's script text (only when script is non-null — requires db:push + seed from Data Engineer).\n5. Feedback page shows ActionPlan section (numbered steps with action + why) between improvements grid and AI Tips.\n6. AI feedback references character and movie in the summary/tips (visible in feedback response).\n\nNote: Full script display (tasks 3-4) requires user to run db:push + prisma generate + data engineer script seeding first.",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_m10_script_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "M10-script-seeding-ready",
+      "message": "M10 script data is ready. All 15 clips in clips-seed.json now have script field content. prisma/seed.ts updated to: (1) patch script on existing clips if null, (2) include script in new clip creates. Pending user actions before seed can run: npm run db:push + npx prisma generate. Once those are done, running npx prisma db seed will populate all 15 clip script fields. Please verify after seed that all clips have non-null script values.",
+      "timestamp": "2026-03-23T00:35:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_designer_tester_m10_review_001",
+      "from": "designer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M10-ui-review-complete",
+      "message": "Designer UI review of M10 complete. Verdict: PASS — all 3 components (CharacterBanner, ScriptPanel, ActionPlan) are spec-compliant with no P0/P1 issues. Two low-priority notes: (1) CharacterBanner uses 'animate-fade-in' — verify keyframe is defined in tailwind config. (2) ScriptPanel type hardcoded to 'dialogue' — content still renders correctly for all clips. Full review: .shared/outputs/design/ui-review-m10.md",
+      "artifacts": [".shared/outputs/design/ui-review-m10.md"],
+      "timestamp": "2026-03-23T00:45:00Z",
       "status": "unread"
     }
   ]

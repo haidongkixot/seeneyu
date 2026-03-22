@@ -44,6 +44,7 @@ interface SeedClip {
   difficulty_score: number;
   annotation: string;
   context_note?: string;
+  script?: string;
   annotations: SeedAnnotation[];
 }
 
@@ -90,7 +91,16 @@ async function main() {
     });
 
     if (existing) {
-      console.log(`  SKIP ${clip.id} — already exists`);
+      // Patch script field if missing (M10 migration)
+      if (existing.script === null && clip.script) {
+        await prisma.clip.update({
+          where: { id: existing.id },
+          data: { script: clip.script },
+        });
+        console.log(`  PATCH ${clip.id} — script field updated`);
+      } else {
+        console.log(`  SKIP ${clip.id} — already exists`);
+      }
       skipped++;
       continue;
     }
@@ -114,6 +124,7 @@ async function main() {
         replicationDifficulty: clip.replication_difficulty,
         annotation: clip.annotation,
         contextNote: clip.context_note ?? null,
+        script: clip.script ?? null,
         annotations: {
           create: clip.annotations.map((a) => ({
             atSecond: a.at_second,

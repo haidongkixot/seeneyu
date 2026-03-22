@@ -27,6 +27,7 @@ model Clip {
   replicationDifficulty Int
   annotation            String   @db.Text
   contextNote           String?  @db.Text
+  script                String?  @db.Text
   isActive              Boolean  @default(true)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt

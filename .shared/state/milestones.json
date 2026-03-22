@@ -164,5 +164,25 @@
         "src/app/admin/users/[id]/page.tsx"
       ]
     }
+  ,
+    {
+      "id": "M10",
+      "name": "Script-Aware Coaching Loop",
+      "phase": "8-coaching-v2",
+      "status": "in-progress",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "blocks": [],
+      "tester_condition": "Submit for AI Feedback works end-to-end. Record page shows character banner and script panel. Feedback page shows numbered action steps. AI prompt references character and script context.",
+      "deliverables": [
+        "prisma/schema.prisma — add script field to Clip",
+        "src/lib/types.ts — add steps[] to FeedbackResult",
+        "src/app/api/sessions/[id]/feedback/route.ts — enhanced prompt + steps + fix no-frames bug",
+        "src/app/library/[clipId]/record/page.tsx — character banner + script panel",
+        "src/app/library/[clipId]/record/RecordClient.tsx — graceful frame capture fix",
+        "src/app/feedback/[sessionId]/page.tsx — Action Plan steps section",
+        "prisma/seed.ts — script text added to all 15 clips"
+      ]
+    }
   ]
 }

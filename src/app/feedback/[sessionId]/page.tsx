@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { FeedbackPoller } from './FeedbackPoller'
-import type { FeedbackResult, SkillCategory } from '@/lib/types'
+import type { FeedbackResult, ActionPlanStep, SkillCategory } from '@/lib/types'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 
 interface PageProps {
@@ -43,9 +43,7 @@ export default async function FeedbackPage({ params }: PageProps) {
           <SkillBadge skill={session.clip.skillCategory as SkillCategory} size="sm" />
         </div>
 
-        {!feedback || session.status === 'feedback_pending' || session.status === 'uploaded' ? (
-          <FeedbackPoller sessionId={sessionId} />
-        ) : session.status === 'failed' ? (
+        {session.status === 'failed' ? (
           <div className="text-center py-16">
             <p className="text-error font-semibold text-lg">Feedback generation failed</p>
             <p className="text-text-secondary text-sm mt-2">Please try submitting your recording again.</p>
@@ -57,6 +55,8 @@ export default async function FeedbackPage({ params }: PageProps) {
               Try Again
             </Link>
           </div>
+        ) : !feedback ? (
+          <FeedbackPoller sessionId={sessionId} />
         ) : (
           <FeedbackDisplay
             feedback={feedback!}
@@ -68,6 +68,39 @@ export default async function FeedbackPage({ params }: PageProps) {
           />
         )}
       </main>
+    </div>
+  )
+}
+
+function ActionPlan({ steps, title, subtitle }: { steps: ActionPlanStep[]; title?: string; subtitle?: string }) {
+  return (
+    <div role="region" aria-label="Action plan" className="space-y-4">
+      <div className="space-y-0.5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">
+          {title ?? 'YOUR ACTION PLAN'}
+        </p>
+        <p className="text-sm text-text-secondary">
+          {subtitle ?? 'Do these in order at your next practice session.'}
+        </p>
+      </div>
+      <ol className="space-y-3">
+        {steps.map((step, index) => (
+          <li
+            key={step.number}
+            className="flex items-start gap-4 bg-bg-surface border border-white/8 rounded-xl pl-0 pr-4 py-4 shadow-card overflow-hidden relative animate-fade-in-up"
+            style={{ animationDelay: `${index * 80}ms` }}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent-400 rounded-l-xl" />
+            <span aria-hidden="true" className="flex-shrink-0 w-10 h-10 flex items-center justify-center ml-4 text-accent-400 text-xl font-bold font-mono">
+              {step.number}
+            </span>
+            <div className="flex-1 space-y-0.5">
+              <p className="text-base font-semibold text-text-primary leading-snug">{step.action}</p>
+              <p className="text-sm text-text-secondary leading-relaxed">{step.why}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
@@ -164,6 +197,11 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
           </ul>
         </div>
       </div>
+
+      {/* Action Plan */}
+      {feedback.steps && feedback.steps.length > 0 && (
+        <ActionPlan steps={feedback.steps} />
+      )}
 
       {/* AI Tips */}
       <div>
