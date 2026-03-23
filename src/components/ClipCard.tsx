@@ -11,7 +11,7 @@ interface ClipCardProps {
   clip: Pick<Clip,
     'id' | 'youtubeVideoId' | 'movieTitle' | 'year' | 'characterName' |
     'sceneDescription' | 'skillCategory' | 'difficulty' | 'startSec' | 'endSec'
-  >
+  > & { screenplaySource?: string | null }
 }
 
 function formatDuration(seconds: number): string {
@@ -75,11 +75,16 @@ export function ClipCard({ clip }: ClipCardProps) {
         </div>
 
         {/* Footer */}
-        <div className="pt-3 border-t border-white/6 mt-auto">
+        <div className="pt-3 border-t border-white/6 mt-auto flex items-center justify-between gap-2 flex-wrap">
           <span className="flex items-center gap-1 text-text-tertiary text-xs">
             <Play size={12} strokeWidth={2} />
             <span>Watch &amp; Mimic</span>
           </span>
+          {clip.screenplaySource && (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full px-2 py-0.5">
+              📄 Screenplay
+            </span>
+          )}
         </div>
       </div>
     </Link>

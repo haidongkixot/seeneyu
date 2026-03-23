@@ -76,6 +76,16 @@ export default async function ClipViewerPage({ params }: PageProps) {
             <span className="text-xs font-mono text-text-tertiary bg-bg-elevated rounded-pill px-2.5 py-1">
               {formatDuration(duration)}
             </span>
+            {(clip as any).screenplaySource && (
+              <a
+                href={(clip as any).screenplaySource}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 border border-amber-400/30 hover:border-amber-400/50 rounded-xl px-4 py-2 transition-all duration-150"
+              >
+                📄 Read Screenplay →
+              </a>
+            )}
           </div>
         </div>
 

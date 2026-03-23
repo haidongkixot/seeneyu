@@ -23,6 +23,28 @@
       "status": "read"
     },
     {
+      "id": "sig_pm_de_m11_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "M11-curate-observation-guides",
+      "priority": "high",
+      "message": "M11 task: Curate observation_guide data for all 15 clips. WAIT for Backend Engineer to signal that the observationGuide schema field is live (they'll signal you after db:push).\n\nOnce unblocked, for each clip in .shared/outputs/data/clips-seed.json, add an observation_guide field:\n{\n  'headline': 'How [CharacterName] uses [skill] — and why it works',\n  'moments': [\n    { 'at_second': 3, 'technique': 'Direct Eye Contact', 'what': 'Holds gaze without blinking for 4 seconds', 'why': 'Commands attention and signals zero anxiety' },\n    ... (4-6 moments per clip)\n  ]\n}\n\nGuidelines:\n- Use the clip's annotation, sceneDescription, contextNote and existing annotations[] to identify specific moments\n- Moments must reference actual timestamps within startSec–endSec range\n- 'what' = objective description of what the character does (≤15 words)\n- 'why' = the psychological/social effect (≤15 words)\n- 4–6 moments per clip minimum\n\nAlso add practice_steps for M12 (3-5 steps per clip):\n[\n  { 'step_number': 1, 'skill_focus': 'Eye Contact Duration', 'instruction': 'Hold eye contact with yourself in the camera for 4 full seconds without looking away', 'tip': 'Imagine the camera lens is a person's eyes. Breathe normally.', 'target_duration_sec': 20 },\n  ...\n]\n\nSave updated seed to: .shared/outputs/data/clips-seed.json\nUpdate seed.ts to patch both fields if null.\nSignal pm.json and tester.json when data is ready.",
+      "context": ".shared/outputs/data/clips-seed.json, prisma/seed.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_session_end_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. Excellent work — observation_guide + practice_steps curated for all 15 clips, sample learner data seeded. Next session: (1) Confirm with PM whether user has run db:push + prisma generate + db:seed. (2) Once seed is confirmed, verify all 15 clips have non-null observationGuide and practiceSteps in production DB. (3) Future task: add 5 more clips to the library (new skills or expand existing) — PM will assign when capacity opens. (4) Consider writing a script to auto-generate observation guides for new clips via admin API.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_pm_checkpoint_1774163882582_data-engineer",
       "from": "pm",
       "type": "session-checkpoint",
@@ -40,6 +62,30 @@
       "message": "M10 Task 7 complete. The `script String? @db.Text` field has been added to the Clip model in prisma/schema.prisma.\n\nIMPORTANT: The field is in the schema file but NOT yet in the database. Before you seed script text:\n1. User must run: npm run db:push (applies schema to Neon DB)\n2. User must run: npx prisma generate (updates Prisma client types)\nOnce those are run, you can proceed with adding script text to prisma/seed.ts and running the seed.\n\nYour seed signal from PM (sig_pm_de_m10_001) has all the details. You already have the script content in .shared/outputs/data/clips-seed.json. Just wait for confirmation that db:push has been run.",
       "timestamp": "2026-03-23T00:30:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m14_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "m14-curate-100-screenplay-clips",
+      "priority": "high",
+      "message": "NEW MILESTONE M14: Content Expansion — 100+ Lessons from Screenplay Films.\n\n## WHY\nUser requirement: expand the lesson library to at least 100 clips, PRIORITIZING movies that have publicly available screenplay scripts (IMSDB, Scripts.com, ScriptSlug, etc). This gives learners access to the exact written dialogue and scene directions alongside video.\n\n## YOUR TASK (primary M14 owner)\nCurate 100+ YouTube clips from films with publicly accessible screenplays. Save to: .shared/outputs/data/clips-100-seed.json\n\n### Target Films (prioritize these — all have public screenplays)\nVoice/Verbal skills: The Social Network, Good Will Hunting, A Few Good Men, Jerry Maguire, The Wolf of Wall Street, The King's Speech, Whiplash, Moneyball\nBody language/Presence: The Dark Knight, Schindler's List, The Shawshank Redemption, Gladiator, Lincoln, There Will Be Blood, No Country for Old Men\nCharisma/Charm: Pulp Fiction, The Godfather, Catch Me If You Can, Django Unchained, Inglourious Basterds\nConflict/Negotiation: 12 Angry Men, Margin Call, The Big Short, Network (1976)\nInterviews/Pitching: The Pursuit of Happyness, Pirates of Silicon Valley, Jobs (2013)\nRomance/Rapport: Before Sunrise, When Harry Met Sally, Casablanca\nLeadership/Motivation: Braveheart, Dead Poets Society, Any Given Sunday, Coach Carter\n\n### Per-clip data required\nEach clip in clips-100-seed.json must have ALL of these fields:\n{\n  \"id\": \"clip_[number]\",\n  \"movieTitle\": \"...\",\n  \"year\": 1994,\n  \"actorName\": \"...\",\n  \"characterName\": \"...\",\n  \"youtubeId\": \"...\",       // verified YouTube ID\n  \"startTime\": 0,           // seconds\n  \"endTime\": 60,            // seconds (aim for 30-90s clips)\n  \"skillFocus\": \"Eye Contact\",  // one primary skill\n  \"skillCategory\": \"body-language\" | \"voice\" | \"verbal\" | \"presence\" | \"rapport\",\n  \"difficulty\": 1 | 2 | 3,\n  \"sceneDescription\": \"...\",    // 1-2 sentences\n  \"script\": \"...\",              // actual dialogue from the screenplay\n  \"screenplaySource\": \"https://imsdb.com/...\",  // URL to screenplay PDF/page\n  \"observation_guide\": {\n    \"headline\": \"...\",\n    \"moments\": [\n      { \"timestamp\": \"0:12\", \"label\": \"...\", \"description\": \"...\" },\n      // 5-6 moments total\n    ]\n  },\n  \"practice_steps\": [\n    { \"stepNumber\": 1, \"focus\": \"...\", \"instruction\": \"...\", \"durationSeconds\": 30 },\n    // 3-5 steps total\n  ]\n}\n\n### Screenplay sources\n- IMSDB: https://imsdb.com/scripts/[Film-Title].html\n- Scripts.com: https://www.scripts.com/\n- ScriptSlug: https://www.scriptslug.com/\n- SimplyScripts: https://www.simplyscripts.com/\n\n### Verification\nVerify all YouTube IDs are real and accessible before including. Use the YouTube video URL pattern: https://www.youtube.com/watch?v=[ID]\n\n### Output\nSave final data to: .shared/outputs/data/clips-100-seed.json\nSignal backend-engineer when done so they can update prisma/seed.ts.\n\n## ALSO: M15 Foundation Curriculum (can run in parallel)\nSee separate signal for M15 data task (foundation-curriculum.json). You can work on both in parallel.",
+      "context": ".shared/outputs/data/clips-seed.json (existing 15 clips for reference format), prisma/schema.prisma",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_de_m15_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "m15-curate-foundation-curriculum",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation Section — Curriculum Content.\n\n## YOUR TASK\nWrite all foundation curriculum content. Save to: .shared/outputs/data/foundation-curriculum.json\n\n## Structure\n3 courses, 10+ lessons each. Each lesson: theory, YouTube examples, quiz.\n\n### COURSE 1: Voice Mastery (slug: \"voice-mastery\", icon: \"🎙️\", color: amber)\nLessons (10 minimum):\n1. Vocal Projection — make your voice fill the room\n2. Pitch Variation — avoid monotone, use pitch for emphasis  \n3. Pacing & Rhythm — the power of slowing down\n4. Articulation — crisp consonants and clear diction\n5. Resonance — chest voice vs head voice\n6. Breath Control — diaphragmatic breathing for speakers\n7. Vocal Warm-ups — pre-talk rituals from professional speakers\n8. Tone Matching — adapt your tone to context (boardroom vs casual)\n9. Volume Dynamics — whisper to command\n10. Eliminating Filler Words — removing um, uh, like, basically\n\n### COURSE 2: Verbal Communication (slug: \"verbal-communication\", icon: \"💬\", color: blue)\nLessons:\n1. Word Choice & Precision — fewer words, more impact\n2. Storytelling Structure — the hero's journey framework in conversation\n3. Active Listening Cues — signals that show you're engaged\n4. Assertive Language — confident framing without aggression\n5. Pausing for Impact — strategic silence\n6. Framing & Reframing — shaping how your message lands\n7. Question Technique — asking questions that open conversations\n8. Clarity & Brevity — the bottom-line-up-front method\n9. Persuasive Language — appeals to emotion, logic, credibility\n10. Handling Objections — turn disagreement into dialogue\n\n### COURSE 3: Body Language Fundamentals (slug: \"body-language-fundamentals\", icon: \"🤝\", color: green)\nLessons:\n1. Posture & Presence — the foundation of authority\n2. Power Gestures — hands that reinforce your message\n3. Eye Contact — the 3-second rule and triangular gaze\n4. Facial Expressions — congruence between words and face\n5. Proxemics — spatial awareness and personal zones\n6. Mirroring — build rapport through subtle matching\n7. Open vs Closed Stances — what your body signals before you speak\n8. Handshake & Physical Greetings — first impressions\n9. Walking with Confidence — gait, posture, pace\n10. Nervous Habit Elimination — hands, feet, self-touching tells\n\n### Per-lesson format\n{\n  \"slug\": \"vocal-projection\",\n  \"title\": \"Vocal Projection\",\n  \"order\": 1,\n  \"theoryHtml\": \"<p>...</p><h3>...</h3><p>...</p>...\",  // 600-900 words, HTML formatted\n  \"examples\": [\n    {\n      \"youtubeId\": \"...\",\n      \"title\": \"...\",\n      \"description\": \"Notice how...\",\n      \"startTime\": 30\n    },\n    // 2-3 examples per lesson\n  ],\n  \"quiz\": [\n    {\n      \"question\": \"What does vocal projection primarily rely on?\",\n      \"options\": [\"Shouting louder\", \"Diaphragmatic breathing\", \"Speaking faster\", \"Using a microphone\"],\n      \"correctIndex\": 1,\n      \"explanation\": \"Projection comes from diaphragm support, not volume alone.\"\n    },\n    // 4 questions per lesson (total: 3-5)\n  ]\n}\n\n### Full output structure\n{\n  \"courses\": [\n    {\n      \"slug\": \"voice-mastery\",\n      \"title\": \"Voice Mastery\",\n      \"description\": \"...\",\n      \"icon\": \"🎙️\",\n      \"color\": \"amber\",\n      \"order\": 1,\n      \"lessons\": [ ...array of lesson objects above... ]\n    },\n    // voice-mastery, verbal-communication, body-language-fundamentals\n  ]\n}\n\nSave to: .shared/outputs/data/foundation-curriculum.json\nSignal backend-engineer when done so they can seed the DB.",
+      "context": ".shared/state/milestones.json (M15 spec)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
     }
   ]
 }

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function NavBar() {
@@ -18,6 +18,7 @@ export function NavBar() {
 
   const baseLinks = [
     { href: '/library', label: 'Library', Icon: Library },
+    { href: '/foundation', label: 'Foundation', Icon: BookOpen },
   ]
 
   const authLinks = session

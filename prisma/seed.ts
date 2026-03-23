@@ -25,6 +25,14 @@ interface SeedAnnotation {
   note: string;
 }
 
+interface SeedPracticeStep {
+  step_number: number;
+  skill_focus: string;
+  instruction: string;
+  tip?: string;
+  target_duration_sec: number;
+}
+
 interface SeedClip {
   id: string;
   youtube_video_id: string;
@@ -45,6 +53,9 @@ interface SeedClip {
   annotation: string;
   context_note?: string;
   script?: string;
+  screenplay_source?: string;
+  observation_guide?: Record<string, unknown>;
+  practice_steps?: SeedPracticeStep[];
   annotations: SeedAnnotation[];
 }
 
@@ -82,29 +93,66 @@ async function main() {
   console.log(`Seeding ${seedData.clips.length} clips...`);
 
   let created = 0;
+  let patched = 0;
   let skipped = 0;
 
   for (const clip of seedData.clips) {
-    // Upsert: safe to re-run seed without duplicating
     const existing = await prisma.clip.findFirst({
       where: { youtubeVideoId: clip.youtube_video_id },
     });
 
     if (existing) {
-      // Patch script field if missing (M10 migration)
-      if (existing.script === null && clip.script) {
-        await prisma.clip.update({
-          where: { id: existing.id },
-          data: { script: clip.script },
-        });
-        console.log(`  PATCH ${clip.id} — script field updated`);
-      } else {
-        console.log(`  SKIP ${clip.id} — already exists`);
+      // Patch any missing scalar/JSON fields
+      const patch: Record<string, unknown> = {};
+      if (existing.script === null && clip.script) patch.script = clip.script;
+      if (existing.screenplaySource === null && clip.screenplay_source) {
+        patch.screenplaySource = clip.screenplay_source;
       }
-      skipped++;
+      if (existing.observationGuide === null && clip.observation_guide) {
+        patch.observationGuide = clip.observation_guide;
+      }
+
+      if (Object.keys(patch).length > 0) {
+        await prisma.clip.update({ where: { id: existing.id }, data: patch });
+      }
+
+      // Patch PracticeStep relation — create rows if none exist yet
+      let stepsAdded = 0;
+      if (clip.practice_steps?.length) {
+        const existingStepCount = await prisma.practiceStep.count({
+          where: { clipId: existing.id },
+        });
+        if (existingStepCount === 0) {
+          await prisma.practiceStep.createMany({
+            data: clip.practice_steps.map((s) => ({
+              clipId: existing.id,
+              stepNumber: s.step_number,
+              skillFocus: s.skill_focus,
+              instruction: s.instruction,
+              tip: s.tip ?? null,
+              targetDurationSec: s.target_duration_sec,
+            })),
+          });
+          stepsAdded = clip.practice_steps.length;
+        }
+      }
+
+      const totalPatched = Object.keys(patch).length + stepsAdded;
+      if (totalPatched > 0) {
+        const desc = [
+          ...Object.keys(patch),
+          ...(stepsAdded > 0 ? [`${stepsAdded} practiceSteps`] : []),
+        ].join(", ");
+        console.log(`  PATCH ${clip.id} — ${desc}`);
+        patched++;
+      } else {
+        console.log(`  SKIP  ${clip.id} — already complete`);
+        skipped++;
+      }
       continue;
     }
 
+    // Create new clip with all fields
     await prisma.clip.create({
       data: {
         youtubeVideoId: clip.youtube_video_id,
@@ -125,6 +173,17 @@ async function main() {
         annotation: clip.annotation,
         contextNote: clip.context_note ?? null,
         script: clip.script ?? null,
+        screenplaySource: clip.screenplay_source ?? null,
+        observationGuide: clip.observation_guide ? JSON.parse(JSON.stringify(clip.observation_guide)) : undefined,
+        practiceSteps: clip.practice_steps ? {
+          create: clip.practice_steps.map((s) => ({
+            stepNumber: s.step_number,
+            skillFocus: s.skill_focus,
+            instruction: s.instruction,
+            tip: s.tip ?? null,
+            targetDurationSec: s.target_duration_sec,
+          })),
+        } : undefined,
         annotations: {
           create: clip.annotations.map((a) => ({
             atSecond: a.at_second,
@@ -135,14 +194,58 @@ async function main() {
       },
     });
 
-    console.log(`  OK   ${clip.id} — ${clip.skill_category}/${clip.difficulty}`);
+    console.log(`  OK    ${clip.id} — ${clip.skill_category}/${clip.difficulty}`);
     created++;
   }
 
-  console.log(`\n─── Seed complete ───`);
+  console.log(`\n─── Clip seed complete ───`);
   console.log(`Created: ${created}`);
-  console.log(`Skipped: ${skipped} (already existed)`);
+  console.log(`Patched: ${patched}`);
+  console.log(`Skipped: ${skipped} (already complete)`);
   console.log(`Total in DB: ${await prisma.clip.count()}`);
+  console.log(`PracticeSteps in DB: ${await prisma.practiceStep.count()}`);
+
+  // Foundation curriculum seeding
+  const foundationPath = path.resolve('.shared/outputs/data/foundation-curriculum.json');
+  if (fs.existsSync(foundationPath)) {
+    const curriculumData = JSON.parse(fs.readFileSync(foundationPath, 'utf-8'));
+
+    for (const courseData of curriculumData.courses) {
+      const course = await prisma.foundationCourse.upsert({
+        where: { slug: courseData.slug },
+        update: { title: courseData.title, description: courseData.description, icon: courseData.icon, color: courseData.color, order: courseData.order },
+        create: { slug: courseData.slug, title: courseData.title, description: courseData.description, icon: courseData.icon, color: courseData.color, order: courseData.order },
+      });
+
+      for (const lessonData of courseData.lessons) {
+        const lesson = await prisma.foundationLesson.upsert({
+          where: { courseId_slug: { courseId: course.id, slug: lessonData.slug } },
+          update: { title: lessonData.title, theoryHtml: lessonData.theoryHtml, order: lessonData.order },
+          create: { courseId: course.id, slug: lessonData.slug, title: lessonData.title, theoryHtml: lessonData.theoryHtml, order: lessonData.order },
+        });
+
+        // Delete and re-create examples + questions
+        await prisma.lessonExample.deleteMany({ where: { lessonId: lesson.id } });
+        for (const ex of lessonData.examples) {
+          await prisma.lessonExample.create({
+            data: { lessonId: lesson.id, youtubeId: ex.youtubeId, title: ex.title, description: ex.description, startTime: ex.startTime ?? null },
+          });
+        }
+
+        await prisma.quizQuestion.deleteMany({ where: { lessonId: lesson.id } });
+        const quizArr = lessonData.quiz as { question: string; options: string[]; correctIndex: number; explanation: string }[];
+        for (let qi = 0; qi < quizArr.length; qi++) {
+          const q = quizArr[qi];
+          await prisma.quizQuestion.create({
+            data: { lessonId: lesson.id, question: q.question, options: q.options, correctIndex: q.correctIndex, explanation: q.explanation, order: qi },
+          });
+        }
+      }
+    }
+    console.log('✓ Foundation curriculum seeded');
+  } else {
+    console.log('⚠ foundation-curriculum.json not found — skipping Foundation seed');
+  }
 }
 
 main()

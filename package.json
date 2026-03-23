@@ -10,10 +10,13 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
+    "db:sample": "tsx scripts/seed-sample-data.ts",
     "db:studio": "prisma studio",
     "verify": "cd roles/data-engineer/pipelines && tsx verify-youtube-ids.ts",
     "admin:create": "tsx scripts/create-admin.ts",
-    "user:create": "tsx scripts/create-user.ts"
+    "user:create": "tsx scripts/create-user.ts",
+    "session:start": "powershell -ExecutionPolicy Bypass -File scripts/start-session.ps1",
+    "session:checkpoint": "tsx scripts/checkpoint-all.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

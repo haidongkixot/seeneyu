@@ -7,7 +7,9 @@
       "status": "complete",
       "owner": "pm",
       "tester_approved": true,
-      "blocks": ["M1"],
+      "blocks": [
+        "M1"
+      ],
       "completed_at": "2026-03-21T00:00:00Z"
     },
     {
@@ -17,7 +19,10 @@
       "status": "complete",
       "owner": "designer",
       "tester_approved": true,
-      "blocks": ["M2", "M3"],
+      "blocks": [
+        "M2",
+        "M3"
+      ],
       "completed_at": "2026-03-21T02:00:00Z"
     },
     {
@@ -28,7 +33,9 @@
       "owner": "data-engineer",
       "tester_approved": true,
       "tester_condition": "YouTube video IDs must be verified before DB seed",
-      "blocks": ["M3"],
+      "blocks": [
+        "M3"
+      ],
       "completed_at": "2026-03-21T02:00:00Z"
     },
     {
@@ -38,7 +45,9 @@
       "status": "complete",
       "owner": "pm",
       "tester_approved": true,
-      "blocks": ["M4"],
+      "blocks": [
+        "M4"
+      ],
       "completed_at": "2026-03-21T03:00:00Z",
       "deliverables": [
         "src/app/layout.tsx",
@@ -65,7 +74,9 @@
       "status": "complete",
       "owner": "pm",
       "tester_approved": true,
-      "blocks": ["M5"],
+      "blocks": [
+        "M5"
+      ],
       "completed_at": "2026-03-21T03:00:00Z",
       "deliverables": [
         "src/app/library/[clipId]/record/page.tsx",
@@ -79,7 +90,9 @@
       "status": "complete",
       "owner": "pm",
       "tester_approved": true,
-      "blocks": ["M6"],
+      "blocks": [
+        "M6"
+      ],
       "completed_at": "2026-03-21T03:00:00Z",
       "deliverables": [
         "src/app/api/sessions/route.ts",
@@ -96,7 +109,9 @@
       "status": "complete",
       "owner": "pm",
       "tester_approved": true,
-      "blocks": ["M7"],
+      "blocks": [
+        "M7"
+      ],
       "completed_at": "2026-03-22T18:00:00Z",
       "note": "Deployed to https://seeneyu.vercel.app — DB seeded, all env vars set"
     },
@@ -108,7 +123,9 @@
       "owner": "backend-engineer",
       "tester_approved": true,
       "completed_at": "2026-03-22T20:00:00Z",
-      "blocks": ["M8"],
+      "blocks": [
+        "M8"
+      ],
       "tester_condition": "Learner can sign up, sign in, sign out. Admin routes return 401 for non-admins.",
       "deliverables": [
         "prisma/schema.prisma (User, Account, AuthSession, VerificationToken models)",
@@ -148,7 +165,9 @@
       "owner": "backend-engineer",
       "tester_approved": true,
       "completed_at": "2026-03-22T20:00:00Z",
-      "open_bugs": ["BUG-001 (medium): ClipForm score fields allow 1-10, model expects 1-3 — non-blocking"],
+      "open_bugs": [
+        "BUG-001 (medium): ClipForm score fields allow 1-10, model expects 1-3 — non-blocking"
+      ],
       "blocks": [],
       "tester_condition": "Admin can add/edit/delete clips from UI. Admin can view all learners and manage roles. Non-admin cannot access /admin.",
       "deliverables": [
@@ -163,13 +182,12 @@
         "src/app/admin/users/page.tsx",
         "src/app/admin/users/[id]/page.tsx"
       ]
-    }
-  ,
+    },
     {
       "id": "M10",
       "name": "Script-Aware Coaching Loop",
       "phase": "8-coaching-v2",
-      "status": "in-progress",
+      "status": "complete",
       "owner": "backend-engineer",
       "tester_approved": false,
       "blocks": [],
@@ -182,6 +200,105 @@
         "src/app/library/[clipId]/record/RecordClient.tsx — graceful frame capture fix",
         "src/app/feedback/[sessionId]/page.tsx — Action Plan steps section",
         "prisma/seed.ts — script text added to all 15 clips"
+      ]
+    },
+    {
+      "id": "M11",
+      "name": "Observation Guide — Pre-Practice Clip Analysis",
+      "phase": "9-coaching-v3",
+      "status": "code-complete",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "blocks": [
+        "M12"
+      ],
+      "tester_condition": "Before recording, learner sees a structured analysis of how the clip scene was conducted: techniques used, timestamps, why each works. Observation guide renders on the clip detail page before the learner clicks Record.",
+      "deliverables": [
+        "prisma/schema.prisma — add observationGuide JSON field to Clip",
+        "src/lib/types.ts — ObservationGuide type",
+        "src/app/api/admin/clips/[id]/observation/route.ts — AI-generate observation guide",
+        "src/app/library/[clipId]/page.tsx — add ObservationGuide tab/section",
+        "src/components/ObservationGuide.tsx — technique breakdown with timestamps",
+        ".shared/outputs/data/clips-seed.json — add observation_guide to all 15 clips",
+        "prisma/seed.ts — patch observation_guide field"
+      ]
+    },
+    {
+      "id": "M12",
+      "name": "Micro-Practice Steps — Duolingo-Style Chunked Learning",
+      "phase": "9-coaching-v3",
+      "status": "code-complete",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "blockedBy": [
+        "M11"
+      ],
+      "tester_condition": "Practice is split into 3-5 micro-steps. Each step shows what to focus on, has a max 30s recording, gets instant AI feedback on just that skill element. Completing all steps unlocks Full Performance challenge. Short recordings (≤30s) always produce at least 1 frame for AI analysis.",
+      "deliverables": [
+        "prisma/schema.prisma — PracticeStep model, MicroSession model",
+        "src/lib/types.ts — PracticeStep, MicroFeedback types",
+        "src/app/api/micro-sessions/route.ts — micro-session create + feedback",
+        "src/app/library/[clipId]/practice/page.tsx — step-by-step practice flow",
+        "src/components/MicroPracticeFlow.tsx — stepper UI with progress bar",
+        "src/components/MicroRecorder.tsx — 30s max recorder with instant feedback",
+        ".shared/outputs/data/clips-seed.json — add practice_steps to all 15 clips",
+        "src/app/library/[clipId]/record/RecordClient.tsx — enforce 30s max + Whisper audio for vocal clips"
+      ]
+    },
+    {
+      "id": "M13",
+      "name": "Onboarding Assessment & Personalized Learning Path",
+      "phase": "10-personalization",
+      "status": "code-complete",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "tester_condition": "New user completes a 5-skill screening quiz on signup. AI scores their baseline. System generates a recommended learning path (ordered clip sequence per skill level). Learning path shown on dashboard. Progress tracked level by level.",
+      "deliverables": [
+        "prisma/schema.prisma — SkillBaseline, LearningPath models",
+        "src/lib/types.ts — SkillBaseline, LearningPath types",
+        "src/app/onboarding/ — multi-step onboarding assessment flow",
+        "src/app/api/onboarding/assessment/route.ts — baseline scoring API",
+        "src/app/api/onboarding/learning-path/route.ts — path generation algorithm",
+        "src/app/dashboard/page.tsx — personalized learning path + skill level progress",
+        "src/components/LearningPathCard.tsx — next recommended clip card",
+        "src/components/SkillProgressBar.tsx — level progression per skill category"
+      ]
+    },
+    {
+      "id": "M14",
+      "name": "Content Expansion — 100+ Lessons from Screenplay Films",
+      "phase": "11-content-expansion",
+      "status": "in-progress",
+      "owner": "data-engineer",
+      "tester_approved": false,
+      "blocks": [],
+      "tester_condition": "Library has 100+ verified clips from films with public screenplays. Each clip has screenplay_source URL, script excerpt, observation_guide, and practice_steps. Library filter by film works. DB seed runs clean.",
+      "deliverables": [
+        "prisma/schema.prisma — add screenplaySource field to Clip",
+        ".shared/outputs/data/clips-100-seed.json — 100+ clips with full data",
+        "prisma/seed.ts — updated to seed all 100+ clips",
+        "src/app/library/page.tsx — expanded filters (by film, screenplay status)",
+        "src/app/admin/clips/new/page.tsx + edit — add screenplaySource field"
+      ]
+    },
+    {
+      "id": "M15",
+      "name": "Performing Foundation Section",
+      "phase": "12-foundation-section",
+      "status": "in-progress",
+      "owner": "backend-engineer",
+      "tester_approved": false,
+      "blocks": [],
+      "tester_condition": "Foundation section at /foundation. 3 courses (Voice, Verbal, Body Language), 10+ lessons each. Each lesson: theory text, 2+ YouTube examples, 3-5 question quiz. Progress persists per user. Separate from the practice/library section.",
+      "deliverables": [
+        "prisma/schema.prisma — FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress models",
+        "src/app/foundation/page.tsx — course catalog",
+        "src/app/foundation/[courseSlug]/page.tsx — course detail + lesson list",
+        "src/app/foundation/[courseSlug]/[lessonSlug]/page.tsx — lesson page (theory + examples + quiz)",
+        "src/components/foundation/ — QuizCard, LessonExample, TheoryPanel, ProgressTracker",
+        "src/app/api/foundation/ — progress API routes",
+        ".shared/outputs/data/foundation-curriculum.json — all 3 courses + lessons + quizzes",
+        "prisma/seed.ts — seed foundation courses"
       ]
     }
   ]

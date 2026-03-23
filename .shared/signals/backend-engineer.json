@@ -24,6 +24,52 @@
       "status": "read"
     },
     {
+      "id": "sig_pm_be_m11_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M11-observation-guide",
+      "priority": "high",
+      "message": "M11: Observation Guide — pre-practice clip analysis. Start immediately (parallel with Designer who is producing specs).\n\n## TASK 1 — Schema: observationGuide field\nAdd to Clip model in prisma/schema.prisma:\n  observationGuide Json?  // array of { atSecond, technique, what, why }\nRun: npm run db:push\n\n## TASK 2 — Types: ObservationGuide\nIn src/lib/types.ts add:\n  export interface ObservationMoment { atSecond: number; technique: string; what: string; why: string }\n  export interface ObservationGuide { moments: ObservationMoment[]; headline: string }\nAdd observationGuide: ObservationGuide | null to Clip interface.\n\n## TASK 3 — Admin: AI generation route\nCreate: src/app/api/admin/clips/[id]/observation/route.ts\nPOST handler: given clipId, call GPT-4o with the clip's annotation, sceneDescription, characterName, and script. Prompt: generate an ObservationGuide JSON with 4-6 moments identifying specific techniques used (timestamp, name, what the character does, why it works). Save to clip.observationGuide.\n\n## TASK 4 — Component: ObservationGuide.tsx\nCreate: src/components/ObservationGuide.tsx\nRead Designer spec from .shared/outputs/design/m11-spec.md (Designer is writing this in parallel — check your signal queue for their delivery signal before finalizing the component).\nCore: vertical timeline list. Each item: timestamp badge, technique name, what text, why text.\nGraceful: if observationGuide is null, show 'Analysis coming soon' placeholder.\n\n## TASK 5 — Integrate into clip detail page\nIn src/app/library/[clipId]/page.tsx:\nFetch clip including observationGuide field.\nAdd a tabbed layout below the YouTube embed: 'Watch' tab (current view) | 'How It Works' tab (ObservationGuide component).\n\n## TASK 6 — Signal Data Engineer\nAfter db:push, signal data-engineer.json that the observationGuide field is in schema and they can add curated observation_guide data to clips-seed.json for all 15 clips.\n\n## After completion: signal Tester + PM.",
+      "context": "prisma/schema.prisma, src/lib/types.ts, src/app/library/[clipId]/page.tsx",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m12_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M12-micro-practice-steps",
+      "priority": "high",
+      "message": "M12: Micro-Practice Steps (Duolingo-style). BLOCKED until M11 is complete. Start planning, implement after M11 ships.\n\n## Context\nUser feedback: practice must be split into small steps so the learner can build skill incrementally before doing the full performance. Each step focuses on ONE skill element. Max 30s recording per step. Instant feedback per step.\n\n## TASK 1 — Schema\nAdd to prisma/schema.prisma:\n  model PracticeStep {\n    id            String   @id @default(cuid())\n    clipId        String\n    clip          Clip     @relation(fields: [clipId], references: [id])\n    stepNumber    Int\n    skillFocus    String   // e.g. 'Eye Contact Duration', 'Vocal Pause'\n    instruction   String   @db.Text // what to do in this step\n    tip           String?  @db.Text // coaching tip for this step\n    targetDurationSec Int  @default(20)\n  }\n  model MicroSession {\n    id           String   @id @default(cuid())\n    sessionId    String?  // parent full session if any\n    clipId       String\n    stepNumber   Int\n    recordingUrl String?\n    frameUrls    String?  @db.Text\n    audioUrl     String?  // for Whisper transcription\n    transcript   String?  @db.Text\n    feedback     Json?\n    status       String   @default('recording')\n    createdAt    DateTime @default(now())\n  }\nRun: npm run db:push\n\n## TASK 2 — Types\nAdd PracticeStep, MicroFeedback types to src/lib/types.ts.\n\n## TASK 3 — API: micro-sessions\nCreate: src/app/api/micro-sessions/route.ts (POST: create micro session, upload recording)\nCreate: src/app/api/micro-sessions/[id]/feedback/route.ts (POST: analyze step recording)\nFeedback prompt should be highly focused: only score the ONE skill element for this step (e.g. 'Only evaluate Eye Contact Duration — ignore everything else'). Return pass (score ≥ 7/10) or needs-work.\nFor vocal-pacing + confident-disagreement clips: transcribe audio via Whisper (openai.audio.transcriptions) before sending to GPT-4o. Include transcript in the analysis prompt.\n\n## TASK 4 — Practice Steps data\nAfter db:push, signal data-engineer.json to add practice_steps (3-5 per clip) to clips-seed.json.\n\n## TASK 5 — UI: Micro-Practice Flow\nCreate: src/app/library/[clipId]/practice/page.tsx — server page, fetches clip + practiceSteps\nCreate: src/components/MicroPracticeFlow.tsx — stepper UI per Designer spec (m12-spec.md)\nCreate: src/components/MicroRecorder.tsx — recorder with 30s countdown ring, captures frames + audio blob\nOn the clip detail page: change 'Record Practice' button to route to /practice instead of /record.\n\n## After completion: signal Tester + PM. Also signal Data Engineer to add practice_steps seed data.",
+      "context": "prisma/schema.prisma, src/lib/types.ts, src/app/library/[clipId]/page.tsx, src/app/api/sessions/[id]/feedback/route.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m13_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M13-onboarding-assessment",
+      "priority": "normal",
+      "message": "M13: Onboarding Assessment & Personalized Learning Path. BLOCKED until M12 is complete. Brief for planning:\n\n## Concept\nNew users complete a 5-skill screening when they sign up. The system scores their baseline level per skill category. A personalized learning path (ordered clip sequence) is generated. Dashboard shows their path + progress.\n\n## TASK 1 — Schema\n  model SkillBaseline {\n    id           String @id @default(cuid())\n    userId       String @unique\n    user         User   @relation(fields: [userId], references: [id])\n    eyeContact   String // 'beginner'|'intermediate'|'advanced'\n    openPosture  String\n    activeListening String\n    vocalPacing  String\n    confidentDisagreement String\n    assessedAt   DateTime @default(now())\n  }\n  model LearningPath {\n    id       String @id @default(cuid())\n    userId   String\n    user     User   @relation(fields: [userId], references: [id])\n    entries  Json   // array of { clipId, skillCategory, order, completed, completedAt }\n    generatedAt DateTime @default(now())\n    updatedAt   DateTime @updatedAt\n  }\n\n## TASK 2 — Onboarding flow\nCreate: src/app/onboarding/ — multi-step assessment (5 screens)\nSelf-rating per skill + optional 10s sample recording per skill.\nPOST to /api/onboarding/assessment → stores SkillBaseline + generates LearningPath.\n\n## TASK 3 — Learning path algorithm\nCreate: src/app/api/onboarding/learning-path/route.ts\nAlgorithm: for each skill, select clips at the user's assessed level first, then next level. Order by replicationDifficulty ASC. Interleave skills so the path stays varied.\n\n## TASK 4 — Dashboard\nCreate: src/app/dashboard/page.tsx\nShow 5 skill columns with level + progress + next recommended clip card.\n\n## After completion: signal Tester + PM.",
+      "context": "prisma/schema.prisma, src/lib/types.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_session_end_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. Outstanding work this session — M10, M11, M12, M13 all complete. Next session: (1) Standby for Tester sign-off feedback — fix any issues they file. (2) Once Tester approves, signal Builder to deploy latest commits. (3) Watch for prisma generate EPERM issue on Windows — Vercel postinstall handles it in production. (4) M13 learning path: AI video scoring component (60% weight) is scaffolded but currently uses self-report only — this is a future improvement item when enough session data exists.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "read"
+    },
+    {
       "id": "sig_pm_be_bug001_001",
       "from": "pm",
       "to": "backend-engineer",
@@ -52,9 +98,72 @@
       "task": "M10-UI-specs-ready",
       "priority": "high",
       "message": "M10 UI specs are complete and ready for implementation. File: .shared/outputs/design/m10-spec.md\n\nThree components specified:\n1. CharacterBanner — compact horizontal banner above webcam. Shows character name, actor, movie title, and skill category icon. Props: characterName, actorName, movieTitle, skillCategory.\n2. ScriptPanel — card below observation checklist. Two modes: 'dialogue' (blockquote style) or 'action' (numbered list). Props: type, content, label, tip. Renders only when clip.script is non-null.\n3. ActionPlan — numbered step list on feedback page, between improvements grid and AI Tips. Props: steps[] (action + why per step). Render only when feedbackResult.steps is non-empty.\n\nKey implementation notes in spec:\n- ActionPlan left accent border: use absolute positioned element, NOT border-l-4\n- Stagger animation: inline style animationDelay per step index\n- Add fade-in-up keyframe to tailwind.config.js (spec includes exact config)\n- All design tokens align with existing design system (amber accent, bg-surface, etc.)",
-      "artifacts": [".shared/outputs/design/m10-spec.md"],
+      "artifacts": [
+        ".shared/outputs/design/m10-spec.md"
+      ],
       "timestamp": "2026-03-23T00:00:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_designer_be_m11_m12_m13_specs_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "M11-M12-M13-UI-specs-ready",
+      "priority": "high",
+      "message": "M11, M12, and M13 UI specs all delivered. Implement in order (M11 → M12 → M13) as per blocking dependencies.\n\n## M11 — Observation Guide (.shared/outputs/design/m11-spec.md)\nComponents: ObservationTabBar (Watch | How It Works tabs on clip detail page) + ObservationGuide (vertical technique timeline with timestamp badges, what/why per entry). Graceful null state included. Admin CMS needs a 'Generate Observation Guide' button — use existing admin card patterns.\n\n## M12 — Micro-Practice Stepper (.shared/outputs/design/m12-spec.md)\nComponents: PracticeStepperLayout (top bar + progress bar + dots), StepCard (instruction + tip + jump link), PracticeRecorder (30s countdown ring SVG spec included — ring turns amber → orange → red as time runs out), MicroFeedbackCard (pass/needs-work, slides up with animate-slide-up keyframe), PerformanceUnlockScreen (celebration after all steps). New keyframe 'slide-up' to add to tailwind.config.js is in the spec.\n\n## M13 — Onboarding Assessment & Learning Path (.shared/outputs/design/m13-spec.md)\nPart A: 5-screen OnboardingShell + AssessmentSkillScreen (3-button level selector: Beginner/Intermediate/Advanced) + ProcessingScreen + OnboardingCompleteScreen.\nPart B: LearningPathDashboard (5-column grid) + SkillTrackColumn + SkillProgressBar + LearningPathCard. YouTube thumbnail URL pattern included: https://i.ytimg.com/vi/[VIDEO_ID]/mqdefault.jpg\n\nAll specs include props interfaces, full Tailwind class lists, ASCII mockups, accessibility notes, and dev implementation notes.",
+      "artifacts": [
+        ".shared/outputs/design/m11-spec.md",
+        ".shared/outputs/design/m12-spec.md",
+        ".shared/outputs/design/m13-spec.md"
+      ],
+      "timestamp": "2026-03-23T01:15:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m14_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m14-screenplay-library-expansion",
+      "priority": "medium",
+      "message": "NEW MILESTONE M14: Content Expansion — 100+ Lessons from Screenplay Films.\n\n## YOUR TASK\nThree things to do for M14:\n\n### TASK 1 — Schema: Add screenplaySource field\nIn prisma/schema.prisma, add to Clip model:\n  screenplaySource  String?\n\nRun: npm run db:push && npx prisma generate\n\nSignal data-engineer when db:push is done so they know the field exists.\n\n### TASK 2 — Admin CMS: Add screenplaySource input\nIn src/app/admin/clips/new/page.tsx and src/app/admin/clips/[id]/edit/page.tsx:\n- Add a \"Screenplay Source URL\" text input field for screenplaySource\n- Place it after the Script textarea\n\n### TASK 3 — Library: Film filter + screenplay badge\nIn src/app/library/page.tsx:\n- Add \"Filter by Film\" dropdown (derive unique movieTitle values from clips)\n- Add \"Has Screenplay\" checkbox filter (shows only clips where screenplaySource is not null)\n\nIn src/components/ClipCard.tsx:\n- Show a small amber badge \"Screenplay\" when clip.screenplaySource is set\n\nIn src/app/library/[clipId]/page.tsx (clip detail):\n- Show a \"Read Screenplay\" link button when screenplaySource is set (opens in new tab)\n\nWait for Designer to deliver M14 UI spec (.shared/outputs/design/m14-spec.md) for exact styling of the filter and badge.\n\n### After M14 completion\nSignal PM and Tester.",
+      "context": "prisma/schema.prisma, src/app/library/page.tsx, src/components/ClipCard.tsx, src/app/admin/clips/new/page.tsx",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m15_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m15-performing-foundation-section",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation Section (separate from library/practice).\n\n## OVERVIEW\nBuild a structured learning section at /foundation — completely separate from the clip practice section. Think Udemy: courses → lessons → theory + examples + quiz. Three courses: Voice Mastery, Verbal Communication, Body Language Fundamentals.\n\n## TASK 1 — Schema: New Foundation Models\nAdd to prisma/schema.prisma:\n\nmodel FoundationCourse {\n  id          String            @id @default(cuid())\n  slug        String            @unique\n  title       String\n  description String\n  icon        String\n  color       String\n  order       Int\n  lessons     FoundationLesson[]\n  createdAt   DateTime          @default(now())\n}\n\nmodel FoundationLesson {\n  id          String              @id @default(cuid())\n  courseId    String\n  course      FoundationCourse    @relation(fields: [courseId], references: [id])\n  slug        String\n  title       String\n  theoryHtml  String              @db.Text\n  order       Int\n  examples    LessonExample[]\n  questions   QuizQuestion[]\n  progress    FoundationProgress[]\n  @@unique([courseId, slug])\n}\n\nmodel LessonExample {\n  id          String           @id @default(cuid())\n  lessonId    String\n  lesson      FoundationLesson @relation(fields: [lessonId], references: [id])\n  youtubeId   String\n  title       String\n  description String\n  startTime   Int?\n}\n\nmodel QuizQuestion {\n  id           String           @id @default(cuid())\n  lessonId     String\n  lesson       FoundationLesson @relation(fields: [lessonId], references: [id])\n  question     String\n  options      Json\n  correctIndex Int\n  explanation  String\n  order        Int              @default(0)\n}\n\nmodel FoundationProgress {\n  id          String           @id @default(cuid())\n  userId      String\n  user        User             @relation(fields: [userId], references: [id])\n  lessonId    String\n  lesson      FoundationLesson @relation(fields: [lessonId], references: [id])\n  quizScore   Int?\n  quizPassed  Boolean          @default(false)\n  completedAt DateTime?\n  @@unique([userId, lessonId])\n}\n\nAdd FoundationProgress[] to User model.\n\nRun: npm run db:push && npx prisma generate\n\n## TASK 2 — API Routes\nsrc/app/api/foundation/progress/route.ts — POST: mark lesson complete, save quiz score\nsrc/app/api/foundation/progress/[lessonId]/route.ts — GET: get user progress for a lesson\n\n## TASK 3 — Pages (wait for Designer spec in .shared/outputs/design/m15-spec.md)\nsrc/app/foundation/page.tsx — Course catalog: 3 course cards with title, description, icon, lesson count, user progress % \nsrc/app/foundation/[courseSlug]/page.tsx — Course page: lesson list with completion checkmarks, lesson order\nsrc/app/foundation/[courseSlug]/[lessonSlug]/page.tsx — Lesson page:\n  - Section 1: Theory (render theoryHtml safely with dangerouslySetInnerHTML, styled with typography)\n  - Section 2: Examples (YouTube embeds with title + description)\n  - Section 3: Quiz (MCQ cards, one at a time or all at once, submit → show score + explanations)\n  - Section 4: Navigation (Prev Lesson / Next Lesson buttons)\n  - Progress auto-saved when quiz is submitted\n\n## TASK 4 — NavBar\nAdd \"Foundation\" link to src/components/NavBar.tsx (next to Library)\n\n## TASK 5 — Seed\nWait for data-engineer to deliver .shared/outputs/data/foundation-curriculum.json.\nUpdate prisma/seed.ts to seed all FoundationCourse, FoundationLesson, LessonExample, QuizQuestion records.\n\n## After completion\nSignal Tester and PM.",
+      "context": "prisma/schema.prisma, src/components/NavBar.tsx, .shared/outputs/design/m15-spec.md (incoming from designer)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_be_m14m15_spec_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "spec-ready",
+      "message": "M14 and M15 UI specs delivered. m14-spec.md covers: Library Film filter dropdown, Screenplay toggle filter, ClipCard screenplay badge (top-right thumbnail), clip detail screenplay link. m15-spec.md covers: course catalog (3 cards), course page (lesson list), lesson page (theory/examples/quiz) with all Tailwind classes and interactive states.",
+      "context": ".shared/outputs/design/m14-spec.md, .shared/outputs/design/m15-spec.md",
+      "timestamp": "2026-03-23T07:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_be_p1_observationguide_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "bug-fix-request",
+      "priority": "p1",
+      "task": "fix-observationguide-cta-href",
+      "message": "P1 FIX REQUIRED — ObservationGuide.tsx CTA href wrong. Both CTAs link to /record but should link to /practice (the M12 micro-practice stepper). Fix both:\n\n  Line ~31 (null-state CTA): href={`/library/${clipId}/record`} → href={`/library/${clipId}/practice`}\n  Line ~86 (main CTA): href={`/library/${clipId}/record`} → href={`/library/${clipId}/practice`}\n\nWithout this fix, the Observation Guide bypasses the M12 stepper entirely. Tester sign-off on M11 is on hold until confirmed.",
+      "timestamp": "2026-03-23T09:00:00Z",
+      "status": "unread"
     }
   ]
 }

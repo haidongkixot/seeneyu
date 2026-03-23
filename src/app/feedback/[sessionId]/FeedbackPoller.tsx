@@ -33,6 +33,11 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
     return false
   }, [sessionId])
 
+  // Trigger the feedback job on mount (replaces the unreliable server-side fire-and-forget)
+  useEffect(() => {
+    fetch(`/api/sessions/${sessionId}/feedback`, { method: 'POST' }).catch(console.error)
+  }, [sessionId])
+
   useEffect(() => {
     const interval = setInterval(async () => {
       setDots(d => d.length >= 3 ? '.' : d + '.')

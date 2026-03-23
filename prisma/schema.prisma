@@ -28,6 +28,7 @@ model Clip {
   annotation            String   @db.Text
   contextNote           String?  @db.Text
   script                String?  @db.Text
+  screenplaySource      String?
   observationGuide      Json?
   isActive              Boolean  @default(true)
   createdAt             DateTime @default(now())
@@ -92,6 +93,7 @@ model User {
   authSessions       AuthSession[]
   userSessions       UserSession[]
   skillBaselines     SkillBaseline[]
+  foundationProgress FoundationProgress[]
 }
 
 model SkillBaseline {
@@ -168,4 +170,73 @@ model MicroSession {
   createdAt    DateTime @default(now())
 
   @@index([clipId])
+}
+
+model FoundationCourse {
+  id          String             @id @default(cuid())
+  slug        String             @unique
+  title       String
+  description String             @db.Text
+  icon        String
+  color       String
+  order       Int
+  lessons     FoundationLesson[]
+  createdAt   DateTime           @default(now())
+}
+
+model FoundationLesson {
+  id         String               @id @default(cuid())
+  courseId   String
+  course     FoundationCourse     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug       String
+  title      String
+  theoryHtml String               @db.Text
+  order      Int
+  examples   LessonExample[]
+  questions  QuizQuestion[]
+  progress   FoundationProgress[]
+
+  @@unique([courseId, slug])
+  @@index([courseId])
+}
+
+model LessonExample {
+  id          String           @id @default(cuid())
+  lessonId    String
+  lesson      FoundationLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  youtubeId   String
+  title       String
+  description String           @db.Text
+  startTime   Int?
+
+  @@index([lessonId])
+}
+
+model QuizQuestion {
+  id           String           @id @default(cuid())
+  lessonId     String
+  lesson       FoundationLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question     String
+  options      Json
+  correctIndex Int
+  explanation  String           @db.Text
+  order        Int              @default(0)
+
+  @@index([lessonId])
+}
+
+model FoundationProgress {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      FoundationLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  quizScore   Int?
+  quizPassed  Boolean          @default(false)
+  completedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([userId, lessonId])
+  @@index([userId])
 }

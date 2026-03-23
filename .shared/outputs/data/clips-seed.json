@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.1",
+    "version": "1.2",
     "total_clips": 15,
     "skills": [
       "eye-contact",
@@ -12,7 +12,8 @@
     "status": "verified — all 15 youtube_video_id fields filled via YouTube Data API v3 and reviewed",
     "generated_by": "data-engineer role",
     "date": "2026-03-21",
-    "script_added": "2026-03-22 — script field added for M10. Eye-contact/open-posture/active-listening clips use numbered physical instructions; vocal-pacing/confident-disagreement clips use exact dialogue to recite."
+    "script_added": "2026-03-22 — script field added for M10",
+    "observation_guide_added": "2026-03-23 — observation_guide + practice_steps added for M11/M12"
   },
   "clips": [
     {
@@ -37,22 +38,27 @@
       "annotation": "Watch how Chris maintains direct, warm eye contact throughout the pitch — 2-3 second holds, natural breaks to the side (never down), and how eye contact shifts meaningfully when he emphasizes key points.",
       "context_note": "He has just come from a construction site — the stakes are high but he controls his gaze entirely.",
       "script": "1. Sit or stand tall with shoulders back and chin level — not tilted up or down.\n2. Look directly into the other person's eyes for 2–3 seconds, then break naturally to one side — never look down.\n3. When making a key point, hold eye contact a beat longer than feels comfortable.\n4. Let your expression stay warm — allow a slight, genuine smile to reach your eyes.",
+      "observation_guide": {
+        "headline": "How Chris Gardner holds eye contact under pressure — and why it works",
+        "moments": [
+          { "at_second": 48, "technique": "Locked-In Opening Gaze", "what": "Establishes direct eye contact from the very first word", "why": "Signals confidence before a single pitch word is spoken" },
+          { "at_second": 55, "technique": "Natural Side Break", "what": "Eyes shift left briefly, then return to interviewer", "why": "Prevents staring — makes the intensity feel intentional, not anxious" },
+          { "at_second": 72, "technique": "2–3 Second Hold", "what": "Counts three beats of eye contact while making a key point", "why": "Emphasis lands harder when the gaze doesn't waver during it" },
+          { "at_second": 90, "technique": "Warm Micro-expression", "what": "Slight smile reaches the eyes — not just the mouth — during pitch", "why": "Warmth combined with eye contact signals trustworthy confidence" },
+          { "at_second": 110, "technique": "Clean Reconnect", "what": "Returns gaze directly after a brief natural break", "why": "A clean return shows the break was deliberate — not avoidance" },
+          { "at_second": 140, "technique": "Hold Through Silence", "what": "Maintains eye contact while the interviewer considers his words", "why": "Filling silence with presence instead of looking away or fidgeting" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "4-Second Hold", "instruction": "Look directly into the camera lens for 4 full seconds without breaking away.", "tip": "Count silently: one, two, three, four. Let the silence sit with you.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Natural Side Break", "instruction": "Hold for 3 seconds, break eye contact to your left, return within 1 second. Repeat 5 times.", "tip": "The break should feel intentional — not like discomfort forcing your gaze away.", "target_duration_sec": 60 },
+        { "step_number": 3, "skill_focus": "Warm Eye Contact", "instruction": "Hold camera gaze while allowing a slight smile to reach your eyes — not just your mouth.", "tip": "Think of something genuinely warm. Faked warmth reads as fake under sustained eye contact.", "target_duration_sec": 45 },
+        { "step_number": 4, "skill_focus": "Hold Through Silence", "instruction": "Make a short statement to camera, then hold eye contact for 5 seconds of silence before continuing.", "tip": "Most people break gaze during silence — this is precisely the moment to practice staying.", "target_duration_sec": 60 }
+      ],
       "annotations": [
-        {
-          "at_second": 48,
-          "type": "eye_contact",
-          "note": "Notice: eyes locked on interviewer, not breaking under pressure"
-        },
-        {
-          "at_second": 72,
-          "type": "eye_contact",
-          "note": "2-3 second hold — count it. Then a natural left-side break."
-        },
-        {
-          "at_second": 110,
-          "type": "expression",
-          "note": "Warm, confident micro-smile while maintaining eye contact"
-        }
+        { "at_second": 48, "type": "eye_contact", "note": "Notice: eyes locked on interviewer, not breaking under pressure" },
+        { "at_second": 72, "type": "eye_contact", "note": "2-3 second hold — count it. Then a natural left-side break." },
+        { "at_second": 110, "type": "expression", "note": "Warm, confident micro-smile while maintaining eye contact" }
       ]
     },
     {
@@ -77,22 +83,26 @@
       "annotation": "Observe how extended, unblinking eye contact is used strategically — it unsettles the questioner and signals dominance without aggression. Notice when he deliberately looks away vs when he holds.",
       "context_note": "The power dynamic matters: he's being interrogated but refuses to yield visually.",
       "script": "1. Hold eye contact for 4–5 seconds without blinking — let the silence fill the space.\n2. When you choose to look away, do it slowly and deliberately — a choice, not a flinch.\n3. Keep your face neutral; let your eyes carry all the emotional weight.\n4. Return your gaze calmly after each break — unhurried, as if you were never unsettled.",
+      "observation_guide": {
+        "headline": "How Mark Zuckerberg uses sustained gaze as a control tool — and why it works",
+        "moments": [
+          { "at_second": 25, "technique": "5-Second Unblinking Hold", "what": "Stares at lawyer for 5 seconds without blinking", "why": "Discomfort shifts from the interrogated to the interrogator" },
+          { "at_second": 35, "technique": "Pre-response Pause", "what": "Holds gaze 2 seconds in silence before answering", "why": "Signals he is choosing when to engage — not reacting to being questioned" },
+          { "at_second": 60, "technique": "Deliberate Controlled Break", "what": "Looks away slowly and returns at his own pace", "why": "A chosen break reads as power; a flinch reads as anxiety" },
+          { "at_second": 75, "technique": "Unhurried Re-engagement", "what": "Returns gaze directly without rushing or apologizing", "why": "The unhurried return confirms the break was strategic — he never left" },
+          { "at_second": 95, "technique": "Near-Zero Blink Rate", "what": "Neutral expression, minimal blinking, total stillness", "why": "Creates the sense of complete unreadability — nothing to read means nothing to exploit" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "5-Second Lock", "instruction": "Hold camera gaze for a full 5 seconds — no blinking if you can manage it.", "tip": "Count internally. Let your face stay completely neutral while you hold.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Pause Before Response", "instruction": "Have someone ask you a question. Hold eye contact for 2–3 seconds of silence before you answer.", "tip": "Most people start talking immediately — the pause itself is the skill being practiced here.", "target_duration_sec": 60 },
+        { "step_number": 3, "skill_focus": "The Deliberate Break", "instruction": "Hold gaze, then break away to one side — slow and chosen. Return in your own time. Don't rush the return.", "tip": "Practice making the break slow. It should feel like a decision, not a reflex.", "target_duration_sec": 45 },
+        { "step_number": 4, "skill_focus": "Neutral Expression Hold", "instruction": "Hold camera gaze for 6 seconds with a completely neutral face — no smile, no frown, just present.", "tip": "Notice how hard it is to hold a neutral expression under sustained eye contact pressure.", "target_duration_sec": 30 }
+      ],
       "annotations": [
-        {
-          "at_second": 25,
-          "type": "eye_contact",
-          "note": "Sustained 5-second hold — intentionally uncomfortable for the lawyer"
-        },
-        {
-          "at_second": 60,
-          "type": "eye_contact",
-          "note": "Looks away briefly — a deliberate, controlled break, not a nervous one"
-        },
-        {
-          "at_second": 95,
-          "type": "expression",
-          "note": "Near-zero blink rate combined with neutral expression — advanced technique"
-        }
+        { "at_second": 25, "type": "eye_contact", "note": "Sustained 5-second hold — intentionally uncomfortable for the lawyer" },
+        { "at_second": 60, "type": "eye_contact", "note": "Looks away briefly — a deliberate, controlled break, not a nervous one" },
+        { "at_second": 95, "type": "expression", "note": "Near-zero blink rate combined with neutral expression — advanced technique" }
       ]
     },
     {
@@ -117,22 +127,26 @@
       "annotation": "Study the minimal blink rate, soft-focus gaze that never quite pins but never leaves. This is advanced — the eye contact says everything while revealing nothing. Observe how he redirects with his eyes before his words.",
       "context_note": "Advanced example of what NOT to copy literally — but understanding this level helps you see eye contact as communication architecture.",
       "script": "1. Soften your focus — look at the person's whole face rather than locking onto one eye.\n2. Blink slowly and infrequently — perhaps once every five or six seconds.\n3. Hold complete stillness in your face and body while your eyes stay fully present.\n4. When you look away, do it with total intention — then return with exactly the same calm.",
+      "observation_guide": {
+        "headline": "How Anton Chigurh uses stillness and gaze to hold a room — and why it works",
+        "moments": [
+          { "at_second": 5, "technique": "Soft Focus Gaze", "what": "Eyes rest on the face — soft, not locked onto one specific point", "why": "Peripheral awareness reads as total calm — nothing escapes him" },
+          { "at_second": 15, "technique": "Zero-Reaction Expression", "what": "Face stays completely still as the subject answers", "why": "Absence of reaction forces the other person to fill the silence themselves" },
+          { "at_second": 30, "technique": "8-Second Patient Hold", "what": "Maintains steady gaze for 8+ seconds without any break", "why": "Duration creates psychological pressure without a single aggressive act" },
+          { "at_second": 35, "technique": "First-Mover Look-Away", "what": "Looks away first — a completely deliberate choice", "why": "Voluntary withdrawal of attention is its own form of power signal" },
+          { "at_second": 50, "technique": "Stillness Lock", "what": "Face and body completely still combined with sustained gaze", "why": "Maximum presence: nothing leaks — no tells, no anxiety, no information" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Soft Focus Gaze", "instruction": "Look at the camera but soften your focus — look at the whole frame, not the lens specifically. Hold for 8 seconds.", "tip": "Imagine you are looking at a horizon, not a specific point. Eyes relax. Brow relaxes.", "target_duration_sec": 40 },
+        { "step_number": 2, "skill_focus": "Slow Blink Rate", "instruction": "Hold gaze for 10 seconds. Blink no more than once.", "tip": "Don't strain — breathe normally. The goal is deliberate, not forced.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Still Body + Gaze", "instruction": "Make one short statement, then hold camera gaze for 8 seconds without moving your face or body at all.", "tip": "Think of yourself as a mountain — completely present, completely unmoved.", "target_duration_sec": 60 },
+        { "step_number": 4, "skill_focus": "First-Mover Break", "instruction": "Establish eye contact, hold for 5 seconds, then deliberately break away to the side — as a choice. Return only when you want to.", "tip": "The break is as important as the hold. Practice the moment of choosing to look away.", "target_duration_sec": 45 }
+      ],
       "annotations": [
-        {
-          "at_second": 30,
-          "type": "eye_contact",
-          "note": "Soft, steady, patient gaze — pressure without aggression"
-        },
-        {
-          "at_second": 35,
-          "type": "eye_contact",
-          "note": "He looks away FIRST here — a deliberate power play, letting the other person feel it"
-        },
-        {
-          "at_second": 50,
-          "type": "expression",
-          "note": "Completely still face + sustained gaze = maximum presence"
-        }
+        { "at_second": 30, "type": "eye_contact", "note": "Soft, steady, patient gaze — pressure without aggression" },
+        { "at_second": 35, "type": "eye_contact", "note": "He looks away FIRST here — a deliberate power play, letting the other person feel it" },
+        { "at_second": 50, "type": "expression", "note": "Completely still face + sustained gaze = maximum presence" }
       ]
     },
     {
@@ -157,22 +171,27 @@
       "annotation": "Textbook open posture: feet shoulder-width apart, chest forward, arms at sides (not crossed), chin slightly up. Notice how he takes physical space without aggression.",
       "context_note": "Easiest clip in the library — every open-posture signal is exaggerated and clear.",
       "script": "1. Plant your feet shoulder-width apart, weight evenly distributed — resist any urge to shift or sway.\n2. Roll your shoulders back and let your chest open forward naturally.\n3. Keep your arms relaxed at your sides or use open-palm gestures — never cross them.\n4. Tilt your chin slightly up and hold it steady even when questioned or challenged.",
+      "observation_guide": {
+        "headline": "How Tony Stark uses open posture to own a hostile room — and why it works",
+        "moments": [
+          { "at_second": 10, "technique": "Wide Power Stance", "what": "Feet shoulder-width, weight equally distributed, zero sway", "why": "A still base signals that outside pressure isn't moving him" },
+          { "at_second": 25, "technique": "Open Chest", "what": "Chest leads, shoulders rolled back, zero hunching", "why": "Closed chest signals fear; open chest signals safety and authority" },
+          { "at_second": 40, "technique": "Chin-Up Hold", "what": "Chin tilted slightly up, held throughout the exchange", "why": "Chin-down signals deference; chin-up signals equality or authority" },
+          { "at_second": 55, "technique": "Arms at Sides", "what": "Hands relaxed at sides between gestures — never crossed", "why": "Not crossing arms keeps the chest visible — a primal openness signal" },
+          { "at_second": 65, "technique": "Open Palm Gesture", "what": "Gestures with open palms turned outward toward audience", "why": "Open palms signal non-threat and invite the room in simultaneously" },
+          { "at_second": 80, "technique": "No Fidgeting", "what": "No weight shifting, no face touching, no adjusting", "why": "Stillness between movements projects self-control under pressure" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Power Stance", "instruction": "Stand with feet shoulder-width apart, weight even. Hold for 30 seconds without shifting.", "tip": "Notice the urge to shift weight — that impulse is the habit to break. Stay still.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Open Chest", "instruction": "Roll your shoulders back until your chest opens fully. Hold for 20 seconds while breathing normally.", "tip": "Most people hunch forward under any stress. Make this your resting default.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Open Palm Gestures", "instruction": "Speak a short sentence to camera while gesturing only with open palms — never pointing, never closed fists.", "tip": "Think of your palms as showing the audience they have nothing to fear from you.", "target_duration_sec": 45 },
+        { "step_number": 4, "skill_focus": "Full Integration", "instruction": "Combine: wide stance + open chest + chin up + arms at sides. Hold a 60-second conversation with camera in this posture.", "tip": "Pick one element to focus on per rep — you can't rewire everything simultaneously.", "target_duration_sec": 60 }
+      ],
       "annotations": [
-        {
-          "at_second": 10,
-          "type": "posture",
-          "note": "Wide stance — weight distributed, not shifting nervously"
-        },
-        {
-          "at_second": 35,
-          "type": "posture",
-          "note": "Chest out, shoulders back, no hunching — projects authority"
-        },
-        {
-          "at_second": 65,
-          "type": "gesture",
-          "note": "Open-palm gestures toward the audience — maximum openness signal"
-        }
+        { "at_second": 10, "type": "posture", "note": "Wide stance — weight distributed, not shifting nervously" },
+        { "at_second": 35, "type": "posture", "note": "Chest out, shoulders back, no hunching — projects authority" },
+        { "at_second": 65, "type": "gesture", "note": "Open-palm gestures toward the audience — maximum openness signal" }
       ]
     },
     {
@@ -197,22 +216,26 @@
       "annotation": "Subtle open posture — not theatrical like Tony Stark. Watch his easy gait, the way he sits (no forward lean, no crossed arms), and how his stillness communicates calm authority.",
       "context_note": "The contrast with colleagues makes his open posture readable — use context clues.",
       "script": "1. Sit fully upright — spine straight but not rigid, shoulders relaxed and down.\n2. Place both hands open and still on the table or your lap — no fidgeting, tapping, or clasping.\n3. Keep both feet flat on the floor; resist the urge to cross your legs or ankles.\n4. When you speak, stay physically still — let your words carry the energy, not your body.",
+      "observation_guide": {
+        "headline": "How Ben Whittaker's stillness communicates calm authority — and why it works",
+        "moments": [
+          { "at_second": 10, "technique": "Upright Seated Spine", "what": "Back straight, not touching chair back, shoulders relaxed down", "why": "Engagement without tension — the difference between rigid and upright" },
+          { "at_second": 18, "technique": "Open Hands on Table", "what": "Both hands rest open and still on the table surface", "why": "Visible, still hands signal nothing to hide and no underlying anxiety" },
+          { "at_second": 30, "technique": "No Fidgeting Check", "what": "Zero adjusting, face touching, or shifting across 60 seconds", "why": "Every fidget leaks a fragment of anxiety — stillness accumulates confidence" },
+          { "at_second": 42, "technique": "Unhurried Pace Contrast", "what": "Moves and speaks without urgency in a startup environment", "why": "Pace mismatch communicates: the chaos around me does not control me" },
+          { "at_second": 55, "technique": "Closing Open-Palm Gesture", "what": "Ends his point with an open-palm gesture, hands rest still after", "why": "Decisive finish — statement ends with gesture, not trailing movement" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Upright Seated Posture", "instruction": "Sit in a chair without touching the back. Spine straight, shoulders down. Hold for 60 seconds.", "tip": "Let your core hold you — not tension. Breathe into your belly, not your chest.", "target_duration_sec": 60 },
+        { "step_number": 2, "skill_focus": "Still Hands", "instruction": "Place both hands flat and open on a table. Hold for 30 seconds without moving them.", "tip": "Notice every impulse to fidget — the goal is to notice and let the impulse pass unfollowed.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "No-Fidget Conversation", "instruction": "Speak to camera for 60 seconds. Afterward, count how many times you touched your face or adjusted something.", "tip": "Record yourself — you'll catch fidgets you genuinely didn't notice in the moment.", "target_duration_sec": 60 },
+        { "step_number": 4, "skill_focus": "Deliberate Pace", "instruction": "Speak your next sentence at half your normal speed. Don't speed up. End with a beat of silence.", "tip": "In your head it feels too slow. To your listener, it feels deliberate and grounded.", "target_duration_sec": 45 }
+      ],
       "annotations": [
-        {
-          "at_second": 10,
-          "type": "posture",
-          "note": "Seated posture: upright spine, no forward lean, shoulders down — pure ease"
-        },
-        {
-          "at_second": 30,
-          "type": "posture",
-          "note": "Notice zero fidgeting — hands stay open and still on the table"
-        },
-        {
-          "at_second": 55,
-          "type": "gesture",
-          "note": "Open-palm gesture as he wraps up — calm, unhurried, grounded"
-        }
+        { "at_second": 10, "type": "posture", "note": "Seated posture: upright spine, no forward lean, shoulders down — pure ease" },
+        { "at_second": 30, "type": "posture", "note": "Notice zero fidgeting — hands stay open and still on the table" },
+        { "at_second": 55, "type": "gesture", "note": "Open-palm gesture as he wraps up — calm, unhurried, grounded" }
       ]
     },
     {
@@ -237,22 +260,26 @@
       "annotation": "Advanced — openness weaponized. Study how his wide stance and forward chest create dominance, not warmth. The same open-posture signals read completely differently based on context, facial expression, and proximity.",
       "context_note": "This is a master class in how posture + context changes meaning entirely. The form is open, the intent is dominant.",
       "script": "1. Take a wider-than-normal stance — feet well outside shoulder-width, weight forward on the balls of your feet.\n2. Let your chest lead as you speak — forward and open, not sunken or protected.\n3. Use large, slow, open-palm gestures to claim space when making key points.\n4. Deliberately close the distance between you and the other person — move into their space with calm, unhurried intention.",
+      "observation_guide": {
+        "headline": "How Daniel Plainview uses open posture as an instrument of dominance — and why it works",
+        "moments": [
+          { "at_second": 5, "technique": "Aggressive Wide Stance", "what": "Feet well outside shoulder-width, weight on balls of feet", "why": "Claims physical territory — wider than normal signals more than normal authority" },
+          { "at_second": 12, "technique": "Forward Chest Lead", "what": "Chest pushed slightly forward as he begins to speak", "why": "Forward lean is normally vulnerable — here it reads as: come at me if you dare" },
+          { "at_second": 18, "technique": "Space Closure", "what": "Deliberately steps closer to subject mid-conversation", "why": "Closing distance is a deliberate act of dominance in confrontational contexts" },
+          { "at_second": 25, "technique": "Expansive Arm Gesture", "what": "Sweeps arm wide in a space-claiming gesture", "why": "Taking gestural space = taking psychological territory simultaneously" },
+          { "at_second": 30, "technique": "Chin Projection", "what": "Chin slightly forward, head not bowed even slightly", "why": "Chin projection in confrontation signals: I am not afraid of what you might do" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Extra-Wide Stance", "instruction": "Stand with feet wider than shoulder-width. Feel the stability. Hold for 30 seconds while speaking.", "tip": "Notice how it changes your voice — a wider base often deepens and steadies delivery naturally.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Expansive Gesture", "instruction": "Make one statement and accompany it with the largest gesture you can — arm fully extended, wide arc. Return to stillness.", "tip": "The contrast between a large gesture and complete stillness after is the technique itself.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Space Closure", "instruction": "Start at arm's length from camera. Deliver a sentence, then step 6 inches closer. Repeat once more.", "tip": "This is advanced — practice the mechanics before using it in any real conversation.", "target_duration_sec": 45 },
+        { "step_number": 4, "skill_focus": "Context Reading", "instruction": "Practice all of the above — then ask: does this context call for warmth or power? Same posture, completely different read.", "tip": "The form is identical; the meaning changes entirely with your expression and intent.", "target_duration_sec": 60 }
+      ],
       "annotations": [
-        {
-          "at_second": 5,
-          "type": "posture",
-          "note": "Wide feet, slight lean forward — occupying space aggressively"
-        },
-        {
-          "at_second": 18,
-          "type": "posture",
-          "note": "Notice: arms still open but the lean-in changes the read entirely"
-        },
-        {
-          "at_second": 30,
-          "type": "gesture",
-          "note": "Expansive gesture that claims the whole room — advanced spatial dominance"
-        }
+        { "at_second": 5, "type": "posture", "note": "Wide feet, slight lean forward — occupying space aggressively" },
+        { "at_second": 18, "type": "posture", "note": "Notice: arms still open but the lean-in changes the read entirely" },
+        { "at_second": 30, "type": "gesture", "note": "Expansive gesture that claims the whole room — advanced spatial dominance" }
       ]
     },
     {
@@ -277,22 +304,27 @@
       "annotation": "Watch Sean: slight forward lean, steady eye contact, nods timed to emotional beats, his face mirrors Will's emotional journey. He says almost nothing — his body does the listening.",
       "context_note": "One of cinema's clearest demonstrations of active listening — emotionally safe to watch.",
       "script": "1. Lean your upper body forward by about 10–15 degrees — signal that you are fully present and attentive.\n2. Let your face reflect the emotional weight of what you hear — not neutral, not over-emoting.\n3. Nod slowly and deliberately at emotional beats — once, meaningfully — not a constant bobbing motion.\n4. Keep your hands still and open; breathe calmly and resist the urge to respond before the other person is done.",
+      "observation_guide": {
+        "headline": "How Sean Maguire listens with his whole body — and why it works",
+        "moments": [
+          { "at_second": 20, "technique": "Intentional Lean Forward", "what": "Slowly closes distance — leaning in as the emotional stakes rise", "why": "Physical proximity signals emotional investment — he moves toward, not away" },
+          { "at_second": 45, "technique": "Calibrated Single Nod", "what": "One slow nod timed to an emotional beat — not constant", "why": "One meaningful nod lands harder than ten automatic ones" },
+          { "at_second": 60, "technique": "Emotional Mirroring", "what": "Face reflects the weight of Will's words — not neutral, not over-acted", "why": "When your face reflects theirs, they feel truly heard — not just processed" },
+          { "at_second": 90, "technique": "Silence Tolerance", "what": "Does not rush to respond — lets silence hold completely", "why": "Filling silence cuts the other person off; tolerating it invites them deeper" },
+          { "at_second": 110, "technique": "Calibrated Touch", "what": "Hand placed on shoulder at exactly the right emotional moment", "why": "Touch at the right moment amplifies the message; wrong moment breaks rapport entirely" },
+          { "at_second": 130, "technique": "No Counter-Narrative", "what": "Does not argue, correct, or insert his own story", "why": "Active listening means their story comes first — redirecting to your story kills it" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Forward Lean", "instruction": "Sit and lean forward 10–15 degrees. Hold that position for 60 seconds while someone speaks to you.", "tip": "If you feel yourself leaning back, it's often because you're planning what to say — notice this.", "target_duration_sec": 60 },
+        { "step_number": 2, "skill_focus": "Deliberate Nod", "instruction": "Practice a single, slow nod — chin drops then rises once. Do it intentionally, not reactively. Repeat 5 times.", "tip": "Record yourself: constant bobbing looks sycophantic; one slow nod looks genuinely attentive.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "5-Second Silence Hold", "instruction": "After camera delivers a statement, hold 5 full seconds of silence before responding — don't fill it.", "tip": "Count the silence. Most people can only tolerate 2–3 seconds before the urge to speak takes over.", "target_duration_sec": 60 },
+        { "step_number": 4, "skill_focus": "Emotional Matching", "instruction": "Watch a clip of someone expressing something difficult. Let your face reflect it — not acted, genuinely felt.", "tip": "If you can't feel it, you can't mirror it. That gap is the skill to close.", "target_duration_sec": 45 }
+      ],
       "annotations": [
-        {
-          "at_second": 20,
-          "type": "posture",
-          "note": "Slow lean forward as he moves closer — reduces distance intentionally"
-        },
-        {
-          "at_second": 60,
-          "type": "expression",
-          "note": "His face matches the emotional weight — not neutral, not over-emoting"
-        },
-        {
-          "at_second": 110,
-          "type": "gesture",
-          "note": "Hand on shoulder — touch as acknowledgment, calibrated to the moment"
-        }
+        { "at_second": 20, "type": "posture", "note": "Slow lean forward as he moves closer — reduces distance intentionally" },
+        { "at_second": 60, "type": "expression", "note": "His face matches the emotional weight — not neutral, not over-emoting" },
+        { "at_second": 110, "type": "gesture", "note": "Hand on shoulder — touch as acknowledgment, calibrated to the moment" }
       ]
     },
     {
@@ -317,22 +349,26 @@
       "annotation": "Subtle active listening: minimal verbal responses, strategic silence, neutral-warm expression. Notice when he leans back (giving space) vs when he leans in (drawing out). He tracks Bertie's discomfort without reacting to it.",
       "context_note": "The power dynamic is inverted — the therapist is a commoner, the patient a prince. His body language is key to making Bertie feel safe.",
       "script": "1. Alternate between leaning slightly back (creating space) and leaning gently forward (drawing the other person out) — read when each is needed.\n2. Hold soft, warm eye contact without intensity — present and attentive, not searching or penetrating.\n3. Keep your face minimally reactive — a subtle nod is sufficient; do not visibly react to surprising things you hear.\n4. Let silence sit for two to three seconds before responding — give what was said room to land before you fill the space.",
+      "observation_guide": {
+        "headline": "How Lionel Logue creates safety through restraint — and why it works",
+        "moments": [
+          { "at_second": 130, "technique": "Strategic Lean-Back", "what": "Leans back in chair as Bertie approaches a difficult topic", "why": "More physical space creates more psychological space to open up into" },
+          { "at_second": 150, "technique": "Non-Reactive Expression", "what": "Face stays neutral as Bertie shares something difficult", "why": "If the listener reacts visibly, the speaker edits — neutral face enables unfiltered disclosure" },
+          { "at_second": 165, "technique": "Warm Soft Eye Contact", "what": "Eye contact that reads as warm but never intense", "why": "There is a difference between looking at someone and looking into them — this is the former" },
+          { "at_second": 185, "technique": "Strategic Lean-In", "what": "Leans slightly forward when Bertie's disclosure deepens", "why": "As they open, you move toward — timing the movement to the moment, not before" },
+          { "at_second": 210, "technique": "Minimal Verbal Response", "what": "Uses single words — 'yes', 'mm' — nothing more substantial", "why": "Minimal verbal response keeps the speaker's story intact — longer responses redirect focus to you" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Strategic Back-Lean", "instruction": "While someone is speaking, consciously lean back. Give more physical space as the emotional weight of what they're saying increases.", "tip": "This feels counterintuitive — proximity feels like connection. But space sometimes creates more safety than closeness.", "target_duration_sec": 60 },
+        { "step_number": 2, "skill_focus": "Non-Reactive Face", "instruction": "Watch a clip of something emotionally charged. Practice keeping your face completely neutral — no nods, no grimaces, no raised eyebrows.", "tip": "Notice how hard it is not to react. Every controlled reaction is a choice to keep the space open.", "target_duration_sec": 60 },
+        { "step_number": 3, "skill_focus": "Minimal Verbal Signals", "instruction": "Have a conversation. Limit your verbal backchannels to only: 'yes', 'mm', 'right'. Nothing longer than one word.", "tip": "Notice how the other person speaks longer and more deeply when you don't redirect with longer responses.", "target_duration_sec": 90 },
+        { "step_number": 4, "skill_focus": "Back-to-Forward Transition", "instruction": "Start leaned back. As the emotional moment peaks, slowly lean forward. Practice matching the movement to the moment.", "tip": "Too early and it feels intrusive; right on time and it feels like deep attunement. Timing is the whole skill.", "target_duration_sec": 60 }
+      ],
       "annotations": [
-        {
-          "at_second": 130,
-          "type": "posture",
-          "note": "Deliberate lean-back — creating psychological space, not pressing"
-        },
-        {
-          "at_second": 165,
-          "type": "eye_contact",
-          "note": "Holds soft eye contact without intensity — warm but not searching"
-        },
-        {
-          "at_second": 210,
-          "type": "expression",
-          "note": "Subtle nod + near-zero facial movement — presence without pressure"
-        }
+        { "at_second": 130, "type": "posture", "note": "Deliberate lean-back — creating psychological space, not pressing" },
+        { "at_second": 165, "type": "eye_contact", "note": "Holds soft eye contact without intensity — warm but not searching" },
+        { "at_second": 210, "type": "expression", "note": "Subtle nod + near-zero facial movement — presence without pressure" }
       ]
     },
     {
@@ -357,22 +393,27 @@
       "annotation": "Advanced: study the breakdown of active listening under emotional pressure. Watch when her posture closes (arms, turn-away), when she re-opens to listen, how her listening quality changes her partner's escalation. Emotional contagion in real time.",
       "context_note": "This shows what active listening failure AND recovery looks like — valuable negative model.",
       "script": "1. Notice when your body closes — arms crossing, torso turning away — and consciously, deliberately reverse it.\n2. Drop your shoulders and unclench your jaw to signal that you are reopening to hear.\n3. Turn your torso back toward the speaker as a deliberate act of re-engagement — make it visible.\n4. Slow your breathing to steady yourself; your nervous system influences theirs.",
+      "observation_guide": {
+        "headline": "How Nicole's body language drives the escalation — and how recovery looks",
+        "moments": [
+          { "at_second": 50, "technique": "Defensive Arm Cross", "what": "Arms cross as his words land harder — posture closes", "why": "Closed posture signals listening has stopped — the other person escalates to compensate" },
+          { "at_second": 70, "technique": "Gaze Drop", "what": "Eyes go to floor — internal processing mode", "why": "Internal processing cuts off the speaker — they fill silence with more escalation" },
+          { "at_second": 100, "technique": "Torso Turn-Away", "what": "Upper body rotates away from speaker", "why": "Physical withdrawal = emotional withdrawal — the body announces the mind's state before words do" },
+          { "at_second": 130, "technique": "Jaw Clench Signal", "what": "Jaw visibly tightens — held emotion leaks as micro-expression", "why": "The other person reads the leak and responds to it — not to the words" },
+          { "at_second": 150, "technique": "Reopening Torso Turn", "what": "Torso slowly turns back toward speaker", "why": "Returning body orientation is the first signal of re-engagement — often immediately de-escalates" },
+          { "at_second": 165, "technique": "Shoulder Drop Re-Open", "what": "Shoulders visibly drop from raised tension", "why": "Shoulder drop signals tension release — both parties feel it in the room" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Notice Body Closure", "instruction": "Speak to camera for 60 seconds about something mildly frustrating. After — watch the recording. Did your arms cross? Did you turn away?", "tip": "Awareness comes first. You cannot correct what you haven't learned to notice.", "target_duration_sec": 60 },
+        { "step_number": 2, "skill_focus": "Deliberate Re-Open", "instruction": "Cross your arms intentionally. Feel the closure. Then deliberately uncross, drop shoulders, turn torso forward. Practice the reversal.", "tip": "The physical reversal often changes the emotional state — body can lead mind here.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Jaw Release", "instruction": "Clench your jaw intentionally. Notice it. Release it. Practice noticing the clench during emotionally charged moments.", "tip": "Jaw tension is one of the earliest signals — catching it early prevents it from driving escalation.", "target_duration_sec": 30 },
+        { "step_number": 4, "skill_focus": "Breathing Anchor", "instruction": "While holding a difficult conversation, slow your breathing to a 4-count inhale, 4-count exhale. Notice how it changes your posture automatically.", "tip": "Your nervous system regulates theirs — a slower breath pattern creates calmer space for both people.", "target_duration_sec": 90 }
+      ],
       "annotations": [
-        {
-          "at_second": 50,
-          "type": "posture",
-          "note": "Arms cross — closed off, defensive mode, listening shuts down"
-        },
-        {
-          "at_second": 100,
-          "type": "eye_contact",
-          "note": "Eyes look down — she's processing, not listening; he escalates in response"
-        },
-        {
-          "at_second": 150,
-          "type": "posture",
-          "note": "Body turns back toward him — a reopening. Watch how this de-escalates briefly"
-        }
+        { "at_second": 50, "type": "posture", "note": "Arms cross — closed off, defensive mode, listening shuts down" },
+        { "at_second": 100, "type": "eye_contact", "note": "Eyes look down — she's processing, not listening; he escalates in response" },
+        { "at_second": 150, "type": "posture", "note": "Body turns back toward him — a reopening. Watch how this de-escalates briefly" }
       ]
     },
     {
@@ -397,22 +438,26 @@
       "annotation": "Perfect beginner vocal-pacing example: clear pauses before key words, tempo changes that match emotional weight, volume drops that create intimacy. Count the silences — they average 2-3 seconds and always precede impact.",
       "context_note": "Classic cinematic speech — very learnable pattern.",
       "script": "\"We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion.\"\n\n[Pause] \"Medicine, law, business, engineering — these are noble pursuits, and necessary to sustain life. But poetry, beauty, romance, love — these are what we stay alive for.\"\n\n[Long pause — look around the room] \"Carpe diem. Seize the day, boys. Make your lives extraordinary.\"",
+      "observation_guide": {
+        "headline": "How Keating uses silence and rhythm to make every word land — and why it works",
+        "moments": [
+          { "at_second": 75, "technique": "Pre-Impact Pause", "what": "Full stop — 2 full seconds of silence before 'Carpe'", "why": "The pause creates anticipation; the word fills the expectation with force" },
+          { "at_second": 90, "technique": "Tempo Drop", "what": "Slows pace dramatically when making the core point", "why": "Speed signals urgency; slow signals importance — the shift itself is the signal" },
+          { "at_second": 110, "technique": "Whisper Volume Drop", "what": "Voice drops to near-whisper — the room is forced to lean in", "why": "Forcing the audience to lean in gives you complete control of their attention" },
+          { "at_second": 130, "technique": "Eye Contact During Silence", "what": "Holds eye contact with students during pauses — not looking at floor", "why": "Eye contact during silence turns a pause into a held moment — not a void to fill" },
+          { "at_second": 155, "technique": "Crescendo-Then-Stop", "what": "Pace builds, then stops completely before the final line", "why": "Accelerating into a hard stop creates maximum impact at the landing point" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "2-Second Pre-Impact Pause", "instruction": "Deliver a sentence with a full 2-second stop before the most important word. Count the seconds in your head.", "tip": "The pause will feel too long to you. It will not feel too long to your listener.", "target_duration_sec": 45 },
+        { "step_number": 2, "skill_focus": "Volume Drop to Whisper", "instruction": "Speak a paragraph to camera. At the key sentence, drop your volume to near-whisper.", "tip": "Watch the recording — does it force attention? The ear follows what's quiet.", "target_duration_sec": 45 },
+        { "step_number": 3, "skill_focus": "Tempo Shift", "instruction": "Speak one sentence quickly. Speak the next one at half speed. Feel and observe the contrast.", "tip": "The shift in pace draws attention — it's the change itself that communicates, not just the slowness.", "target_duration_sec": 30 },
+        { "step_number": 4, "skill_focus": "Full Pacing Integration", "instruction": "Deliver the Carpe Diem script. Use: pause before 'Carpe', slow tempo on key line, drop to near-whisper for intimacy.", "tip": "Don't perform the pauses — let them happen because you genuinely mean the words.", "target_duration_sec": 90 }
+      ],
       "annotations": [
-        {
-          "at_second": 75,
-          "type": "voice",
-          "note": "Full stop before 'Carpe' — 2 second silence, then deliberate delivery"
-        },
-        {
-          "at_second": 110,
-          "type": "voice",
-          "note": "Volume drops to near-whisper here — forces the room to lean in"
-        },
-        {
-          "at_second": 155,
-          "type": "voice",
-          "note": "Pace accelerates then halts — emotional crescendo technique"
-        }
+        { "at_second": 75, "type": "voice", "note": "Full stop before 'Carpe' — 2 second silence, then deliberate delivery" },
+        { "at_second": 110, "type": "voice", "note": "Volume drops to near-whisper here — forces the room to lean in" },
+        { "at_second": 155, "type": "voice", "note": "Pace accelerates then halts — emotional crescendo technique" }
       ]
     },
     {
@@ -437,22 +482,27 @@
       "annotation": "Study the speech architecture: slow start, rising tempo, deliberate pause at 'any given Sunday', then full release. His pacing isn't random — each tempo shift corresponds to an idea shift. Mirror the physical stillness between bursts.",
       "context_note": "Longer clip — worth the full watch. The pacing builds over 4 minutes.",
       "script": "\"I don't know what to say, really. Three minutes to the biggest battle of our professional lives all comes down to today.\"\n\n[Pause] \"Life is a game of inches. So is football. Because in either game — life or football — the margin for error is so small. One half step too late or too early, and you don't quite make it. One half second too slow, too fast, and you don't quite catch it.\"\n\n[Building pace] \"The inches we need are everywhere around us. They're in every break of the game, every minute, every second. On this team — we fight for that inch. On this team, we tear ourselves and everyone around us to pieces for that inch.\" [Pause] \"Because we know, when we add up all those inches, that's going to make the difference between winning and losing.\"",
+      "observation_guide": {
+        "headline": "How Tony D'Amato builds an emotional architecture with pace — and why it works",
+        "moments": [
+          { "at_second": 30, "technique": "Slow Quiet Opening", "what": "Speech begins at slow tempo and low volume — not with force", "why": "Starting quiet creates investment; people lean in before you ask them to" },
+          { "at_second": 60, "technique": "Gradual Tempo Ramp", "what": "Pace begins rising gradually — almost imperceptibly", "why": "The gradual rise creates momentum without the audience noticing the technique" },
+          { "at_second": 90, "technique": "First Acceleration", "what": "First clear pace jump — emotional stakes named directly", "why": "The jump signals the speech is shifting gear — body prepares for the peak" },
+          { "at_second": 130, "technique": "Stillness Between Bursts", "what": "Complete physical stillness during pauses between surges", "why": "Movement during speech adds noise. Still body means the words carry everything." },
+          { "at_second": 160, "technique": "Signature Pause", "what": "Full 3 seconds of silence before the peak line", "why": "The longest pause earns the most impact — used only for the speech's single peak moment" },
+          { "at_second": 200, "technique": "Full Release", "what": "Pace accelerates to maximum — no holding back", "why": "Earned acceleration: the long slow build makes the full release feel completely deserved" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Quiet Opening", "instruction": "Deliver the first two sentences of the script at your slowest comfortable pace, your lowest volume. Resist the urge to build immediately.", "tip": "The trap is set with patience. If you rush the opening, you have nowhere left to go.", "target_duration_sec": 45 },
+        { "step_number": 2, "skill_focus": "Gradual Tempo Build", "instruction": "Over 60 seconds of speech, very gradually increase your pace. The change should be almost unnoticeable mid-sentence.", "tip": "Record yourself and listen back — does the build feel organic or mechanical? Organic is the goal.", "target_duration_sec": 60 },
+        { "step_number": 3, "skill_focus": "The Signature Pause", "instruction": "Deliver the speech up to 'on any...' — then pause for a full 3 seconds. Do not fill the silence. Then finish.", "tip": "3 seconds will feel like 10. Count it internally. Trust the silence — it is the technique.", "target_duration_sec": 60 },
+        { "step_number": 4, "skill_focus": "Physical Stillness During Pauses", "instruction": "Between each surge of the speech, come to complete physical stillness — no movement, no adjustment, no shift at all.", "tip": "The body's stillness during pauses tells the audience: I am in complete control of this moment.", "target_duration_sec": 90 }
+      ],
       "annotations": [
-        {
-          "at_second": 30,
-          "type": "voice",
-          "note": "Slow, quiet opening — he's setting the trap. Don't rush this part."
-        },
-        {
-          "at_second": 90,
-          "type": "voice",
-          "note": "First acceleration — pace increases as emotional stakes rise"
-        },
-        {
-          "at_second": 160,
-          "type": "voice",
-          "note": "The signature pause — full 3 seconds of silence before 'any given Sunday'"
-        }
+        { "at_second": 30, "type": "voice", "note": "Slow, quiet opening — he's setting the trap. Don't rush this part." },
+        { "at_second": 90, "type": "voice", "note": "First acceleration — pace increases as emotional stakes rise" },
+        { "at_second": 160, "type": "voice", "note": "The signature pause — full 3 seconds of silence before 'any given Sunday'" }
       ]
     },
     {
@@ -477,22 +527,27 @@
       "annotation": "Advanced pacing: the power is in what's NOT said. Minimal volume variation, but the weight is entirely in the rhythm and the silence. This is the opposite of Pacino — study how quiet command works.",
       "context_note": "Historical context helps but not required — the vocal technique is self-evident.",
       "script": "\"I am the President of the United States, clothed in immense power. You will procure me these votes.\"\n\n[Long pause — let it sit] \"The fate of human dignity in our hands — blood has been spilled to afford us this moment.\"\n\n[Deliberate, each word separated] \"Now...\" [pause] \"Now.\" [pause] \"Now.\"",
+      "observation_guide": {
+        "headline": "How Lincoln commands a room through restraint and measured silence — and why it works",
+        "moments": [
+          { "at_second": 20, "technique": "Baseline Slow Tempo", "what": "Speech set at a deliberate, unhurried pace from the very first word", "why": "The slow tempo immediately signals: I am not anxious. You will wait for me." },
+          { "at_second": 70, "technique": "Duration Emphasis", "what": "Near-monotone, but single key words stretched slightly longer", "why": "Emphasis through duration rather than volume — requires active attention to hear" },
+          { "at_second": 95, "technique": "Mid-Sentence Silence", "what": "Pauses mid-sentence — grammatically wrong, emotionally correct", "why": "The unexpected break forces re-attention; listener leans in to complete the thought" },
+          { "at_second": 110, "technique": "Weight Through Rhythm", "what": "No volume spikes — all weight comes from rhythm and spacing alone", "why": "Volume is the obvious tool; rhythm is the advanced one. Restraint amplifies." },
+          { "at_second": 140, "technique": "Final Deceleration", "what": "Pace slows further as the speech approaches its end", "why": "Ending slowly signals: these words deserve their full time. I am not rushing to finish." },
+          { "at_second": 160, "technique": "Repeated Single Word", "what": "Says 'Now' three times — each with equal weight and pause between", "why": "Repetition with silence hammers the point without raising the voice by a single decibel" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Baseline Slow", "instruction": "Deliver a paragraph at what feels uncomfortably slow to you. Every word gets its full duration. No rushing.", "tip": "Your 'uncomfortably slow' is often 'impressively deliberate' to your listener. Trust it.", "target_duration_sec": 45 },
+        { "step_number": 2, "skill_focus": "Mid-Sentence Break", "instruction": "Deliver a sentence. Pause mid-way — not at a comma or period. Unexpected placement. Then finish.", "tip": "The unexpected pause forces attention in a way expected pauses simply don't.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Duration Emphasis", "instruction": "Deliver one sentence where you emphasize a word by making it slightly longer — no volume increase. Same level, more time.", "tip": "This is the advanced technique — emphasis without volume. It requires precise control.", "target_duration_sec": 30 },
+        { "step_number": 4, "skill_focus": "Repeated Word with Pause", "instruction": "Say one word three times with a full 2-second pause between each repetition. Let each one land fully before the next.", "tip": "The temptation is to rush the repetition. Three words — three completely separate moments.", "target_duration_sec": 30 }
+      ],
       "annotations": [
-        {
-          "at_second": 70,
-          "type": "voice",
-          "note": "Near-monotone but notice the micro-variations — emphasis through length not volume"
-        },
-        {
-          "at_second": 110,
-          "type": "voice",
-          "note": "Pause mid-sentence — grammatically wrong, emotionally correct. Silence as punctuation."
-        },
-        {
-          "at_second": 155,
-          "type": "voice",
-          "note": "The deliberate slowing near the end — each word gets equal weight"
-        }
+        { "at_second": 70, "type": "voice", "note": "Near-monotone but notice the micro-variations — emphasis through length not volume" },
+        { "at_second": 110, "type": "voice", "note": "Pause mid-sentence — grammatically wrong, emotionally correct. Silence as punctuation." },
+        { "at_second": 155, "type": "voice", "note": "The deliberate slowing near the end — each word gets equal weight" }
       ]
     },
     {
@@ -517,22 +572,27 @@
       "annotation": "Classic confident disagreement: she disagrees without apologizing, without raising her voice, without closed body language. Upright posture, steady gaze, measured tone. Watch how she states her counter-point then lets it land.",
       "context_note": "Comedy framing makes it easy to watch — but the disagreement technique is genuine.",
       "script": "\"Your Honor, I'd like to point out a contradiction in this testimony.\" [Pause — let the room focus] \"You've testified that you were in the shower when the gunshot occurred. But you also stated that you got a perm that same morning.\" [Pause] \"Any reputable stylist will tell you — you cannot get your hair wet for at least twenty-four hours after a perm, or the curls simply fall out.\" [beat] \"If both of those things are true... they cannot both be true.\"",
+      "observation_guide": {
+        "headline": "How Elle Woods disagrees without apology — and why it works",
+        "moments": [
+          { "at_second": 45, "technique": "No-Apology Stance", "what": "Stands tall — no shrinking, no leaning back, no hedging body language", "why": "Physical apology (hunching, looking down) undermines the verbal disagreement before it's spoken" },
+          { "at_second": 60, "technique": "Declarative Opening", "what": "Opens with assertion, not a question or hedge", "why": "Questions invite debate before the point is made; statements command attention first" },
+          { "at_second": 75, "technique": "Calm Vocal Register", "what": "Disagrees in a measured, level tone — no rising voice whatsoever", "why": "Raised voice signals emotional investment; level tone signals confident logical analysis" },
+          { "at_second": 85, "technique": "Authority Redirect", "what": "Addresses the judge, not the opposing witness", "why": "Directing to authority — not the opponent — signals you're playing the long game" },
+          { "at_second": 105, "technique": "Pause Before Conclusion", "what": "Full stop before the logical conclusion is stated", "why": "The pause makes the conclusion feel inevitable rather than aggressive" },
+          { "at_second": 120, "technique": "Declarative Close", "what": "States conclusion as fact — voice drops at end, no question intonation", "why": "Vocal uptick at end undermines certainty; down inflection asserts it completely" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "No-Apology Opening", "instruction": "Disagree with camera about something simple. Start your disagreement with a statement — no 'I'm sorry but', no 'I could be wrong but'.", "tip": "Notice how automatic the hedge is. Catch it. Remove it entirely.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Level Vocal Register", "instruction": "Deliver a disagreement at exactly the same volume and pitch as your normal speech. No rise at the end.", "tip": "Record yourself — most people unconsciously raise pitch when challenged. This is the habit to break.", "target_duration_sec": 45 },
+        { "step_number": 3, "skill_focus": "Authority Redirect", "instruction": "Practice making eye contact with an imaginary authority figure (camera-right) when making your key point — not your imaginary opponent (camera-left).", "tip": "You're not trying to convince your opponent — you're convincing the room. Different target.", "target_duration_sec": 30 },
+        { "step_number": 4, "skill_focus": "Declarative Close", "instruction": "End your disagreement with a down-inflection statement. Not a question. Your voice drops at the end — not rises.", "tip": "Up inflection at the end sounds like you're asking permission. Down inflection asserts.", "target_duration_sec": 30 }
+      ],
       "annotations": [
-        {
-          "at_second": 45,
-          "type": "posture",
-          "note": "Stands tall, no apology in the body — just calm disagreement"
-        },
-        {
-          "at_second": 85,
-          "type": "eye_contact",
-          "note": "Direct eye contact with the judge, not the opponent — redirects authority"
-        },
-        {
-          "at_second": 120,
-          "type": "voice",
-          "note": "States conclusion in declarative, not question form — no vocal uptick"
-        }
+        { "at_second": 45, "type": "posture", "note": "Stands tall, no apology in the body — just calm disagreement" },
+        { "at_second": 85, "type": "eye_contact", "note": "Direct eye contact with the judge, not the opponent — redirects authority" },
+        { "at_second": 120, "type": "voice", "note": "States conclusion in declarative, not question form — no vocal uptick" }
       ]
     },
     {
@@ -557,22 +617,27 @@
       "annotation": "Study: how he sits still while others agitate, how he phrases disagreement ('I'm not sure', not 'you're wrong'), how he absorbs hostility without closing his posture. His body stays open even when verbally attacked.",
       "context_note": "Public domain film — full version widely available. The whole film is a disagreement masterclass.",
       "script": "\"Eleven of you were so sure so fast... I'm not saying he's innocent. I'm not sure. That's the point.\" [Pause — let the hostility hang] \"Maybe I'm wrong. Maybe I can be talked out of it. But I want to hear some talk.\"\n\n[calmly, not defensively] \"This boy has been in a cell for six months waiting for us. We owe him more than three minutes. We owe him a few words.\" [pause] \"I just want to talk.\"",
+      "observation_guide": {
+        "headline": "How Juror #8 holds a position alone against 11 opponents — and why it works",
+        "moments": [
+          { "at_second": 140, "technique": "Stillness Against Agitation", "what": "Sits back calmly while all others lean forward and agitate", "why": "Physical stillness under pressure signals: their energy does not move me" },
+          { "at_second": 165, "technique": "Uncertainty Acknowledgment", "what": "Says 'I'm not sure' — admits he may be wrong", "why": "Admitting uncertainty while holding position reads as honest confidence, not defensiveness" },
+          { "at_second": 185, "technique": "Process-Framing", "what": "Says 'I want to talk' — not 'you're wrong to vote guilty'", "why": "Framing around your process — not their error — keeps the conversation open" },
+          { "at_second": 200, "technique": "Open Body Under Attack", "what": "Body stays open — no arm cross, no turn-away — as hostility increases", "why": "Closing up confirms you're rattled. Staying open signals: nothing you say closes me down." },
+          { "at_second": 245, "technique": "Eye Contact With Hostility", "what": "Makes direct eye contact with the most hostile jurors", "why": "Looking away from hostility signals submission; direct contact signals no concession" },
+          { "at_second": 270, "technique": "Measured Pace Under Pressure", "what": "Speech pace stays deliberate — no rushing despite escalating pressure", "why": "Rushed speech signals anxiety; measured pace signals the disagreement is already settled inside you" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Stillness Under Challenge", "instruction": "Have someone argue with you for 30 seconds. Practice sitting completely still — no lean-forward, no counter-gesture. Just receive it.", "tip": "Stillness is not passivity — it's a decision. Make it look like a decision.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Uncertainty + Position", "instruction": "Practice saying: 'I might be wrong about this — and I'm not changing my view.' Say it until it sounds genuine, not contradictory.", "tip": "Uncertainty and conviction coexist. That simultaneous holding is the advanced skill.", "target_duration_sec": 30 },
+        { "step_number": 3, "skill_focus": "Open Posture Under Attack", "instruction": "While someone challenges you, keep your arms uncrossed, torso open, face neutral. Hold it for the full challenge.", "tip": "Every time you feel the urge to close — recognize that exact moment as the moment to practice staying open.", "target_duration_sec": 60 },
+        { "step_number": 4, "skill_focus": "Non-Defensive Framing", "instruction": "Disagree with camera. Frame it as: 'I want to understand this better' not 'you're wrong'. Same position, different frame.", "tip": "How you frame your disagreement determines whether others can actually hear it.", "target_duration_sec": 45 }
+      ],
       "annotations": [
-        {
-          "at_second": 140,
-          "type": "posture",
-          "note": "Sitting back calmly while all others lean in aggressively — stillness as confidence"
-        },
-        {
-          "at_second": 200,
-          "type": "voice",
-          "note": "He says 'I don't know' — acknowledges uncertainty without yielding position. Advanced."
-        },
-        {
-          "at_second": 270,
-          "type": "eye_contact",
-          "note": "Makes eye contact with each hostile juror in turn — doesn't avoid those who disagree"
-        }
+        { "at_second": 140, "type": "posture", "note": "Sitting back calmly while all others lean in aggressively — stillness as confidence" },
+        { "at_second": 200, "type": "voice", "note": "He says 'I don't know' — acknowledges uncertainty without yielding position. Advanced." },
+        { "at_second": 270, "type": "eye_contact", "note": "Makes eye contact with each hostile juror in turn — doesn't avoid those who disagree" }
       ]
     },
     {
@@ -597,22 +662,27 @@
       "annotation": "Advanced: disagreement with subtext. His verbal surface disagrees politely while his body language communicates power and contempt simultaneously. Study the micro-expressions during points he finds weak, and how he re-anchors posture after each challenge.",
       "context_note": "Understanding who Nixon was historically deepens the reading. The body language is readable without context but richer with it.",
       "script": "\"Now let me make one thing perfectly clear, Mr. Frost.\" [Pause — holds eye contact] \"I resent the implication of that question. I have been as forthcoming with this committee as any public official in modern history.\"\n\n[Slight lean forward] \"And frankly... I think the premise of what you're suggesting is not supported by the record. I suspect that on reflection — on careful reflection — you'll find the evidence does not bear that out.\" [pause, micro-smile] \"Shall we continue?\"",
+      "observation_guide": {
+        "headline": "How Nixon holds strategic disagreement without ever losing control — and why it works",
+        "moments": [
+          { "at_second": 8, "technique": "Forward Lean Into Challenge", "what": "Leans slightly forward when challenged — not back", "why": "Leaning back signals retreat; leaning forward signals the challenge is welcome" },
+          { "at_second": 15, "technique": "Pace Maintenance", "what": "Speaks at same measured pace despite a provocative question", "why": "Unchanged pace is the message itself: I have not been rattled by this" },
+          { "at_second": 22, "technique": "Question Reframe", "what": "Frames the question as flawed before he answers it", "why": "Reframing the question shifts power before the answer is even delivered" },
+          { "at_second": 28, "technique": "Controlled Micro-Smile", "what": "Slight smile appears as he delivers the counter — neither sycophantic nor aggressive", "why": "The smile signals: this challenge doesn't threaten me — it actually amuses me slightly" },
+          { "at_second": 36, "technique": "Precision Language", "what": "Disagrees using precise, formal language — no hedges, no slang", "why": "Precise language signals preparation and certainty; hedged language signals hidden doubt" },
+          { "at_second": 42, "technique": "Unbroken Final Eye Contact", "what": "Holds eye contact through the most uncomfortable question — never breaks first", "why": "Breaking eye contact at the hard question concedes the point before any words do" }
+        ]
+      },
+      "practice_steps": [
+        { "step_number": 1, "skill_focus": "Lean Into Challenge", "instruction": "When camera delivers a challenging question, lean slightly forward — not back. Practice this physical response to being challenged.", "tip": "Most people lean back when challenged — the opposite registers immediately as retreat. Even 5 degrees forward changes the read.", "target_duration_sec": 30 },
+        { "step_number": 2, "skill_focus": "Question Reframe", "instruction": "Receive a challenging question. Pause 2 seconds. Then say: 'The premise of that question assumes...' — redirect before answering.", "tip": "The reframe is the power move. It says: I control the terms of this conversation.", "target_duration_sec": 45 },
+        { "step_number": 3, "skill_focus": "Controlled Micro-Smile", "instruction": "Deliver a counter-argument with a very slight smile — not wide. Edges of the mouth only. Practice until it reads as confident, not contemptuous.", "tip": "The line between confident smile and contemptuous smile is fine. Record yourself — find the line.", "target_duration_sec": 30 },
+        { "step_number": 4, "skill_focus": "Hold Through the Hard Question", "instruction": "Have someone ask the most uncomfortable question they can. Hold eye contact through the full question without flinching, looking away, or filling the silence early.", "tip": "The hardest question is where the technique is tested in practice. That's the one to repeat.", "target_duration_sec": 60 }
+      ],
       "annotations": [
-        {
-          "at_second": 10,
-          "type": "posture",
-          "note": "Slight lean-forward when challenged — leaning IN to disagreement, not away"
-        },
-        {
-          "at_second": 28,
-          "type": "expression",
-          "note": "Micro-smile during counter — controlled, not defensive or angry"
-        },
-        {
-          "at_second": 42,
-          "type": "eye_contact",
-          "note": "Holds eye contact through the most uncomfortable question — never breaks first"
-        }
+        { "at_second": 10, "type": "posture", "note": "Slight lean-forward when challenged — leaning IN to disagreement, not away" },
+        { "at_second": 28, "type": "expression", "note": "Micro-smile during counter — controlled, not defensive or angry" },
+        { "at_second": 42, "type": "eye_contact", "note": "Holds eye contact through the most uncomfortable question — never breaks first" }
       ]
     }
   ]

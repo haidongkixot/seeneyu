@@ -8,15 +8,17 @@ import { SearchX } from 'lucide-react'
 import Link from 'next/link'
 
 interface LibraryPageProps {
-  searchParams: Promise<{ skill?: string; difficulty?: string }>
+  searchParams: Promise<{ skill?: string; difficulty?: string; film?: string; screenplay?: string }>
 }
 
-async function ClipGrid({ skill, difficulty }: { skill?: string; difficulty?: string }) {
+async function ClipGrid({ skill, difficulty, film, screenplay }: { skill?: string; difficulty?: string; film?: string; screenplay?: string }) {
   const clips = await prisma.clip.findMany({
     where: {
       isActive: true,
       ...(skill && { skillCategory: skill }),
       ...(difficulty && { difficulty }),
+      ...(film && { movieTitle: film }),
+      ...(screenplay === 'true' && { screenplaySource: { not: null } }),
     },
     orderBy: [{ skillCategory: 'asc' }, { difficultyScore: 'asc' }],
     select: {
@@ -30,6 +32,7 @@ async function ClipGrid({ skill, difficulty }: { skill?: string; difficulty?: st
       difficulty: true,
       startSec: true,
       endSec: true,
+      screenplaySource: true,
     },
   }).catch(() => [] as never[])
 
@@ -72,6 +75,8 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const params = await searchParams
   const skill = params.skill as SkillCategory | undefined
   const difficulty = params.difficulty as Difficulty | undefined
+  const film = params.film
+  const screenplay = params.screenplay
 
   const totalCount = await prisma.clip.count({ where: { isActive: true } }).catch(() => 0)
   const filteredCount = await prisma.clip.count({
@@ -79,8 +84,19 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
       isActive: true,
       ...(skill && { skillCategory: skill }),
       ...(difficulty && { difficulty }),
+      ...(film && { movieTitle: film }),
+      ...(screenplay === 'true' && { screenplaySource: { not: null } }),
     },
   }).catch(() => 0)
+
+  // Fetch distinct film titles for filter
+  const filmRows = await prisma.clip.findMany({
+    where: { isActive: true },
+    select: { movieTitle: true },
+    distinct: ['movieTitle'],
+    orderBy: { movieTitle: 'asc' },
+  }).catch(() => [] as { movieTitle: string }[])
+  const filmOptions = filmRows.map(r => r.movieTitle)
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -92,18 +108,24 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
           <div>
             <h1 className="text-3xl font-bold text-text-primary">The Library</h1>
             <p className="text-sm text-text-tertiary mt-1">
-              {skill || difficulty ? `${filteredCount} of ${totalCount}` : totalCount} clips available
+              {skill || difficulty || film || screenplay ? `${filteredCount} of ${totalCount}` : totalCount} clips available
             </p>
           </div>
         </div>
 
         {/* Filter bar */}
-        <LibraryFilters activeSkill={skill} activeDifficulty={difficulty} />
+        <LibraryFilters
+          activeSkill={skill}
+          activeDifficulty={difficulty}
+          activeFilm={film}
+          hasScreenplay={screenplay === 'true'}
+          filmOptions={filmOptions}
+        />
 
         {/* Grid */}
         <div className="mt-8">
           <Suspense fallback={<ClipGridSkeleton />}>
-            <ClipGrid skill={skill} difficulty={difficulty} />
+            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} />
           </Suspense>
         </div>
       </main>

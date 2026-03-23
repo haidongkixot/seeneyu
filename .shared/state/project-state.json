@@ -1,8 +1,78 @@
 {
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
-  "phase": "7-marketing",
+  "phase": "11-content-expansion",
   "active_tasks": [
+    {
+      "id": "task_m11_designer",
+      "milestone": "M11",
+      "role": "designer",
+      "task": "design-observation-guide-ui",
+      "description": "Design the ObservationGuide component: technique breakdown with timestamps, shown on clip detail page before the learner clicks Record.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T01:15:00Z"
+    },
+    {
+      "id": "task_m11_backend",
+      "milestone": "M11",
+      "role": "backend-engineer",
+      "task": "m11-observation-guide",
+      "description": "Add observationGuide JSON field to Clip schema, build AI generation route, implement ObservationGuide component and integrate into clip detail page.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T02:00:00Z"
+    },
+    {
+      "id": "task_m11_de",
+      "milestone": "M11",
+      "role": "data-engineer",
+      "task": "curate-observation-guides",
+      "description": "Write observation_guide data for all 15 clips in clips-seed.json (technique list with timestamps and why-it-works explanations).",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T01:35:00Z"
+    },
+    {
+      "id": "task_m12_designer",
+      "milestone": "M12",
+      "role": "designer",
+      "task": "design-micro-practice-flow",
+      "description": "Design the full Duolingo-style step-by-step practice flow: stepper UI, micro-recorder card, step feedback display, unlock Full Performance flow.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T01:15:00Z"
+    },
+    {
+      "id": "task_m12_backend",
+      "milestone": "M12",
+      "role": "backend-engineer",
+      "task": "m12-micro-practice-steps",
+      "description": "New PracticeStep + MicroSession models, micro-session API, step-by-step practice page, MicroRecorder with 30s limit, Whisper audio for vocal clips, instant per-step feedback.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T02:00:00Z"
+    },
+    {
+      "id": "task_m13_designer",
+      "milestone": "M13",
+      "role": "designer",
+      "task": "design-onboarding-assessment-flow",
+      "description": "Design onboarding assessment flow (5-skill quiz), learning path dashboard, SkillProgressBar level indicator, LearningPathCard next-clip recommendation.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T01:15:00Z"
+    },
+    {
+      "id": "task_m13_backend",
+      "milestone": "M13",
+      "role": "backend-engineer",
+      "task": "m13-onboarding-assessment",
+      "description": "SkillBaseline + LearningPath models, assessment API, baseline scoring logic, learning path algorithm, dashboard page, skill progress tracking.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T01:00:00Z",
+      "completed_at": "2026-03-23T03:00:00Z"
+    },
     {
       "id": "task_m9_marketing",
       "milestone": "M9",
@@ -13,13 +83,163 @@
       "assigned_at": "2026-03-22T20:00:00Z"
     },
     {
-      "id": "task_bug001_fix",
-      "milestone": "M8",
-      "role": "backend-engineer",
-      "task": "fix-clipform-score-ranges",
-      "description": "BUG-001: ClipForm score dimension fields allow 1-10 but model expects 1-3. Fix input validation in admin clip form.",
+      "id": "task_m10_tester_review",
+      "milestone": "M10",
+      "role": "tester",
+      "task": "approve-m10",
+      "description": "Review and approve M10: Script-Aware Coaching Loop. Check CharacterBanner, ScriptPanel, ActionPlan components. Verify AI feedback works end-to-end. Designer UI review already PASSED.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T01:00:00Z"
+    },
+    {
+      "id": "task_m11_tester_review",
+      "milestone": "M11",
+      "role": "tester",
+      "task": "approve-m11",
+      "description": "Review and approve M11 (Observation Guide). BE has signaled ready. Data seeded.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T02:00:00Z"
+    },
+    {
+      "id": "task_m12_tester_review",
+      "milestone": "M12",
+      "role": "tester",
+      "task": "approve-m12",
+      "description": "Review and approve M12 (Micro-Practice Stepper). BE has signaled ready.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T02:00:00Z"
+    },
+    {
+      "id": "task_m13_tester_review",
+      "milestone": "M13",
+      "role": "tester",
+      "task": "approve-m13",
+      "description": "Review and approve M13: Onboarding Assessment + Learning Path Dashboard.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T03:00:00Z"
+    },
+    {
+      "id": "task_user_db_push",
+      "milestone": "M11-M12-M13",
+      "role": "user",
+      "task": "run-db-push-generate-seed",
+      "description": "New schema fields added (observationGuide, PracticeStep, MicroSession, SkillBaseline, screenplaySource, FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress). User must run: npm run db:push → npx prisma generate → npm run db:seed",
+      "status": "pending",
+      "assigned_at": "2026-03-23T03:00:00Z"
+    },
+    {
+      "id": "task_m14_de",
+      "milestone": "M14",
+      "role": "data-engineer",
+      "task": "curate-100-screenplay-clips",
+      "description": "Curate 100+ YouTube clips from films with publicly available screenplays. Each clip needs full metadata including screenplaySource URL, script excerpt, observation_guide, practice_steps. Save to .shared/outputs/data/clips-100-seed.json.",
       "status": "assigned",
-      "assigned_at": "2026-03-22T22:30:00Z"
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m14_backend",
+      "milestone": "M14",
+      "role": "backend-engineer",
+      "task": "m14-screenplay-library-expansion",
+      "description": "Add screenplaySource field to Clip schema. Update Admin CMS ClipForm. Update Library page with Film + Screenplay filters. Update ClipCard with screenplay badge. Update clip detail with screenplay link.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T08:00:00Z"
+    },
+    {
+      "id": "task_m14_designer",
+      "milestone": "M14",
+      "role": "designer",
+      "task": "design-library-expansion-ui",
+      "description": "Design Library filter enhancements for 100+ clips: Film filter, screenplay badge on ClipCard, screenplay link on clip detail. Spec at .shared/outputs/design/m14-spec.md",
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T07:30:00Z"
+    },
+    {
+      "id": "task_m14_builder",
+      "milestone": "M14",
+      "role": "builder",
+      "task": "m14-db-seed-100-clips",
+      "description": "After data-engineer delivers clips-100-seed.json: run npm run db:push, npx prisma generate, npm run db:seed. Verify 100+ clips in DB.",
+      "status": "blocked",
+      "blocked_by": ["task_m14_de"],
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m14_tester",
+      "milestone": "M14",
+      "role": "tester",
+      "task": "approve-m14",
+      "description": "Review and approve M14: Library has 100+ clips, all with screenplay_source. Filter by film works. Screenplay badge visible. DB seed clean.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m15_designer",
+      "milestone": "M15",
+      "role": "designer",
+      "task": "design-performing-foundation-ui",
+      "description": "Design the full Performing Foundation section: course catalog, course detail, lesson page (theory + examples + quiz). Spec at .shared/outputs/design/m15-spec.md",
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T07:30:00Z"
+    },
+    {
+      "id": "task_m15_backend",
+      "milestone": "M15",
+      "role": "backend-engineer",
+      "task": "m15-performing-foundation-section",
+      "description": "Build the Performing Foundation section. 5 new Prisma models, /foundation pages, quiz client, progress API, NavBar link. Seed.ts updated for foundation curriculum.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T08:00:00Z"
+    },
+    {
+      "id": "task_m15_de",
+      "milestone": "M15",
+      "role": "data-engineer",
+      "task": "curate-foundation-curriculum",
+      "description": "Write all Foundation curriculum content: 3 courses × 10+ lessons each. Each lesson: theoryHtml (600-900 words), 2-3 YouTube examples, 4 quiz questions. Save to .shared/outputs/data/foundation-curriculum.json",
+      "status": "assigned",
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m15_builder",
+      "milestone": "M15",
+      "role": "builder",
+      "task": "m15-db-migrate-seed-foundation",
+      "description": "After backend-engineer adds Foundation models and data-engineer delivers foundation-curriculum.json: run npm run db:push, npx prisma generate, npm run db:seed. Verify foundation courses, lessons, examples, quiz questions in DB.",
+      "status": "blocked",
+      "blocked_by": ["task_m15_de"],
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m15_tester",
+      "milestone": "M15",
+      "role": "tester",
+      "task": "approve-m15",
+      "description": "Review and approve M15: Foundation section at /foundation. 3 courses accessible. Lessons load with theory + examples + quiz. Quiz scores save. Progress persists. NavBar links to Foundation.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_m14_m15_reporter",
+      "milestone": "M14-M15",
+      "role": "reporter",
+      "task": "document-m14-m15",
+      "description": "Document M14 and M15 in activity-log.md once each milestone is approved by Tester.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "task_builder_deploy_m10_m15",
+      "milestone": "M10-M15",
+      "role": "builder",
+      "task": "deploy-m10-to-m15-code",
+      "description": "Deploy all M10–M15 backend code to Vercel production. Commits include: ae12429, 6dff36e, 538cbac, d2f93e0 plus M14+M15 backend. New routes: /foundation, /onboarding, /dashboard, /library/[id]/practice. Run npm run db:push + npx prisma generate + npm run db:seed after deploy.",
+      "status": "assigned",
+      "assigned_at": "2026-03-23T08:30:00Z"
     }
   ],
   "blockers": [],
@@ -47,20 +267,43 @@
       "description": "BLOB_READ_WRITE_TOKEN — Vercel Blob store created",
       "resolved_at": "2026-03-22",
       "resolved_by": "builder"
+    },
+    {
+      "id": "blocker_005",
+      "description": "M7+M8 auth deployment — NEXTAUTH_SECRET+URL in Vercel, db:push confirmed in sync, admin:create seeded admin@seeneyu.com, code deployed",
+      "resolved_at": "2026-03-22",
+      "resolved_by": "pm"
     }
   ],
-  "open_bugs": [
+  "open_bugs": [],
+  "closed_bugs": [
     {
       "id": "BUG-001",
       "severity": "medium",
       "description": "ClipForm score dimension fields allow 1-10 but model expects 1-3",
-      "filed_by": "tester",
-      "assigned_to": "backend-engineer",
-      "blocking": false
+      "fixed_in": "M10",
+      "fixed_by": "backend-engineer"
+    },
+    {
+      "id": "BUG-002",
+      "severity": "critical",
+      "description": "Library page crash — ClipCard.tsx missing 'use client'",
+      "fixed_by": "tester",
+      "fixed_in": "M6-polish"
     }
   ],
-  "milestones_complete": ["M0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
-  "milestones_pending": ["M9"],
+  "milestones_complete": [
+    "M0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"
+  ],
+  "milestones_code_complete_awaiting_tester": [
+    "M10", "M11", "M12", "M13"
+  ],
+  "milestones_in_progress": [
+    "M14", "M15"
+  ],
+  "milestones_pending": [
+    "M9"
+  ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-22T22:30:00Z"
+  "last_updated": "2026-03-23T08:30:00Z"
 }

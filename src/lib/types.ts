@@ -159,3 +159,50 @@ export const DIFFICULTY_COLORS: Record<Difficulty, { text: string; bg: string; b
   intermediate: { text: '#fde68a', bg: '#451a03', border: '#ca8a04' },
   advanced:     { text: '#fca5a5', bg: '#450a0a', border: '#dc2626' },
 }
+
+export interface FoundationCourse {
+  id: string
+  slug: string
+  title: string
+  description: string
+  icon: string
+  color: string
+  order: number
+  lessons?: FoundationLesson[]
+  _count?: { lessons: number }
+}
+
+export interface FoundationLesson {
+  id: string
+  courseId: string
+  slug: string
+  title: string
+  theoryHtml: string
+  order: number
+  examples?: LessonExample[]
+  questions?: QuizQuestion[]
+}
+
+export interface LessonExample {
+  id: string
+  youtubeId: string
+  title: string
+  description: string
+  startTime?: number | null
+}
+
+export interface QuizQuestion {
+  id: string
+  question: string
+  options: string[]
+  correctIndex: number
+  explanation: string
+  order: number
+}
+
+export interface FoundationProgress {
+  lessonId: string
+  quizScore?: number | null
+  quizPassed: boolean
+  completedAt?: Date | null
+}

@@ -12,6 +12,16 @@
       "status": "unread"
     },
     {
+      "id": "sig_pm_marketer_session_end_001",
+      "from": "pm",
+      "to": "marketer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. M9 (Marketing Materials) is still in-progress — your signal queue (sig_mkt_001) has the full brief. Next session: continue producing the VC fundraising package. Product update for your pitch: the app now includes Duolingo-style micro-practice steps (M12), a personalized learning path dashboard (M13), and a pre-practice conversation analysis tab (M11). These are strong product differentiators — include them in the pitch deck. The 5-skill coaching loop is now fully interactive with step-by-step practice. Live demo URL: https://seeneyu.vercel.app",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_pm_checkpoint_1774163882582_marketer",
       "from": "pm",
       "type": "session-checkpoint",

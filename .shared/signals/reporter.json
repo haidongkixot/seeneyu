@@ -85,7 +85,7 @@
       "message": "PM session complete (2026-03-22). Log the following events: (1) M7 (Auth System) — marked COMPLETE, tester_approved. (2) M8 (Admin CMS) — marked COMPLETE, tester_approved. (3) BUG-001 assigned to Backend Engineer (ClipForm score range fix). (4) BUG-002 closed — fixed by Tester (ClipCard 'use client'). (5) Phase advanced from 5-launch to 7-marketing. (6) M9 (Marketing Materials) now active — Marketer is working on it. Update activity-log.md with all these events. Update shared-knowledge.md: 9 milestones complete (M0–M8), current phase 7-marketing, live at https://seeneyu.vercel.app.",
       "priority": "normal",
       "timestamp": "2026-03-22T22:30:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_pm_checkpoint_1774163882582_reporter",
@@ -94,6 +94,16 @@
       "priority": "high",
       "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
       "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_reporter_session_end_001",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. Next session tasks: (1) Log M10–M13 completions in activity-log.md AFTER Tester signs off on each (wait for PM approval signals). (2) Update shared-knowledge.md: current phase is 10-personalization, routes added: /practice /onboarding /dashboard. (3) Log the 5-point user product feedback session as a product decision in decisions.json. (4) Write milestone reports for M10, M11, M12, M13 once tester_approved=true.",
+      "timestamp": "2026-03-23T06:00:00Z",
       "status": "unread"
     },
     {
@@ -104,6 +114,18 @@
       "task": "M10-session-complete",
       "message": "Backend Engineer M10 session complete. Deliverables: BUG-001 fix (ClipForm score ranges), schema script field, types update, feedback API enhancement (character context + steps + no-frames fallback), CharacterBanner component, ScriptPanel component, ActionPlan in feedback page, ClipForm script textarea, tailwind fade-in-up animation. Build: 0 TS errors. Awaiting user db:push + Data Engineer script seeding to be fully live.",
       "timestamp": "2026-03-23T00:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_rp_m14m15_001",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "document-m14-m15",
+      "priority": "low",
+      "message": "NEW MILESTONES TO DOCUMENT: M14 and M15.\n\n## M14: Content Expansion — 100+ Lessons from Screenplay Films\nWhen approved by Tester, log in activity-log.md:\n- Library expanded from 15 to 100+ clips\n- New screenplaySource field on Clip model\n- New \"Filter by Film\" + \"Has Screenplay\" filters in Library\n- Screenplay badge on ClipCard\n- Films covered (list the major ones from clips-100-seed.json)\n\n## M15: Performing Foundation Section  \nWhen approved by Tester, log in activity-log.md:\n- New /foundation route — course catalog\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 10+ lessons per course with theory, YouTube examples, quiz\n- New Prisma models: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress\n- Foundation link added to NavBar\n\nStatus: pending. Wait for Tester approvals before documenting.",
+      "context": ".shared/outputs/reporter/activity-log.md",
+      "timestamp": "2026-03-23T07:00:00Z",
       "status": "unread"
     }
   ]

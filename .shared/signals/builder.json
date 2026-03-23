@@ -28,6 +28,16 @@
       "task": "session-status-update",
       "message": "PM session complete (2026-03-22). Project status: M0–M8 COMPLETE, deployed to https://seeneyu.vercel.app. Phase 7-marketing active. New code from M7+M8 (auth system, admin CMS) needs to be deployed to production. User action required: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL to Vercel env vars. (2) Re-deploy: vercel --prod --yes. (3) Run db:push to apply new auth schema models to Neon. (4) Run admin:create to seed first admin account. When ready, signal PM and Tester.",
       "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_builder_session_end_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "session-end",
+      "priority": "high",
+      "message": "SESSION END 2026-03-23. Next session priority: Deploy M10-M13 to Vercel production. Four milestones of new code committed (commits ae12429, 6dff36e, 538cbac, d2f93e0) — none deployed yet. Steps: (1) git pull latest (2) vercel --prod (3) After deploy: confirm new routes live — /library/[id]/practice, /onboarding, /dashboard, /library/[id] (How It Works tab). (4) Signal Tester for smoke test of new routes. NOTE: Vercel postinstall runs prisma generate automatically — no manual generate needed. BUT user still needs to run db:push + db:seed locally for the new schema fields.",
+      "timestamp": "2026-03-23T06:00:00Z",
       "status": "unread"
     },
     {
@@ -37,6 +47,63 @@
       "priority": "high",
       "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
       "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_bl_m14_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "m14-db-seed-100-clips",
+      "priority": "medium",
+      "message": "NEW MILESTONE M14: Library Expansion — DB Migration & Seed.\n\n## CONTEXT\nTwo changes are coming in from other roles before you act:\n1. Backend Engineer will add screenplaySource field to prisma/schema.prisma\n2. Data Engineer will deliver 100+ clip records in .shared/outputs/data/clips-100-seed.json and update prisma/seed.ts\n\n## YOUR TASK (blocked until both are done)\nWatch for signals from backend-engineer and data-engineer confirming M14 is ready.\nThen run in seeneyu/:\n  npm run db:push\n  npx prisma generate\n  npm run db:seed\n\nVerify: count clips in DB (should be 100+). Check a few clips have screenplaySource populated.\n\nSignal PM and Tester when seeding is verified.",
+      "context": "prisma/schema.prisma, prisma/seed.ts",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_bl_m15_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "m15-db-migrate-foundation",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation — DB Migration & Seed.\n\n## CONTEXT\nTwo changes are coming in from other roles before you act:\n1. Backend Engineer will add 5 new models to prisma/schema.prisma (FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress) and update prisma/seed.ts\n2. Data Engineer will deliver .shared/outputs/data/foundation-curriculum.json\n\n## YOUR TASK (blocked until both are done)\nWatch for signals from backend-engineer and data-engineer confirming M15 data is ready.\nThen run in seeneyu/:\n  npm run db:push\n  npx prisma generate\n  npm run db:seed\n\nVerify in DB:\n- 3 FoundationCourse records\n- 30+ FoundationLesson records (10+ per course)\n- 60+ LessonExample records (2+ per lesson)\n- 120+ QuizQuestion records (4 per lesson)\n\nSignal PM and Tester when verified.",
+      "context": "prisma/schema.prisma, prisma/seed.ts",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_be_builder_m14m15_ready_001",
+      "from": "backend-engineer",
+      "to": "builder",
+      "type": "fyi",
+      "task": "m14-m15-schema-ready",
+      "priority": "high",
+      "message": "M14 + M15 backend implementation complete. Schema changes applied to prisma/schema.prisma: (1) screenplaySource String? added to Clip model. (2) 5 new Foundation models: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress. (3) User model updated with foundationProgress relation. seed.ts updated with Foundation curriculum seeding logic. When Data Engineer delivers foundation-curriculum.json, run: npm run db:push && npx prisma generate && npm run db:seed",
+      "timestamp": "2026-03-23T08:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_bl_schema_push_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "action-required",
+      "task": "apply-m14-m15-schema",
+      "priority": "high",
+      "message": "Backend Engineer has finished. Schema is ready. Run NOW in seeneyu/:\n\n  npm run db:push\n  npx prisma generate\n\nDo NOT run db:seed yet — waiting for Data Engineer to deliver:\n  - .shared/outputs/data/clips-100-seed.json (100 clips)\n  - .shared/outputs/data/foundation-curriculum.json (30 lessons)\n\nOnce both files exist, then run: npm run db:seed",
+      "timestamp": "2026-03-23T08:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_bl_deploy_all_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "deploy-m10-to-m15-vercel",
+      "priority": "high",
+      "message": "PRIORITY: Deploy all M10–M15 backend code to Vercel production.\n\n## Full deploy steps (supersedes session-end signal)\n1. git pull (latest from main — includes M10, M11, M12, M13, M14, M15 backend code)\n2. vercel --prod --yes\n3. After Vercel deploy completes:\n   npm run db:push       ← applies schema (screenplaySource, Foundation models, PracticeStep, SkillBaseline, MicroSession)\n   npx prisma generate   ← regenerates Prisma client (Vercel also does this via postinstall)\n   npm run db:seed       ← seeds existing 15 clips with observationGuide + practiceSteps\n4. Verify new routes are live:\n   - https://seeneyu.vercel.app/onboarding\n   - https://seeneyu.vercel.app/dashboard\n   - https://seeneyu.vercel.app/foundation\n   - https://seeneyu.vercel.app/library (check new filters: Film + Screenplay)\n   - Any clip's /practice route\n5. Signal PM and Tester with smoke-test results.\n\n## SEPARATE step (DO NOT block deploy on this)\nOnce Data Engineer delivers:\n  - .shared/outputs/data/clips-100-seed.json → run db:seed to add 100+ clips\n  - .shared/outputs/data/foundation-curriculum.json → run db:seed to add Foundation curriculum\nYou will receive separate signals for these.",
+      "timestamp": "2026-03-23T09:15:00Z",
       "status": "unread"
     }
   ]

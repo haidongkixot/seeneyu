@@ -35,6 +35,7 @@ interface ClipFormData {
   annotation: string
   contextNote: string
   script: string
+  screenplaySource: string
   startSec: string
   endSec: string
   isActive: boolean
@@ -57,6 +58,7 @@ const EMPTY: ClipFormData = {
   annotation: '',
   contextNote: '',
   script: '',
+  screenplaySource: '',
   startSec: '0',
   endSec: '30',
   isActive: true,
@@ -107,6 +109,7 @@ export default function ClipForm({ initial, mode }: Props) {
       annotation: form.annotation,
       contextNote: form.contextNote || null,
       script: form.script || null,
+      screenplaySource: form.screenplaySource || null,
       startSec: Number(form.startSec),
       endSec: Number(form.endSec),
       isActive: form.isActive,
@@ -268,6 +271,17 @@ export default function ClipForm({ initial, mode }: Props) {
             onChange={e => set('script', e.target.value)}
             className={`${inputClass()} resize-y`}
             placeholder="The exact dialogue or action script the learner should perform…"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass()}>Screenplay Source URL</label>
+          <input
+            type="url"
+            className={inputClass()}
+            placeholder="https://imsdb.com/scripts/..."
+            value={form.screenplaySource}
+            onChange={e => set('screenplaySource', e.target.value)}
           />
         </div>
 

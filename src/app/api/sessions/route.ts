@@ -49,11 +49,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Kick off AI feedback (non-blocking — runs in background)
-    fetch(`${req.nextUrl.origin}/api/sessions/${session.id}/feedback`, {
-      method: 'POST',
-    }).catch(console.error)
-
+    // Return sessionId immediately — FeedbackPoller will trigger the feedback call client-side
     return NextResponse.json({ sessionId: session.id })
   } catch (error) {
     console.error('Session creation error:', error)

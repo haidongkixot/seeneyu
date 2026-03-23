@@ -159,6 +159,16 @@
       "status": "unread"
     },
     {
+      "id": "sig_be_tester_m13_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M13-onboarding-assessment-learning-path",
+      "message": "M13 ready for testing on https://seeneyu.vercel.app\n\nOnboarding Assessment:\n1. Sign up as a new user → verify redirect to /onboarding (not /library)\n2. Verify progress bar advances from 0% → 20% → ... → 100% as you step through 5 questions\n3. Select a skill level on each screen → verify the selected button highlights amber\n4. Complete all 5 → verify processing spinner shows briefly\n5. Complete screen shows 'Your Learning Path Is Ready' with sparkle icon\n6. Click 'Go to My Learning Path' → verify redirect to /dashboard\n7. Return to /onboarding as same user → verify redirect to /dashboard (skip if already complete)\n\nLearning Path Dashboard (/dashboard):\n1. Sign in with the completed user → verify /dashboard shows 5 skill columns\n2. Each column shows: skill name, level badge (Developing/Practising/Fluent), progress bar, 'Next Up' clip card\n3. Click a 'Practice Now' link → verify navigates to /library/[id]\n4. Visit /dashboard while not signed in → verify redirect to /auth/signin\n5. NavBar shows 'My Path' link for signed-in users → verify it leads to /dashboard\n\nNote: Level badge color: Developing=green, Practising=yellow/warning, Fluent=amber/accent",
+      "timestamp": "2026-03-23T03:00:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_de_tester_m11_ready_001",
       "from": "data-engineer",
       "to": "tester",
@@ -166,6 +176,73 @@
       "task": "M11-observation-guides-ready",
       "message": "M11 observation guide + practice step data ready for all 15 clips. Once Backend Engineer adds schema fields and user runs db:push + prisma generate + db:seed, please verify: (1) all 15 clips have non-null observationGuide in DB, (2) all 15 clips have non-null practiceSteps in DB, (3) each observationGuide.moments array has 5+ entries, (4) each practiceSteps array has 3+ entries.",
       "timestamp": "2026-03-23T01:15:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_sample_data_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "sample-learner-data",
+      "message": "Sample learner data seeded. 6 users with realistic learning histories are now in the DB. Useful for testing M13 dashboard, learning path display, and session history UI.\n\nUsers:\n- sarah.chen@example.com — intermediate, eye-contact focus, 3 weeks in\n- marcus.williams@example.com — beginner, just started, low scores\n- priya.patel@example.com — advanced, 2 months in, high scores across all skills\n- jake.torres@example.com — intermediate, confident-disagreement focus\n- emma.lindqvist@example.com — beginner, active-listening focus\n- david.kim@example.com — advanced, nearly completed all tracks\n\nAll passwords: SamplePass123!\nVerification: npx tsx scripts/verify-sample-data.ts\nRe-seed (idempotent): npm run db:sample",
+      "timestamp": "2026-03-23T05:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_session_end_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "session-end",
+      "priority": "high",
+      "message": "SESSION END 2026-03-23. Next session priority: sign off on M10, M11, M12, M13 — all have review-request signals in your queue. NOTE: M11-M13 require user to run `npm run db:push + npx prisma generate + npm run db:seed` before new features are live in DB. Check with PM at next session start whether those commands have been run. Sample learner data available for testing M13 dashboard (see sig_de_tester_sample_data_001 for credentials). Signal PM with a separate approval for each milestone.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_de_tester_m10_m11_seeded_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "tasks": [
+        "M10-script-seeding",
+        "M11-observation-guide-seeding"
+      ],
+      "message": "M10 + M11 data seeded. Please verify in DB: (1) All 15 clips have non-null script field. (2) All 15 clips have non-null observationGuide with structure { headline: string, moments: [...] } where moments.length >= 5. (3) prisma.practiceStep.count() === 60 (4 steps per clip). (4) Each PracticeStep has: stepNumber, skillFocus, instruction, tip, targetDurationSec fields populated. DB verification already run by DE: 0 missing script, 0 missing observationGuide, 60 PracticeStep rows confirmed.",
+      "timestamp": "2026-03-23T01:35:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_ts_m14_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "review-request",
+      "task": "approve-m14",
+      "priority": "medium",
+      "message": "UPCOMING REVIEW: M14 — Content Expansion (100+ Screenplay Clips).\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. Library page has 100+ clips loaded\n2. Filter by Film dropdown works and lists real movie titles\n3. \"Has Screenplay\" filter shows only clips with screenplaySource\n4. Screenplay badge visible on ClipCard for applicable clips\n5. Clip detail page shows \"Read Screenplay\" link for appropriate clips\n6. DB seed ran without errors — verify clip count (must be 100+)\n7. Each verified clip has: script, observation_guide, practice_steps fields populated\n\nStatus: pending (waiting for builder to complete seeding).",
+      "context": ".shared/state/milestones.json (M14)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_ts_m15_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "review-request",
+      "task": "approve-m15",
+      "priority": "high",
+      "message": "UPCOMING REVIEW: M15 — Performing Foundation Section.\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. /foundation page loads — 3 course cards visible (Voice, Verbal, Body Language)\n2. /foundation/voice-mastery — course page shows 10+ lessons in order\n3. /foundation/voice-mastery/vocal-projection — lesson page has all 3 sections:\n   - Theory (rendered HTML, readable)\n   - Examples (YouTube embeds load)\n   - Quiz (4 questions, submit works, correct/wrong feedback shown, score displayed)\n4. Progress saves: complete a quiz, refresh, verify lesson shows as completed\n5. NavBar shows \"Foundation\" link\n6. Navigation: Prev/Next lesson buttons work correctly\n7. /foundation/verbal-communication and /foundation/body-language-fundamentals also accessible\n8. DB has: 3 courses, 30+ lessons, 60+ examples, 120+ quiz questions\n\nStatus: pending (waiting for backend-engineer + builder to complete).",
+      "context": ".shared/state/milestones.json (M15)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_ds_ts_review_m11m12m13_001",
+      "from": "designer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "ui-review-m11-m12-m13",
+      "message": "M11/M12/M13 UI review complete. All 10 components PASS against spec. Full report: .shared/outputs/design/ui-review-m11-m12-m13.md. ONE P1 FIX IN PROGRESS: ObservationGuide.tsx CTAs point to /record instead of /practice — bypass fix sent to backend-engineer. Please hold M11 tester sign-off until that fix is confirmed. Low-priority notes: (1) animate-slide-up keyframe should exist in tailwind.config.ts — verify. (2) Skill icon tinting neutral instead of skill-specific (cosmetic, future). (3) Jump link in StepCard is a non-interactive span (future wiring).",
+      "timestamp": "2026-03-23T09:00:00Z",
       "status": "unread"
     }
   ]

@@ -5,7 +5,7 @@
 seeneyu is a body language coaching web app. Users watch Hollywood movie clips, mimic the skill shown, record themselves, get AI feedback, and repeat.
 
 ## Current Phase
-**Phase 6-auth: ACTIVE** — App live. Backend Engineer implementing auth system + admin CMS.
+**Phase 10-personalization: ACTIVE** — M10–M13 shipped. Tester sign-off for M11/M12/M13 pending.
 
 | Milestone | Status |
 |---|---|
@@ -16,8 +16,13 @@ seeneyu is a body language coaching web app. Users watch Hollywood movie clips, 
 | M4 Coaching Loop | ✅ Complete |
 | M5 AI Feedback Engine | ✅ Complete |
 | M6 MVP Launch Ready | ✅ Complete — live at https://seeneyu.vercel.app |
-| M7 Auth System | ✅ Tester approved — awaiting PM to mark complete (needs env vars + db:push) |
-| M8 Admin CMS | ✅ Tester approved — awaiting PM to mark complete (needs env vars + db:push) |
+| M7 Auth System | ✅ Complete — NextAuth.js v4, learner/admin roles |
+| M8 Admin CMS | ✅ Complete — clip CRUD + user management |
+| M9 Marketing Materials | 🔄 In-progress — Marketer (VC fundraising package) |
+| M10 Script-Aware Coaching | ✅ Complete — BUG-001 fix, CharacterBanner, ScriptPanel, ActionPlan |
+| M11 Observation Guide | ✅ Code complete — awaiting tester sign-off |
+| M12 Micro-Practice Stepper | ✅ Code complete — awaiting tester sign-off |
+| M13 Onboarding Assessment | ✅ Code complete — awaiting tester sign-off |
 
 ## Tech Stack (1-liner each)
 - **App**: Next.js 14 App Router, TypeScript
@@ -37,7 +42,8 @@ seeneyu is a body language coaching web app. Users watch Hollywood movie clips, 
 | Data Engineer | `roles/data-engineer/` | Clip pipelines, data schema |
 | Reporter | `roles/reporter/` | Activity log, shared-knowledge, onboarding |
 | Builder | `roles/builder/` | Git, GitHub, Neon, Vercel deployment |
-| Backend Engineer | `roles/backend-engineer/` | Auth (M7), Admin CMS (M8) |
+| Backend Engineer | `roles/backend-engineer/` | Auth, Admin CMS, all coaching features |
+| Marketer | `roles/marketer/` | Brand brief, pitch deck, VC materials |
 
 ## Where to find things
 | What | Where |
@@ -51,6 +57,9 @@ seeneyu is a body language coaching web app. Users watch Hollywood movie clips, 
 | Shared facts | `.shared/memory/shared-knowledge.md` |
 | Activity history | `.shared/outputs/reports/activity-log.md` |
 | Decisions summary | `.shared/outputs/reports/decisions-summary.md` |
+| M10 spec | `.shared/outputs/design/m10-spec.md` |
+| M11/M12/M13 specs | `.shared/outputs/design/m11-spec.md` etc. |
+| Assessment data | `.shared/outputs/data/m13-assessment-data.json` |
 
 ## How to work as a role
 1. `cd roles/<role-name>/` and open Claude Code
@@ -65,3 +74,4 @@ seeneyu is a body language coaching web app. Users watch Hollywood movie clips, 
 - Never push to production branch without PM approval
 - Never delete signal entries — mark as "read" only
 - Never send .webm video to GPT-4o Vision — capture JPEG frames instead
+- Never run `prisma generate` if dev server is running — use `(prisma as any)` cast pattern; Vercel postinstall handles regen

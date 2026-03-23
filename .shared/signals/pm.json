@@ -178,7 +178,7 @@
         ".shared/outputs/design/m10-spec.md"
       ],
       "timestamp": "2026-03-23T00:00:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_pm_m10_script_ready_001",
@@ -186,7 +186,7 @@
       "to": "pm",
       "type": "checkpoint-saved",
       "task": "M10-add-script-text-to-clips",
-      "status": "unread",
+      "status": "read",
       "message": "M10 script prep complete. All 15 clip scripts written and saved to .shared/outputs/data/clips-seed.json. Eye-contact/posture/listening clips use 4-step physical instruction lists; vocal-pacing/confident-disagreement clips use exact dialogue scripts. seed.ts update (3 lines) and npx prisma db seed will execute immediately once Backend Engineer signals that `script` field is live in schema. Checkpoint: .shared/outputs/data/checkpoints/m10-script-seeding.json",
       "artifacts": [
         ".shared/outputs/data/clips-seed.json",
@@ -203,7 +203,7 @@
       "task": "M10-script-aware-coaching-loop",
       "message": "M10 fully implemented. Build: 0 TypeScript errors.\n\nCompleted:\n- BUG-001 fixed: ClipForm score dimensions 1-3, difficultyScore 4-12\n- Schema: script String? @db.Text added to Clip\n- Types: ActionPlanStep + steps[] in FeedbackResult + script in Clip\n- Feedback API: character/script context in prompt, steps[] schema, no-frames fallback\n- tailwind.config.ts: fade-in-up keyframe\n- CharacterBanner + ScriptPanel components created\n- Record page: CharacterBanner + ScriptPanel\n- Feedback page: ActionPlan section\n- ClipForm: Script/Dialogue textarea\n- Data Engineer signaled: schema ready, pending user db:push\n\nPENDING USER ACTIONS:\n1. npm run db:push — apply script field to DB\n2. npx prisma generate — regenerate client\n(Casts in code will clean up automatically after regen)",
       "timestamp": "2026-03-23T00:30:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_pm_m10_complete_001",
@@ -222,7 +222,7 @@
         "npx prisma db seed"
       ],
       "timestamp": "2026-03-23T00:35:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_designer_pm_m10_review_001",
@@ -235,7 +235,7 @@
         ".shared/outputs/design/ui-review-m10.md"
       ],
       "timestamp": "2026-03-23T00:45:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_designer_pm_m11_m12_m13_complete_001",
@@ -250,7 +250,7 @@
         ".shared/outputs/design/m13-spec.md"
       ],
       "timestamp": "2026-03-23T01:15:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_de_pm_m11_checkpoint_001",
@@ -258,7 +258,7 @@
       "to": "pm",
       "type": "checkpoint-saved",
       "task": "M11-curate-observation-guides",
-      "status": "unread",
+      "status": "read",
       "message": "M11 data prep complete. observation_guide (headline + 5-6 timestamped moments) and practice_steps (3-4 steps with instruction/tip/duration) written for all 15 clips in clips-seed.json v1.2. seed.ts updated with interface + patch + create logic for both new JSON fields. Blocked on Backend Engineer adding observationGuide Json? + practiceSteps Json? to Clip model, then user running: npm run db:push + npx prisma generate + npx prisma db seed. Checkpoint: .shared/outputs/data/checkpoints/m11-observation-guides.json",
       "artifacts": [
         ".shared/outputs/data/clips-seed.json",
@@ -274,7 +274,7 @@
       "to": "pm",
       "type": "fyi",
       "task": "M13-assessment-data-proactive-prep",
-      "status": "unread",
+      "status": "read",
       "message": "Proactively prepared M13 assessment data (no task was assigned — did this while blocked on M11/M12 schema work). Created .shared/outputs/data/m13-assessment-data.json with: (1) 5 self-report quiz questions (one per skill, 3 options each mapping to beginner/intermediate/advanced), (2) 5 video prompts for AI baseline scoring, (3) scoring algorithm (self-report 40% + AI video 60%), (4) advancement threshold (70% on 2 consecutive sessions), (5) full learning path sequences for all 5 skills x 3 levels, (6) skill level display tokens for SkillProgressBar UI. Backend Engineer can use this directly when implementing M13 onboarding flow. No user DB action needed — this is purely reference data for the algorithm.",
       "artifacts": [
         ".shared/outputs/data/m13-assessment-data.json"
@@ -289,7 +289,17 @@
       "task": "M11-M12-observation-guide-micro-practice",
       "message": "M11 (Observation Guide) + M12 (Micro-Practice Stepper) fully implemented and deployed to production.\n\nM11 deliverables:\n- Schema: observationGuide Json? added to Clip\n- Types: ObservationMoment + ObservationGuide interfaces\n- API: POST /api/admin/clips/[id]/observation — AI generates guide\n- Component: ObservationGuide.tsx (vertical timeline)\n- Component: ClipDetailTabs.tsx (Watch | How It Works tabs)\n- Clip detail page updated\n- Admin edit page: GenerateObservationGuide button\n\nM12 deliverables:\n- Schema: PracticeStep + MicroSession models\n- Types: PracticeStep + MicroFeedback interfaces\n- API: POST /api/micro-sessions — upload + instant micro-feedback\n- Components: StepCard, PracticeRecorder (30s SVG ring), MicroFeedbackCard, PerformanceUnlockScreen, MicroPracticeFlow\n- Route: /library/[clipId]/practice — new micro-practice route\n- Clip detail CTA: now routes to /practice\n\nBoth pushed to production (commit 538cbac). Build: 0 TypeScript errors.",
       "timestamp": "2026-03-23T02:00:00Z",
-      "status": "unread"
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_m13_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M13-onboarding-assessment-learning-path",
+      "message": "M13 fully implemented and deployed to production (commit d2f93e0).\n\nDeliverables:\n- Schema: SkillBaseline model + User.onboardingComplete Boolean → db:push applied\n- Types: SkillLevel, SkillBaseline, SkillTrack, SkillTrackNextClip\n- API: POST /api/onboarding/complete — stores 5 skill baselines, marks onboardingComplete=true\n- API: GET /api/dashboard/tracks — computes tracks with level advancement (2+ sessions @ 70%+)\n- /onboarding: 5-screen self-rating flow → processing → complete → /dashboard\n- /dashboard: 5-column learning path grid with SkillProgressBar + LearningPathCard per skill\n- NavBar: 'My Path' link added for signed-in users\n- Middleware: /dashboard + /onboarding auth-protected\n- Signup: redirects to /onboarding after registration\n- Build: 0 TypeScript errors",
+      "timestamp": "2026-03-23T03:00:00Z",
+      "status": "read"
     },
     {
       "id": "sig_de_pm_checkpoint_20260323_001",
@@ -309,7 +319,101 @@
       ],
       "progress_file": ".shared/outputs/data-engineer/progress.json",
       "timestamp": "2026-03-23T01:25:00Z",
-      "status": "unread"
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m10_m11_seeded_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "tasks": [
+        "M10-add-script-text-to-clips",
+        "M11-curate-observation-guides"
+      ],
+      "message": "M10 + M11 data fully seeded. DB verification passed: 15/15 clips have script (not null), 15/15 have observationGuide (not null), 60 PracticeStep rows (4 per clip). seed.ts rewritten to correctly handle: script (Text), observationGuide (Json), practiceSteps (relation — PracticeStep model rows). All data live in Neon DB.",
+      "db_verification": {
+        "total_clips": 15,
+        "missing_script": 0,
+        "missing_observation_guide": 0,
+        "total_practice_steps": 60,
+        "avg_steps_per_clip": 4
+      },
+      "artifacts": [
+        "prisma/seed.ts (rewritten — handles Text, Json, and relation fields)",
+        ".shared/outputs/data/clips-seed.json (v1.2)",
+        ".shared/outputs/data/m13-assessment-data.json (M13 prep — ready for BE)"
+      ],
+      "timestamp": "2026-03-23T01:35:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_sample_data_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "seed-sample-data",
+      "message": "Sample data seeded and DB verified. 6 realistic learner profiles created with full learning activity histories.\n\nDB counts:\n- 6 sample users (sarah.chen, marcus.williams, priya.patel, jake.torres, emma.lindqvist, david.kim @example.com)\n- 30 SkillBaselines (5 per user, one per skill)\n- 63 UserSessions with full FeedbackResult JSON (overallScore, dimensions, summary, positives, improvements, steps, tips)\n- 33 MicroSessions with MicroFeedback JSON (verdict, headline, detail)\n\nScript: scripts/seed-sample-data.ts\nCommand: npm run db:sample\nAll passwords: SamplePass123!\nIdempotent: safe to re-run (skips existing users).\n\nVerification script: scripts/verify-sample-data.ts — runs via npx tsx scripts/verify-sample-data.ts",
+      "artifacts": [
+        "scripts/seed-sample-data.ts",
+        "scripts/verify-sample-data.ts"
+      ],
+      "db_verification": {
+        "sample_users": 6,
+        "user_sessions": 63,
+        "micro_sessions": 33,
+        "skill_baselines": 30
+      },
+      "timestamp": "2026-03-23T05:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_003",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-complete",
+      "message": "Reporter session complete (2026-03-23). All documentation current through M13.\n\nCompleted this session:\n- activity-log.md: appended M7/M8 complete, BUG-001 assigned, BUG-002 closed, M9 active, M10/M11/M12/M13 all completion events\n- shared-knowledge.md: updated to phase 10-personalization, M0–M13 status, new architecture facts\n- onboarding.md: full rewrite — current milestone table (M0–M13), 8 roles, new routes/paths, updated DO NOTs\n- Milestone reports written: M7, M8, M10, M11, M12, M13 (in .shared/outputs/reports/)\n\nGaps detected (action required):\n1. TESTER: M10/M11/M12/M13 tester_approved still false — Tester session needed urgently\n2. PM: After tester sign-off, update milestones.json tester_approved + project-state.json milestones_complete for M11/M12/M13\n3. DATA ENGINEER activity log: M10+M11 seeding confirmed in DB — should be added to log next session",
+      "timestamp": "2026-03-23T04:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_user_pm_m14m15_001",
+      "from": "user",
+      "to": "pm",
+      "type": "direction",
+      "task": "m14-m15-new-requirements",
+      "priority": "high",
+      "message": "New requirements from user (2026-03-23):\n\n1. M14 — Content Expansion: Expand lesson library to 100+ clips. PRIORITIZE movies with publicly available screenplays (IMSDB, Scripts.com). Users can see screenplay source links. New filters: by film, by screenplay availability.\n\n2. M15 — Performing Foundation: Build a NEW section /foundation (separate from the clip practice section). Udemy-style structured learning: 3 courses (Voice, Verbal, Body Language), 10+ lessons each. Each lesson = theory + YouTube examples + quiz. Progress tracked per user.\n\nAll signals dispatched to: data-engineer (M14 clip curation + M15 curriculum), backend-engineer (M14 schema + M15 full build), designer (M14 filter UI + M15 full section design), builder (M14 + M15 db migrations), tester (M14 + M15 review), reporter (M14 + M15 docs).\n\nMilestones.json updated. Project-state.json updated with all task assignments.\n\nPhase order: M14 parallel with M15 design. M15 build starts after designer delivers spec.",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_m14m15_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "message": "M14 + M15 design specs delivered: .shared/outputs/design/m14-spec.md and .shared/outputs/design/m15-spec.md. Both include ASCII mockups, Tailwind classes, component types, and all interactive states.",
+      "timestamp": "2026-03-23T07:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_m14m15_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "message": "M14 + M15 backend implementation complete. Changes: (1) screenplaySource added to Clip schema. (2) Admin CMS ClipForm updated. (3) Library filters: Film + Screenplay added. (4) ClipCard screenplay badge added. (5) Clip detail screenplay link added. (6) Foundation section: 5 new Prisma models, /foundation pages, quiz client, NavBar link, seed.ts updated. Run: npm run db:push -> npx prisma generate -> npm run db:seed to apply.",
+      "timestamp": "2026-03-23T08:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_review_m11m12m13_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "ui-review-m11-m12-m13",
+      "message": "M11/M12/M13 UI review complete. Verdict: PASS overall (10/10 components pass). Full report at .shared/outputs/design/ui-review-m11-m12-m13.md. One P1 fix required: ObservationGuide.tsx (lines 31 + 86) — both CTAs link to /record instead of /practice, bypassing the M12 stepper. Fix assigned to backend-engineer. All other findings are low-priority polish notes.",
+      "timestamp": "2026-03-23T09:00:00Z",
+      "status": "read"
     }
   ]
 }
