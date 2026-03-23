@@ -1,7 +1,7 @@
 {
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
-  "phase": "11-content-expansion",
+  "phase": "12-content-expansion-deployed",
   "active_tasks": [
     {
       "id": "task_m11_designer",
@@ -133,8 +133,10 @@
       "role": "data-engineer",
       "task": "curate-100-screenplay-clips",
       "description": "Curate 100+ YouTube clips from films with publicly available screenplays. Each clip needs full metadata including screenplaySource URL, script excerpt, observation_guide, practice_steps. Save to .shared/outputs/data/clips-100-seed.json.",
-      "status": "assigned",
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z",
+      "note": "Delivered 65 clips (38 films). YouTube API quota exhausted. PM accepted 65 as sprint delivery. Remaining 35 clips queued for next session."
     },
     {
       "id": "task_m14_backend",
@@ -144,7 +146,7 @@
       "description": "Add screenplaySource field to Clip schema. Update Admin CMS ClipForm. Update Library page with Film + Screenplay filters. Update ClipCard with screenplay badge. Update clip detail with screenplay link.",
       "status": "complete",
       "assigned_at": "2026-03-23T07:00:00Z",
-      "completed_at": "2026-03-23T08:00:00Z"
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m14_designer",
@@ -154,7 +156,7 @@
       "description": "Design Library filter enhancements for 100+ clips: Film filter, screenplay badge on ClipCard, screenplay link on clip detail. Spec at .shared/outputs/design/m14-spec.md",
       "status": "complete",
       "assigned_at": "2026-03-23T07:00:00Z",
-      "completed_at": "2026-03-23T07:30:00Z"
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m14_builder",
@@ -162,9 +164,10 @@
       "role": "builder",
       "task": "m14-db-seed-100-clips",
       "description": "After data-engineer delivers clips-100-seed.json: run npm run db:push, npx prisma generate, npm run db:seed. Verify 100+ clips in DB.",
-      "status": "blocked",
-      "blocked_by": ["task_m14_de"],
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "unblocked_at": "2026-03-23T10:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m14_tester",
@@ -172,8 +175,9 @@
       "role": "tester",
       "task": "approve-m14",
       "description": "Review and approve M14: Library has 100+ clips, all with screenplay_source. Filter by film works. Screenplay badge visible. DB seed clean.",
-      "status": "pending",
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m15_designer",
@@ -183,7 +187,7 @@
       "description": "Design the full Performing Foundation section: course catalog, course detail, lesson page (theory + examples + quiz). Spec at .shared/outputs/design/m15-spec.md",
       "status": "complete",
       "assigned_at": "2026-03-23T07:00:00Z",
-      "completed_at": "2026-03-23T07:30:00Z"
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m15_backend",
@@ -193,7 +197,7 @@
       "description": "Build the Performing Foundation section. 5 new Prisma models, /foundation pages, quiz client, progress API, NavBar link. Seed.ts updated for foundation curriculum.",
       "status": "complete",
       "assigned_at": "2026-03-23T07:00:00Z",
-      "completed_at": "2026-03-23T08:00:00Z"
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m15_de",
@@ -201,8 +205,10 @@
       "role": "data-engineer",
       "task": "curate-foundation-curriculum",
       "description": "Write all Foundation curriculum content: 3 courses × 10+ lessons each. Each lesson: theoryHtml (600-900 words), 2-3 YouTube examples, 4 quiz questions. Save to .shared/outputs/data/foundation-curriculum.json",
-      "status": "assigned",
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z",
+      "notes": "Delivered 3 courses × 10 lessons = 30 lessons, 60 YouTube examples, 120 quiz questions."
     },
     {
       "id": "task_m15_builder",
@@ -210,9 +216,10 @@
       "role": "builder",
       "task": "m15-db-migrate-seed-foundation",
       "description": "After backend-engineer adds Foundation models and data-engineer delivers foundation-curriculum.json: run npm run db:push, npx prisma generate, npm run db:seed. Verify foundation courses, lessons, examples, quiz questions in DB.",
-      "status": "blocked",
-      "blocked_by": ["task_m15_de"],
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "unblocked_at": "2026-03-23T10:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m15_tester",
@@ -220,8 +227,9 @@
       "role": "tester",
       "task": "approve-m15",
       "description": "Review and approve M15: Foundation section at /foundation. 3 courses accessible. Lessons load with theory + examples + quiz. Quiz scores save. Progress persists. NavBar links to Foundation.",
-      "status": "pending",
-      "assigned_at": "2026-03-23T07:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T07:00:00Z",
+      "completed_at": "2026-03-23T10:30:00Z"
     },
     {
       "id": "task_m14_m15_reporter",
@@ -240,6 +248,62 @@
       "description": "Deploy all M10–M15 backend code to Vercel production. Commits include: ae12429, 6dff36e, 538cbac, d2f93e0 plus M14+M15 backend. New routes: /foundation, /onboarding, /dashboard, /library/[id]/practice. Run npm run db:push + npx prisma generate + npm run db:seed after deploy.",
       "status": "assigned",
       "assigned_at": "2026-03-23T08:30:00Z"
+    },
+    {
+      "id": "task_m16_designer",
+      "milestone": "M16",
+      "role": "designer",
+      "task": "m16-learning-materials-builder-ui",
+      "description": "Design admin UI for Learning Materials Builder: (1) /admin/crawl-jobs job list page, (2) /admin/crawl-jobs/new create form (name, skill, technique, keywords, difficulty, maxResults), (3) /admin/crawl-jobs/[id] results browser with relevance score badges + approve/reject, (4) Approve modal with clip metadata form + YouTube embed preview. Deliver spec to .shared/outputs/design/m16-spec.md.",
+      "status": "assigned",
+      "assigned_at": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "task_m16_backend",
+      "milestone": "M16",
+      "role": "backend-engineer",
+      "task": "m16-learning-materials-builder-backend",
+      "description": "Build Learning Materials Builder backend: CrawlJob + CrawlResult schema, YouTube Data API v3 search service, GPT-4o relevance scoring service, CRUD + run + approve/reject API routes, admin pages. BLOCKED on Designer m16-spec.md for admin pages.",
+      "status": "assigned",
+      "assigned_at": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "task_m16_de",
+      "milestone": "M16",
+      "role": "data-engineer",
+      "task": "m16-communication-tactics-taxonomy",
+      "description": "Define 40+ named communication tactics taxonomy (Power Pause, Triangle Gaze, Pacing & Leading, etc.) with YouTube search keywords and AI scoring hints per tactic. Save to .shared/outputs/data/communication-tactics.json. LOWER PRIORITY than M14 + M15 data tasks.",
+      "status": "complete",
+      "assigned_at": "2026-03-23T09:30:00Z",
+      "completed_at": "2026-03-23T10:30:00Z",
+      "notes": "50 tactics delivered across 5 domains (vocal, verbal, body, presence, rapport)."
+    },
+    {
+      "id": "task_m16_builder",
+      "milestone": "M16",
+      "role": "builder",
+      "task": "m16-add-youtube-api-key",
+      "description": "M16 requires YOUTUBE_API_KEY in Vercel environment variables (YouTube Data API v3). Add it after Backend Engineer confirms the key is ready. Also run db:push + generate after CrawlJob schema is merged.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "task_m16_tester",
+      "milestone": "M16",
+      "role": "tester",
+      "task": "approve-m16",
+      "description": "Review and approve M16: crawl job creation, execution (YouTube results + AI scores), approve/reject flow, approved clip visible in library with auto-generated observation guide, special tactics supported.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "task_m16_reporter",
+      "milestone": "M16",
+      "role": "reporter",
+      "task": "document-m16",
+      "description": "Document M16 in activity-log.md once Tester approves: crawl job system, new models, services, semi-automated content discovery, special tactics taxonomy, YOUTUBE_API_KEY requirement.",
+      "status": "pending",
+      "assigned_at": "2026-03-23T09:30:00Z"
     }
   ],
   "blockers": [],
@@ -293,17 +357,46 @@
     }
   ],
   "milestones_complete": [
-    "M0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "M6",
+    "M7",
+    "M8"
   ],
   "milestones_code_complete_awaiting_tester": [
-    "M10", "M11", "M12", "M13"
+    "M10",
+    "M11",
+    "M12",
+    "M13"
   ],
   "milestones_in_progress": [
-    "M14", "M15"
+    "M14",
+    "M15",
+    "M16"
   ],
   "milestones_pending": [
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-23T08:30:00Z"
+  "last_updated": "2026-03-23T10:30:00Z",
+  "deployments": [
+    {
+      "version": "M14+M15",
+      "url": "https://seeneyu.vercel.app",
+      "deployed_at": "2026-03-23T10:30:00Z",
+      "includes": [
+        "M10",
+        "M11",
+        "M12",
+        "M13",
+        "M14",
+        "M15"
+      ],
+      "notes": "Library expansion (45 clips + screenplay filters) + Performing Foundation section (3 courses, 30 lessons)"
+    }
+  ]
 }

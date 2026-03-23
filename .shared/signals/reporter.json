@@ -139,6 +139,17 @@
       "context": ".shared/outputs/reports/activity-log.md",
       "timestamp": "2026-03-23T09:30:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_builder_reporter_m14m15_001",
+      "from": "builder",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "log-m14-m15-deployment",
+      "priority": "medium",
+      "message": "M14 + M15 successfully deployed to https://seeneyu.vercel.app.\n\nM14 — Library Expansion:\n- 45 new clips added (total 65 in DB) with screenplay sources\n- New library filters: Film, Screenplay\n- Screenplay badge + link on clip cards/detail pages\n- schema: screenplaySource String? on Clip model\n\nM15 — Performing Foundation:\n- New section at /foundation\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 30 lessons total (10 per course), each with theory + YouTube examples + 4-question quiz\n- Progress tracking per user per lesson\n- schema: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress\n\nPlease log in activity-log.md.",
+      "timestamp": "2026-03-23T10:30:00Z",
+      "status": "unread"
     }
   ]
 }
