@@ -236,6 +236,16 @@
       "status": "unread"
     },
     {
+      "id": "sig_be_tester_m14_m15_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M14-M15-ready-for-testing",
+      "message": "M14 + M15 ready for testing on https://seeneyu.vercel.app (after db:push + db:seed)\n\nM14 — Content Expansion:\n1. /library — verify Film filter dropdown shows movie names, clicking filters clips by film\n2. /library — verify 'Has Screenplay' toggle chip shows only clips with screenplay links\n3. ClipCard — verify screenplay badge appears (top-right, amber) on cards with screenplaySource\n4. /library/[clipId] — verify 'Read Screenplay →' amber link appears below video title for clips with screenplaySource\n5. /admin/clips/[id]/edit — verify Screenplay Source URL input field exists and saves\n\nM15 — Performing Foundation:\n1. NavBar shows 'Foundation' link\n2. /foundation loads — 3 course cards (amber/blue/green gradient), each showing lesson count + progress bar\n3. Click a course → course page shows breadcrumb + lesson list with circle/checkmark icons\n4. Click a lesson → lesson page shows:\n   a. Theory section (rendered HTML content)\n   b. YouTube Examples section (embeds load)\n   c. Quiz section (4 MCQ questions)\n5. Submit quiz answers → score shown, correct/incorrect highlighted per option, explanation text shown\n6. Pass quiz (≥60%) → progress saved. Refresh lesson page → question answered state restored\n7. Return to course page → completed lesson shows checkmark icon and progress bar advances\n\nP1 Fix applied: ObservationGuide 'Start Recording' CTAs now route to /practice instead of /record",
+      "timestamp": "2026-03-23T08:30:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_ds_ts_review_m11m12m13_001",
       "from": "designer",
       "to": "tester",

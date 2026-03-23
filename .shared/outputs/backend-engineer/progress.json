@@ -1,6 +1,6 @@
 {
-  "current_milestone": "M13",
-  "last_updated": "2026-03-23T03:00:00Z",
+  "current_milestone": "M15",
+  "last_updated": "2026-03-23T08:30:00Z",
   "steps": {
     "deps_installed":          "complete",
     "schema_extended":         "complete",
@@ -60,7 +60,19 @@
     "m13_dashboard_page":      "complete",
     "m13_navbar_my_path":      "complete",
     "m13_middleware_updated":  "complete",
-    "m13_signup_redirect":     "complete"
+    "m13_signup_redirect":     "complete",
+    "m14_screenplay_source":   "complete",
+    "m14_library_filters":     "complete",
+    "m14_clip_card_badge":     "complete",
+    "m14_clip_detail_link":    "complete",
+    "m14_admin_form_field":    "complete",
+    "m15_foundation_schema":   "complete",
+    "m15_foundation_pages":    "complete",
+    "m15_lesson_client":       "complete",
+    "m15_progress_api":        "complete",
+    "m15_navbar_link":         "complete",
+    "m15_seed_updated":        "complete",
+    "p1_observation_cta_fix":  "complete"
   },
   "notes": [
     "M13 complete and deployed (commit d2f93e0, 2026-03-23)",
@@ -71,6 +83,11 @@
     "Dashboard: /dashboard renders 5 SkillTrackColumn cards with level advancement logic",
     "Level advancement: 2+ completed sessions with score >= 70 at current level triggers move to next level",
     "YouTube thumbnails: https://i.ytimg.com/vi/[videoId]/mqdefault.jpg (no auth required)",
-    "Build verified: 0 TypeScript errors (M13 complete, 2026-03-23)"
+    "Build verified: 0 TypeScript errors (M13 complete, 2026-03-23)",
+    "M14: screenplaySource field, library film/screenplay filters, ClipCard badge, clip detail link, admin form field — all complete",
+    "M15: Foundation schema (5 models), /foundation pages, LessonClient quiz, progress API, NavBar link, seed.ts updated",
+    "P1 fix: ObservationGuide.tsx both CTAs changed from /record to /practice",
+    "M14+M15 pushed to production (commit 2aa5adb, 2026-03-23)",
+    "PENDING USER: npm run db:push + npx prisma generate + npm run db:seed to activate Foundation content"
   ]
 }

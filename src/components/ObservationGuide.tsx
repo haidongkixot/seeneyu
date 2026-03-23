@@ -26,7 +26,7 @@ export function ObservationGuide({ characterName, guide, clipId }: ObservationGu
           In the meantime, watch the clip carefully and focus on what the character does with their eyes, posture, and voice.
         </p>
         <Link
-          href={`/library/${clipId}/record`}
+          href={`/library/${clipId}/practice`}
           className="mt-1 inline-flex items-center gap-2 bg-accent-400 text-text-inverse rounded-pill px-5 py-2.5 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
         >
           Start Recording
@@ -81,7 +81,7 @@ export function ObservationGuide({ characterName, guide, clipId }: ObservationGu
       <div className="flex items-center justify-between">
         <span className="text-sm text-text-secondary">Ready to practise this yourself?</span>
         <Link
-          href={`/library/${clipId}/record`}
+          href={`/library/${clipId}/practice`}
           className="inline-flex items-center gap-2 bg-accent-400 text-text-inverse rounded-pill px-5 py-2.5 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
         >
           Start Recording
