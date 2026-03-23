@@ -5,7 +5,7 @@
       "from": "tester",
       "type": "milestone-passed",
       "milestone": "M1",
-      "message": "M1 Design System — PASSED.",
+      "message": "M1 Design System \u00e2\u20ac\u201d PASSED.",
       "timestamp": "2026-03-21T01:00:00Z",
       "status": "read"
     },
@@ -14,7 +14,7 @@
       "from": "tester",
       "type": "milestone-passed",
       "milestone": "M2",
-      "message": "M2 Data Pipeline v1 — PASSED with condition.",
+      "message": "M2 Data Pipeline v1 \u00e2\u20ac\u201d PASSED with condition.",
       "timestamp": "2026-03-21T01:00:00Z",
       "status": "read"
     },
@@ -69,7 +69,7 @@
       "to": "tester",
       "type": "fyi",
       "task": "session-status-update",
-      "message": "PM session complete (2026-03-22). Status: M0–M8 COMPLETE, phase 7-marketing. BUG-001 fix has been assigned to Backend Engineer — when they signal completion, please verify and close BUG-001. BUG-002 (ClipCard 'use client') is CLOSED. M9 (Marketing Materials) is non-code — standby for Marketer to deliver pitch deck assets for review. No immediate action required.",
+      "message": "PM session complete (2026-03-22). Status: M0\u00e2\u20ac\u201cM8 COMPLETE, phase 7-marketing. BUG-001 fix has been assigned to Backend Engineer \u00e2\u20ac\u201d when they signal completion, please verify and close BUG-001. BUG-002 (ClipCard 'use client') is CLOSED. M9 (Marketing Materials) is non-code \u00e2\u20ac\u201d standby for Marketer to deliver pitch deck assets for review. No immediate action required.",
       "timestamp": "2026-03-22T22:30:00Z",
       "status": "unread"
     },
@@ -91,7 +91,7 @@
       "type": "fyi",
       "task": "M10-standby",
       "priority": "normal",
-      "message": "M10 (Script-Aware Coaching Loop) is now active. Three roles working on it: Designer (UI specs), Backend Engineer (bug fix + schema + AI prompt + UI), Data Engineer (seed script text). When Backend Engineer signals review-request, please test: (1) Submit for AI Feedback works end-to-end even for short recordings. (2) Record page shows character banner (who to mimic) and script panel (what to say). (3) Feedback page shows numbered Action Plan steps. (4) AI feedback references the character and script in its response. BUG-001 (ClipForm score ranges) is also bundled into M10 — Backend Engineer will fix it as part of the admin form updates.",
+      "message": "M10 (Script-Aware Coaching Loop) is now active. Three roles working on it: Designer (UI specs), Backend Engineer (bug fix + schema + AI prompt + UI), Data Engineer (seed script text). When Backend Engineer signals review-request, please test: (1) Submit for AI Feedback works end-to-end even for short recordings. (2) Record page shows character banner (who to mimic) and script panel (what to say). (3) Feedback page shows numbered Action Plan steps. (4) AI feedback references the character and script in its response. BUG-001 (ClipForm score ranges) is also bundled into M10 \u00e2\u20ac\u201d Backend Engineer will fix it as part of the admin form updates.",
       "timestamp": "2026-03-22T23:45:00Z",
       "status": "unread"
     },
@@ -102,7 +102,7 @@
       "type": "fyi",
       "task": "M11-M12-M13-standby",
       "priority": "normal",
-      "message": "Three new milestones from user product feedback. Standby for review-request signals from Backend Engineer as each completes.\n\nM11 — Observation Guide: verify 'How It Works' tab appears on clip detail page with technique timeline (timestamps, technique name, what, why). Verify AI generation route works from admin. Verify graceful null state.\n\nM12 — Micro-Practice: verify step-by-step flow renders all steps with progress bar. Each step's 30s recorder works and captures frames. Per-step feedback returns pass/needs-work. Full Performance unlock appears after all steps complete. Short recordings (<5s) do not return 422.\n\nM13 — Onboarding Assessment: verify new user flow shows 5-skill assessment. Baseline scores stored. Learning path generated and shown on dashboard. SkillProgressBar shows correct level. LearningPathCard shows correct next clip per skill.",
+      "message": "Three new milestones from user product feedback. Standby for review-request signals from Backend Engineer as each completes.\n\nM11 \u00e2\u20ac\u201d Observation Guide: verify 'How It Works' tab appears on clip detail page with technique timeline (timestamps, technique name, what, why). Verify AI generation route works from admin. Verify graceful null state.\n\nM12 \u00e2\u20ac\u201d Micro-Practice: verify step-by-step flow renders all steps with progress bar. Each step's 30s recorder works and captures frames. Per-step feedback returns pass/needs-work. Full Performance unlock appears after all steps complete. Short recordings (<5s) do not return 422.\n\nM13 \u00e2\u20ac\u201d Onboarding Assessment: verify new user flow shows 5-skill assessment. Baseline scores stored. Learning path generated and shown on dashboard. SkillProgressBar shows correct level. LearningPathCard shows correct next clip per skill.",
       "timestamp": "2026-03-23T01:00:00Z",
       "status": "unread"
     },
@@ -111,7 +111,7 @@
       "from": "pm",
       "type": "session-checkpoint",
       "priority": "high",
-      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "message": "PM context window is at ~90% \u00e2\u20ac\u201d session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
       "timestamp": "2026-03-22T07:18:02.581Z",
       "status": "unread"
     },
@@ -121,7 +121,7 @@
       "to": "tester",
       "type": "review-request",
       "task": "M10-script-aware-coaching-loop",
-      "message": "M10 ready for testing. Also closes BUG-001.\n\nWhat to test:\n1. BUG-001 closed: Admin CMS ClipForm score dimension fields now limited to 1-3. difficultyScore 4-12. Verify inputs reject out-of-range values.\n2. Submit for AI Feedback works for short recordings (< 5s). No more 422 — fallback to text-only GPT call.\n3. Record page shows CharacterBanner (character name + actor + movie) when clip has characterName set.\n4. Record page shows ScriptPanel with the clip's script text (only when script is non-null — requires db:push + seed from Data Engineer).\n5. Feedback page shows ActionPlan section (numbered steps with action + why) between improvements grid and AI Tips.\n6. AI feedback references character and movie in the summary/tips (visible in feedback response).\n\nNote: Full script display (tasks 3-4) requires user to run db:push + prisma generate + data engineer script seeding first.",
+      "message": "M10 ready for testing. Also closes BUG-001.\n\nWhat to test:\n1. BUG-001 closed: Admin CMS ClipForm score dimension fields now limited to 1-3. difficultyScore 4-12. Verify inputs reject out-of-range values.\n2. Submit for AI Feedback works for short recordings (< 5s). No more 422 \u00e2\u20ac\u201d fallback to text-only GPT call.\n3. Record page shows CharacterBanner (character name + actor + movie) when clip has characterName set.\n4. Record page shows ScriptPanel with the clip's script text (only when script is non-null \u00e2\u20ac\u201d requires db:push + seed from Data Engineer).\n5. Feedback page shows ActionPlan section (numbered steps with action + why) between improvements grid and AI Tips.\n6. AI feedback references character and movie in the summary/tips (visible in feedback response).\n\nNote: Full script display (tasks 3-4) requires user to run db:push + prisma generate + data engineer script seeding first.",
       "timestamp": "2026-03-23T00:30:00Z",
       "status": "unread"
     },
@@ -141,7 +141,7 @@
       "to": "tester",
       "type": "fyi",
       "task": "M10-ui-review-complete",
-      "message": "Designer UI review of M10 complete. Verdict: PASS — all 3 components (CharacterBanner, ScriptPanel, ActionPlan) are spec-compliant with no P0/P1 issues. Two low-priority notes: (1) CharacterBanner uses 'animate-fade-in' — verify keyframe is defined in tailwind config. (2) ScriptPanel type hardcoded to 'dialogue' — content still renders correctly for all clips. Full review: .shared/outputs/design/ui-review-m10.md",
+      "message": "Designer UI review of M10 complete. Verdict: PASS \u00e2\u20ac\u201d all 3 components (CharacterBanner, ScriptPanel, ActionPlan) are spec-compliant with no P0/P1 issues. Two low-priority notes: (1) CharacterBanner uses 'animate-fade-in' \u00e2\u20ac\u201d verify keyframe is defined in tailwind config. (2) ScriptPanel type hardcoded to 'dialogue' \u00e2\u20ac\u201d content still renders correctly for all clips. Full review: .shared/outputs/design/ui-review-m10.md",
       "artifacts": [
         ".shared/outputs/design/ui-review-m10.md"
       ],
@@ -154,7 +154,7 @@
       "to": "tester",
       "type": "review-request",
       "task": "M11-M12-ready-for-testing",
-      "message": "M11 + M12 ready for testing on https://seeneyu.vercel.app\n\nM11 — Observation Guide:\n1. Go to any clip detail page (/library/[id])\n2. Verify 'How It Works' tab appears next to 'Watch' tab\n3. Click 'How It Works' — verify ObservationGuide shows timestamped technique moments\n4. If guide not yet generated: verify graceful null state ('coming soon' card)\n5. Admin: go to /admin/clips/[id]/edit — verify 'Generate Observation Guide' button appears. Click it and verify guide is generated and saved.\n\nM12 — Micro-Practice Stepper:\n1. Click 'I'm Ready to Mimic →' on any clip detail page — should route to /library/[id]/practice\n2. Verify step-by-step flow shows StepCard (left) + PracticeRecorder (right)\n3. Progress bar + dots should show current step position\n4. Start recording → 30s SVG countdown ring should animate\n5. Stop recording → MicroFeedbackCard should appear with pass/needs-work verdict\n6. Test short recordings (<5s) — should NOT return error\n7. Click Next Step → advance to next step\n8. After final step → PerformanceUnlockScreen with 'Full Performance Recording' CTA",
+      "message": "M11 + M12 ready for testing on https://seeneyu.vercel.app\n\nM11 \u00e2\u20ac\u201d Observation Guide:\n1. Go to any clip detail page (/library/[id])\n2. Verify 'How It Works' tab appears next to 'Watch' tab\n3. Click 'How It Works' \u00e2\u20ac\u201d verify ObservationGuide shows timestamped technique moments\n4. If guide not yet generated: verify graceful null state ('coming soon' card)\n5. Admin: go to /admin/clips/[id]/edit \u00e2\u20ac\u201d verify 'Generate Observation Guide' button appears. Click it and verify guide is generated and saved.\n\nM12 \u00e2\u20ac\u201d Micro-Practice Stepper:\n1. Click 'I'm Ready to Mimic \u00e2\u2020\u2019' on any clip detail page \u00e2\u20ac\u201d should route to /library/[id]/practice\n2. Verify step-by-step flow shows StepCard (left) + PracticeRecorder (right)\n3. Progress bar + dots should show current step position\n4. Start recording \u00e2\u2020\u2019 30s SVG countdown ring should animate\n5. Stop recording \u00e2\u2020\u2019 MicroFeedbackCard should appear with pass/needs-work verdict\n6. Test short recordings (<5s) \u00e2\u20ac\u201d should NOT return error\n7. Click Next Step \u00e2\u2020\u2019 advance to next step\n8. After final step \u00e2\u2020\u2019 PerformanceUnlockScreen with 'Full Performance Recording' CTA",
       "timestamp": "2026-03-23T02:00:00Z",
       "status": "unread"
     },
@@ -164,7 +164,7 @@
       "to": "tester",
       "type": "review-request",
       "task": "M13-onboarding-assessment-learning-path",
-      "message": "M13 ready for testing on https://seeneyu.vercel.app\n\nOnboarding Assessment:\n1. Sign up as a new user → verify redirect to /onboarding (not /library)\n2. Verify progress bar advances from 0% → 20% → ... → 100% as you step through 5 questions\n3. Select a skill level on each screen → verify the selected button highlights amber\n4. Complete all 5 → verify processing spinner shows briefly\n5. Complete screen shows 'Your Learning Path Is Ready' with sparkle icon\n6. Click 'Go to My Learning Path' → verify redirect to /dashboard\n7. Return to /onboarding as same user → verify redirect to /dashboard (skip if already complete)\n\nLearning Path Dashboard (/dashboard):\n1. Sign in with the completed user → verify /dashboard shows 5 skill columns\n2. Each column shows: skill name, level badge (Developing/Practising/Fluent), progress bar, 'Next Up' clip card\n3. Click a 'Practice Now' link → verify navigates to /library/[id]\n4. Visit /dashboard while not signed in → verify redirect to /auth/signin\n5. NavBar shows 'My Path' link for signed-in users → verify it leads to /dashboard\n\nNote: Level badge color: Developing=green, Practising=yellow/warning, Fluent=amber/accent",
+      "message": "M13 ready for testing on https://seeneyu.vercel.app\n\nOnboarding Assessment:\n1. Sign up as a new user \u00e2\u2020\u2019 verify redirect to /onboarding (not /library)\n2. Verify progress bar advances from 0% \u00e2\u2020\u2019 20% \u00e2\u2020\u2019 ... \u00e2\u2020\u2019 100% as you step through 5 questions\n3. Select a skill level on each screen \u00e2\u2020\u2019 verify the selected button highlights amber\n4. Complete all 5 \u00e2\u2020\u2019 verify processing spinner shows briefly\n5. Complete screen shows 'Your Learning Path Is Ready' with sparkle icon\n6. Click 'Go to My Learning Path' \u00e2\u2020\u2019 verify redirect to /dashboard\n7. Return to /onboarding as same user \u00e2\u2020\u2019 verify redirect to /dashboard (skip if already complete)\n\nLearning Path Dashboard (/dashboard):\n1. Sign in with the completed user \u00e2\u2020\u2019 verify /dashboard shows 5 skill columns\n2. Each column shows: skill name, level badge (Developing/Practising/Fluent), progress bar, 'Next Up' clip card\n3. Click a 'Practice Now' link \u00e2\u2020\u2019 verify navigates to /library/[id]\n4. Visit /dashboard while not signed in \u00e2\u2020\u2019 verify redirect to /auth/signin\n5. NavBar shows 'My Path' link for signed-in users \u00e2\u2020\u2019 verify it leads to /dashboard\n\nNote: Level badge color: Developing=green, Practising=yellow/warning, Fluent=amber/accent",
       "timestamp": "2026-03-23T03:00:00Z",
       "status": "unread"
     },
@@ -184,7 +184,7 @@
       "to": "tester",
       "type": "data-ready",
       "task": "sample-learner-data",
-      "message": "Sample learner data seeded. 6 users with realistic learning histories are now in the DB. Useful for testing M13 dashboard, learning path display, and session history UI.\n\nUsers:\n- sarah.chen@example.com — intermediate, eye-contact focus, 3 weeks in\n- marcus.williams@example.com — beginner, just started, low scores\n- priya.patel@example.com — advanced, 2 months in, high scores across all skills\n- jake.torres@example.com — intermediate, confident-disagreement focus\n- emma.lindqvist@example.com — beginner, active-listening focus\n- david.kim@example.com — advanced, nearly completed all tracks\n\nAll passwords: SamplePass123!\nVerification: npx tsx scripts/verify-sample-data.ts\nRe-seed (idempotent): npm run db:sample",
+      "message": "Sample learner data seeded. 6 users with realistic learning histories are now in the DB. Useful for testing M13 dashboard, learning path display, and session history UI.\n\nUsers:\n- sarah.chen@example.com \u00e2\u20ac\u201d intermediate, eye-contact focus, 3 weeks in\n- marcus.williams@example.com \u00e2\u20ac\u201d beginner, just started, low scores\n- priya.patel@example.com \u00e2\u20ac\u201d advanced, 2 months in, high scores across all skills\n- jake.torres@example.com \u00e2\u20ac\u201d intermediate, confident-disagreement focus\n- emma.lindqvist@example.com \u00e2\u20ac\u201d beginner, active-listening focus\n- david.kim@example.com \u00e2\u20ac\u201d advanced, nearly completed all tracks\n\nAll passwords: SamplePass123!\nVerification: npx tsx scripts/verify-sample-data.ts\nRe-seed (idempotent): npm run db:sample",
       "timestamp": "2026-03-23T05:00:00Z",
       "status": "unread"
     },
@@ -194,7 +194,7 @@
       "to": "tester",
       "type": "session-end",
       "priority": "high",
-      "message": "SESSION END 2026-03-23. Next session priority: sign off on M10, M11, M12, M13 — all have review-request signals in your queue. NOTE: M11-M13 require user to run `npm run db:push + npx prisma generate + npm run db:seed` before new features are live in DB. Check with PM at next session start whether those commands have been run. Sample learner data available for testing M13 dashboard (see sig_de_tester_sample_data_001 for credentials). Signal PM with a separate approval for each milestone.",
+      "message": "SESSION END 2026-03-23. Next session priority: sign off on M10, M11, M12, M13 \u00e2\u20ac\u201d all have review-request signals in your queue. NOTE: M11-M13 require user to run `npm run db:push + npx prisma generate + npm run db:seed` before new features are live in DB. Check with PM at next session start whether those commands have been run. Sample learner data available for testing M13 dashboard (see sig_de_tester_sample_data_001 for credentials). Signal PM with a separate approval for each milestone.",
       "timestamp": "2026-03-23T06:00:00Z",
       "status": "unread"
     },
@@ -218,7 +218,7 @@
       "type": "review-request",
       "task": "approve-m14",
       "priority": "medium",
-      "message": "UPCOMING REVIEW: M14 — Content Expansion (100+ Screenplay Clips).\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. Library page has 100+ clips loaded\n2. Filter by Film dropdown works and lists real movie titles\n3. \"Has Screenplay\" filter shows only clips with screenplaySource\n4. Screenplay badge visible on ClipCard for applicable clips\n5. Clip detail page shows \"Read Screenplay\" link for appropriate clips\n6. DB seed ran without errors — verify clip count (must be 100+)\n7. Each verified clip has: script, observation_guide, practice_steps fields populated\n\nStatus: pending (waiting for builder to complete seeding).",
+      "message": "UPCOMING REVIEW: M14 \u00e2\u20ac\u201d Content Expansion (100+ Screenplay Clips).\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. Library page has 100+ clips loaded\n2. Filter by Film dropdown works and lists real movie titles\n3. \"Has Screenplay\" filter shows only clips with screenplaySource\n4. Screenplay badge visible on ClipCard for applicable clips\n5. Clip detail page shows \"Read Screenplay\" link for appropriate clips\n6. DB seed ran without errors \u00e2\u20ac\u201d verify clip count (must be 100+)\n7. Each verified clip has: script, observation_guide, practice_steps fields populated\n\nStatus: pending (waiting for builder to complete seeding).",
       "context": ".shared/state/milestones.json (M14)",
       "timestamp": "2026-03-23T07:00:00Z",
       "status": "unread"
@@ -230,7 +230,7 @@
       "type": "review-request",
       "task": "approve-m15",
       "priority": "high",
-      "message": "UPCOMING REVIEW: M15 — Performing Foundation Section.\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. /foundation page loads — 3 course cards visible (Voice, Verbal, Body Language)\n2. /foundation/voice-mastery — course page shows 10+ lessons in order\n3. /foundation/voice-mastery/vocal-projection — lesson page has all 3 sections:\n   - Theory (rendered HTML, readable)\n   - Examples (YouTube embeds load)\n   - Quiz (4 questions, submit works, correct/wrong feedback shown, score displayed)\n4. Progress saves: complete a quiz, refresh, verify lesson shows as completed\n5. NavBar shows \"Foundation\" link\n6. Navigation: Prev/Next lesson buttons work correctly\n7. /foundation/verbal-communication and /foundation/body-language-fundamentals also accessible\n8. DB has: 3 courses, 30+ lessons, 60+ examples, 120+ quiz questions\n\nStatus: pending (waiting for backend-engineer + builder to complete).",
+      "message": "UPCOMING REVIEW: M15 \u00e2\u20ac\u201d Performing Foundation Section.\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. /foundation page loads \u00e2\u20ac\u201d 3 course cards visible (Voice, Verbal, Body Language)\n2. /foundation/voice-mastery \u00e2\u20ac\u201d course page shows 10+ lessons in order\n3. /foundation/voice-mastery/vocal-projection \u00e2\u20ac\u201d lesson page has all 3 sections:\n   - Theory (rendered HTML, readable)\n   - Examples (YouTube embeds load)\n   - Quiz (4 questions, submit works, correct/wrong feedback shown, score displayed)\n4. Progress saves: complete a quiz, refresh, verify lesson shows as completed\n5. NavBar shows \"Foundation\" link\n6. Navigation: Prev/Next lesson buttons work correctly\n7. /foundation/verbal-communication and /foundation/body-language-fundamentals also accessible\n8. DB has: 3 courses, 30+ lessons, 60+ examples, 120+ quiz questions\n\nStatus: pending (waiting for backend-engineer + builder to complete).",
       "context": ".shared/state/milestones.json (M15)",
       "timestamp": "2026-03-23T07:00:00Z",
       "status": "unread"
@@ -241,7 +241,7 @@
       "to": "tester",
       "type": "review-request",
       "task": "M14-M15-ready-for-testing",
-      "message": "M14 + M15 ready for testing on https://seeneyu.vercel.app (after db:push + db:seed)\n\nM14 — Content Expansion:\n1. /library — verify Film filter dropdown shows movie names, clicking filters clips by film\n2. /library — verify 'Has Screenplay' toggle chip shows only clips with screenplay links\n3. ClipCard — verify screenplay badge appears (top-right, amber) on cards with screenplaySource\n4. /library/[clipId] — verify 'Read Screenplay →' amber link appears below video title for clips with screenplaySource\n5. /admin/clips/[id]/edit — verify Screenplay Source URL input field exists and saves\n\nM15 — Performing Foundation:\n1. NavBar shows 'Foundation' link\n2. /foundation loads — 3 course cards (amber/blue/green gradient), each showing lesson count + progress bar\n3. Click a course → course page shows breadcrumb + lesson list with circle/checkmark icons\n4. Click a lesson → lesson page shows:\n   a. Theory section (rendered HTML content)\n   b. YouTube Examples section (embeds load)\n   c. Quiz section (4 MCQ questions)\n5. Submit quiz answers → score shown, correct/incorrect highlighted per option, explanation text shown\n6. Pass quiz (≥60%) → progress saved. Refresh lesson page → question answered state restored\n7. Return to course page → completed lesson shows checkmark icon and progress bar advances\n\nP1 Fix applied: ObservationGuide 'Start Recording' CTAs now route to /practice instead of /record",
+      "message": "M14 + M15 ready for testing on https://seeneyu.vercel.app (after db:push + db:seed)\n\nM14 \u00e2\u20ac\u201d Content Expansion:\n1. /library \u00e2\u20ac\u201d verify Film filter dropdown shows movie names, clicking filters clips by film\n2. /library \u00e2\u20ac\u201d verify 'Has Screenplay' toggle chip shows only clips with screenplay links\n3. ClipCard \u00e2\u20ac\u201d verify screenplay badge appears (top-right, amber) on cards with screenplaySource\n4. /library/[clipId] \u00e2\u20ac\u201d verify 'Read Screenplay \u00e2\u2020\u2019' amber link appears below video title for clips with screenplaySource\n5. /admin/clips/[id]/edit \u00e2\u20ac\u201d verify Screenplay Source URL input field exists and saves\n\nM15 \u00e2\u20ac\u201d Performing Foundation:\n1. NavBar shows 'Foundation' link\n2. /foundation loads \u00e2\u20ac\u201d 3 course cards (amber/blue/green gradient), each showing lesson count + progress bar\n3. Click a course \u00e2\u2020\u2019 course page shows breadcrumb + lesson list with circle/checkmark icons\n4. Click a lesson \u00e2\u2020\u2019 lesson page shows:\n   a. Theory section (rendered HTML content)\n   b. YouTube Examples section (embeds load)\n   c. Quiz section (4 MCQ questions)\n5. Submit quiz answers \u00e2\u2020\u2019 score shown, correct/incorrect highlighted per option, explanation text shown\n6. Pass quiz (\u00e2\u2030\u00a560%) \u00e2\u2020\u2019 progress saved. Refresh lesson page \u00e2\u2020\u2019 question answered state restored\n7. Return to course page \u00e2\u2020\u2019 completed lesson shows checkmark icon and progress bar advances\n\nP1 Fix applied: ObservationGuide 'Start Recording' CTAs now route to /practice instead of /record",
       "timestamp": "2026-03-23T08:30:00Z",
       "status": "unread"
     },
@@ -251,7 +251,7 @@
       "to": "tester",
       "type": "fyi",
       "task": "ui-review-m11-m12-m13",
-      "message": "M11/M12/M13 UI review complete. All 10 components PASS against spec. Full report: .shared/outputs/design/ui-review-m11-m12-m13.md. ONE P1 FIX IN PROGRESS: ObservationGuide.tsx CTAs point to /record instead of /practice — bypass fix sent to backend-engineer. Please hold M11 tester sign-off until that fix is confirmed. Low-priority notes: (1) animate-slide-up keyframe should exist in tailwind.config.ts — verify. (2) Skill icon tinting neutral instead of skill-specific (cosmetic, future). (3) Jump link in StepCard is a non-interactive span (future wiring).",
+      "message": "M11/M12/M13 UI review complete. All 10 components PASS against spec. Full report: .shared/outputs/design/ui-review-m11-m12-m13.md. ONE P1 FIX IN PROGRESS: ObservationGuide.tsx CTAs point to /record instead of /practice \u00e2\u20ac\u201d bypass fix sent to backend-engineer. Please hold M11 tester sign-off until that fix is confirmed. Low-priority notes: (1) animate-slide-up keyframe should exist in tailwind.config.ts \u00e2\u20ac\u201d verify. (2) Skill icon tinting neutral instead of skill-specific (cosmetic, future). (3) Jump link in StepCard is a non-interactive span (future wiring).",
       "timestamp": "2026-03-23T09:00:00Z",
       "status": "unread"
     },
@@ -262,7 +262,7 @@
       "type": "fyi",
       "task": "m16-upcoming-review",
       "priority": "normal",
-      "message": "UPCOMING: M16 — Learning Materials Builder review will arrive after Backend Engineer completes implementation.\n\n## What to test when the review-request arrives\n\n### Job Creation\n1. /admin/crawl-jobs — job list loads, 'New Job' button visible\n2. /admin/crawl-jobs/new — form submits successfully: name, skill/technique, keywords, difficulty, max results\n3. Created job appears in list with status 'pending'\n\n### Job Execution\n4. 'Run Job' triggers execution — status cycles: pending → running → complete\n5. Results populate after completion (verify at least 1 result from YouTube)\n6. Each result card shows: thumbnail, title, channel name, relevance score (0-10), AI analysis snippet\n7. If YOUTUBE_API_KEY is missing from env: graceful error message, not a crash\n\n### Results Review\n8. Default sort: highest relevance score first\n9. Filter tabs (All / Pending / Approved / Rejected) toggle correctly\n10. Thumbnail click opens YouTube embed inline\n\n### Approve Flow\n11. Approve button opens modal with pre-filled clip metadata form\n12. Submit metadata → success toast → Clip record created in DB\n13. Approved clip appears at /library (verify it shows in the grid)\n14. Approved clip's detail page shows 'How It Works' tab (observation guide auto-generated)\n15. Result shows 'Approved' status badge after approval\n\n### Reject Flow\n16. Reject button → result immediately shows 'Rejected' status (optimistic UI)\n17. Rejected results visible under Rejected filter\n\n### Special Tactics\n18. Create job with custom technique name (e.g. 'Triangle Gaze') — no errors, job executes\n19. Communication tactics from taxonomy appear in the technique selector\n\n### Edge Cases\n20. Gibberish keywords → 'No results found' shown gracefully (not crash)\n21. Running a completed job again → should not duplicate existing results\n22. Non-admin user cannot access /admin/crawl-jobs (redirects to sign-in)\n\nStatus: PENDING — wait for Backend Engineer's review-request signal before starting.",
+      "message": "UPCOMING: M16 \u00e2\u20ac\u201d Learning Materials Builder review will arrive after Backend Engineer completes implementation.\n\n## What to test when the review-request arrives\n\n### Job Creation\n1. /admin/crawl-jobs \u00e2\u20ac\u201d job list loads, 'New Job' button visible\n2. /admin/crawl-jobs/new \u00e2\u20ac\u201d form submits successfully: name, skill/technique, keywords, difficulty, max results\n3. Created job appears in list with status 'pending'\n\n### Job Execution\n4. 'Run Job' triggers execution \u00e2\u20ac\u201d status cycles: pending \u00e2\u2020\u2019 running \u00e2\u2020\u2019 complete\n5. Results populate after completion (verify at least 1 result from YouTube)\n6. Each result card shows: thumbnail, title, channel name, relevance score (0-10), AI analysis snippet\n7. If YOUTUBE_API_KEY is missing from env: graceful error message, not a crash\n\n### Results Review\n8. Default sort: highest relevance score first\n9. Filter tabs (All / Pending / Approved / Rejected) toggle correctly\n10. Thumbnail click opens YouTube embed inline\n\n### Approve Flow\n11. Approve button opens modal with pre-filled clip metadata form\n12. Submit metadata \u00e2\u2020\u2019 success toast \u00e2\u2020\u2019 Clip record created in DB\n13. Approved clip appears at /library (verify it shows in the grid)\n14. Approved clip's detail page shows 'How It Works' tab (observation guide auto-generated)\n15. Result shows 'Approved' status badge after approval\n\n### Reject Flow\n16. Reject button \u00e2\u2020\u2019 result immediately shows 'Rejected' status (optimistic UI)\n17. Rejected results visible under Rejected filter\n\n### Special Tactics\n18. Create job with custom technique name (e.g. 'Triangle Gaze') \u00e2\u20ac\u201d no errors, job executes\n19. Communication tactics from taxonomy appear in the technique selector\n\n### Edge Cases\n20. Gibberish keywords \u00e2\u2020\u2019 'No results found' shown gracefully (not crash)\n21. Running a completed job again \u00e2\u2020\u2019 should not duplicate existing results\n22. Non-admin user cannot access /admin/crawl-jobs (redirects to sign-in)\n\nStatus: PENDING \u00e2\u20ac\u201d wait for Backend Engineer's review-request signal before starting.",
       "timestamp": "2026-03-23T09:30:00Z",
       "status": "unread"
     },
@@ -273,8 +273,28 @@
       "type": "task-assign",
       "task": "smoke-test-m14-m15",
       "priority": "high",
-      "message": "M14 + M15 deployed to production. Please smoke-test:\n\n## M14 — Library Expansion\n- https://seeneyu.vercel.app/library → check Film and Screenplay filter rows appear\n- Filter by a film (e.g. Gladiator) → clips list updates\n- Toggle Screenplay Only filter → only clips with screenplay source show\n- Open any new clip (clip_016+) → amber screenplay badge visible on card\n- On clip detail page → amber \"Read Screenplay →\" link appears\n\n## M15 — Performing Foundation\n- https://seeneyu.vercel.app/foundation → 3 course cards visible (Voice, Verbal, Body Language)\n- Click a course → lesson list with progress indicators\n- Open a lesson → Theory / Examples / Quiz sections all render\n- Answer quiz questions → submit → score + correct/wrong highlights shown\n- Pass quiz (>=60%) → progress saved, next/prev navigation works\n\nSignal PM with pass/fail per milestone.",
+      "message": "M14 + M15 deployed to production. Please smoke-test:\n\n## M14 \u00e2\u20ac\u201d Library Expansion\n- https://seeneyu.vercel.app/library \u00e2\u2020\u2019 check Film and Screenplay filter rows appear\n- Filter by a film (e.g. Gladiator) \u00e2\u2020\u2019 clips list updates\n- Toggle Screenplay Only filter \u00e2\u2020\u2019 only clips with screenplay source show\n- Open any new clip (clip_016+) \u00e2\u2020\u2019 amber screenplay badge visible on card\n- On clip detail page \u00e2\u2020\u2019 amber \"Read Screenplay \u00e2\u2020\u2019\" link appears\n\n## M15 \u00e2\u20ac\u201d Performing Foundation\n- https://seeneyu.vercel.app/foundation \u00e2\u2020\u2019 3 course cards visible (Voice, Verbal, Body Language)\n- Click a course \u00e2\u2020\u2019 lesson list with progress indicators\n- Open a lesson \u00e2\u2020\u2019 Theory / Examples / Quiz sections all render\n- Answer quiz questions \u00e2\u2020\u2019 submit \u00e2\u2020\u2019 score + correct/wrong highlights shown\n- Pass quiz (>=60%) \u00e2\u2020\u2019 progress saved, next/prev navigation works\n\nSignal PM with pass/fail per milestone.",
       "timestamp": "2026-03-23T10:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_be_tester_m16_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M16-learning-materials-builder",
+      "message": "M16 ready for testing (after Builder adds YOUTUBE_API_KEY to Vercel env + runs db:push).\n\n1. /admin/crawl-jobs loads \u2014 job list with status chips\n2. /admin/crawl-jobs/new \u2014 form submits: name, skill/technique, keywords (tag input), difficulty pills, max results\n3. Create & Run triggers job execution \u2014 status: pending \u2192 running \u2192 complete\n4. Results grid shows: thumbnail, relevance score badge (green \u22657/amber 4-6/red <4), AI analysis\n5. Filter tabs (All/Pending/Approved/Rejected) work, sort by Relevance/Views/Date works\n6. Approve \u2192 opens 2-panel modal (YouTube embed + metadata form) \u2192 submit \u2192 clip created in DB \u2192 appears in /library\n7. Approved clip has How It Works tab (observation guide auto-generated)\n8. Reject \u2192 result shows Rejected status (optimistic UI), Undo restores\n9. Non-admin cannot access /admin/crawl-jobs\n10. Missing YOUTUBE_API_KEY \u2192 graceful error (not crash)",
+      "timestamp": "2026-03-23T12:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_be_tester_m16_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M16-learning-materials-builder",
+      "message": "M16 ready for testing after Builder adds YOUTUBE_API_KEY + runs db:push. Test: job creation, run execution, results grid (score badges), approve modal (clip created + obs guide), reject/undo, non-admin blocked.",
+      "timestamp": "2026-03-23T12:00:00Z",
       "status": "unread"
     }
   ]

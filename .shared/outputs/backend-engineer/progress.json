@@ -1,6 +1,6 @@
 {
-  "current_milestone": "M15",
-  "last_updated": "2026-03-23T08:30:00Z",
+  "current_milestone": "M16",
+  "last_updated": "2026-03-23T12:00:00Z",
   "steps": {
     "deps_installed":          "complete",
     "schema_extended":         "complete",
@@ -72,7 +72,20 @@
     "m15_progress_api":        "complete",
     "m15_navbar_link":         "complete",
     "m15_seed_updated":        "complete",
-    "p1_observation_cta_fix":  "complete"
+    "p1_observation_cta_fix":  "complete",
+    "m16_schema":              "complete",
+    "m16_types":               "complete",
+    "m16_youtube_crawler":     "complete",
+    "m16_relevance_scorer":    "complete",
+    "m16_crawl_jobs_api":      "complete",
+    "m16_crawl_job_run_api":   "complete",
+    "m16_crawl_result_api":    "complete",
+    "m16_admin_layout":        "complete",
+    "m16_jobs_list_page":      "complete",
+    "m16_jobs_new_page":       "complete",
+    "m16_job_detail_page":     "complete",
+    "m16_approve_modal":       "complete",
+    "m16_keywords_tag_input":  "complete"
   },
   "notes": [
     "M13 complete and deployed (commit d2f93e0, 2026-03-23)",
@@ -88,6 +101,9 @@
     "M15: Foundation schema (5 models), /foundation pages, LessonClient quiz, progress API, NavBar link, seed.ts updated",
     "P1 fix: ObservationGuide.tsx both CTAs changed from /record to /practice",
     "M14+M15 pushed to production (commit 2aa5adb, 2026-03-23)",
-    "PENDING USER: npm run db:push + npx prisma generate + npm run db:seed to activate Foundation content"
+    "PENDING USER: npm run db:push + npx prisma generate + npm run db:seed to activate Foundation content",
+    "M16: CrawlJob+CrawlResult schema, YouTube crawler service, GPT-4o-mini scorer, all API routes, full admin UI (job list, create form, detail, approve modal) — pushed commit 6bd9218",
+    "M16 BLOCKER: YOUTUBE_API_KEY needed in Vercel env + db:push to create CrawlJob/CrawlResult tables — assigned to Builder",
+    "M16 signal sent to: pm.json (complete), tester.json (review-request), builder.json (youtube-api-key task)"
   ]
 }
