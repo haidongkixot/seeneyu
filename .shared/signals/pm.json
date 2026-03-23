@@ -413,7 +413,7 @@
       "task": "M14-M15-content-expansion-foundation",
       "message": "M14 + M15 fully implemented and pushed to production (commit 2aa5adb).\n\nM14 — Content Expansion (already implemented by other roles, verified complete):\n- screenplaySource on Clip (schema + seed + admin form)\n- Library film filter + screenplay toggle filter\n- ClipCard screenplay badge, clip detail 'Read Screenplay' link\n\nM15 — Performing Foundation:\n- Foundation schema: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress models\n- /foundation course catalog page (gradient cards, progress bars)\n- /foundation/[courseSlug] course page (breadcrumb, lesson list with checkmarks)\n- /foundation/[courseSlug]/[lessonSlug] lesson page (theory HTML, YouTube examples, MCQ quiz)\n- LessonClient.tsx: quiz state, 60% pass threshold, per-option coloring post-submit\n- POST /api/foundation/progress — upsert quiz progress\n- GET /api/foundation/progress/[lessonId] — fetch user progress\n- NavBar: Foundation link added\n- seed.ts: Foundation curriculum seeding from foundation-curriculum.json\n\nP1 Fix (from designer ui-review M11-M13): ObservationGuide.tsx CTAs /record → /practice (both occurrences)\n\nBuild: 0 TypeScript errors. PENDING USER: npm run db:push + npx prisma generate + npm run db:seed to activate Foundation content.",
       "timestamp": "2026-03-23T08:30:00Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_ds_pm_review_m11m12m13_001",

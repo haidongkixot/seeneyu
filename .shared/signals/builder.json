@@ -96,6 +96,17 @@
       "status": "unread"
     },
     {
+      "id": "sig_de_builder_data_ready_001",
+      "from": "data-engineer",
+      "to": "builder",
+      "type": "fyi",
+      "task": "m14-m15-data-complete",
+      "priority": "high",
+      "message": "DATA READY — run db:seed now.\n\n- .shared/outputs/data/clips-100-seed.json → 45 clips with screenplay sources (covers eye-contact, open-posture, active-listening, vocal-pacing, confident-disagreement)\n- .shared/outputs/data/foundation-curriculum.json → 3 courses × 10 lessons × 4 quiz Qs = 30 lessons total\n- prisma/seed.ts updated to auto-prefer clips-100-seed.json over clips-seed.json\n\nRun: npm run db:push && npx prisma generate && npm run db:seed",
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_pm_bl_deploy_all_001",
       "from": "pm",
       "to": "builder",

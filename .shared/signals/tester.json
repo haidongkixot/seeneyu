@@ -254,6 +254,17 @@
       "message": "M11/M12/M13 UI review complete. All 10 components PASS against spec. Full report: .shared/outputs/design/ui-review-m11-m12-m13.md. ONE P1 FIX IN PROGRESS: ObservationGuide.tsx CTAs point to /record instead of /practice — bypass fix sent to backend-engineer. Please hold M11 tester sign-off until that fix is confirmed. Low-priority notes: (1) animate-slide-up keyframe should exist in tailwind.config.ts — verify. (2) Skill icon tinting neutral instead of skill-specific (cosmetic, future). (3) Jump link in StepCard is a non-interactive span (future wiring).",
       "timestamp": "2026-03-23T09:00:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_m16_preview_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "m16-upcoming-review",
+      "priority": "normal",
+      "message": "UPCOMING: M16 — Learning Materials Builder review will arrive after Backend Engineer completes implementation.\n\n## What to test when the review-request arrives\n\n### Job Creation\n1. /admin/crawl-jobs — job list loads, 'New Job' button visible\n2. /admin/crawl-jobs/new — form submits successfully: name, skill/technique, keywords, difficulty, max results\n3. Created job appears in list with status 'pending'\n\n### Job Execution\n4. 'Run Job' triggers execution — status cycles: pending → running → complete\n5. Results populate after completion (verify at least 1 result from YouTube)\n6. Each result card shows: thumbnail, title, channel name, relevance score (0-10), AI analysis snippet\n7. If YOUTUBE_API_KEY is missing from env: graceful error message, not a crash\n\n### Results Review\n8. Default sort: highest relevance score first\n9. Filter tabs (All / Pending / Approved / Rejected) toggle correctly\n10. Thumbnail click opens YouTube embed inline\n\n### Approve Flow\n11. Approve button opens modal with pre-filled clip metadata form\n12. Submit metadata → success toast → Clip record created in DB\n13. Approved clip appears at /library (verify it shows in the grid)\n14. Approved clip's detail page shows 'How It Works' tab (observation guide auto-generated)\n15. Result shows 'Approved' status badge after approval\n\n### Reject Flow\n16. Reject button → result immediately shows 'Rejected' status (optimistic UI)\n17. Rejected results visible under Rejected filter\n\n### Special Tactics\n18. Create job with custom technique name (e.g. 'Triangle Gaze') — no errors, job executes\n19. Communication tactics from taxonomy appear in the technique selector\n\n### Edge Cases\n20. Gibberish keywords → 'No results found' shown gracefully (not crash)\n21. Running a completed job again → should not duplicate existing results\n22. Non-admin user cannot access /admin/crawl-jobs (redirects to sign-in)\n\nStatus: PENDING — wait for Backend Engineer's review-request signal before starting.",
+      "timestamp": "2026-03-23T09:30:00Z",
+      "status": "unread"
     }
   ]
 }

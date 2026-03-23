@@ -127,6 +127,18 @@
       "context": ".shared/outputs/reporter/activity-log.md",
       "timestamp": "2026-03-23T07:00:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_pm_rp_m16_001",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "document-m16",
+      "priority": "low",
+      "message": "NEW MILESTONE TO DOCUMENT: M16 — Learning Materials Builder.\n\nWhen approved by Tester, log in activity-log.md:\n\n## What to document\n- New admin-only section at /admin/crawl-jobs\n- What a crawl job is: admin defines skill/technique + keywords → system searches YouTube → AI scores each result for relevance → admin approves/rejects\n- New Prisma models: CrawlJob, CrawlResult\n- New services: youtube-crawler.ts (YouTube Data API v3), clip-relevance-scorer.ts (GPT-4o relevance scoring)\n- Approve flow: creates Clip + auto-generates ObservationGuide + PracticeSteps\n- Special tactics system: 40+ named communication techniques beyond 5 standard categories (from communication-tactics.json)\n- New env var required: YOUTUBE_API_KEY\n\n## Strategic significance\nThis milestone shifts seeneyu from manual content curation to semi-automated content discovery. Admin can now target highly specific communication skills (Power Pause, Triangle Gaze, Proxemic Management, etc.) not covered in standard clip categories.\n\nStatus: PENDING — wait for Tester approval before documenting.",
+      "context": ".shared/outputs/reports/activity-log.md",
+      "timestamp": "2026-03-23T09:30:00Z",
+      "status": "unread"
     }
   ]
 }

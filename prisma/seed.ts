@@ -1,7 +1,7 @@
 /**
  * seeneyu — Prisma Database Seed
  *
- * Seeds the database with 15 curated clips from .shared/outputs/data/clips-seed.json
+ * Seeds the database with clips from .shared/outputs/data/clips-100-seed.json (or clips-seed.json as fallback)
  *
  * Prerequisites:
  *   1. YOUTUBE_API_KEY verified — all youtube_video_id must NOT be "NEEDS_VERIFICATION"
@@ -65,13 +65,15 @@ interface SeedFile {
 }
 
 async function main() {
-  const seedPath = path.resolve(
-    ".shared/outputs/data/clips-seed.json"
-  );
+  const preferredPath = path.resolve(".shared/outputs/data/clips-100-seed.json");
+  const fallbackPath = path.resolve(".shared/outputs/data/clips-seed.json");
+  const seedPath = fs.existsSync(preferredPath) ? preferredPath : fallbackPath;
 
   if (!fs.existsSync(seedPath)) {
     throw new Error(`Seed file not found: ${seedPath}`);
   }
+
+  console.log(`Using seed file: ${seedPath}`);
 
   const seedData = JSON.parse(fs.readFileSync(seedPath, "utf-8")) as SeedFile;
 

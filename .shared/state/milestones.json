@@ -301,5 +301,31 @@
         "prisma/seed.ts — seed foundation courses"
       ]
     }
+  ,
+  {
+    "id": "M16",
+    "name": "Learning Materials Builder — Admin Clip Crawl & Curation System",
+    "phase": "13-content-automation",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "tester_condition": "Admin can create a crawl job with skill category + technique + keywords. Running the job returns YouTube video candidates scored by AI relevance. Admin can preview each video, approve (creates a Clip with auto-generated observation guide + practice steps) or reject. Approved clips appear in the Library. Special communication tactics (beyond the 5 standard categories) are supported as job criteria.",
+    "deliverables": [
+      "prisma/schema.prisma — CrawlJob + CrawlResult models",
+      "src/lib/types.ts — CrawlJob + CrawlResult + CommunicationTactic types",
+      "src/app/api/admin/crawl-jobs/route.ts — GET (list) + POST (create)",
+      "src/app/api/admin/crawl-jobs/[id]/run/route.ts — POST (execute YouTube search + AI scoring)",
+      "src/app/api/admin/crawl-jobs/[id]/results/route.ts — GET (list results)",
+      "src/app/api/admin/crawl-jobs/[id]/results/[resultId]/route.ts — PATCH (approve/reject)",
+      "src/app/admin/crawl-jobs/page.tsx — job list",
+      "src/app/admin/crawl-jobs/new/page.tsx — create job form",
+      "src/app/admin/crawl-jobs/[id]/page.tsx — job detail + results browser + approve/reject",
+      "src/services/youtube-crawler.ts — YouTube Data API v3 search service",
+      "src/services/clip-relevance-scorer.ts — GPT-4o relevance scoring",
+      ".shared/outputs/data/communication-tactics.json — taxonomy of 40+ specific techniques"
+    ]
+  }
   ]
 }
