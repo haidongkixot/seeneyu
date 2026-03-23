@@ -40,6 +40,30 @@
       "skills": ["eye-contact", "open-posture", "active-listening", "vocal-pacing", "confident-disagreement"],
       "decided_by": "user",
       "timestamp": "2026-03-21T00:00:00Z"
+    },
+    {
+      "id": "dec_006",
+      "decision": "Accept 65 clips as M14 sprint delivery (original target: 100+)",
+      "rationale": "Data Engineer hit YouTube Data API v3 daily quota at 65 clips. All 65 are fully verified and complete (script + observation_guide + practice_steps + screenplay_source). 65 clips represents a 4.3× expansion from 15. The remaining 35 clips will be added in the next DE session when quota resets.",
+      "alternatives_considered": [
+        "Block M14 until 100 clips are reached",
+        "Use a different YouTube API key to bypass quota",
+        "Reduce per-clip data richness to fit more clips in quota"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-23T10:45:00Z"
+    },
+    {
+      "id": "dec_007",
+      "decision": "M16 Learning Materials Builder: Admin creates crawl jobs targeting named communication tactics (beyond 5 standard categories) via YouTube Data API + GPT-4o relevance scoring",
+      "rationale": "User requirement: diversify library with niche/advanced communication tactics (Power Pause, Triangle Gaze, Proxemic Management, etc.) that go beyond the standard 5 skill categories. Admin approval gate maintains content quality.",
+      "alternatives_considered": [
+        "Manual curation only (no automation)",
+        "Fully automated ingestion (no admin review)",
+        "External content marketplace integration"
+      ],
+      "decided_by": "user",
+      "timestamp": "2026-03-23T09:30:00Z"
     }
   ]
 }

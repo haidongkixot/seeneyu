@@ -176,6 +176,29 @@
       "context": "prisma/schema.prisma, src/app/api/admin/, src/app/admin/, .shared/outputs/design/m16-spec.md (incoming)",
       "timestamp": "2026-03-23T09:30:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_de_be_m16_tactics_ready_001",
+      "from": "data-engineer",
+      "to": "backend-engineer",
+      "type": "data-ready",
+      "task": "m16-communication-tactics-taxonomy",
+      "message": "M16 communication tactics taxonomy ready.\n\nFile: .shared/outputs/data/communication-tactics.json\n\nStats:\n- 50 tactics total\n- Domains: vocal(10), verbal(16), body(12), presence(5), rapport(7)\n- Difficulty: beginner(16), intermediate(24), advanced(10)\n- Each tactic has: id, name, domain, description, difficulty, searchKeywords (3-5), scoringHints\n\nThe searchKeywords are designed for YouTube Data API v3 searches in the crawl job system. The scoringHints are for the GPT-4o relevance scorer to identify good vs poor examples.",
+      "artifact": ".shared/outputs/data/communication-tactics.json",
+      "timestamp": "2026-03-23T10:30:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_ds_be_m16_spec_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "spec-ready",
+      "task": "m16-learning-materials-builder-ui",
+      "priority": "high",
+      "message": "M16 UI spec delivered. Full spec at: .shared/outputs/design/m16-spec.md\n\nCovers all 4 views with ASCII mockups, Tailwind classes, and component breakdown:\n1. Job List (/admin/crawl-jobs) — JobListRow with status chips (pending/running/complete/failed), Run/View Results buttons, result count stats\n2. Create Job Form (/admin/crawl-jobs/new) — KeywordsTagInput (tag chips, Enter to add), Skill dropdown with Special Technique conditional field, difficulty pill group, Create vs Create & Run submit buttons\n3. Job Detail + Results Browser (/admin/crawl-jobs/[id]) — 4-step run progress indicator, ResultCard grid (3-col desktop), relevance score badge (green ≥7 / amber 4-6 / red <4), optimistic approve/reject with undo\n4. Approve Modal (overlay) — 2-panel: YouTube embed left + metadata form right, 'Create Clip & Generate Guide' CTA, success toast\n\nComponent suggestions: JobListRow, KeywordsTagInput, ResultCard, ResultsGrid, JobRunProgress, ApproveModal. All in src/components/admin/.",
+      "context": ".shared/outputs/design/m16-spec.md",
+      "timestamp": "2026-03-23T11:00:00Z",
+      "status": "unread"
     }
   ]
 }

@@ -200,6 +200,44 @@ export interface QuizQuestion {
   order: number
 }
 
+export type CrawlJobStatus = 'pending' | 'running' | 'complete' | 'failed'
+export type CrawlResultStatus = 'pending' | 'approved' | 'rejected'
+
+export interface CrawlJob {
+  id: string
+  name: string
+  skillCategory: string
+  technique: string | null
+  keywords: string[]
+  difficulty: string | null
+  maxResults: number
+  status: CrawlJobStatus
+  errorMessage: string | null
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+  results?: CrawlResult[]
+  _count?: { results: number }
+}
+
+export interface CrawlResult {
+  id: string
+  jobId: string
+  youtubeId: string
+  title: string
+  channelName: string
+  thumbnailUrl: string
+  description: string
+  durationSec: number | null
+  publishedAt: string | null
+  viewCount: number | null
+  relevanceScore: number
+  aiAnalysis: string | null
+  status: CrawlResultStatus
+  approvedClipId: string | null
+  createdAt: string
+}
+
 export interface FoundationProgress {
   lessonId: string
   quizScore?: number | null

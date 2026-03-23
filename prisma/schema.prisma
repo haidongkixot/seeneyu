@@ -225,6 +225,47 @@ model QuizQuestion {
   @@index([lessonId])
 }
 
+model CrawlJob {
+  id            String        @id @default(cuid())
+  name          String
+  skillCategory String
+  technique     String?
+  keywords      Json          // String[]
+  difficulty    String?       // 'beginner' | 'intermediate' | 'advanced' | 'all'
+  maxResults    Int           @default(20)
+  status        String        @default("pending") // pending | running | complete | failed
+  errorMessage  String?       @db.Text
+  createdBy     String        // admin userId
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  results       CrawlResult[]
+
+  @@index([status])
+  @@index([createdBy])
+}
+
+model CrawlResult {
+  id             String   @id @default(cuid())
+  jobId          String
+  job            CrawlJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  youtubeId      String
+  title          String
+  channelName    String
+  thumbnailUrl   String
+  description    String   @db.Text
+  durationSec    Int?
+  publishedAt    String?
+  viewCount      Int?
+  relevanceScore Float    @default(0)  // 0-10 from GPT-4o
+  aiAnalysis     String?  @db.Text
+  status         String   @default("pending") // pending | approved | rejected
+  approvedClipId String?
+  createdAt      DateTime @default(now())
+
+  @@index([jobId])
+  @@index([jobId, status])
+}
+
 model FoundationProgress {
   id          String           @id @default(cuid())
   userId      String

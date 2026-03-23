@@ -1,0 +1,710 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "total": 50,
+    "domains": ["vocal", "verbal", "body", "presence", "rapport"],
+    "updated_at": "2026-03-23T10:30:00Z"
+  },
+  "tactics": [
+    {
+      "id": "power-pause",
+      "name": "Power Pause",
+      "domain": "vocal",
+      "description": "A deliberate silence of 2–5 seconds placed after a key statement or question to let it land fully and signal confidence.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "power pause public speaking",
+        "deliberate silence presentation technique",
+        "strategic pause TED talk",
+        "pause for emphasis speaking"
+      ],
+      "scoringHints": "Look for speakers who pause deliberately mid-sentence or after a key point. Not nervous pausing — intentional stillness with maintained eye contact. The speaker doesn't fill the silence with 'um' or 'so'."
+    },
+    {
+      "id": "vocal-crescendo",
+      "name": "Vocal Crescendo",
+      "domain": "vocal",
+      "description": "Gradually increasing volume, pace, and intensity over the course of a sentence or passage, building to a climactic peak.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "vocal crescendo speech technique",
+        "building intensity speech delivery",
+        "speech escalation volume pace",
+        "climactic speech delivery acting"
+      ],
+      "scoringHints": "Starting quiet and measured, then building to full voice and pace. The escalation should feel earned — not sudden. Common in motivational speeches and stage monologues."
+    },
+    {
+      "id": "strategic-whisper",
+      "name": "Strategic Whisper",
+      "domain": "vocal",
+      "description": "Dropping volume to near-whisper at a key moment to force the audience to lean in and focus — creates intimacy and urgency.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "strategic whisper speech technique",
+        "drop voice to whisper presentation",
+        "speaking softly for emphasis",
+        "quiet voice command attention"
+      ],
+      "scoringHints": "The whisper must be intentional and contrasting — not timid. The speaker's posture stays open and confident while the voice drops. Effective speakers often pair whisper with a leaning-in movement."
+    },
+    {
+      "id": "vocal-fry-control",
+      "name": "Vocal Fry Control",
+      "domain": "vocal",
+      "description": "Intentionally eliminating or strategically using vocal fry (the low, crackling tone produced at the bottom of the register).",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "vocal fry communication",
+        "stop vocal fry speaking",
+        "vocal fry credibility impact",
+        "upspeak vocal fry professional"
+      ],
+      "scoringHints": "Listen for the raspy, low-frequency crackle at the end of sentences. In coaching, the goal is usually elimination — but note that some speakers use it intentionally for a casual, intimate effect."
+    },
+    {
+      "id": "chest-voice-anchor",
+      "name": "Chest Voice Anchor",
+      "domain": "vocal",
+      "description": "Grounding vocal delivery in the chest resonator to produce a fuller, warmer, more authoritative tone versus head or throat voice.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "chest voice speaking authority",
+        "vocal resonance chest voice tutorial",
+        "chest voice vs head voice speaking",
+        "how to speak from your chest"
+      ],
+      "scoringHints": "A chest-anchored voice has warmth, fullness, and carries without effort. Place hand on sternum — a well-anchored voice vibrates there. Compare to throat voice which sounds thin and strained."
+    },
+    {
+      "id": "pitch-drop",
+      "name": "Pitch Drop",
+      "domain": "vocal",
+      "description": "Deliberately lowering pitch at the end of a statement — as opposed to upspeak (rising pitch) — to signal authority and certainty.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "pitch drop authority speaking",
+        "downward inflection confidence",
+        "stop upspeak professional speaking",
+        "vocal authority inflection pattern"
+      ],
+      "scoringHints": "The final word or syllable of a confident statement should fall in pitch. Upspeak (rising at the end) turns statements into questions. Pitch drop turns observations into declarations."
+    },
+    {
+      "id": "staccato-delivery",
+      "name": "Staccato Delivery",
+      "domain": "vocal",
+      "description": "Separating words or short phrases with micro-pauses, giving each unit individual impact — like bullet points spoken aloud.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "staccato speaking style delivery",
+        "punchy speaking technique separated words",
+        "short punchy phrases communication",
+        "word by word emphasis speaking"
+      ],
+      "scoringHints": "Each phrase or key word gets its own space — not rushed into the next. Often used by coaches and military speakers. The rhythm is: speak. pause. speak. pause. — creating a drumbeat effect."
+    },
+    {
+      "id": "elongation",
+      "name": "Elongation",
+      "domain": "vocal",
+      "description": "Stretching the vowel of a key word to add emotional weight and draw the listener's focus to that specific word.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "vowel elongation emphasis speaking",
+        "stretching words vocal technique",
+        "elongation speech emphasis",
+        "vocal emphasis word stretching technique"
+      ],
+      "scoringHints": "The elongated word takes twice as long as surrounding words. Common in politicians and preachers ('We shall ooooovercome'). Powerful when used sparingly — loses effect if overused."
+    },
+    {
+      "id": "breath-pacing",
+      "name": "Breath Pacing",
+      "domain": "vocal",
+      "description": "Using deliberate breath patterns to control speaking rhythm and pace — breathing at phrase breaks rather than gasping mid-sentence.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "breath control public speaking",
+        "breathing technique speaking cadence",
+        "breath pacing presentation",
+        "diaphragmatic breathing speech"
+      ],
+      "scoringHints": "Well-paced breathing is invisible — breaths happen at phrase breaks and don't interrupt the message. Poor breath control shows as mid-sentence gasps, trailing volume, or rushing to finish before running out of air."
+    },
+    {
+      "id": "rhythmic-cadence",
+      "name": "Rhythmic Cadence",
+      "domain": "vocal",
+      "description": "Speaking with a musical, poetic rhythm — using parallelism and repeated sentence structure to create a hypnotic pattern that keeps listeners engaged.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "rhythmic cadence speech oratory",
+        "speech rhythm parallelism MLK",
+        "anaphora repetition oratory",
+        "poetic speech delivery technique"
+      ],
+      "scoringHints": "MLK's 'I have a dream' is the iconic example. The rhythm repeats (anaphora), the sentences are parallel, and the beat is almost musical. Look for sentences that could be spoken to a drum track."
+    },
+    {
+      "id": "pacing-and-leading",
+      "name": "Pacing and Leading",
+      "domain": "verbal",
+      "description": "First matching the other person's communication style, pace, and energy (pacing), then gradually shifting your own state to guide them toward a different one (leading).",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "pacing and leading NLP communication",
+        "match lead conversation technique",
+        "rapport building NLP pacing",
+        "mirror match redirect conversation"
+      ],
+      "scoringHints": "Watch for a speaker who initially matches the other person's tone and pace, then gradually shifts — and the other person follows. The transition is subtle. If done well, the listener doesn't notice the redirect."
+    },
+    {
+      "id": "reframing",
+      "name": "Reframing",
+      "domain": "verbal",
+      "description": "Changing the context or perspective through which a statement is interpreted, transforming a negative into a neutral or positive without denying the original fact.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "reframing communication technique",
+        "reframe objection sales negotiation",
+        "cognitive reframing conversation",
+        "perspective shift communication"
+      ],
+      "scoringHints": "A reframe acknowledges the original statement and then offers a new interpretation: 'That's not a problem — that's an opportunity to...' Watch for language that accepts the premise but shifts the conclusion."
+    },
+    {
+      "id": "socratic-questioning",
+      "name": "Socratic Questioning",
+      "domain": "verbal",
+      "description": "Guiding someone to a conclusion through a carefully sequenced series of questions rather than declarative statements.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "Socratic method questioning communication",
+        "guide through questions coaching",
+        "Socratic dialogue technique",
+        "leading questions without telling"
+      ],
+      "scoringHints": "The speaker never tells — they ask. Each question accepts the other person's answer and builds the next question from it. The listener reaches the conclusion believing it was their own idea. Common in therapy and coaching."
+    },
+    {
+      "id": "elicitation",
+      "name": "Elicitation",
+      "domain": "verbal",
+      "description": "Drawing out information naturally through conversation rather than direct questioning — making the other person volunteer information they didn't plan to share.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "elicitation technique conversation intelligence",
+        "drawing out information naturally",
+        "elicitation social engineering communication",
+        "getting information without asking directly"
+      ],
+      "scoringHints": "The speaker makes statements that invite corrections or elaborations rather than asking direct questions. 'I heard that company was struggling...' invites the other person to correct/expand without feeling interrogated."
+    },
+    {
+      "id": "strategic-vulnerability",
+      "name": "Strategic Vulnerability",
+      "domain": "verbal",
+      "description": "Deliberately disclosing a personal struggle, mistake, or uncertainty to build trust and lower the other person's defences.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "strategic vulnerability communication leadership",
+        "vulnerability leadership Brene Brown",
+        "self-disclosure trust building",
+        "controlled vulnerability public speaking"
+      ],
+      "scoringHints": "The disclosure is genuine but controlled — revealing something real without overwhelming the listener. It signals 'I'm human' and 'I trust you enough to share this.' Watch for how quickly rapport shifts after the disclosure."
+    },
+    {
+      "id": "future-pacing",
+      "name": "Future Pacing",
+      "domain": "verbal",
+      "description": "Describing a desired future state so vividly that the listener can already see themselves there — making the outcome feel inevitable rather than aspirational.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "future pacing NLP technique",
+        "vivid vision communication motivation",
+        "describe future state persuasion",
+        "paint the picture technique speech"
+      ],
+      "scoringHints": "The speaker uses present tense for future events ('When you have this...', 'As you step into that meeting...'). The description is sensory-rich. The listener nods along because they're already imagining it."
+    },
+    {
+      "id": "presupposition",
+      "name": "Presupposition",
+      "domain": "verbal",
+      "description": "Embedding an assumption in a statement so that accepting the statement requires accepting the assumption — bypassing conscious resistance.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "presupposition NLP language patterns",
+        "embedded assumptions language persuasion",
+        "presupposition sales communication",
+        "language patterns persuasion technique"
+      ],
+      "scoringHints": "'Which would you prefer — Tuesday or Thursday?' presupposes you're meeting. 'How soon do you want to get started?' presupposes you will start. Look for questions that only make sense if you accept the embedded premise."
+    },
+    {
+      "id": "benjamin-franklin-effect",
+      "name": "Benjamin Franklin Effect",
+      "domain": "verbal",
+      "description": "Asking someone for a small, reasonable favour first — which makes them more favourably disposed toward you when you make a subsequent larger request.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "Benjamin Franklin effect communication",
+        "ask small favor first technique",
+        "foot in the door persuasion",
+        "small request rapport building"
+      ],
+      "scoringHints": "The small initial ask must be genuine and low-cost for the other person. Watch for the shift in tone — after granting a small request, people tend to be more open to the larger conversation."
+    },
+    {
+      "id": "door-in-the-face",
+      "name": "Door in the Face",
+      "domain": "verbal",
+      "description": "Opening with a large, likely-rejected request, then following with a smaller, real request — which gets accepted because of the contrast with what was refused.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "door in the face technique negotiation",
+        "contrast principle persuasion",
+        "rejection then retreat compliance",
+        "large ask small ask negotiation"
+      ],
+      "scoringHints": "The initial large ask must be real — not obviously absurd. The subsequent ask must seem genuinely smaller by comparison. Watch for the 'reasonable' tone shift after the first refusal."
+    },
+    {
+      "id": "embedded-commands",
+      "name": "Embedded Commands",
+      "domain": "verbal",
+      "description": "Hiding directive language inside a larger, innocent-sounding sentence — delivering the instruction at the unconscious level.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "embedded commands NLP communication",
+        "hidden directives language patterns",
+        "embedded suggestion communication",
+        "covert communication technique"
+      ],
+      "scoringHints": "'Some people find that when they just relax and take action, things work out.' The embedded command is 'relax and take action.' Watch for slight vocal emphasis on the embedded phrase — speakers who know this technique often mark it with a tonal shift."
+    },
+    {
+      "id": "triangle-gaze",
+      "name": "Triangle Gaze",
+      "domain": "body",
+      "description": "Moving eye contact in a triangular pattern between the other person's two eyes and their mouth — covering the face without staring fixedly at one point.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "triangle gaze eye contact technique",
+        "triangular gaze communication",
+        "where to look when making eye contact",
+        "social gaze pattern eye contact"
+      ],
+      "scoringHints": "Social triangle: eyes → nose → mouth. Professional triangle (business): eyes → left eye → right eye → nose. The movement is slow and natural — not darting. Watch for smooth scanning versus fixed staring."
+    },
+    {
+      "id": "open-palm-display",
+      "name": "Open Palm Display",
+      "domain": "body",
+      "description": "Showing the palms during gestures or when making statements — a primal signal of honesty and non-threat that increases perceived trustworthiness.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "open palm gesture communication",
+        "palm up gestures honesty trust",
+        "open hands body language",
+        "palm display communication signal"
+      ],
+      "scoringHints": "Palms up during speech signal openness and invitation. Palms down signal authority and finality. Palms hidden (in pockets, clasped) signal hidden information or anxiety. Watch for which display correlates with which message."
+    },
+    {
+      "id": "chin-tuck-authority",
+      "name": "Chin Tuck Authority",
+      "domain": "body",
+      "description": "A slight tucking of the chin (not down, but slightly in) when delivering authoritative statements — projects a grounded, serious tone and avoids the vulnerable chin-up or submissive chin-down.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "chin position body language authority",
+        "chin tuck confident speaking",
+        "head position communication credibility",
+        "authority chin position presentation"
+      ],
+      "scoringHints": "The chin tuck keeps the neck vertical and the gaze level — not raised (arrogant) or lowered (submissive). Politicians and negotiators often adopt this unconsciously. Compare different chin positions on the same speaker."
+    },
+    {
+      "id": "territorial-stance",
+      "name": "Territorial Stance",
+      "domain": "body",
+      "description": "Occupying space deliberately and fully — feet wide, arms away from body, possessions spread — to claim the environment as your own and signal comfortable authority.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "territorial body language confidence",
+        "space claiming power stance",
+        "dominant stance body language",
+        "territorial behavior communication"
+      ],
+      "scoringHints": "Watch how people spread out (or contract) when entering a new space. Confident individuals expand — they put things on the table, adjust the chair, take the space. Anxious individuals contract — arms in, feet close, minimal footprint."
+    },
+    {
+      "id": "steepling",
+      "name": "Steepling",
+      "domain": "body",
+      "description": "Pressing the fingertips of both hands together (like a steeple or praying hands position) — one of the highest-confidence gestures, signalling certainty and authority.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "steepling gesture body language",
+        "fingertip touching confidence signal",
+        "steeple hand gesture communication",
+        "confidence gesture hands"
+      ],
+      "scoringHints": "True steepling: only fingertips touch, palms apart, elbows may rest on surface. Do not confuse with clasped hands (uncertainty) or interlaced fingers (stress). Watch for it in negotiation and interview contexts."
+    },
+    {
+      "id": "object-barrier-removal",
+      "name": "Object Barrier Removal",
+      "domain": "body",
+      "description": "Moving objects (phones, glasses, folders, cups) that sit between you and the person you're talking to — removing physical barriers improves perceived openness and connection.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "object barrier body language rapport",
+        "remove barriers conversation technique",
+        "desk objects communication body language",
+        "physical barriers conversation"
+      ],
+      "scoringHints": "Watch for unconscious barrier placement — phones face-up on the table, arms folded with an object held, a bag placed in the lap. And watch for deliberate removal: pushing a phone aside, moving a folder to clear the space."
+    },
+    {
+      "id": "feet-direction-read",
+      "name": "Feet Direction Read",
+      "domain": "body",
+      "description": "Reading the direction of someone's feet as the most reliable indicator of their genuine attention and interest — feet point toward what the mind wants.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "feet body language indicator interest",
+        "foot direction body language",
+        "feet pointing communication signal",
+        "lower body body language feet"
+      ],
+      "scoringHints": "Feet pointed toward the exit signal a desire to leave. Feet pointed toward another person signal interest in them. This applies even when the upper body is rotated toward you — the feet tell the true story."
+    },
+    {
+      "id": "controlled-stillness",
+      "name": "Controlled Stillness",
+      "domain": "body",
+      "description": "Minimising physical movement — no swaying, rocking, fidgeting, or unnecessary head movement — to project composure and command attention.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "controlled stillness body language",
+        "minimize movement presence authority",
+        "stillness communication confidence",
+        "stop fidgeting public speaking"
+      ],
+      "scoringHints": "The stiller the speaker, the more weight their movements carry when they do occur. Watch how actors with controlled stillness make a single gesture more powerful than an animated speaker's dozen gestures."
+    },
+    {
+      "id": "proxemic-management",
+      "name": "Proxemic Management",
+      "domain": "body",
+      "description": "Intentionally managing the distance between yourself and others — using intimate (0–18in), personal (18in–4ft), social (4–12ft), and public (12ft+) zones appropriately.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "proxemics communication zones",
+        "personal space communication",
+        "physical distance conversation technique",
+        "Edward Hall proxemics zones"
+      ],
+      "scoringHints": "Great communicators step closer when sharing something intimate and step back when addressing a group. Watch for when they lean in vs step back — and how the listener responds to each move."
+    },
+    {
+      "id": "head-nod-pacing",
+      "name": "Head Nod Pacing",
+      "domain": "body",
+      "description": "Using the rate and timing of head nods to pace and influence the listener — slow deliberate nods signal 'I hear you', while rapid nods can be a polite signal to hurry up.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "head nod body language pacing",
+        "nodding communication signal",
+        "head nod rate conversation",
+        "nodding agreement body language"
+      ],
+      "scoringHints": "Three slow nods after someone speaks signals deep listening and encourages them to continue. Rapid nods signal 'wrap it up'. No nods can signal non-agreement or disengagement. The nod rate gives away the listener's patience."
+    },
+    {
+      "id": "power-pose-transition",
+      "name": "Power Pose Transition",
+      "domain": "presence",
+      "description": "Entering and exiting a space with expansive, upright posture — ensuring that first and last impressions are set by deliberate physical presence rather than anxious contraction.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "power pose transition entry body language",
+        "entering room confident posture",
+        "power pose communication Amy Cuddy",
+        "confident entry exit presentation"
+      ],
+      "scoringHints": "Watch the first 3 seconds of entry — chest open, gait deliberate, arms slightly away from body. And watch the exit — do they maintain posture as they leave or collapse as they turn away? Both moments set impressions."
+    },
+    {
+      "id": "slow-deliberate-entry",
+      "name": "Slow Deliberate Entry",
+      "domain": "presence",
+      "description": "Entering a room or conversation at a slightly slower, more deliberate pace than feels natural — claiming the space before speaking.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "slow entry room presence technique",
+        "deliberate walk entry confidence",
+        "slow movement presence communication",
+        "confident entry room technique"
+      ],
+      "scoringHints": "Anxious people rush entry — fast walk, eyes down, quick to minimise. Confident people slow down at threshold — pause, scan, then move. The pause before entering is the most overlooked presence technique."
+    },
+    {
+      "id": "gravity-walk",
+      "name": "Gravity Walk",
+      "domain": "presence",
+      "description": "A measured, purposeful walking style — chest slightly forward, gait even, no rush — that signals ownership of the space and projects quiet authority.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "confident walk gait presence",
+        "powerful walk body language",
+        "slow confident stride technique",
+        "presidential walk gait communication"
+      ],
+      "scoringHints": "The gravity walk is smooth and rhythmic — not military marching. The arms have a natural swing, the torso doesn't bob. The pace is 80–90% of the speaker's natural walking speed. Watch CEOs and actors in casual scenes."
+    },
+    {
+      "id": "pre-talk-stillness",
+      "name": "Pre-Talk Stillness",
+      "domain": "presence",
+      "description": "Standing completely still and holding the audience's gaze for 3–5 seconds before uttering a single word — one of the most powerful presence techniques.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "pre talk stillness presence public speaking",
+        "pause before speaking TED technique",
+        "silent start presentation technique",
+        "stand still before speaking command"
+      ],
+      "scoringHints": "The speaker walks on, establishes their position, and waits. The audience quiets and focuses. When the speaker finally speaks, every word counts because attention was earned by the silence. Watch TED talks for this."
+    },
+    {
+      "id": "ownership-gesture",
+      "name": "Ownership Gesture",
+      "domain": "presence",
+      "description": "An opening arm sweep or gesture that physically claims the space — unconsciously signalling to the audience that the speaker owns the environment.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "ownership gesture opening speech",
+        "arm sweep welcome gesture presentation",
+        "claim the room gesture body language",
+        "opening gesture command presence"
+      ],
+      "scoringHints": "A wide outward arm movement at the opening of a speech (like 'welcome to this space') claims the room. More subtle versions: spreading notes on a table, adjusting the microphone stand, or pushing the podium aside."
+    },
+    {
+      "id": "full-body-mirroring",
+      "name": "Full-Body Mirroring",
+      "domain": "rapport",
+      "description": "Subtly matching the other person's posture, lean, arm position, and movement rate — creating unconscious rapport through physical synchrony.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "full body mirroring rapport technique",
+        "mirroring body language rapport",
+        "physical mirroring communication NLP",
+        "mirror match body language"
+      ],
+      "scoringHints": "Successful mirroring is invisible — it happens with a 20–30 second delay and partial matching rather than exact copying. Both parties feel unusually comfortable. If mirroring is noticed, it was too obvious."
+    },
+    {
+      "id": "cross-over-mirroring",
+      "name": "Cross-Over Mirroring",
+      "domain": "rapport",
+      "description": "Mirroring the other person's movements with the opposite limb — right hand to their left hand — which creates rapport without the obvious 'mirror image' quality of direct mirroring.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "cross mirroring body language",
+        "contralateral mirroring technique",
+        "subtle mirroring rapport building",
+        "advanced mirroring communication"
+      ],
+      "scoringHints": "Cross-over mirroring is nearly impossible to detect consciously. Watch two people who clearly like each other — you'll see them matching gestures with the opposite limb naturally. It's a sign of genuine synchrony."
+    },
+    {
+      "id": "matching-breathing",
+      "name": "Matching Breathing",
+      "domain": "rapport",
+      "description": "Syncing your breathing rate and rhythm with your conversation partner — the deepest rapport signal, operating at a largely unconscious level.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "matching breathing rapport communication",
+        "breath synchrony rapport NLP",
+        "breathing rate mirroring conversation",
+        "synchronised breathing connection"
+      ],
+      "scoringHints": "Watch the chest or shoulder movements of two people in deep conversation — when they're fully synchronised, breathing rates match. Therapists and trained negotiators do this deliberately. Almost impossible to fake — it requires genuine attentiveness."
+    },
+    {
+      "id": "anchoring",
+      "name": "Anchoring",
+      "domain": "rapport",
+      "description": "Associating an emotional state with a physical location or touch — so that recreating the physical cue reactivates the emotional state in the future.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "anchoring NLP technique communication",
+        "emotional anchor communication",
+        "state anchoring NLP",
+        "physical anchor emotional state"
+      ],
+      "scoringHints": "A speaker who always stands in one spot when delivering high-energy content creates an anchor — returning to that spot later reactivates the energy. Handshakes, shoulder touches, and consistent gestures can all function as anchors."
+    },
+    {
+      "id": "genuine-smile",
+      "name": "Genuine Smile (Duchenne)",
+      "domain": "rapport",
+      "description": "Distinguishing and deploying a genuine smile (Duchenne) — which involves the orbicularis oculi muscle around the eyes — versus a social smile that only uses the mouth.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "Duchenne smile genuine communication",
+        "genuine vs fake smile body language",
+        "eye smile rapport building",
+        "authentic smile communication"
+      ],
+      "scoringHints": "The Duchenne smile: eyes crinkle at the outer corners, the orbicularis oculi contracts. The social smile: only the zygomatic major (lip corners). Watch eyes, not mouth — the mouth is easy to fake; the eyes are not."
+    },
+    {
+      "id": "name-mirroring",
+      "name": "Name Mirroring",
+      "domain": "rapport",
+      "description": "Using the other person's name at specific, spaced intervals throughout a conversation — creating warmth and personal connection without over-use.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "using name conversation rapport technique",
+        "name usage communication sales",
+        "first name rapport building conversation",
+        "saying name connection technique"
+      ],
+      "scoringHints": "The name should appear early (to signal you know it), at a key emotional moment, and at closing. Not more than 3 times in a 10-minute conversation — overuse reads as manipulation."
+    },
+    {
+      "id": "label-validation",
+      "name": "Label and Validate",
+      "domain": "verbal",
+      "description": "Naming the emotion or perspective you're observing in the other person ('It seems like you feel strongly about this...') and validating it before responding — a core empathy and negotiation technique.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "label validate negotiation empathy",
+        "labeling technique Chris Voss negotiation",
+        "name it to tame it communication",
+        "emotional labeling active listening"
+      ],
+      "scoringHints": "The label is a tentative observation ('It seems like...', 'It sounds like...', 'It looks like...') — not a conclusion. The validation doesn't require agreement ('I can understand why you'd feel that way'). Watch for the visible de-escalation after a correct label."
+    },
+    {
+      "id": "minimal-encouragers",
+      "name": "Minimal Encouragers",
+      "domain": "verbal",
+      "description": "Using short, low-effort responses ('I see', 'Go on', 'Tell me more', 'Mmm') to signal attentiveness and encourage the speaker to continue without interrupting their flow.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "minimal encouragers active listening",
+        "go on tell me more listening technique",
+        "verbal acknowledgement active listening",
+        "back channel communication listening"
+      ],
+      "scoringHints": "These are the invisible glue of good conversations. A listener who never encouragers often creates silences that kill momentum. Watch for how 'mm-hmm' at the right moment makes someone open up further."
+    },
+    {
+      "id": "tactical-empathy",
+      "name": "Tactical Empathy",
+      "domain": "verbal",
+      "description": "Demonstrating genuine understanding of the other person's emotions and perspective — not agreement — to lower defences and build influence through connection.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "tactical empathy Chris Voss negotiation",
+        "tactical empathy FBI negotiation",
+        "empathy technique communication",
+        "strategic empathy conflict resolution"
+      ],
+      "scoringHints": "Tactical empathy doesn't say 'I agree' — it says 'I understand why you think/feel that'. Watch for the softening that follows: crossed arms unfold, tone becomes less defensive. The moment of empathy is often visible in the listener's physiology."
+    },
+    {
+      "id": "calculated-hesitation",
+      "name": "Calculated Hesitation",
+      "domain": "verbal",
+      "description": "Deliberately pausing before responding or deciding — even when you already know the answer — to appear more thoughtful and avoid appearing reactive or impulsive.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "calculated hesitation negotiation",
+        "deliberate pause before answering",
+        "thinking before speaking communication",
+        "thoughtful response pause technique"
+      ],
+      "scoringHints": "The speaker takes 2–3 seconds before responding to anything — even simple questions. Chin slightly down, gaze briefly unfocused (thinking), then returning to full focus. Signals: 'I consider my words carefully.' Watch negotiators and senior executives."
+    },
+    {
+      "id": "narrative-reframe",
+      "name": "Narrative Reframe",
+      "domain": "verbal",
+      "description": "Re-telling a situation's story from a different point of view or with different emphasis to change how both parties feel about it — the past doesn't change, but its meaning does.",
+      "difficulty": "advanced",
+      "searchKeywords": [
+        "narrative reframing therapy communication",
+        "story reframing leadership technique",
+        "reframe the narrative communication",
+        "change the story perspective shift"
+      ],
+      "scoringHints": "The speaker accepts the facts as given, then introduces a new interpretation: 'Another way to look at this is...' or 'What this actually shows is...'. Watch for the listener's expression shift from closed to curious as the new story lands."
+    },
+    {
+      "id": "the-power-of-and",
+      "name": "The Power of 'And'",
+      "domain": "verbal",
+      "description": "Replacing 'but' with 'and' when responding to disagreement — which acknowledges both perspectives rather than invalidating the first with the second.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "yes and communication technique",
+        "and not but communication",
+        "improv and technique communication",
+        "yes and communication leadership"
+      ],
+      "scoringHints": "'I hear you, BUT...' cancels everything before the 'but.' 'I hear you, AND here's another perspective...' holds both. Listen for whether speakers use 'but' or 'and' when pivoting — it reveals how they're processing disagreement."
+    },
+    {
+      "id": "strategic-self-disclosure",
+      "name": "Strategic Self-Disclosure",
+      "domain": "rapport",
+      "description": "Sharing calibrated personal information at the right moment to accelerate trust — the disclosure signals you're safe enough to share, and invites reciprocal openness.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "strategic self disclosure communication",
+        "self disclosure trust building rapport",
+        "share personal information timing",
+        "vulnerability disclosure technique"
+      ],
+      "scoringHints": "The disclosure is personal enough to be meaningful but not so heavy it creates discomfort. 'I've made this mistake too...' is strategic. It's calibrated to the relationship depth and context. Watch for how reciprocal disclosure follows."
+    },
+    {
+      "id": "controlled-eye-break",
+      "name": "Controlled Eye Break",
+      "domain": "body",
+      "description": "Deliberately breaking eye contact downward (not sideways) when processing a question or accessing a memory — a universal signal of internal thought rather than evasion.",
+      "difficulty": "beginner",
+      "searchKeywords": [
+        "eye break thinking body language",
+        "looking down thinking eye contact",
+        "eye movement thinking communication",
+        "controlled eye break body language"
+      ],
+      "scoringHints": "Eyes break down + slight chin tuck = accessing memory or thought. Eyes break sideways = evasion (in most cultures). The key is returning quickly to full eye contact after processing. A brief, clean eye break is far better than maintaining uncomfortable stare while thinking."
+    },
+    {
+      "id": "gestural-emphasis",
+      "name": "Gestural Emphasis",
+      "domain": "body",
+      "description": "Timing hand gestures to land precisely on the key word of a sentence — so that the gesture and the important word arrive at the same moment, doubling the impact.",
+      "difficulty": "intermediate",
+      "searchKeywords": [
+        "hand gesture timing emphasis speaking",
+        "gestural emphasis public speaking",
+        "gestures aligned with words",
+        "gesture timing word emphasis technique"
+      ],
+      "scoringHints": "A gesture that arrives before or after the key word is desynchronised. A perfectly timed gesture and word feel like a physical punch. Watch politicians and trial lawyers — they rehearse this synchrony until it becomes natural."
+    }
+  ]
+}

@@ -424,6 +424,56 @@
       "message": "M11/M12/M13 UI review complete. Verdict: PASS overall (10/10 components pass). Full report at .shared/outputs/design/ui-review-m11-m12-m13.md. One P1 fix required: ObservationGuide.tsx (lines 31 + 86) — both CTAs link to /record instead of /practice, bypassing the M12 stepper. Fix assigned to backend-engineer. All other findings are low-priority polish notes.",
       "timestamp": "2026-03-23T09:00:00Z",
       "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m14_m15_complete_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "tasks": [
+        "M14-curate-clips",
+        "M15-foundation-curriculum"
+      ],
+      "message": "M14 + M15 data complete.\n\nM14 — clips-100-seed.json:\n- 65 verified YouTube clips (all IDs confirmed via YouTube Data API)\n- 38 unique films with publicly available screenplays\n- All 65 clips have: script, observation_guide (5-6 moments), practice_steps (4 steps), screenplay_source\n- Skill coverage: eye-contact(14) open-posture(14) active-listening(14) vocal-pacing(15) confident-disagreement(8)\n- Difficulty: beginner(11) intermediate(22) advanced(32)\n- File: .shared/outputs/data/clips-100-seed.json\n\nM15 — foundation-curriculum.json:\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 30 lessons total (10 per course)\n- 60 YouTube examples (all verified IDs)\n- 120 quiz questions (4 per lesson)\n- File: .shared/outputs/data/foundation-curriculum.json\n\nBuilder is unblocked to run: npm run db:push + npx prisma generate + npm run db:seed\nNote: YouTube API quota exhausted this session — quota resets daily if further searches needed.",
+      "artifacts": [
+        ".shared/outputs/data/clips-100-seed.json",
+        ".shared/outputs/data/foundation-curriculum.json"
+      ],
+      "stats": {
+        "clips": 65,
+        "movies": 38,
+        "foundation_courses": 3,
+        "foundation_lessons": 30,
+        "quiz_questions": 120,
+        "youtube_examples": 60
+      },
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m16_tactics_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "m16-communication-tactics-taxonomy",
+      "message": "M16 tactics taxonomy complete. 50 communication techniques across 5 domains.\n\nFile: .shared/outputs/data/communication-tactics.json\n\nAll DE tasks complete this session:\n- M14: 65 verified clips → .shared/outputs/data/clips-100-seed.json\n- M15: 30 lessons × 3 courses → .shared/outputs/data/foundation-curriculum.json\n- M16: 50 tactics → .shared/outputs/data/communication-tactics.json\n\nBuilder is unblocked for M14+M15 seeding. Backend Engineer is notified of M16 tactics file.",
+      "stats": {
+        "total_tactics": 50,
+        "domains": 5
+      },
+      "timestamp": "2026-03-23T10:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_m16_spec_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "m16-learning-materials-builder-ui",
+      "message": "M16 UI spec delivered: .shared/outputs/design/m16-spec.md\n\nAll 4 admin views fully specced with ASCII mockups, Tailwind classes, accessibility notes, and component breakdown:\n- Job List: status chips, result count stats, Run/View Results actions\n- Create Job Form: tag input for keywords, conditional technique field, pill difficulty selector, Create & Run button\n- Results Browser: 3-col grid, color-coded relevance score badges (green>=7 / amber 4-6 / red <4), optimistic approve/reject with undo\n- Approve Modal: 2-panel layout (embed + metadata form), success toast\n\nBackend Engineer notified. Designer is unblocked — no further M16 design tasks pending.",
+      "artifacts": [".shared/outputs/design/m16-spec.md"],
+      "timestamp": "2026-03-23T11:00:00Z",
+      "status": "read"
     }
   ]
 }

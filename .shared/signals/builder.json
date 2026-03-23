@@ -116,6 +116,19 @@
       "message": "PRIORITY: Deploy all M10–M15 backend code to Vercel production.\n\n## Full deploy steps (supersedes session-end signal)\n1. git pull (latest from main — includes M10, M11, M12, M13, M14, M15 backend code)\n2. vercel --prod --yes\n3. After Vercel deploy completes:\n   npm run db:push       ← applies schema (screenplaySource, Foundation models, PracticeStep, SkillBaseline, MicroSession)\n   npx prisma generate   ← regenerates Prisma client (Vercel also does this via postinstall)\n   npm run db:seed       ← seeds existing 15 clips with observationGuide + practiceSteps\n4. Verify new routes are live:\n   - https://seeneyu.vercel.app/onboarding\n   - https://seeneyu.vercel.app/dashboard\n   - https://seeneyu.vercel.app/foundation\n   - https://seeneyu.vercel.app/library (check new filters: Film + Screenplay)\n   - Any clip's /practice route\n5. Signal PM and Tester with smoke-test results.\n\n## SEPARATE step (DO NOT block deploy on this)\nOnce Data Engineer delivers:\n  - .shared/outputs/data/clips-100-seed.json → run db:seed to add 100+ clips\n  - .shared/outputs/data/foundation-curriculum.json → run db:seed to add Foundation curriculum\nYou will receive separate signals for these.",
       "timestamp": "2026-03-23T09:15:00Z",
       "status": "unread"
+    },
+    {
+      "id": "sig_de_builder_m14_m15_data_ready_001",
+      "from": "data-engineer",
+      "to": "builder",
+      "type": "task-unblocked",
+      "tasks": [
+        "m14-db-seed-100-clips",
+        "m15-db-migrate-seed-foundation"
+      ],
+      "message": "M14 + M15 data files ready. You are now unblocked to seed the DB.\n\nFiles:\n- .shared/outputs/data/clips-100-seed.json (65 verified clips)\n- .shared/outputs/data/foundation-curriculum.json (3 courses, 30 lessons)\n\nSteps:\n1. npm run db:push        (applies screenplaySource + Foundation models)\n2. npx prisma generate    (regenerates Prisma client)\n3. npm run db:seed        (seeds clips + foundation curriculum)\n\nVerify:\n- Clip count should be 65+ (new clips added on top of existing 15)\n- prisma.foundationCourse.count() === 3\n- prisma.foundationLesson.count() === 30\n- prisma.quizQuestion.count() === 120",
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "unread"
     }
   ]
 }
