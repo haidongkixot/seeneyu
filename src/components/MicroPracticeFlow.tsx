@@ -8,7 +8,9 @@ import { StepCard } from '@/components/StepCard'
 import { PracticeRecorder } from '@/components/PracticeRecorder'
 import { MicroFeedbackCard } from '@/components/MicroFeedbackCard'
 import { PerformanceUnlockScreen } from '@/components/PerformanceUnlockScreen'
+import { useMediaPipe } from '@/hooks/useMediaPipe'
 import type { PracticeStep, MicroFeedback, SkillCategory } from '@/lib/types'
+import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 type StepPhase = 'recording' | 'processing' | 'feedback'
 
@@ -28,11 +30,14 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
   const [completed, setCompleted] = useState(false)
   const [error, setError] = useState('')
 
+  // MediaPipe for facial + body analysis
+  const { isReady: mpReady, detectAll } = useMediaPipe()
+
   const step = steps[currentStep]
   const totalSteps = steps.length
   const progressPct = ((currentStep) / totalSteps) * 100
 
-  async function handleRecordComplete(blob: Blob, frames: Blob[]) {
+  async function handleRecordComplete(blob: Blob, frames: Blob[], snapshots?: AnalysisSnapshot[]) {
     setPhase('processing')
     setError('')
     try {
@@ -43,7 +48,12 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
       formData.append('skillFocus', step.skillFocus)
       formData.append('instruction', step.instruction)
       formData.append('skillCategory', skillCategory)
-      frames.forEach((f, i) => formData.append(`frame_${i}`, f, `frame_${i}.jpg`))
+      // If MediaPipe analysis available, send it; otherwise send legacy frames
+      if (snapshots && snapshots.length > 0) {
+        formData.append('analysisData', JSON.stringify({ snapshots }))
+      } else {
+        frames.forEach((f, i) => formData.append(`frame_${i}`, f, `frame_${i}.jpg`))
+      }
 
       const res = await fetch('/api/micro-sessions', { method: 'POST', body: formData })
       if (!res.ok) throw new Error('Analysis failed')
@@ -159,6 +169,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
               <PracticeRecorder
                 stepNumber={step.stepNumber}
                 onComplete={handleRecordComplete}
+                detectAll={mpReady ? detectAll : undefined}
               />
               {error && <p className="text-sm text-error">{error}</p>}
               {phase === 'feedback' && feedback && (

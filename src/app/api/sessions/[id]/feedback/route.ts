@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/prisma'
+import { scoreFullPerformanceFromAnalysis } from '@/services/expression-scorer'
+import { generateTextFeedback } from '@/services/feedback-generator'
 import type { FeedbackResult } from '@/lib/types'
+import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' })
 
@@ -87,15 +90,74 @@ export async function POST(
 
     await prisma.userSession.update({ where: { id }, data: { status: 'feedback_pending' } })
 
+    const startMs = Date.now()
+
+    // ── MediaPipe path: client-side analysis data in POST body ──
+    let analysisSnapshots: AnalysisSnapshot[] | null = null
+    let analysisSkillCategory: string | null = null
+    try {
+      const contentType = req.headers.get('content-type') || ''
+      if (contentType.includes('application/json')) {
+        const body = await req.json()
+        if (body.analysisData?.snapshots) {
+          analysisSnapshots = body.analysisData.snapshots
+          analysisSkillCategory = body.analysisData.skillCategory || null
+        }
+      }
+    } catch { /* not JSON body — use legacy path */ }
+
+    if (analysisSnapshots && analysisSnapshots.length > 0) {
+      const skill = analysisSkillCategory || session.clip.skillCategory
+      const metrics = scoreFullPerformanceFromAnalysis(skill, analysisSnapshots)
+      const clipCtx = {
+        skillCategory: session.clip.skillCategory,
+        characterName: session.clip.characterName,
+        movieTitle: session.clip.movieTitle,
+        sceneDescription: session.clip.sceneDescription,
+        script: (session.clip as any).script ?? null,
+      }
+      const textFeedback = await generateTextFeedback(metrics, clipCtx)
+
+      // Find next clip
+      const currentDiff = session.clip.difficulty
+      const nextDiff = currentDiff === 'beginner' ? 'intermediate'
+        : currentDiff === 'intermediate' ? 'advanced' : null
+      let nextClipId: string | undefined
+      if (nextDiff) {
+        const nextClip = await prisma.clip.findFirst({
+          where: { skillCategory: session.clip.skillCategory, difficulty: nextDiff, isActive: true },
+          select: { id: true },
+        })
+        nextClipId = nextClip?.id
+      }
+
+      const feedback: FeedbackResult = {
+        ...textFeedback,
+        nextClipId,
+        processingMs: Date.now() - startMs,
+      }
+
+      await prisma.userSession.update({
+        where: { id },
+        data: {
+          status: 'complete',
+          feedback: JSON.parse(JSON.stringify(feedback)),
+          scores: JSON.parse(JSON.stringify({ overallScore: feedback.overallScore, dimensions: feedback.dimensions })),
+          completedAt: new Date(),
+        },
+      })
+
+      return NextResponse.json({ feedback })
+    }
+
+    // ── Legacy GPT-4o Vision path (fallback) ──
+
     const dimensions = SKILL_DIMENSIONS[session.clip.skillCategory] ?? SKILL_DIMENSIONS['eye-contact']
-    // Cast to ClipContext — script field added in M10 schema, available after db:push + generate
     const clipCtx: ClipContext = { ...session.clip, script: (session.clip as any).script ?? null }
     const prompt = buildPrompt(clipCtx, dimensions)
 
     const frameUrls: string[] = session.frameUrls ? JSON.parse(session.frameUrls as string) : []
     const hasFrames = frameUrls.length > 0
-
-    const startMs = Date.now()
 
     const messageContent = hasFrames
       ? [
@@ -108,7 +170,7 @@ export async function POST(
       : [{ type: 'text' as const, text: prompt + '\n\n(No video frames available — evaluate based on context and provide general coaching guidance.)' }]
 
     const response = await getOpenAI().chat.completions.create({
-      model: hasFrames ? 'gpt-4o' : 'gpt-4o',
+      model: 'gpt-4o',
       max_tokens: 1000,
       messages: [{ role: 'user', content: messageContent }],
     })

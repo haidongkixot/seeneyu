@@ -33,9 +33,22 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
     return false
   }, [sessionId])
 
-  // Trigger the feedback job on mount (replaces the unreliable server-side fire-and-forget)
+  // Trigger the feedback job on mount — include MediaPipe analysis if available
   useEffect(() => {
-    fetch(`/api/sessions/${sessionId}/feedback`, { method: 'POST' }).catch(console.error)
+    const body: Record<string, unknown> = {}
+    try {
+      const stored = sessionStorage.getItem(`analysis_${sessionId}`)
+      if (stored) {
+        body.analysisData = JSON.parse(stored)
+        sessionStorage.removeItem(`analysis_${sessionId}`)
+      }
+    } catch { /* ignore parse errors */ }
+
+    fetch(`/api/sessions/${sessionId}/feedback`, {
+      method: 'POST',
+      headers: body.analysisData ? { 'Content-Type': 'application/json' } : {},
+      body: body.analysisData ? JSON.stringify(body) : undefined,
+    }).catch(console.error)
   }, [sessionId])
 
   useEffect(() => {
@@ -60,7 +73,7 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
       </div>
       <div className="text-center">
         <p className="text-text-primary text-lg font-semibold">Analyzing your recording{dots}</p>
-        <p className="text-text-secondary text-sm mt-2">GPT-4o Vision is reviewing your body language</p>
+        <p className="text-text-secondary text-sm mt-2">Analyzing your body language and expression</p>
       </div>
       <div className="flex gap-1.5">
         {[0, 1, 2].map((i) => (

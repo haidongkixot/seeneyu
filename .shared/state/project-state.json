@@ -287,8 +287,10 @@
       "role": "builder",
       "task": "m16-add-youtube-api-key",
       "description": "M16 requires YOUTUBE_API_KEY in Vercel environment variables (YouTube Data API v3). Add it after Backend Engineer confirms the key is ready. Also run db:push + generate after CrawlJob schema is merged.",
-      "status": "pending",
-      "assigned_at": "2026-03-23T09:30:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-23T09:30:00Z",
+      "completed_at": "2026-03-24T16:23:00Z",
+      "note": "YOUTUBE_API_KEY was already in Vercel env. Confirmed present."
     },
     {
       "id": "task_m16_tester",
@@ -324,8 +326,9 @@
       "role": "backend-engineer",
       "task": "m17-library-ux",
       "description": "Build Library UX improvements: search API, collapsible filter panel, search input, 4-col thumbnail grid. Designer spec ready at .shared/outputs/design/m17-spec.md",
-      "status": "pending",
-      "assigned_at": "2026-03-24T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T16:03:00Z"
     },
     {
       "id": "task_m18_designer",
@@ -343,8 +346,9 @@
       "role": "backend-engineer",
       "task": "m18-brand-homepage",
       "description": "Build PeeTeeAI brand refresh + homepage: NavBar 'by PeeTeeAI', Footer component, hero gradient, Mission/Team/Testimonials sections. Designer spec ready at .shared/outputs/design/m18-spec.md",
-      "status": "pending",
-      "assigned_at": "2026-03-24T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T16:03:00Z"
     },
     {
       "id": "task_m19_designer",
@@ -372,8 +376,9 @@
       "role": "backend-engineer",
       "task": "m19-arcade-zone",
       "description": "Build Arcade Zone: ArcadeBundle/Challenge/Attempt schema, API routes, GPT-4o Vision scorer, ArcadeRecorder (10s), full /arcade pages. Designer spec + seed data ready.",
-      "status": "pending",
-      "assigned_at": "2026-03-24T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T16:03:00Z"
     },
     {
       "id": "task_m20_de",
@@ -391,8 +396,9 @@
       "role": "backend-engineer",
       "task": "m20-learning-improvements",
       "description": "Build 3 features: (A) screenplay crawl-to-DB, (B) fix crawl jobs YOUTUBE_API_KEY, (C) admin ZIP import. DE audit data ready at .shared/outputs/data/m20-screenplay-audit.json",
-      "status": "pending",
-      "assigned_at": "2026-03-24T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T16:03:00Z"
     }
   ],
   "blockers": [],
@@ -477,19 +483,18 @@
     "M13",
     "M14",
     "M15",
-    "M16"
-  ],
-  "milestones_in_progress": [
+    "M16",
     "M17",
     "M18",
     "M19",
     "M20"
   ],
+  "milestones_in_progress": [],
   "milestones_pending": [
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-24T15:30:00Z",
+  "last_updated": "2026-03-24T17:00:00Z",
   "deployments": [
     {
       "version": "M14+M15",
@@ -504,6 +509,18 @@
         "M15"
       ],
       "notes": "Library expansion (45 clips + screenplay filters) + Performing Foundation section (3 courses, 30 lessons)"
+    },
+    {
+      "version": "M17-M20",
+      "url": "https://seeneyu.vercel.app",
+      "deployed_at": "2026-03-24T16:23:00Z",
+      "includes": [
+        "M17",
+        "M18",
+        "M19",
+        "M20"
+      ],
+      "notes": "Library UX (search + collapsible filters + 4-col grid), PeeTeeAI brand (hero, footer, mission/team), Arcade Zone (3 bundles, 30 challenges), Learning improvements (screenplay crawler, ZIP import)"
     }
   ]
 }

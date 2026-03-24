@@ -4,6 +4,8 @@ import { useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Circle, Square, RotateCcw, ArrowRight, CheckSquare } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useMediaPipe } from '@/hooks/useMediaPipe'
+import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
 
 type RecordState = 'idle' | 'ready' | 'countdown' | 'recording' | 'recorded' | 'uploading' | 'error'
 
@@ -27,7 +29,6 @@ function captureFrame(videoEl: HTMLVideoElement): Promise<Blob | null> {
     canvas.height = 240
     const ctx = canvas.getContext('2d')
     if (!ctx) return resolve(null)
-    // Mirror to match the CSS scale-x-[-1] applied to the preview
     ctx.translate(320, 0)
     ctx.scale(-1, 1)
     ctx.drawImage(videoEl, 0, 0, 320, 240)
@@ -45,6 +46,9 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
   const startTimeRef = useRef<number>(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const frameTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const collectorRef = useRef<AnalysisCollector | null>(null)
+
+  const { isReady: mpReady, detectAll } = useMediaPipe()
 
   const [state, setState] = useState<RecordState>('idle')
   const [countdownVal, setCountdownVal] = useState(3)
@@ -99,35 +103,43 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
     mediaRecorderRef.current = mr
     startTimeRef.current = Date.now()
 
-    // Capture a frame every 5 seconds (max 4 frames) for GPT-4o Vision
-    frameTimerRef.current = setInterval(async () => {
-      if (!videoRef.current || framesRef.current.length >= 4) return
-      const frame = await captureFrame(videoRef.current)
-      if (frame) framesRef.current.push(frame)
-    }, 5000)
+    // Start MediaPipe analysis collection if available (every 500ms)
+    if (mpReady && detectAll && videoRef.current) {
+      collectorRef.current = startAnalysisCollection(videoRef.current, detectAll, 500)
+    }
 
-    // Capture frame 1 immediately at 1.5s after start
-    setTimeout(async () => {
-      if (videoRef.current && framesRef.current.length === 0) {
+    // Legacy frame capture (fallback when MediaPipe not available)
+    if (!mpReady) {
+      frameTimerRef.current = setInterval(async () => {
+        if (!videoRef.current || framesRef.current.length >= 4) return
         const frame = await captureFrame(videoRef.current)
-        if (frame) framesRef.current.unshift(frame)
-      }
-    }, 1500)
+        if (frame) framesRef.current.push(frame)
+      }, 5000)
+
+      setTimeout(async () => {
+        if (videoRef.current && framesRef.current.length === 0) {
+          const frame = await captureFrame(videoRef.current)
+          if (frame) framesRef.current.unshift(frame)
+        }
+      }, 1500)
+    }
 
     timerRef.current = setInterval(() => setRecordingMs(Date.now() - startTimeRef.current), 200)
     setState('recording')
-  }, [])
+  }, [mpReady, detectAll])
 
   const stopRecording = useCallback(async () => {
-    // Capture a final frame just before stopping
-    if (videoRef.current && framesRef.current.length < 4) {
+    // Stop MediaPipe analysis collection
+    collectorRef.current?.stop()
+    // Legacy: capture a final frame just before stopping
+    if (!mpReady && videoRef.current && framesRef.current.length < 4) {
       const frame = await captureFrame(videoRef.current)
       if (frame) framesRef.current.push(frame)
     }
     if (frameTimerRef.current) clearInterval(frameTimerRef.current)
     mediaRecorderRef.current?.stop()
     if (timerRef.current) clearInterval(timerRef.current)
-  }, [])
+  }, [mpReady])
 
   const discard = useCallback(() => {
     setRecordedBlob(null)
@@ -143,7 +155,7 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
       const formData = new FormData()
       formData.append('recording', recordedBlob, 'recording.webm')
       formData.append('clipId', clipId)
-      // Attach captured frames for GPT-4o Vision
+      // Legacy: attach captured frames (fallback when no MediaPipe)
       framesRef.current.forEach((frame, i) => {
         formData.append(`frame_${i}`, frame, `frame_${i}.jpg`)
       })
@@ -151,12 +163,24 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
       const res = await fetch('/api/sessions', { method: 'POST', body: formData })
       if (!res.ok) throw new Error('Upload failed')
       const { sessionId } = await res.json()
+
+      // Store MediaPipe analysis in sessionStorage for the feedback page
+      const snapshots = collectorRef.current?.getSnapshots()
+      if (snapshots && snapshots.length > 0) {
+        try {
+          sessionStorage.setItem(`analysis_${sessionId}`, JSON.stringify({
+            snapshots,
+            skillCategory,
+          }))
+        } catch { /* sessionStorage full — feedback will use legacy path */ }
+      }
+
       router.push(`/feedback/${sessionId}`)
     } catch {
       setError('Upload failed — please try again')
       setState('recorded')
     }
-  }, [recordedBlob, clipId, router])
+  }, [recordedBlob, clipId, skillCategory, router])
 
   const toggleCheck = (i: number) => {
     setCheckedItems(prev => {

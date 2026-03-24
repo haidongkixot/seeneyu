@@ -3,10 +3,43 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-24T16:03:53.351Z",
-    "open_count": 23
+    "last_updated": "2026-03-24T17:01:05.526Z",
+    "open_count": 28
   },
   "signals": [
+    {
+      "id": "sig_backend-engineer_tester_1774371662026",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "mediapipe-integration",
+      "priority": "high",
+      "message": "MediaPipe integration ready for testing. All 3 flows updated: (1) Arcade /arcade/[bundleId] — 10s challenge, score screen, no API errors; (2) Micro-Practice /library/[clipId]/practice — per-step feedback; (3) Full Performance /library/[clipId]/record — full coaching feedback. All work with OPENAI_API_KEY unset. Check browser console for MediaPipe model loading.",
+      "timestamp": "2026-03-24T17:01:02.026Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_backend-engineer_pm_1774371658991",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "mediapipe-integration",
+      "priority": "high",
+      "message": "MediaPipe integration complete. Replaced GPT-4o Vision with client-side MediaPipe (FaceLandmarker + PoseLandmarker) for all 3 recording flows: Arcade, Micro-Practice, Full Performance. Zero AI API dependency for Arcade + Micro scoring. Full Performance uses optional GPT-4o TEXT with template fallback. 0 TS errors.",
+      "timestamp": "2026-03-24T17:00:58.991Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_builder_tester_1774369415176",
+      "from": "builder",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "smoke-test-m17-m20",
+      "priority": "high",
+      "message": "M17–M20 deployed to https://seeneyu.vercel.app. YOUTUBE_API_KEY confirmed in Vercel. DB schema pushed (ArcadeBundle, ArcadeChallenge, ArcadeAttempt + screenplayText). 30 arcade challenges seeded. All routes returning 200.\n\nRoutes to smoke-test:\n- / (homepage — new hero, Mission, Team, Testimonials, Footer)\n- /library (search bar, collapsible filters, 4-col grid)\n- /arcade (3 bundles visible)\n- /arcade/[bundleId] (camera + 10s timer + scoring)\n- /admin/import (ZIP upload page — admin only)\n- /admin/clips/[id]/edit (Crawl Screenplay button)\n\nBuild: 0 TS errors, 31 static + dynamic pages generated.",
+      "timestamp": "2026-03-24T16:23:35.176Z",
+      "status": "unread"
+    },
     {
       "id": "sig_backend-engineer_builder_1774368230592",
       "from": "backend-engineer",
@@ -38,7 +71,7 @@
       "priority": "high",
       "message": "M17–M20 ALL CODE COMPLETE — 0 TypeScript errors.\n\n## M17 — Library UX\n- Debounced search bar (300ms, URL params, matches title/film/character/skill)\n- Collapsible filter panel with CSS animation, localStorage persistence\n- Active filter chips when panel collapsed\n- 4-col desktop grid, compact ClipCard (rounded-xl, badges in body)\n\n## M18 — PeeTeeAI Brand\n- NavBar: 'by PeeTeeAI' sub-label linking to peetees.ai\n- Footer component: brand + links + copyright\n- Homepage: animated hero, Mission, Team (Hai Hoang), Testimonials, CTA\n- CSS keyframe animations (hero-drift, hero-dot-grid)\n\n## M19 — Arcade Zone\n- Schema: ArcadeBundle, ArcadeChallenge, ArcadeAttempt + User relation\n- GPT-4o Vision arcade-scorer.ts\n- APIs: GET /arcade/bundles, GET /arcade/bundles/[id]/challenges, POST /arcade/attempts\n- /arcade bundle browser + /arcade/[bundleId] challenge flow (10s timer, camera, scoring, result)\n- seed.ts updated for arcade data\n\n## M20 — Learning Improvements\n- Task A: screenplay-crawler.ts (IMSDB + generic), POST /admin/clips/[id]/crawl-screenplay, CrawlScreenplay button on edit page\n- Task B: crawl-jobs run route returns 400 for config errors (YOUTUBE_API_KEY missing)\n- Task C: jszip installed, zip-importer.ts, POST /admin/import-zip, /admin/import page (drag-drop), admin sidebar Import link\n\n## NEEDS from Builder\n1. npx prisma db push (ArcadeBundle/Challenge/Attempt + screenplayText on Clip)\n2. npx prisma generate\n3. npm run db:seed (arcade challenges)\n4. npm install (jszip added)\n5. vercel --prod --yes",
       "timestamp": "2026-03-24T16:03:42.575Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_designer_pm_1774363820782",
@@ -118,6 +151,28 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_backend-engineer_reporter_1774371665524",
+      "from": "backend-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "mediapipe-integration",
+      "priority": "medium",
+      "message": "MediaPipe integration complete. Replaced GPT-4o Vision dependency with client-side Google MediaPipe ML. New files: mediapipe-types.ts, mediapipe-init.ts, useMediaPipe.ts, analysis-helpers.ts, expression-scorer.ts, feedback-generator.ts. Modified 8 existing files across all 3 recording flows.",
+      "timestamp": "2026-03-24T17:01:05.524Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_backend-engineer_builder_1774371663753",
+      "from": "backend-engineer",
+      "to": "builder",
+      "type": "fyi",
+      "task": "mediapipe-integration",
+      "priority": "medium",
+      "message": "MediaPipe integration code complete. npm install @mediapipe/tasks-vision already done. No schema changes. Ready for deploy: git pull && vercel --prod.",
+      "timestamp": "2026-03-24T17:01:03.753Z",
+      "status": "unread"
     },
     {
       "id": "sig_backend-engineer_reporter_1774368233349",

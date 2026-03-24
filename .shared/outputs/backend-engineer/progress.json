@@ -111,7 +111,23 @@
     "m20_import_api":          "complete",
     "m20_import_page":         "complete",
     "m20_admin_sidebar_import":"complete",
-    "m20_edit_page_crawl_btn": "complete"
+    "m20_edit_page_crawl_btn": "complete",
+    "mediapipe_install":        "complete",
+    "mediapipe_types":          "complete",
+    "mediapipe_init":           "complete",
+    "mediapipe_hook":           "complete",
+    "mediapipe_analysis_helpers": "complete",
+    "mediapipe_expression_scorer": "complete",
+    "mediapipe_feedback_generator": "complete",
+    "mediapipe_arcade_page":    "complete",
+    "mediapipe_arcade_api":     "complete",
+    "mediapipe_practice_recorder": "complete",
+    "mediapipe_micro_flow":     "complete",
+    "mediapipe_micro_api":      "complete",
+    "mediapipe_record_client":  "complete",
+    "mediapipe_feedback_poller": "complete",
+    "mediapipe_feedback_api":   "complete",
+    "mediapipe_tsc_check":      "complete"
   },
   "notes": [
     "M13 complete and deployed (commit d2f93e0, 2026-03-23)",
@@ -121,7 +137,10 @@
     "M18: NavBar 'by PeeTeeAI' link, Footer component, homepage (animated hero, mission, team, testimonials)",
     "M19: ArcadeBundle/Challenge/Attempt schema, GPT-4o Vision scorer, 3 API routes, bundle browser + challenge flow pages, seed.ts updated",
     "M20: screenplay-crawler.ts (IMSDB + generic), crawl-screenplay API, crawl-jobs 400 error fix, zip-importer.ts, import-zip API, /admin/import page, CrawlScreenplay button on edit page",
-    "0 TypeScript errors (all M17-M20, verified 2026-03-24)",
+    "MediaPipe: replaced GPT-4o Vision with client-side MediaPipe (FaceLandmarker + PoseLandmarker). All 3 flows updated: Arcade, Micro-Practice, Full Performance. Zero AI dependency for Arcade + Micro. Full Performance uses optional GPT-4o TEXT (not Vision) with template fallback.",
+    "New files: mediapipe-types.ts, mediapipe-init.ts, useMediaPipe.ts, analysis-helpers.ts, expression-scorer.ts, feedback-generator.ts",
+    "Modified: arcade/[bundleId]/page.tsx, arcade/attempts/route.ts, PracticeRecorder.tsx, MicroPracticeFlow.tsx, micro-sessions/route.ts, RecordClient.tsx, FeedbackPoller.tsx, sessions/[id]/feedback/route.ts",
+    "0 TypeScript errors (verified 2026-03-25)",
     "NEEDS: prisma db push (new ArcadeBundle/Challenge/Attempt + screenplayText on Clip), prisma generate, db:seed (arcade data)",
     "NEEDS: jszip installed (npm install done locally)"
   ]

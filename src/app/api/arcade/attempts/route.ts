@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { scoreArcadeAttempt } from '@/services/arcade-scorer'
+import { scoreArcadeAttemptFromAnalysis } from '@/services/expression-scorer'
+import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
@@ -12,10 +13,14 @@ export async function POST(req: Request) {
   const userId = (session.user as any).id as string
 
   const body = await req.json()
-  const { challengeId, frameUrl } = body
+  const { challengeId, snapshots, peakSnapshot } = body as {
+    challengeId: string
+    snapshots: AnalysisSnapshot[]
+    peakSnapshot: AnalysisSnapshot
+  }
 
-  if (!challengeId || !frameUrl) {
-    return NextResponse.json({ error: 'challengeId and frameUrl are required' }, { status: 400 })
+  if (!challengeId || !snapshots || !peakSnapshot) {
+    return NextResponse.json({ error: 'challengeId, snapshots, and peakSnapshot are required' }, { status: 400 })
   }
 
   // Fetch challenge info
@@ -27,13 +32,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Challenge not found' }, { status: 404 })
   }
 
-  // Score with GPT-4o Vision
-  const result = await scoreArcadeAttempt({
+  // Score with MediaPipe analysis data (no AI API dependency)
+  const result = scoreArcadeAttemptFromAnalysis({
     challengeDescription: challenge.description,
-    challengeType: challenge.type as 'facial' | 'gesture',
+    challengeType: challenge.type as string,
     context: challenge.context,
-    referenceImageUrl: challenge.referenceImageUrl,
-    userFrameUrl: frameUrl,
+    snapshots,
+    peakSnapshot,
   })
 
   // Save attempt

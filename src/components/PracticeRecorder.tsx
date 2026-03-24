@@ -3,12 +3,17 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { Circle, Square, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
+import type { DetectAllFn } from '@/hooks/useMediaPipe'
+import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 type RecordState = 'idle' | 'ready' | 'countdown' | 'recording' | 'recorded'
 
 interface PracticeRecorderProps {
   stepNumber: number
-  onComplete: (blob: Blob, frames: Blob[]) => void
+  onComplete: (blob: Blob, frames: Blob[], snapshots?: AnalysisSnapshot[]) => void
+  /** MediaPipe detect function — if provided, collects analysis instead of JPEG frames */
+  detectAll?: DetectAllFn
 }
 
 function captureFrame(videoEl: HTMLVideoElement): Promise<Blob | null> {
@@ -29,7 +34,7 @@ const MAX_SECS = 30
 const RING_R = 30
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_R
 
-export function PracticeRecorder({ stepNumber, onComplete }: PracticeRecorderProps) {
+export function PracticeRecorder({ stepNumber, onComplete, detectAll }: PracticeRecorderProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -38,6 +43,7 @@ export function PracticeRecorder({ stepNumber, onComplete }: PracticeRecorderPro
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const frameTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const hardStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const collectorRef = useRef<AnalysisCollector | null>(null)
 
   const [state, setState] = useState<RecordState>('idle')
   const [countdown, setCountdown] = useState(3)
@@ -72,13 +78,15 @@ export function PracticeRecorder({ stepNumber, onComplete }: PracticeRecorderPro
     if (hardStopRef.current) clearTimeout(hardStopRef.current)
     if (timerRef.current) clearInterval(timerRef.current)
     if (frameTimerRef.current) clearInterval(frameTimerRef.current)
-    // Capture final frame
-    if (videoRef.current && framesRef.current.length < 4) {
+    // Stop MediaPipe analysis collection
+    collectorRef.current?.stop()
+    // Capture final frame (legacy path)
+    if (!detectAll && videoRef.current && framesRef.current.length < 4) {
       const frame = await captureFrame(videoRef.current)
       if (frame) framesRef.current.push(frame)
     }
     mediaRecorderRef.current?.stop()
-  }, [])
+  }, [detectAll])
 
   const startRecording = useCallback(() => {
     if (!streamRef.current) return
@@ -89,11 +97,17 @@ export function PracticeRecorder({ stepNumber, onComplete }: PracticeRecorderPro
     mr.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
     mr.onstop = () => {
       const blob = new Blob(chunksRef.current, { type: 'video/webm' })
-      onComplete(blob, framesRef.current)
+      const snapshots = collectorRef.current?.stop()
+      onComplete(blob, framesRef.current, snapshots)
       setState('recorded')
     }
     mr.start(1000)
     mediaRecorderRef.current = mr
+
+    // Start MediaPipe analysis if available (every 500ms for 30s = ~60 snapshots)
+    if (detectAll && videoRef.current) {
+      collectorRef.current = startAnalysisCollection(videoRef.current, detectAll, 500)
+    }
 
     const startMs = Date.now()
     timerRef.current = setInterval(() => {
@@ -103,20 +117,21 @@ export function PracticeRecorder({ stepNumber, onComplete }: PracticeRecorderPro
       if (left === 0) stopRecording()
     }, 200)
 
-    // Capture frame at 1.5s
-    setTimeout(async () => {
-      if (videoRef.current && framesRef.current.length === 0) {
-        const frame = await captureFrame(videoRef.current)
-        if (frame) framesRef.current.unshift(frame)
-      }
-    }, 1500)
+    // Legacy frame capture (only when MediaPipe not available)
+    if (!detectAll) {
+      setTimeout(async () => {
+        if (videoRef.current && framesRef.current.length === 0) {
+          const frame = await captureFrame(videoRef.current)
+          if (frame) framesRef.current.unshift(frame)
+        }
+      }, 1500)
 
-    // Capture frame every 10s
-    frameTimerRef.current = setInterval(async () => {
-      if (!videoRef.current || framesRef.current.length >= 3) return
-      const frame = await captureFrame(videoRef.current)
-      if (frame) framesRef.current.push(frame)
-    }, 10000)
+      frameTimerRef.current = setInterval(async () => {
+        if (!videoRef.current || framesRef.current.length >= 3) return
+        const frame = await captureFrame(videoRef.current)
+        if (frame) framesRef.current.push(frame)
+      }, 10000)
+    }
 
     // Hard stop at MAX_SECS
     hardStopRef.current = setTimeout(stopRecording, MAX_SECS * 1000)

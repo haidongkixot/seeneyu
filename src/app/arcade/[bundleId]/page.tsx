@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { NavBar } from '@/components/NavBar'
-import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import { useMediaPipe } from '@/hooks/useMediaPipe'
+import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
 
 interface ChallengeData {
   id: string
@@ -49,7 +51,10 @@ export default function BundlePage() {
   const recorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const collectorRef = useRef<AnalysisCollector | null>(null)
+
+  // MediaPipe for facial expression + body language analysis
+  const { isReady: mpReady, isLoading: mpLoading, error: mpError, detectAll } = useMediaPipe()
 
   // Score state
   const [scoreResult, setScoreResult] = useState<{
@@ -99,6 +104,11 @@ export default function BundlePage() {
     setIsRecording(true)
     setTimeLeft(10)
 
+    // Start MediaPipe analysis collection (every 1s for 10s = ~10 snapshots)
+    if (mpReady && videoRef.current) {
+      collectorRef.current = startAnalysisCollection(videoRef.current, detectAll, 1000)
+    }
+
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0.1) {
@@ -122,11 +132,13 @@ export default function BundlePage() {
     if (!activeChallenge) return
     setScreen('scoring')
 
-    // Capture a frame from the video
-    const frameUrl = captureFrame()
-    if (!frameUrl) {
+    // Collect MediaPipe analysis snapshots
+    const snapshots = collectorRef.current?.stop() ?? []
+    const peakSnapshot = collectorRef.current?.getPeakSnapshot() ?? (snapshots[0] || null)
+
+    if (snapshots.length === 0 || !peakSnapshot) {
       setScreen('challenge')
-      alert('Could not capture frame. Please try again.')
+      alert('No analysis data captured. Make sure your face is visible and try again.')
       return
     }
 
@@ -134,7 +146,11 @@ export default function BundlePage() {
       const res = await fetch('/api/arcade/attempts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ challengeId: activeChallenge.id, frameUrl }),
+        body: JSON.stringify({
+          challengeId: activeChallenge.id,
+          snapshots,
+          peakSnapshot,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -145,19 +161,6 @@ export default function BundlePage() {
       alert(err.message || 'Failed to score. Please try again.')
       setScreen('challenge')
     }
-  }
-
-  function captureFrame(): string | null {
-    const video = videoRef.current
-    if (!video) return null
-    if (!canvasRef.current) canvasRef.current = document.createElement('canvas')
-    const canvas = canvasRef.current
-    canvas.width = video.videoWidth || 640
-    canvas.height = video.videoHeight || 480
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return null
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-    return canvas.toDataURL('image/jpeg', 0.8)
   }
 
   function startChallenge(idx: number) {
@@ -284,8 +287,22 @@ export default function BundlePage() {
               />
               {!isRecording && !hasRecorded && (
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
-                  <Camera size={40} className="text-text-tertiary" />
-                  <p className="text-sm text-text-secondary">Camera ready</p>
+                  {mpLoading ? (
+                    <>
+                      <Loader2 size={40} className="text-accent-400 animate-spin" />
+                      <p className="text-sm text-text-secondary">Loading analysis models...</p>
+                    </>
+                  ) : mpError ? (
+                    <>
+                      <Camera size={40} className="text-error" />
+                      <p className="text-sm text-error">{mpError}</p>
+                    </>
+                  ) : (
+                    <>
+                      <Camera size={40} className="text-text-tertiary" />
+                      <p className="text-sm text-text-secondary">Camera ready</p>
+                    </>
+                  )}
                 </div>
               )}
             </div>

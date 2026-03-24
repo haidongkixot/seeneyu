@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/prisma'
+import { scoreMicroPracticeFromAnalysis } from '@/services/expression-scorer'
 import type { MicroFeedback } from '@/lib/types'
+import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' })
 
@@ -79,6 +81,39 @@ export async function POST(req: NextRequest) {
         status: 'processing',
       },
     })
+
+    // ── MediaPipe path: client-side analysis data available ──
+    const analysisDataRaw = formData.get('analysisData') as string | null
+    if (analysisDataRaw) {
+      try {
+        const { snapshots } = JSON.parse(analysisDataRaw) as { snapshots: AnalysisSnapshot[] }
+        if (snapshots && snapshots.length > 0) {
+          const result = scoreMicroPracticeFromAnalysis(
+            skillCategory || 'eye-contact',
+            skillFocus,
+            instruction,
+            snapshots
+          )
+          const feedback: MicroFeedback = {
+            verdict: result.verdict,
+            headline: result.headline,
+            detail: result.detail,
+          }
+          await prisma.microSession.update({
+            where: { id: microSession.id },
+            data: {
+              feedback: JSON.parse(JSON.stringify(feedback)),
+              status: 'complete',
+            },
+          })
+          return NextResponse.json({ microSessionId: microSession.id, ...feedback })
+        }
+      } catch (e) {
+        console.warn('MediaPipe analysis parse error, falling back to Vision:', e)
+      }
+    }
+
+    // ── Legacy GPT-4o Vision path (fallback) ──
 
     // Transcribe audio for vocal/speech skills
     let transcript: string | null = null
