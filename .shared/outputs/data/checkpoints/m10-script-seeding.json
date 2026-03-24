@@ -1,0 +1,35 @@
+{
+  "pipeline": "m10-script-seeding",
+  "status": "complete",
+  "milestone": "M10",
+  "task": "add-script-text-to-clips",
+  "blocker": "Waiting for Backend Engineer to: (1) add `script String? @db.Text` to Clip model in prisma/schema.prisma, (2) run npm run db:push, (3) signal data-engineer.json that schema is live",
+  "what_is_done": [
+    "Script text written for all 15 clips in .shared/outputs/data/clips-seed.json",
+    "Eye-contact clips (001–003): numbered physical instruction lists (4 steps each)",
+    "Open-posture clips (004–006): numbered physical instruction lists (4 steps each)",
+    "Active-listening clips (007–009): numbered physical instruction lists (4 steps each)",
+    "Vocal-pacing clips (010–012): exact dialogue scripts to recite",
+    "Confident-disagreement clips (013–015): exact dialogue scripts to recite",
+    "seed.ts updated: SeedClip interface has script?: string",
+    "seed.ts updated: prisma.clip.create() includes script: clip.script ?? null",
+    "seed.ts updated: patch logic — updates script on existing clips when script is null",
+    "Signals sent to pm.json (task-complete) and tester.json (data-ready)"
+  ],
+  "what_is_next": [
+    "USER: npm run db:push — applies script field to Neon DB",
+    "USER: npx prisma generate — regenerates Prisma client with script field",
+    "USER: npx prisma db seed — patches all 15 existing clips with script text",
+    "Tester: verify all 15 clips in DB have non-null script values"
+  ],
+  "seed_file": ".shared/outputs/data/clips-seed.json",
+  "seed_script": "prisma/seed.ts",
+  "seed_command": "npx prisma db seed",
+  "started_at": "2026-03-22T23:50:00Z",
+  "updated_at": "2026-03-22T23:55:00Z",
+  "completed_at": "2026-03-23T01:35:00Z",
+  "db_verified": {
+    "clips_with_script": 15,
+    "missing": 0
+  }
+}

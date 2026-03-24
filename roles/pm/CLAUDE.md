@@ -40,6 +40,10 @@ Read: ../../.shared/state/milestones.json
 - List what you're doing now
 - List any blockers needing human decision
 
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from pm --to <role> --message "..." [--task name] [--priority high]`
+
 ---
 
 ## Your Skills

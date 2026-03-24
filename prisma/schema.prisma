@@ -29,6 +29,7 @@ model Clip {
   contextNote           String?  @db.Text
   script                String?  @db.Text
   screenplaySource      String?
+  screenplayText        String?  @db.Text
   observationGuide      Json?
   isActive              Boolean  @default(true)
   createdAt             DateTime @default(now())
@@ -94,6 +95,7 @@ model User {
   userSessions       UserSession[]
   skillBaselines     SkillBaseline[]
   foundationProgress FoundationProgress[]
+  arcadeAttempts     ArcadeAttempt[]
 }
 
 model SkillBaseline {
@@ -280,4 +282,53 @@ model FoundationProgress {
 
   @@unique([userId, lessonId])
   @@index([userId])
+}
+
+// ── Arcade models ────────────────────────────────────────────────────
+
+model ArcadeBundle {
+  id          String             @id @default(cuid())
+  title       String
+  description String             @db.Text
+  theme       String
+  difficulty  String
+  xpReward    Int                @default(100)
+  challenges  ArcadeChallenge[]
+  createdAt   DateTime           @default(now())
+}
+
+model ArcadeChallenge {
+  id                String          @id @default(cuid())
+  bundleId          String
+  bundle            ArcadeBundle    @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  type              String          // facial | gesture
+  title             String
+  description       String          @db.Text
+  context           String          @db.Text
+  referenceImageUrl String?
+  sourceClipId      String?
+  sourceTimestamp    Int?
+  difficulty        String
+  xpReward          Int             @default(20)
+  orderIndex        Int
+  attempts          ArcadeAttempt[]
+
+  @@index([bundleId])
+}
+
+model ArcadeAttempt {
+  id           String           @id @default(cuid())
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId  String
+  challenge    ArcadeChallenge  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  score        Int
+  breakdown    Json
+  feedbackLine String?          @db.Text
+  recordingUrl String?
+  createdAt    DateTime         @default(now())
+
+  @@index([userId])
+  @@index([challengeId])
+  @@index([userId, challengeId])
 }

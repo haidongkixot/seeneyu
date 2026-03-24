@@ -1,0 +1,21 @@
+{
+  "pipeline": "clips-100-seed",
+  "status": "complete",
+  "last_processed": "clip_065",
+  "total_clips": 65,
+  "completed_clips": 65,
+  "output_file": ".shared/outputs/data/clips-100-seed.json",
+  "movies_covered": 38,
+  "skill_breakdown": {
+    "eye-contact": 14,
+    "open-posture": 14,
+    "active-listening": 14,
+    "vocal-pacing": 15,
+    "confident-disagreement": 8
+  },
+  "all_verified": true,
+  "note": "YouTube API quota exhausted — all 65 IDs verified before quota limit. Quota resets daily.",
+  "errors": [],
+  "started_at": "2026-03-23T08:00:00Z",
+  "updated_at": "2026-03-23T10:00:00Z"
+}

@@ -1,0 +1,743 @@
+{
+  "_meta": {
+    "purpose": "Audit of all screenplay source URLs for Backend Engineer to implement screenplay-crawler.ts",
+    "generated_at": "2026-03-24T09:00:00Z",
+    "total_clips_audited": 65,
+    "clips_with_source": 53,
+    "clips_with_null_source": 12,
+    "source_sites_found": ["imsdb"],
+    "notes": [
+      "All non-null screenplay sources use imsdb.com",
+      "IMSDB primary selector: td.scrtext pre (contains the full screenplay as preformatted text)",
+      "Fallback selector: .imsdb-screenplay, div.scrtext",
+      "Two King's Speech URLs use URL-encoded apostrophe (%27) — crawler must handle both encodings",
+      "Schindler's List URL has raw apostrophe — may need encoding in some HTTP clients",
+      "12 clips have null screenplay sources (Iron Man 2, The Intern, There Will Be Blood, Marriage Story, Frost/Nixon, King's Speech x1, Any Given Sunday x1, 12 Angry Men x1) — crawler will skip these",
+      "IMSDB requires no authentication — public access, no login needed",
+      "IMSDB occasionally returns 403 for rapid requests — recommend 500ms delay between requests"
+    ]
+  },
+  "imsdb_extraction_guide": {
+    "base_url": "https://imsdb.com",
+    "primary_selector": "td.scrtext pre",
+    "fallback_selectors": ["td.scrtext", ".imsdb_screenplay", "pre.screenplay"],
+    "strip_tags": true,
+    "preserve": ["scene headings (INT./EXT.)", "character names (ALL CAPS)", "dialogue", "action lines"],
+    "remove": ["HTML entities", "page headers/footers", "IMSDB navigation/ads"],
+    "encoding_note": "Some URLs use %27 for apostrophe in titles — normalize to straight apostrophe before display",
+    "rate_limit_recommendation": "500ms between requests to avoid 403 responses",
+    "auth_required": false,
+    "robots_note": "Check imsdb.com/robots.txt before crawling at scale — MVP single-clip crawl is fine"
+  },
+  "clips": [
+    {
+      "clipId": "clip_001",
+      "clipTitle": "Chris Gardner Job Interview",
+      "film": "The Pursuit of Happyness",
+      "screenplaySource": "https://imsdb.com/scripts/Pursuit-of-Happyness,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — hyphenated title, 'The' moved to end. Should work."
+    },
+    {
+      "clipId": "clip_002",
+      "clipTitle": "Mark Zuckerberg Deposition",
+      "film": "The Social Network",
+      "screenplaySource": "https://imsdb.com/scripts/Social-Network,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL format. One of the most consistently available scripts on IMSDB."
+    },
+    {
+      "clipId": "clip_003",
+      "clipTitle": "Anton Chigurh Coin Toss",
+      "film": "No Country for Old Men",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source — null. However clip_039 (later in seed) has the IMSDB URL for this film."
+    },
+    {
+      "clipId": "clip_004",
+      "clipTitle": "Iron Man 2 Scene",
+      "film": "Iron Man 2",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source. IMSDB does not have Iron Man 2 screenplay — Marvel films generally not available. Skip."
+    },
+    {
+      "clipId": "clip_005",
+      "clipTitle": "The Intern Scene",
+      "film": "The Intern",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source. 2015 Nancy Meyers film — not typically on IMSDB. Skip."
+    },
+    {
+      "clipId": "clip_006",
+      "clipTitle": "There Will Be Blood Scene",
+      "film": "There Will Be Blood",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source. IMSDB may have this — https://imsdb.com/scripts/There-Will-Be-Blood.html — worth checking but not in current seed. Skip."
+    },
+    {
+      "clipId": "clip_007",
+      "clipTitle": "Good Will Hunting Therapy Scene",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Classic IMSDB entry — one of the most popular scripts, reliably accessible. Multiple clips share this URL."
+    },
+    {
+      "clipId": "clip_008",
+      "clipTitle": "The King's Speech Scene",
+      "film": "The King's Speech",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "This specific clip has null source. Later clips (clip_047, clip_048) have IMSDB URLs. Skip for this clip."
+    },
+    {
+      "clipId": "clip_009",
+      "clipTitle": "Marriage Story Scene",
+      "film": "Marriage Story",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "2019 Netflix film — screenplay not on IMSDB. May be available at scriptslug.com. Skip."
+    },
+    {
+      "clipId": "clip_010",
+      "clipTitle": "Dead Poets Society Scene",
+      "film": "Dead Poets Society",
+      "screenplaySource": "https://imsdb.com/scripts/Dead-Poets-Society.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Popular script, reliably available."
+    },
+    {
+      "clipId": "clip_011",
+      "clipTitle": "Any Given Sunday Locker Room",
+      "film": "Any Given Sunday",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "This clip has null source. Later clips (clip_019, clip_036) have the IMSDB URL. Skip."
+    },
+    {
+      "clipId": "clip_012",
+      "clipTitle": "Lincoln Scene",
+      "film": "Lincoln",
+      "screenplaySource": "https://imsdb.com/scripts/Lincoln.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Spielberg/Kushner screenplay consistently available."
+    },
+    {
+      "clipId": "clip_013",
+      "clipTitle": "Legally Blonde Scene",
+      "film": "Legally Blonde",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source. IMSDB may have: https://imsdb.com/scripts/Legally-Blonde.html — worth checking. Skip."
+    },
+    {
+      "clipId": "clip_014",
+      "clipTitle": "12 Angry Men Scene",
+      "film": "12 Angry Men",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "This clip has null source. clip_029 has the URL as Twelve-Angry-Men.html. Skip."
+    },
+    {
+      "clipId": "clip_015",
+      "clipTitle": "Frost/Nixon Scene",
+      "film": "Frost/Nixon",
+      "screenplaySource": null,
+      "sourceSite": null,
+      "expectedSelector": null,
+      "likelyWorking": false,
+      "notes": "No screenplay source. IMSDB may have: https://imsdb.com/scripts/Frost-Nixon.html — note slash in title. Skip."
+    },
+    {
+      "clipId": "clip_016",
+      "clipTitle": "The Social Network Scene B",
+      "film": "The Social Network",
+      "screenplaySource": "https://imsdb.com/scripts/Social-Network,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL as clip_002. Crawler should cache — no need to re-fetch for same film."
+    },
+    {
+      "clipId": "clip_017",
+      "clipTitle": "The Silence of the Lambs Scene",
+      "film": "The Silence of the Lambs",
+      "screenplaySource": "https://imsdb.com/scripts/Silence-of-the-Lambs,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Classic script, reliably available."
+    },
+    {
+      "clipId": "clip_018",
+      "clipTitle": "Inglourious Basterds Scene",
+      "film": "Inglourious Basterds",
+      "screenplaySource": "https://imsdb.com/scripts/Inglourious-Basterds.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Tarantino script on IMSDB. Note: Tarantino scripts are typically very long — 160+ pages. Consider truncating to scene-relevant excerpt."
+    },
+    {
+      "clipId": "clip_019",
+      "clipTitle": "Gladiator Arena Scene",
+      "film": "Gladiator",
+      "screenplaySource": "https://imsdb.com/scripts/Gladiator.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. One of the most viewed scripts on the site."
+    },
+    {
+      "clipId": "clip_020",
+      "clipTitle": "Braveheart Speech Scene",
+      "film": "Braveheart",
+      "screenplaySource": "https://imsdb.com/scripts/Braveheart.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Mel Gibson/Randall Wallace screenplay available."
+    },
+    {
+      "clipId": "clip_021",
+      "clipTitle": "Dead Poets Society Scene B",
+      "film": "Dead Poets Society",
+      "screenplaySource": "https://imsdb.com/scripts/Dead-Poets-Society.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL as clip_010. Cache result."
+    },
+    {
+      "clipId": "clip_022",
+      "clipTitle": "Any Given Sunday Scene B",
+      "film": "Any Given Sunday",
+      "screenplaySource": "https://imsdb.com/scripts/Any-Given-Sunday.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Oliver Stone screenplay available."
+    },
+    {
+      "clipId": "clip_023",
+      "clipTitle": "Good Will Hunting Scene B",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL as clip_007. Cache result."
+    },
+    {
+      "clipId": "clip_024",
+      "clipTitle": "Good Will Hunting Scene C",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL as clip_007. Cache result."
+    },
+    {
+      "clipId": "clip_025",
+      "clipTitle": "Forrest Gump Scene",
+      "film": "Forrest Gump",
+      "screenplaySource": "https://imsdb.com/scripts/Forrest-Gump.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. High-traffic script, reliably available."
+    },
+    {
+      "clipId": "clip_026",
+      "clipTitle": "Rain Man Scene",
+      "film": "Rain Man",
+      "screenplaySource": "https://imsdb.com/scripts/Rain-Man.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Classic script available."
+    },
+    {
+      "clipId": "clip_027",
+      "clipTitle": "The King's Speech Scene B",
+      "film": "The King's Speech",
+      "screenplaySource": "https://imsdb.com/scripts/King's-Speech,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "URL contains raw apostrophe — may fail in some HTTP clients. Crawler should URL-encode apostrophe to %27 before fetching. Compare with clip_048 which uses %27 encoding."
+    },
+    {
+      "clipId": "clip_028",
+      "clipTitle": "A Few Good Men Scene",
+      "film": "A Few Good Men",
+      "screenplaySource": "https://imsdb.com/scripts/Few-Good-Men,-A.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — 'A' moved to end. Available."
+    },
+    {
+      "clipId": "clip_029",
+      "clipTitle": "Whiplash Scene",
+      "film": "Whiplash",
+      "screenplaySource": "https://imsdb.com/scripts/Whiplash.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Damien Chazelle script available."
+    },
+    {
+      "clipId": "clip_030",
+      "clipTitle": "The Wolf of Wall Street Scene",
+      "film": "The Wolf of Wall Street",
+      "screenplaySource": "https://imsdb.com/scripts/Wolf-of-Wall-Street,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — 'The' moved to end. Available."
+    },
+    {
+      "clipId": "clip_031",
+      "clipTitle": "12 Angry Men Scene B",
+      "film": "12 Angry Men",
+      "screenplaySource": "https://imsdb.com/scripts/Twelve-Angry-Men.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "IMPORTANT: URL uses 'Twelve-Angry-Men' not '12-Angry-Men'. Crawler must use this exact slug. Available."
+    },
+    {
+      "clipId": "clip_032",
+      "clipTitle": "Good Will Hunting Scene D",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_033",
+      "clipTitle": "Network Scene",
+      "film": "Network",
+      "screenplaySource": "https://imsdb.com/scripts/Network.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Simple single-word title. Paddy Chayefsky script available."
+    },
+    {
+      "clipId": "clip_034",
+      "clipTitle": "Glengarry Glen Ross Scene",
+      "film": "Glengarry Glen Ross",
+      "screenplaySource": "https://imsdb.com/scripts/Glengarry-Glen-Ross.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL. Mamet script available."
+    },
+    {
+      "clipId": "clip_035",
+      "clipTitle": "Wall Street Scene",
+      "film": "Wall Street",
+      "screenplaySource": "https://imsdb.com/scripts/Wall-Street.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Available."
+    },
+    {
+      "clipId": "clip_036",
+      "clipTitle": "Pulp Fiction Scene",
+      "film": "Pulp Fiction",
+      "screenplaySource": "https://imsdb.com/scripts/Pulp-Fiction.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. One of the most viewed IMSDB scripts. Available."
+    },
+    {
+      "clipId": "clip_037",
+      "clipTitle": "The Shawshank Redemption Scene",
+      "film": "The Shawshank Redemption",
+      "screenplaySource": "https://imsdb.com/scripts/Shawshank-Redemption,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — 'The' moved to end. Available."
+    },
+    {
+      "clipId": "clip_038",
+      "clipTitle": "Schindler's List Scene",
+      "film": "Schindler's List",
+      "screenplaySource": "https://imsdb.com/scripts/Schindler's-List.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "URL contains raw apostrophe in Schindler's — same encoding issue as King's Speech clip_027. Crawler must URL-encode: Schindler%27s-List.html. Flag for testing."
+    },
+    {
+      "clipId": "clip_039",
+      "clipTitle": "Lincoln Scene B",
+      "film": "Lincoln",
+      "screenplaySource": "https://imsdb.com/scripts/Lincoln.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL as clip_012. Cache result."
+    },
+    {
+      "clipId": "clip_040",
+      "clipTitle": "Jerry Maguire Scene",
+      "film": "Jerry Maguire",
+      "screenplaySource": "https://imsdb.com/scripts/Jerry-Maguire.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Available."
+    },
+    {
+      "clipId": "clip_041",
+      "clipTitle": "Catch Me If You Can Scene",
+      "film": "Catch Me If You Can",
+      "screenplaySource": "https://imsdb.com/scripts/Catch-Me-If-You-Can.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Available."
+    },
+    {
+      "clipId": "clip_042",
+      "clipTitle": "The Godfather Scene",
+      "film": "The Godfather",
+      "screenplaySource": "https://imsdb.com/scripts/Godfather,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — 'The' moved to end. One of the highest-traffic scripts. Available."
+    },
+    {
+      "clipId": "clip_043",
+      "clipTitle": "Margin Call Scene",
+      "film": "Margin Call",
+      "screenplaySource": "https://imsdb.com/scripts/Margin-Call.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. J.C. Chandor script available."
+    },
+    {
+      "clipId": "clip_044",
+      "clipTitle": "The Dark Knight Scene",
+      "film": "The Dark Knight",
+      "screenplaySource": "https://imsdb.com/scripts/Dark-Knight,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard IMSDB URL — 'The' moved to end. Available."
+    },
+    {
+      "clipId": "clip_045",
+      "clipTitle": "No Country for Old Men Scene B",
+      "film": "No Country for Old Men",
+      "screenplaySource": "https://imsdb.com/scripts/No-Country-for-Old-Men.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Coen Brothers script available."
+    },
+    {
+      "clipId": "clip_046",
+      "clipTitle": "The Social Network Scene C",
+      "film": "The Social Network",
+      "screenplaySource": "https://imsdb.com/scripts/Social-Network,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_047",
+      "clipTitle": "The Social Network Scene D",
+      "film": "The Social Network",
+      "screenplaySource": "https://imsdb.com/scripts/Social-Network,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_048",
+      "clipTitle": "The Godfather Scene B",
+      "film": "The Godfather",
+      "screenplaySource": "https://imsdb.com/scripts/Godfather,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_049",
+      "clipTitle": "Catch Me If You Can Scene B",
+      "film": "Catch Me If You Can",
+      "screenplaySource": "https://imsdb.com/scripts/Catch-Me-If-You-Can.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_050",
+      "clipTitle": "Before Sunrise Scene",
+      "film": "Before Sunrise",
+      "screenplaySource": "https://imsdb.com/scripts/Before-Sunrise.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Linklater script available."
+    },
+    {
+      "clipId": "clip_051",
+      "clipTitle": "Gladiator Scene B",
+      "film": "Gladiator",
+      "screenplaySource": "https://imsdb.com/scripts/Gladiator.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_052",
+      "clipTitle": "Gladiator Scene C",
+      "film": "Gladiator",
+      "screenplaySource": "https://imsdb.com/scripts/Gladiator.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_053",
+      "clipTitle": "Any Given Sunday Scene C",
+      "film": "Any Given Sunday",
+      "screenplaySource": "https://imsdb.com/scripts/Any-Given-Sunday.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_054",
+      "clipTitle": "Network Scene B",
+      "film": "Network",
+      "screenplaySource": "https://imsdb.com/scripts/Network.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_055",
+      "clipTitle": "Coach Carter Scene",
+      "film": "Coach Carter",
+      "screenplaySource": "https://imsdb.com/scripts/Coach-Carter.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Less commonly cited — verify it loads correctly. May be less reliable than classics."
+    },
+    {
+      "clipId": "clip_056",
+      "clipTitle": "Good Will Hunting Scene E",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_057",
+      "clipTitle": "Good Will Hunting Scene F",
+      "film": "Good Will Hunting",
+      "screenplaySource": "https://imsdb.com/scripts/Good-Will-Hunting.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_058",
+      "clipTitle": "Before Sunrise Scene B",
+      "film": "Before Sunrise",
+      "screenplaySource": "https://imsdb.com/scripts/Before-Sunrise.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_059",
+      "clipTitle": "Jerry Maguire Scene B",
+      "film": "Jerry Maguire",
+      "screenplaySource": "https://imsdb.com/scripts/Jerry-Maguire.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same URL. Cache result."
+    },
+    {
+      "clipId": "clip_060",
+      "clipTitle": "When Harry Met Sally Scene",
+      "film": "When Harry Met Sally",
+      "screenplaySource": "https://imsdb.com/scripts/When-Harry-Met-Sally.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Standard URL. Nora Ephron script — may be less reliably available on IMSDB. Verify before implementing."
+    },
+    {
+      "clipId": "clip_061",
+      "clipTitle": "The King's Speech Scene C",
+      "film": "The King's Speech",
+      "screenplaySource": "https://imsdb.com/scripts/King%27s-Speech,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "IMPORTANT: This URL uses %27 (URL-encoded apostrophe) — different from clip_027 which uses raw apostrophe. The crawler should normalize these to the same URL. Both should resolve to the same IMSDB page."
+    },
+    {
+      "clipId": "clip_062",
+      "clipTitle": "The King's Speech Scene D",
+      "film": "The King's Speech",
+      "screenplaySource": "https://imsdb.com/scripts/King%27s-Speech,-The.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same as clip_061 — %27 encoded version. Cache result. Normalize URL before DB storage."
+    },
+    {
+      "clipId": "clip_063",
+      "clipTitle": "Whiplash Scene B",
+      "film": "Whiplash",
+      "screenplaySource": "https://imsdb.com/scripts/Whiplash.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same as clip_029. Cache result."
+    },
+    {
+      "clipId": "clip_064",
+      "clipTitle": "Pulp Fiction Scene B",
+      "film": "Pulp Fiction",
+      "screenplaySource": "https://imsdb.com/scripts/Pulp-Fiction.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same as clip_036. Cache result."
+    },
+    {
+      "clipId": "clip_065",
+      "clipTitle": "Dead Poets Society Scene C",
+      "film": "Dead Poets Society",
+      "screenplaySource": "https://imsdb.com/scripts/Dead-Poets-Society.html",
+      "sourceSite": "imsdb",
+      "expectedSelector": "td.scrtext pre",
+      "likelyWorking": true,
+      "notes": "Same as clip_010. Cache result."
+    }
+  ],
+  "implementation_recommendations": {
+    "caching_strategy": "Cache fetched screenplay text by film title — do not re-fetch the same IMSDB URL for multiple clips from the same film. 31 unique films → 31 HTTP requests maximum.",
+    "unique_films_requiring_fetch": [
+      "The Pursuit of Happyness",
+      "The Social Network",
+      "Good Will Hunting",
+      "Dead Poets Society",
+      "Lincoln",
+      "The Silence of the Lambs",
+      "Inglourious Basterds",
+      "Gladiator",
+      "Braveheart",
+      "Any Given Sunday",
+      "Forrest Gump",
+      "Rain Man",
+      "The King's Speech",
+      "A Few Good Men",
+      "Whiplash",
+      "The Wolf of Wall Street",
+      "12 Angry Men",
+      "Network",
+      "Glengarry Glen Ross",
+      "Wall Street",
+      "Pulp Fiction",
+      "The Shawshank Redemption",
+      "Schindler's List",
+      "Jerry Maguire",
+      "Catch Me If You Can",
+      "The Godfather",
+      "Margin Call",
+      "The Dark Knight",
+      "No Country for Old Men",
+      "Before Sunrise",
+      "Coach Carter",
+      "When Harry Met Sally"
+    ],
+    "url_normalization_required": [
+      "King's Speech: normalize King's-Speech and King%27s-Speech to same canonical URL",
+      "Schindler's List: URL-encode apostrophe to Schindler%27s-List.html"
+    ],
+    "clips_to_skip": [
+      "clip_003 (No Country for Old Men - null source, film covered by clip_045)",
+      "clip_004 (Iron Man 2 - no screenplay source available)",
+      "clip_005 (The Intern - no screenplay source available)",
+      "clip_006 (There Will Be Blood - no screenplay source available)",
+      "clip_008 (King's Speech - null source, film covered by clip_027/048)",
+      "clip_009 (Marriage Story - no screenplay source available)",
+      "clip_011 (Any Given Sunday - null source, film covered by clip_022)",
+      "clip_013 (Legally Blonde - no screenplay source available)",
+      "clip_014 (12 Angry Men - null source, film covered by clip_031)",
+      "clip_015 (Frost/Nixon - no screenplay source available)"
+    ],
+    "html_parsing_notes": {
+      "primary_approach": "cheerio or node-html-parser — select td.scrtext, then get text content of contained <pre> element",
+      "character_limit": "IMSDB scripts are typically 100k-200k chars. Store full text but display excerpts. Consider truncating to 50k chars for MVP.",
+      "encoding": "Most IMSDB pages are UTF-8 but some older scripts have Latin-1 encoding. Use charset detection.",
+      "example_cheerio_code": "const $ = cheerio.load(html); const text = $('td.scrtext pre').text();"
+    }
+  }
+}

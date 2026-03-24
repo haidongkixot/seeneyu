@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { Providers } from '@/components/Providers'
+import { Footer } from '@/components/Footer'
 import './globals.css'
 
 const sans = Plus_Jakarta_Sans({
@@ -25,8 +26,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body className="font-sans bg-bg-base text-text-primary antialiased">
-        <Providers>{children}</Providers>
+      <body className="font-sans bg-bg-base text-text-primary antialiased min-h-screen flex flex-col">
+        <Providers>
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   )

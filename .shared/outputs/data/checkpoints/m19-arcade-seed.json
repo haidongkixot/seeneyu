@@ -1,0 +1,36 @@
+{
+  "pipeline": "m19-arcade-seed",
+  "status": "complete",
+  "milestone": "M19",
+  "task": "arcade-challenge-seed-data",
+  "output_file": ".shared/outputs/data/arcade-challenges-seed.json",
+  "bundles_created": 3,
+  "challenges_created": 30,
+  "bundle_breakdown": {
+    "bundle_0": {
+      "title": "Confidence & Authority",
+      "difficulty": "intermediate",
+      "challenge_count": 10,
+      "type_breakdown": {"facial": 5, "gesture": 5},
+      "source_films": ["Gladiator", "The Social Network", "Wall Street", "Any Given Sunday", "A Few Good Men", "Network", "Margin Call", "Catch Me If You Can", "Coach Carter", "The King's Speech"]
+    },
+    "bundle_1": {
+      "title": "Empathy & Warmth",
+      "difficulty": "beginner",
+      "challenge_count": 10,
+      "type_breakdown": {"facial": 5, "gesture": 5},
+      "source_films": ["Jerry Maguire", "Good Will Hunting", "Dead Poets Society", "The Pursuit of Happyness", "Before Sunrise", "Forrest Gump", "When Harry Met Sally", "Rain Man"]
+    },
+    "bundle_2": {
+      "title": "Tension & Conflict",
+      "difficulty": "advanced",
+      "challenge_count": 10,
+      "type_breakdown": {"facial": 5, "gesture": 5},
+      "source_films": ["Whiplash", "The Silence of the Lambs", "Inglourious Basterds", "No Country for Old Men", "12 Angry Men", "Glengarry Glen Ross", "The Dark Knight", "The Shawshank Redemption", "A Few Good Men", "Lincoln"]
+    }
+  },
+  "notes": "All referenceImageUrl fields are null — MVP uses description-only GPT-4o Vision scoring per spec. sourceClipHint fields reference existing library clips for future linking.",
+  "started_at": "2026-03-24T09:00:00Z",
+  "completed_at": "2026-03-24T09:30:00Z",
+  "updated_at": "2026-03-24T09:30:00Z"
+}

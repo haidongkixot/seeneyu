@@ -28,64 +28,46 @@ export function ClipCard({ clip }: ClipCardProps) {
   return (
     <Link
       href={`/library/${clip.id}`}
-      className="group relative flex flex-col bg-bg-surface border border-white/8 rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
+      className="group relative flex flex-col bg-bg-surface border border-white/8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
       role="article"
       aria-label={`${clip.skillCategory} clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
     >
       {/* Thumbnail */}
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl bg-bg-inset">
+      <div className="relative aspect-video overflow-hidden bg-bg-inset">
         <Image
           src={thumbnailUrl}
           alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
           fill
-          sizes="(max-width: 375px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          sizes="(max-width: 375px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl }}
           loading="lazy"
         />
         {/* Play button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          <div className="w-12 h-12 rounded-full bg-accent-400 flex items-center justify-center shadow-glow-sm">
-            <Play size={20} fill="currentColor" className="text-text-inverse ml-0.5" />
-          </div>
-        </div>
-        {/* Badges overlay */}
-        <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end pointer-events-none">
-          <SkillBadge skill={clip.skillCategory} size="sm" />
-          <div className="flex items-center gap-1.5">
-            <span className="bg-black/60 text-white text-xs font-mono px-1.5 py-0.5 rounded">
-              {formatDuration(duration)}
-            </span>
-            <DifficultyPill difficulty={clip.difficulty} size="sm" />
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+          <div className="w-10 h-10 rounded-full bg-accent-400/90 flex items-center justify-center">
+            <Play size={18} fill="currentColor" className="text-text-inverse ml-0.5" />
           </div>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-4 flex flex-col gap-3 flex-1">
-        <div className="flex flex-col gap-1">
-          <p className="text-text-primary text-sm font-semibold leading-snug line-clamp-2">
-            {clip.sceneDescription}
-          </p>
-          <p className="text-text-secondary text-xs">
-            {clip.characterName ? `${clip.characterName} · ` : ''}
-            {clip.movieTitle}
-            {clip.year ? ` (${clip.year})` : ''}
-          </p>
-        </div>
-
-        {/* Footer */}
-        <div className="pt-3 border-t border-white/6 mt-auto flex items-center justify-between gap-2 flex-wrap">
-          <span className="flex items-center gap-1 text-text-tertiary text-xs">
-            <Play size={12} strokeWidth={2} />
-            <span>Watch &amp; Mimic</span>
-          </span>
+      {/* Body — compact */}
+      <div className="p-3 flex flex-col flex-1">
+        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+          <SkillBadge skill={clip.skillCategory} size="sm" />
+          <DifficultyPill difficulty={clip.difficulty} size="sm" />
           {clip.screenplaySource && (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full px-2 py-0.5">
-              📄 Screenplay
+            <span className="text-[10px] font-medium text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full px-1.5 py-0.5">
+              📄
             </span>
           )}
         </div>
+        <h3 className="text-sm font-semibold text-text-primary line-clamp-2 leading-snug mb-1">
+          {clip.sceneDescription}
+        </h3>
+        <p className="text-xs text-text-tertiary mt-auto">
+          {clip.movieTitle} · {formatDuration(duration)}
+        </p>
       </div>
     </Link>
   )

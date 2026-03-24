@@ -244,3 +244,47 @@ export interface FoundationProgress {
   quizPassed: boolean
   completedAt?: Date | null
 }
+
+// ── Arcade types ────────────────────────────────────────────────────
+
+export interface ArcadeBundle {
+  id: string
+  title: string
+  description: string
+  theme: string
+  difficulty: string
+  xpReward: number
+  createdAt: string
+  challenges?: ArcadeChallenge[]
+  _count?: { challenges: number }
+}
+
+export interface ArcadeChallenge {
+  id: string
+  bundleId: string
+  type: 'facial' | 'gesture'
+  title: string
+  description: string
+  context: string
+  referenceImageUrl: string | null
+  sourceClipId: string | null
+  sourceTimestamp: number | null
+  difficulty: string
+  xpReward: number
+  orderIndex: number
+}
+
+export interface ArcadeAttempt {
+  id: string
+  userId: string
+  challengeId: string
+  score: number
+  breakdown: {
+    expression_match: number
+    intensity: number
+    context_fit: number
+  }
+  feedbackLine: string | null
+  recordingUrl: string | null
+  createdAt: string
+}

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(DIRECT_URL=\"postgresql://dummy\" DATABASE_URL=\"postgresql://dummy\" npx prisma:*)",
+      "Bash(DIRECT_URL=\"postgresql://dummy\" DATABASE_URL=\"postgresql://dummy\" NEXTAUTH_SECRET=\"dummy\" NEXTAUTH_URL=\"http://localhost:3000\" npx tsc:*)",
+      "Bash(DIRECT_URL=\"postgresql://dummy\" DATABASE_URL=\"postgresql://dummy\" NEXTAUTH_SECRET=\"dummy\" NEXTAUTH_URL=\"http://localhost:3000\" npm run:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(npx tsx:*)",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(test:*)",
+      "Bash(python3:*)"
+    ]
+  }
+}

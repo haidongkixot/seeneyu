@@ -81,3 +81,58 @@ body {
   height: 100%;
   border: none;
 }
+
+/* ── Animated hero gradient ───────────────────────────────────── */
+.hero-animated-bg {
+  background: #0d0d14;
+}
+
+.hero-animated-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 50%, rgba(251,191,36,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 80% 40%, rgba(139,92,246,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(251,191,36,0.05) 0%, transparent 60%);
+  animation: hero-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes hero-drift {
+  0% {
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 50%, rgba(251,191,36,0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 50% at 80% 40%, rgba(139,92,246,0.08) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 50% 80%, rgba(251,191,36,0.05) 0%, transparent 60%);
+  }
+  33% {
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 60%, rgba(251,191,36,0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 60% at 70% 30%, rgba(139,92,246,0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 45% 45% at 60% 75%, rgba(6,182,212,0.05) 0%, transparent 60%);
+  }
+  66% {
+    background:
+      radial-gradient(ellipse 60% 70% at 15% 40%, rgba(251,191,36,0.08) 0%, transparent 65%),
+      radial-gradient(ellipse 70% 50% at 85% 55%, rgba(139,92,246,0.09) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 40% at 45% 85%, rgba(251,191,36,0.06) 0%, transparent 60%);
+  }
+  100% {
+    background:
+      radial-gradient(ellipse 75% 55% at 25% 45%, rgba(251,191,36,0.11) 0%, transparent 65%),
+      radial-gradient(ellipse 55% 65% at 75% 35%, rgba(139,92,246,0.07) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 35% at 55% 70%, rgba(139,92,246,0.05) 0%, transparent 60%);
+  }
+}
+
+/* ── Dot grid overlay ─────────────────────────────────────── */
+.hero-dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── XP pop animation ─────────────────────────────────────── */
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

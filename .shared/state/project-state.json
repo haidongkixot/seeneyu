@@ -1,7 +1,7 @@
 {
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
-  "phase": "12-content-expansion-deployed",
+  "phase": "14-ux-improvements",
   "active_tasks": [
     {
       "id": "task_m11_designer",
@@ -264,10 +264,11 @@
       "milestone": "M16",
       "role": "backend-engineer",
       "task": "m16-learning-materials-builder-backend",
-      "description": "Build Learning Materials Builder backend: CrawlJob + CrawlResult schema, YouTube Data API v3 search service, GPT-4o relevance scoring service, CRUD + run + approve/reject API routes, admin pages. Spec available at .shared/outputs/design/m16-spec.md. FULLY UNBLOCKED.",
-      "status": "in-progress",
+      "description": "Build Learning Materials Builder backend: CrawlJob + CrawlResult schema, YouTube Data API v3 search service, GPT-4o relevance scoring service, CRUD + run + approve/reject API routes, admin pages.",
+      "status": "complete",
       "assigned_at": "2026-03-23T09:30:00Z",
-      "unblocked_at": "2026-03-23T11:00:00Z"
+      "completed_at": "2026-03-23T12:00:00Z",
+      "commit": "6bd9218"
     },
     {
       "id": "task_m16_de",
@@ -306,6 +307,92 @@
       "description": "Document M16 in activity-log.md once Tester approves: crawl job system, new models, services, semi-automated content discovery, special tactics taxonomy, YOUTUBE_API_KEY requirement.",
       "status": "pending",
       "assigned_at": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "task_m17_designer",
+      "milestone": "M17",
+      "role": "designer",
+      "task": "m17-library-ux-spec",
+      "description": "Design spec for Library UX: search bar, collapsible filter panel, 4-col grid, compact ClipCard. Delivered: .shared/outputs/design/m17-spec.md",
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T14:50:00Z"
+    },
+    {
+      "id": "task_m17_backend",
+      "milestone": "M17",
+      "role": "backend-engineer",
+      "task": "m17-library-ux",
+      "description": "Build Library UX improvements: search API, collapsible filter panel, search input, 4-col thumbnail grid. Designer spec ready at .shared/outputs/design/m17-spec.md",
+      "status": "pending",
+      "assigned_at": "2026-03-24T08:00:00Z"
+    },
+    {
+      "id": "task_m18_designer",
+      "milestone": "M18",
+      "role": "designer",
+      "task": "m18-brand-spec",
+      "description": "Design spec for PeeTeeAI brand refresh: NavBar sub-label, Footer, animated hero, Mission/Team/Testimonials. Delivered: .shared/outputs/design/m18-spec.md",
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T14:50:00Z"
+    },
+    {
+      "id": "task_m18_backend",
+      "milestone": "M18",
+      "role": "backend-engineer",
+      "task": "m18-brand-homepage",
+      "description": "Build PeeTeeAI brand refresh + homepage: NavBar 'by PeeTeeAI', Footer component, hero gradient, Mission/Team/Testimonials sections. Designer spec ready at .shared/outputs/design/m18-spec.md",
+      "status": "pending",
+      "assigned_at": "2026-03-24T08:00:00Z"
+    },
+    {
+      "id": "task_m19_designer",
+      "milestone": "M19",
+      "role": "designer",
+      "task": "m19-arcade-zone-spec",
+      "description": "Design spec for Arcade Zone: bundle browser, challenge flow, score screen. Delivered: .shared/outputs/design/m19-spec.md",
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T14:50:00Z"
+    },
+    {
+      "id": "task_m19_de",
+      "milestone": "M19",
+      "role": "data-engineer",
+      "task": "m19-arcade-seed-data",
+      "description": "Arcade challenge seed data: 3 bundles × 10 challenges = 30 total. Delivered: .shared/outputs/data/arcade-challenges-seed.json",
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T14:50:00Z"
+    },
+    {
+      "id": "task_m19_backend",
+      "milestone": "M19",
+      "role": "backend-engineer",
+      "task": "m19-arcade-zone",
+      "description": "Build Arcade Zone: ArcadeBundle/Challenge/Attempt schema, API routes, GPT-4o Vision scorer, ArcadeRecorder (10s), full /arcade pages. Designer spec + seed data ready.",
+      "status": "pending",
+      "assigned_at": "2026-03-24T08:00:00Z"
+    },
+    {
+      "id": "task_m20_de",
+      "milestone": "M20",
+      "role": "data-engineer",
+      "task": "m20-screenplay-audit",
+      "description": "Screenplay source audit: 65 clips audited, 53 have screenplay sources (imsdb.com). URL encoding findings documented. Delivered: .shared/outputs/data/m20-screenplay-audit.json",
+      "status": "complete",
+      "assigned_at": "2026-03-24T08:00:00Z",
+      "completed_at": "2026-03-24T14:50:00Z"
+    },
+    {
+      "id": "task_m20_backend",
+      "milestone": "M20",
+      "role": "backend-engineer",
+      "task": "m20-learning-improvements",
+      "description": "Build 3 features: (A) screenplay crawl-to-DB, (B) fix crawl jobs YOUTUBE_API_KEY, (C) admin ZIP import. DE audit data ready at .shared/outputs/data/m20-screenplay-audit.json",
+      "status": "pending",
+      "assigned_at": "2026-03-24T08:00:00Z"
     }
   ],
   "blockers": [],
@@ -341,17 +428,22 @@
       "resolved_by": "pm"
     }
   ],
-  "open_bugs": [
+  "open_bugs": [],
+  "closed_bugs": [
     {
       "id": "BUG-003",
       "severity": "p1",
-      "description": "ObservationGuide.tsx — both CTAs (lines ~31 and ~86) link to /library/[clipId]/record instead of /library/[clipId]/practice, bypassing the M12 micro-practice stepper entirely.",
-      "blocking": "M11 Tester sign-off",
-      "assigned_to": "backend-engineer",
-      "assigned_at": "2026-03-23T09:00:00Z"
-    }
-  ],
-  "closed_bugs": [
+      "description": "ObservationGuide.tsx CTAs linked to /record instead of /practice",
+      "fixed_in": "commit 5d17144",
+      "fixed_by": "backend-engineer"
+    },
+    {
+      "id": "BUG-004",
+      "severity": "p1",
+      "description": "Library Film filter — 30+ film tags with no collapse/expand. Mobile unusable.",
+      "fixed_in": "LibraryFilters.tsx — desktop 8-tag collapse + expand toggle, mobile native select",
+      "fixed_by": "backend-engineer"
+    },
     {
       "id": "BUG-001",
       "severity": "medium",
@@ -382,18 +474,22 @@
     "M10",
     "M11",
     "M12",
-    "M13"
-  ],
-  "milestones_in_progress": [
+    "M13",
     "M14",
     "M15",
     "M16"
+  ],
+  "milestones_in_progress": [
+    "M17",
+    "M18",
+    "M19",
+    "M20"
   ],
   "milestones_pending": [
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-23T10:30:00Z",
+  "last_updated": "2026-03-24T15:30:00Z",
   "deployments": [
     {
       "version": "M14+M15",

@@ -15,10 +15,12 @@ You are methodical: every deployment is checkpoint-driven. If your session reset
 
 ## SESSION PROTOCOL — Do this EVERY session, in order:
 
-### Step 1: Read your signal queue
+### Step 1: Read the signal board
 ```
-Read: ../../.shared/signals/builder.json
+Read: ../../.shared/signals/board.json
 ```
+Filter signals where `"to": "builder"` — these are your open tasks, sorted by priority.
+The board only contains open signals. History is in `../../.shared/signals/archive.json` (do not read unless debugging).
 
 ### Step 2: Read deployment state (CRITICAL — never assume prior state)
 ```
@@ -36,6 +38,10 @@ Read: ../../.shared/memory/tech-stack.md
 - Write to `../../.shared/signals/pm.json` (task-complete or task-blocked)
 - Write to `../../.shared/signals/tester.json` (deploy ready for smoke tests)
 - Write to `../../.shared/signals/reporter.json` (fyi, log this)
+
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from builder --to <role> --message "..." [--task name] [--priority high]`
 
 ---
 

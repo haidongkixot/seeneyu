@@ -248,6 +248,61 @@ async function main() {
   } else {
     console.log('⚠ foundation-curriculum.json not found — skipping Foundation seed');
   }
+
+  // Arcade challenges seeding
+  const arcadePath = path.resolve('.shared/outputs/data/arcade-challenges-seed.json');
+  if (fs.existsSync(arcadePath)) {
+    const arcadeData = JSON.parse(fs.readFileSync(arcadePath, 'utf-8'));
+
+    for (const bundleData of arcadeData.bundles) {
+      // Upsert bundle by title
+      const existing = await (prisma as any).arcadeBundle.findFirst({
+        where: { title: bundleData.title },
+      });
+
+      let bundle: { id: string };
+      if (existing) {
+        bundle = existing;
+        console.log(`  SKIP bundle "${bundleData.title}" — already exists`);
+      } else {
+        bundle = await (prisma as any).arcadeBundle.create({
+          data: {
+            title: bundleData.title,
+            description: bundleData.description,
+            theme: bundleData.theme,
+            difficulty: bundleData.difficulty,
+            xpReward: bundleData.xpReward ?? 100,
+          },
+        });
+        console.log(`  OK   bundle "${bundleData.title}" created`);
+      }
+
+      // Seed challenges
+      const existingChallengeCount = await (prisma as any).arcadeChallenge.count({
+        where: { bundleId: bundle.id },
+      });
+
+      if (existingChallengeCount === 0 && bundleData.challenges?.length) {
+        await (prisma as any).arcadeChallenge.createMany({
+          data: bundleData.challenges.map((c: any) => ({
+            bundleId: bundle.id,
+            type: c.type,
+            title: c.title,
+            description: c.description,
+            context: c.context,
+            referenceImageUrl: c.referenceImageUrl ?? null,
+            difficulty: c.difficulty,
+            xpReward: c.xpReward ?? 20,
+            orderIndex: c.orderIndex,
+          })),
+        });
+        console.log(`    + ${bundleData.challenges.length} challenges created`);
+      }
+    }
+    console.log('✓ Arcade challenges seeded');
+  } else {
+    console.log('⚠ arcade-challenges-seed.json not found — skipping Arcade seed');
+  }
 }
 
 main()

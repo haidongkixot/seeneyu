@@ -1,0 +1,1618 @@
+{
+  "_meta": {
+    "description": "Signal archive — completed/read signals. Append-only. Do NOT read this during normal sessions.",
+    "last_updated": "2026-03-24T16:03:23.859Z",
+    "total": 135
+  },
+  "signals": [
+    {
+      "id": "sig_init_001",
+      "from": "system",
+      "type": "fyi",
+      "task": "project-initialized",
+      "message": "seeneyu project structure initialized. All role CLAUDE.md files created. Shared state ready. Your first task: run sprint planning for Phase 0 (project setup) and assign M1 tasks to Designer.",
+      "artifacts": [
+        "../../.shared/state/milestones.json",
+        "../../.shared/memory/shared-knowledge.md"
+      ],
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_tester_m1_pass_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M1",
+      "message": "M1 Design System passed Tester review. All 4 deliverables verified. Phase gate met.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_tester_m2_pass_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M2",
+      "message": "M2 Data Pipeline v1 passed Tester review with condition: YouTube IDs need verification before DB seed. Structure and curation approved.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_designer_m1_complete_001",
+      "from": "designer",
+      "type": "task-complete",
+      "milestone": "M1",
+      "message": "M1 Design System delivered in full.",
+      "timestamp": "2026-03-21T02:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_de_pm_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M2-infrastructure-complete",
+      "message": "Data Engineer session complete. Full M2 pipeline infrastructure delivered. M2 blocked only on YOUTUBE_API_KEY.",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_ui_review_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "ui-review-m6",
+      "priority": "high",
+      "message": "UI Review complete for M6 pre-launch. Overall: implementation is excellent â€” design system 100% correct, landing/library/clip-viewer all spec-compliant. TWO P0 issues need fixing before launch: (1) RecordPage missing split view â€” learner can't see reference clip while recording, defeating the mimic mechanic. Fix: add YouTube embed left-panel to the record page layout. (2) RecordClient missing 3-2-1 countdown â€” users are surprised into recording. Fix: ~20 lines to add countdown state. P1 (post-launch): FeedbackPage missing video comparison row. Full findings at: .shared/outputs/design/ui-review-m6.md",
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m6.md"
+      ],
+      "p0_fixes": [
+        "RecordPage split view (reference clip + webcam) â€” src/app/library/[clipId]/record/",
+        "3-2-1 countdown before recording â€” RecordClient.tsx"
+      ],
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_de_pm_002",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "P0-fixes-applied",
+      "message": "Applied all P0 fixes from designer's M6 UI review plus one additional critical bug.",
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_builder_created_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "new-role-created",
+      "message": "Builder role created by Designer.",
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_pm_be_role_created_001",
+      "from": "pm",
+      "type": "fyi",
+      "task": "new-role-created",
+      "message": "Backend Engineer role created.",
+      "timestamp": "2026-03-22T18:00:00Z",
+      "status": "read",
+      "to": "pm"
+    },
+    {
+      "id": "sig_de_pm_003",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M6-ui-review-all-items-closed",
+      "message": "All 10 items from designer's M6 UI review are now fully implemented. App is ready for M6 final tester sign-off.",
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M7-M8-auth-cms",
+      "message": "M7 (Auth System) and M8 (Admin CMS) fully implemented. Build: 0 TypeScript errors, 0 Next.js errors.",
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m7_approved_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "milestone-approved",
+      "milestone": "M7",
+      "message": "M7 Auth System â€” APPROVED. 10/10 test cases pass.",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m8_approved_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "milestone-approved",
+      "milestone": "M8",
+      "message": "M8 Admin CMS â€” APPROVED. 10/10 test cases pass. ONE MEDIUM BUG FILED (BUG-001): ClipForm score dimension fields allow 1â€“10 but model expects 1â€“3. Non-blocking.",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_001",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-complete",
+      "message": "Reporter session complete (2026-03-22). All documentation current.",
+      "timestamp": "2026-03-22T21:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_002",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-check-in",
+      "message": "Reporter check-in. All docs current. M7+M8 awaiting PM action.",
+      "timestamp": "2026-03-22T22:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_bug002_fixed_001",
+      "from": "tester",
+      "to": "pm",
+      "type": "fyi",
+      "task": "BUG-002-critical-fixed",
+      "message": "BUG-002 (CRITICAL) found and fixed. Library page 'Couldn't load clips' error â€” ClipCard.tsx missing 'use client'. Fix applied, library page now renders all 15 clips.",
+      "bug_report": ".shared/outputs/bugs/bug-002.json",
+      "timestamp": "2026-03-22T23:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_pm_m10_complete_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-UI-specs",
+      "milestone": "M10",
+      "message": "M10 UI specs delivered. Three components fully specified with ASCII mockups, Tailwind class lists, props interfaces, state definitions, accessibility notes, and page layout context.\n\nDeliverables:\n- CharacterBanner: coaching-card style banner for record page\n- ScriptPanel: dialogue/action script display for record page\n- ActionPlan: prioritized improvement steps for feedback page\n\nArtifact: .shared/outputs/design/m10-spec.md\nSignal sent to Backend Engineer to unblock implementation.",
+      "artifacts": [
+        ".shared/outputs/design/m10-spec.md"
+      ],
+      "timestamp": "2026-03-23T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m10_script_ready_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "checkpoint-saved",
+      "task": "M10-add-script-text-to-clips",
+      "status": "read",
+      "message": "M10 script prep complete. All 15 clip scripts written and saved to .shared/outputs/data/clips-seed.json. Eye-contact/posture/listening clips use 4-step physical instruction lists; vocal-pacing/confident-disagreement clips use exact dialogue scripts. seed.ts update (3 lines) and npx prisma db seed will execute immediately once Backend Engineer signals that `script` field is live in schema. Checkpoint: .shared/outputs/data/checkpoints/m10-script-seeding.json",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        ".shared/outputs/data/checkpoints/m10-script-seeding.json"
+      ],
+      "blocking_on": "backend-engineer Task 1 (schema update) + Task 7 (signal to data-engineer)",
+      "timestamp": "2026-03-22T23:55:00Z"
+    },
+    {
+      "id": "sig_be_pm_m10_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-script-aware-coaching-loop",
+      "message": "M10 fully implemented. Build: 0 TypeScript errors.\n\nCompleted:\n- BUG-001 fixed: ClipForm score dimensions 1-3, difficultyScore 4-12\n- Schema: script String? @db.Text added to Clip\n- Types: ActionPlanStep + steps[] in FeedbackResult + script in Clip\n- Feedback API: character/script context in prompt, steps[] schema, no-frames fallback\n- tailwind.config.ts: fade-in-up keyframe\n- CharacterBanner + ScriptPanel components created\n- Record page: CharacterBanner + ScriptPanel\n- Feedback page: ActionPlan section\n- ClipForm: Script/Dialogue textarea\n- Data Engineer signaled: schema ready, pending user db:push\n\nPENDING USER ACTIONS:\n1. npm run db:push â€” apply script field to DB\n2. npx prisma generate â€” regenerate client\n(Casts in code will clean up automatically after regen)",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m10_complete_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M10-add-script-text-to-clips",
+      "message": "M10 script seeding task complete (code). All 15 clip scripts written to clips-seed.json. seed.ts updated with script field support + patch logic for already-seeded clips. Blocked only on user running: (1) npm run db:push, (2) npx prisma generate, (3) npx prisma db seed. After those three commands, all 15 clips will have script field populated in the database. Checkpoint: .shared/outputs/data/checkpoints/m10-script-seeding.json",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        "prisma/seed.ts"
+      ],
+      "pending_user_actions": [
+        "npm run db:push",
+        "npx prisma generate",
+        "npx prisma db seed"
+      ],
+      "timestamp": "2026-03-23T00:35:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_pm_m10_review_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M10-ui-review-complete",
+      "message": "Designer UI review of M10 implementation complete. Verdict: PASS â€” all 3 components spec-compliant, no P0/P1 issues found. Two low-priority post-launch items logged: (1) CharacterBanner 'animate-fade-in' keyframe may need to be added to tailwind config. (2) ScriptPanel action-list mode not used for physical-skill clips â€” future improvement via adding scriptType field to Clip schema. Full review at: .shared/outputs/design/ui-review-m10.md. Tester has been notified.",
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m10.md"
+      ],
+      "timestamp": "2026-03-23T00:45:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_pm_m11_m12_m13_complete_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M11-M12-M13-UI-specs",
+      "message": "M11, M12, and M13 UI specs all delivered.\n\n- M11 (Observation Guide): ObservationTabBar + ObservationGuide vertical timeline. Spec at .shared/outputs/design/m11-spec.md\n- M12 (Micro-Practice Stepper): Full 5-component spec â€” PracticeStepperLayout, StepCard, PracticeRecorder (with 30s countdown ring), MicroFeedbackCard (animate-slide-up), PerformanceUnlockScreen. New tailwind keyframe included. Spec at .shared/outputs/design/m12-spec.md\n- M13 (Onboarding + Learning Path): OnboardingShell, AssessmentSkillScreen, ProcessingScreen, CompleteScreen. LearningPathDashboard, SkillTrackColumn, SkillProgressBar, LearningPathCard. YouTube thumbnail URL pattern included. Spec at .shared/outputs/design/m13-spec.md\n\nBackend Engineer notified. All specs ready for implementation.",
+      "artifacts": [
+        ".shared/outputs/design/m11-spec.md",
+        ".shared/outputs/design/m12-spec.md",
+        ".shared/outputs/design/m13-spec.md"
+      ],
+      "timestamp": "2026-03-23T01:15:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m11_checkpoint_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "checkpoint-saved",
+      "task": "M11-curate-observation-guides",
+      "status": "read",
+      "message": "M11 data prep complete. observation_guide (headline + 5-6 timestamped moments) and practice_steps (3-4 steps with instruction/tip/duration) written for all 15 clips in clips-seed.json v1.2. seed.ts updated with interface + patch + create logic for both new JSON fields. Blocked on Backend Engineer adding observationGuide Json? + practiceSteps Json? to Clip model, then user running: npm run db:push + npx prisma generate + npx prisma db seed. Checkpoint: .shared/outputs/data/checkpoints/m11-observation-guides.json",
+      "artifacts": [
+        ".shared/outputs/data/clips-seed.json",
+        "prisma/seed.ts",
+        ".shared/outputs/data/checkpoints/m11-observation-guides.json"
+      ],
+      "blocking_on": "backend-engineer schema update (observationGuide Json? + practiceSteps Json?)",
+      "timestamp": "2026-03-23T01:15:00Z"
+    },
+    {
+      "id": "sig_de_pm_m13_prep_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M13-assessment-data-proactive-prep",
+      "status": "read",
+      "message": "Proactively prepared M13 assessment data (no task was assigned â€” did this while blocked on M11/M12 schema work). Created .shared/outputs/data/m13-assessment-data.json with: (1) 5 self-report quiz questions (one per skill, 3 options each mapping to beginner/intermediate/advanced), (2) 5 video prompts for AI baseline scoring, (3) scoring algorithm (self-report 40% + AI video 60%), (4) advancement threshold (70% on 2 consecutive sessions), (5) full learning path sequences for all 5 skills x 3 levels, (6) skill level display tokens for SkillProgressBar UI. Backend Engineer can use this directly when implementing M13 onboarding flow. No user DB action needed â€” this is purely reference data for the algorithm.",
+      "artifacts": [
+        ".shared/outputs/data/m13-assessment-data.json"
+      ],
+      "timestamp": "2026-03-23T01:20:00Z"
+    },
+    {
+      "id": "sig_be_pm_m11_m12_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M11-M12-observation-guide-micro-practice",
+      "message": "M11 (Observation Guide) + M12 (Micro-Practice Stepper) fully implemented and deployed to production.\n\nM11 deliverables:\n- Schema: observationGuide Json? added to Clip\n- Types: ObservationMoment + ObservationGuide interfaces\n- API: POST /api/admin/clips/[id]/observation â€” AI generates guide\n- Component: ObservationGuide.tsx (vertical timeline)\n- Component: ClipDetailTabs.tsx (Watch | How It Works tabs)\n- Clip detail page updated\n- Admin edit page: GenerateObservationGuide button\n\nM12 deliverables:\n- Schema: PracticeStep + MicroSession models\n- Types: PracticeStep + MicroFeedback interfaces\n- API: POST /api/micro-sessions â€” upload + instant micro-feedback\n- Components: StepCard, PracticeRecorder (30s SVG ring), MicroFeedbackCard, PerformanceUnlockScreen, MicroPracticeFlow\n- Route: /library/[clipId]/practice â€” new micro-practice route\n- Clip detail CTA: now routes to /practice\n\nBoth pushed to production (commit 538cbac). Build: 0 TypeScript errors.",
+      "timestamp": "2026-03-23T02:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_m13_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M13-onboarding-assessment-learning-path",
+      "message": "M13 fully implemented and deployed to production (commit d2f93e0).\n\nDeliverables:\n- Schema: SkillBaseline model + User.onboardingComplete Boolean â†’ db:push applied\n- Types: SkillLevel, SkillBaseline, SkillTrack, SkillTrackNextClip\n- API: POST /api/onboarding/complete â€” stores 5 skill baselines, marks onboardingComplete=true\n- API: GET /api/dashboard/tracks â€” computes tracks with level advancement (2+ sessions @ 70%+)\n- /onboarding: 5-screen self-rating flow â†’ processing â†’ complete â†’ /dashboard\n- /dashboard: 5-column learning path grid with SkillProgressBar + LearningPathCard per skill\n- NavBar: 'My Path' link added for signed-in users\n- Middleware: /dashboard + /onboarding auth-protected\n- Signup: redirects to /onboarding after registration\n- Build: 0 TypeScript errors",
+      "timestamp": "2026-03-23T03:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_checkpoint_20260323_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "checkpoint-saved",
+      "message": "Session checkpoint saved. Safe to restart data-engineer window.",
+      "completed_this_session": [
+        "M10: Script text for all 15 clips written to clips-seed.json. seed.ts patched. Waiting user: db:push + prisma generate + db:seed.",
+        "M11: observation_guide + practice_steps for all 15 clips written to clips-seed.json. seed.ts patched. Blocked on Backend Engineer adding observationGuide Json? + practiceSteps Json? to Clip schema.",
+        "M13 PROACTIVE: Created .shared/outputs/data/m13-assessment-data.json â€” 5 quiz questions, 5 video prompts, scoring weights, advancement thresholds, full learning path sequences, SkillProgressBar tokens. Ready for Backend Engineer to consume."
+      ],
+      "next_step": "On resume: (1) Check signal queue for BE schema-ready signal for M11. (2) Once received: run npx prisma db seed to patch all 15 clips. (3) Signal PM + Tester task-complete for M11. (4) Await M13 task assignment.",
+      "blockers": [
+        "M10 seed not run yet â€” user must run: npm run db:push + npx prisma generate + npx prisma db seed",
+        "M11 schema not added â€” Backend Engineer must add observationGuide Json? + practiceSteps Json? to schema, then signal DE"
+      ],
+      "progress_file": ".shared/outputs/data-engineer/progress.json",
+      "timestamp": "2026-03-23T01:25:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m10_m11_seeded_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "tasks": [
+        "M10-add-script-text-to-clips",
+        "M11-curate-observation-guides"
+      ],
+      "message": "M10 + M11 data fully seeded. DB verification passed: 15/15 clips have script (not null), 15/15 have observationGuide (not null), 60 PracticeStep rows (4 per clip). seed.ts rewritten to correctly handle: script (Text), observationGuide (Json), practiceSteps (relation â€” PracticeStep model rows). All data live in Neon DB.",
+      "db_verification": {
+        "total_clips": 15,
+        "missing_script": 0,
+        "missing_observation_guide": 0,
+        "total_practice_steps": 60,
+        "avg_steps_per_clip": 4
+      },
+      "artifacts": [
+        "prisma/seed.ts (rewritten â€” handles Text, Json, and relation fields)",
+        ".shared/outputs/data/clips-seed.json (v1.2)",
+        ".shared/outputs/data/m13-assessment-data.json (M13 prep â€” ready for BE)"
+      ],
+      "timestamp": "2026-03-23T01:35:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_sample_data_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "seed-sample-data",
+      "message": "Sample data seeded and DB verified. 6 realistic learner profiles created with full learning activity histories.\n\nDB counts:\n- 6 sample users (sarah.chen, marcus.williams, priya.patel, jake.torres, emma.lindqvist, david.kim @example.com)\n- 30 SkillBaselines (5 per user, one per skill)\n- 63 UserSessions with full FeedbackResult JSON (overallScore, dimensions, summary, positives, improvements, steps, tips)\n- 33 MicroSessions with MicroFeedback JSON (verdict, headline, detail)\n\nScript: scripts/seed-sample-data.ts\nCommand: npm run db:sample\nAll passwords: SamplePass123!\nIdempotent: safe to re-run (skips existing users).\n\nVerification script: scripts/verify-sample-data.ts â€” runs via npx tsx scripts/verify-sample-data.ts",
+      "artifacts": [
+        "scripts/seed-sample-data.ts",
+        "scripts/verify-sample-data.ts"
+      ],
+      "db_verification": {
+        "sample_users": 6,
+        "user_sessions": 63,
+        "micro_sessions": 33,
+        "skill_baselines": 30
+      },
+      "timestamp": "2026-03-23T05:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_reporter_pm_session_003",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-complete",
+      "message": "Reporter session complete (2026-03-23). All documentation current through M13.\n\nCompleted this session:\n- activity-log.md: appended M7/M8 complete, BUG-001 assigned, BUG-002 closed, M9 active, M10/M11/M12/M13 all completion events\n- shared-knowledge.md: updated to phase 10-personalization, M0â€“M13 status, new architecture facts\n- onboarding.md: full rewrite â€” current milestone table (M0â€“M13), 8 roles, new routes/paths, updated DO NOTs\n- Milestone reports written: M7, M8, M10, M11, M12, M13 (in .shared/outputs/reports/)\n\nGaps detected (action required):\n1. TESTER: M10/M11/M12/M13 tester_approved still false â€” Tester session needed urgently\n2. PM: After tester sign-off, update milestones.json tester_approved + project-state.json milestones_complete for M11/M12/M13\n3. DATA ENGINEER activity log: M10+M11 seeding confirmed in DB â€” should be added to log next session",
+      "timestamp": "2026-03-23T04:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_user_pm_m14m15_001",
+      "from": "user",
+      "to": "pm",
+      "type": "direction",
+      "task": "m14-m15-new-requirements",
+      "priority": "high",
+      "message": "New requirements from user (2026-03-23):\n\n1. M14 â€” Content Expansion: Expand lesson library to 100+ clips. PRIORITIZE movies with publicly available screenplays (IMSDB, Scripts.com). Users can see screenplay source links. New filters: by film, by screenplay availability.\n\n2. M15 â€” Performing Foundation: Build a NEW section /foundation (separate from the clip practice section). Udemy-style structured learning: 3 courses (Voice, Verbal, Body Language), 10+ lessons each. Each lesson = theory + YouTube examples + quiz. Progress tracked per user.\n\nAll signals dispatched to: data-engineer (M14 clip curation + M15 curriculum), backend-engineer (M14 schema + M15 full build), designer (M14 filter UI + M15 full section design), builder (M14 + M15 db migrations), tester (M14 + M15 review), reporter (M14 + M15 docs).\n\nMilestones.json updated. Project-state.json updated with all task assignments.\n\nPhase order: M14 parallel with M15 design. M15 build starts after designer delivers spec.",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_m14m15_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "message": "M14 + M15 design specs delivered: .shared/outputs/design/m14-spec.md and .shared/outputs/design/m15-spec.md. Both include ASCII mockups, Tailwind classes, component types, and all interactive states.",
+      "timestamp": "2026-03-23T07:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_m14m15_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "message": "M14 + M15 backend implementation complete. Changes: (1) screenplaySource added to Clip schema. (2) Admin CMS ClipForm updated. (3) Library filters: Film + Screenplay added. (4) ClipCard screenplay badge added. (5) Clip detail screenplay link added. (6) Foundation section: 5 new Prisma models, /foundation pages, quiz client, NavBar link, seed.ts updated. Run: npm run db:push -> npx prisma generate -> npm run db:seed to apply.",
+      "timestamp": "2026-03-23T08:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_m14_m15_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M14-M15-content-expansion-foundation",
+      "message": "M14 + M15 fully implemented and pushed to production (commit 2aa5adb).\n\nM14 â€” Content Expansion (already implemented by other roles, verified complete):\n- screenplaySource on Clip (schema + seed + admin form)\n- Library film filter + screenplay toggle filter\n- ClipCard screenplay badge, clip detail 'Read Screenplay' link\n\nM15 â€” Performing Foundation:\n- Foundation schema: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress models\n- /foundation course catalog page (gradient cards, progress bars)\n- /foundation/[courseSlug] course page (breadcrumb, lesson list with checkmarks)\n- /foundation/[courseSlug]/[lessonSlug] lesson page (theory HTML, YouTube examples, MCQ quiz)\n- LessonClient.tsx: quiz state, 60% pass threshold, per-option coloring post-submit\n- POST /api/foundation/progress â€” upsert quiz progress\n- GET /api/foundation/progress/[lessonId] â€” fetch user progress\n- NavBar: Foundation link added\n- seed.ts: Foundation curriculum seeding from foundation-curriculum.json\n\nP1 Fix (from designer ui-review M11-M13): ObservationGuide.tsx CTAs /record â†’ /practice (both occurrences)\n\nBuild: 0 TypeScript errors. PENDING USER: npm run db:push + npx prisma generate + npm run db:seed to activate Foundation content.",
+      "timestamp": "2026-03-23T08:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_review_m11m12m13_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "ui-review-m11-m12-m13",
+      "message": "M11/M12/M13 UI review complete. Verdict: PASS overall (10/10 components pass). Full report at .shared/outputs/design/ui-review-m11-m12-m13.md. One P1 fix required: ObservationGuide.tsx (lines 31 + 86) â€” both CTAs link to /record instead of /practice, bypassing the M12 stepper. Fix assigned to backend-engineer. All other findings are low-priority polish notes.",
+      "timestamp": "2026-03-23T09:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m14_m15_complete_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "tasks": [
+        "M14-curate-clips",
+        "M15-foundation-curriculum"
+      ],
+      "message": "M14 + M15 data complete.\n\nM14 â€” clips-100-seed.json:\n- 65 verified YouTube clips (all IDs confirmed via YouTube Data API)\n- 38 unique films with publicly available screenplays\n- All 65 clips have: script, observation_guide (5-6 moments), practice_steps (4 steps), screenplay_source\n- Skill coverage: eye-contact(14) open-posture(14) active-listening(14) vocal-pacing(15) confident-disagreement(8)\n- Difficulty: beginner(11) intermediate(22) advanced(32)\n- File: .shared/outputs/data/clips-100-seed.json\n\nM15 â€” foundation-curriculum.json:\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 30 lessons total (10 per course)\n- 60 YouTube examples (all verified IDs)\n- 120 quiz questions (4 per lesson)\n- File: .shared/outputs/data/foundation-curriculum.json\n\nBuilder is unblocked to run: npm run db:push + npx prisma generate + npm run db:seed\nNote: YouTube API quota exhausted this session â€” quota resets daily if further searches needed.",
+      "artifacts": [
+        ".shared/outputs/data/clips-100-seed.json",
+        ".shared/outputs/data/foundation-curriculum.json"
+      ],
+      "stats": {
+        "clips": 65,
+        "movies": 38,
+        "foundation_courses": 3,
+        "foundation_lessons": 30,
+        "quiz_questions": 120,
+        "youtube_examples": 60
+      },
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_pm_m16_tactics_001",
+      "from": "data-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "m16-communication-tactics-taxonomy",
+      "message": "M16 tactics taxonomy complete. 50 communication techniques across 5 domains.\n\nFile: .shared/outputs/data/communication-tactics.json\n\nAll DE tasks complete this session:\n- M14: 65 verified clips â†’ .shared/outputs/data/clips-100-seed.json\n- M15: 30 lessons Ã— 3 courses â†’ .shared/outputs/data/foundation-curriculum.json\n- M16: 50 tactics â†’ .shared/outputs/data/communication-tactics.json\n\nBuilder is unblocked for M14+M15 seeding. Backend Engineer is notified of M16 tactics file.",
+      "stats": {
+        "total_tactics": 50,
+        "domains": 5
+      },
+      "timestamp": "2026-03-23T10:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_pm_m16_spec_001",
+      "from": "designer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "m16-learning-materials-builder-ui",
+      "message": "M16 UI spec delivered: .shared/outputs/design/m16-spec.md\n\nAll 4 admin views fully specced with ASCII mockups, Tailwind classes, accessibility notes, and component breakdown:\n- Job List: status chips, result count stats, Run/View Results actions\n- Create Job Form: tag input for keywords, conditional technique field, pill difficulty selector, Create & Run button\n- Results Browser: 3-col grid, color-coded relevance score badges (green>=7 / amber 4-6 / red <4), optimistic approve/reject with undo\n- Approve Modal: 2-panel layout (embed + metadata form), success toast\n\nBackend Engineer notified. Designer is unblocked â€” no further M16 design tasks pending.",
+      "artifacts": [
+        ".shared/outputs/design/m16-spec.md"
+      ],
+      "timestamp": "2026-03-23T11:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_m16_complete_001",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M16-learning-materials-builder",
+      "message": "M16 fully implemented and pushed (commit 6bd9218). Schema: CrawlJob+CrawlResult. Services: youtube-crawler.ts + clip-relevance-scorer.ts. API: CRUD/run/approve/reject routes. Admin UI: job list, create form (KeywordsTagInput, difficulty pills, Create&Run), job detail (results grid, filter/sort, optimistic approve/reject, ApproveModal). BLOCKER: YOUTUBE_API_KEY required in Vercel (Builder). Also needs npm run db:push after deploy.",
+      "timestamp": "2026-03-23T12:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_pm_m16_complete_001_dup",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "task-complete",
+      "task": "M16-learning-materials-builder",
+      "message": "DUPLICATE — see sig_be_pm_m16_complete_001",
+      "timestamp": "2026-03-23T12:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "M7-auth-system",
+      "message": "You are the Backend Engineer for seeneyu. Your first milestone is M7: implement the full authentication system using NextAuth.js v4 with email+password credentials, role-based access (learner vs admin), middleware-protected /admin/* routes, and sign up / sign in pages. Follow your CLAUDE.md session protocol. Read the project state, then start from Step 1 of M7.",
+      "context": "../../.shared/state/project-state.json, ../../.shared/state/milestones.json, ../../prisma/schema.prisma, ../../src/lib/types.ts",
+      "priority": "high",
+      "timestamp": "2026-03-22T18:00:00Z",
+      "status": "read",
+      "to": "backend-engineer"
+    },
+    {
+      "id": "sig_pm_be_m10_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M10-script-aware-coaching-loop",
+      "priority": "high",
+      "message": "New milestone M10: Script-Aware Coaching Loop. Fix the broken 'Submit for AI Feedback' feature AND add script/character context to the practice + feedback experience. Full spec below.\n\n## ROOT CAUSE OF BUG\nThe feedback API (src/app/api/sessions/[id]/feedback/route.ts) returns HTTP 422 if `frameUrls` is null or empty. For short recordings, no frames are captured (frame timer fires every 5s, so a <5s practice has 0 frames). Fix: capture 1 frame at 1s after recording starts (already in code but only pushes if framesRef.current.length === 0 — this is correct, but also add a fallback in the API: if 0 frames available, call GPT-4o with text-only — no images — using model gpt-4o-mini with just the prompt text).\n\n## TASK 1 — Schema: Add script field\nIn prisma/schema.prisma, add to Clip model:\n  script  String?  @db.Text\n\nThen run: npm run db:push\n\n## TASK 2 — Types: Add steps to FeedbackResult\nIn src/lib/types.ts, add to FeedbackResult:\n  steps: { number: number; action: string; why: string }[]\n\n## TASK 3 — Enhance AI prompt\nUpdate buildPrompt() in feedback/route.ts:\n- Pass characterName, actorName, movieTitle, sceneDescription, and script into the prompt\n- Prompt context should say: 'The learner was mimicking [characterName] ([actorName]) from [movieTitle]. The script/dialogue they were asked to perform: [script]. Scene: [sceneDescription].'\n- Add to the JSON response schema: \"steps\": [ { \"number\": 1, \"action\": \"<specific physical action>\", \"why\": \"<1 sentence reason>\" }, ... ] (3-5 steps, ordered by priority)\n- Also fix the no-frames fallback: if frameUrls.length === 0, send text-only prompt to gpt-4o (no image_url content blocks). Still return valid FeedbackResult.\n\n## TASK 4 — Record page: character banner + script panel\nWait for Designer to deliver UI specs (.shared/outputs/design/m10-spec.md) before implementing these UI components. Designer is working in parallel — their spec will arrive in your signal queue. Once you have it:\n- record/page.tsx: fetch clip including characterName, actorName, movieTitle, script. Pass to RecordClient.\n- RecordClient.tsx: add CharacterBanner (top of page, above webcam) and ScriptPanel (below annotations checklist) per Designer spec.\n\n## TASK 5 — Feedback page: Action Plan section\nIn feedback/[sessionId]/page.tsx FeedbackDisplay:\n- Add an 'Action Plan' section between the positives/improvements grid and the AI Tips row\n- Display feedback.steps as numbered cards: step number, action text, why text\n- Use Designer spec for styling.\n\n## TASK 6 — Update Admin CMS ClipForm for script field\nIn src/app/admin/clips/new/page.tsx and src/app/admin/clips/[id]/edit/page.tsx:\n- Add a 'Script / Dialogue' textarea field for the new script column\n- This also fixes BUG-001 scope (while you're in the form, fix score dimension ranges 1-10 → 1-3 at the same time)\n\n## TASK 7 — Signal Data Engineer\nAfter db:push is done and schema is live, write a signal to data-engineer.json telling them the script field is ready and they can add script text to the 15 clips in the seed file.\n\n## After completion\nSignal Tester (review-request) and PM (task-complete).",
+      "context": "src/app/api/sessions/[id]/feedback/route.ts, src/app/library/[clipId]/record/RecordClient.tsx, src/app/library/[clipId]/record/page.tsx, src/app/feedback/[sessionId]/page.tsx, src/lib/types.ts, prisma/schema.prisma",
+      "timestamp": "2026-03-22T23:45:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m11_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M11-observation-guide",
+      "priority": "high",
+      "message": "M11: Observation Guide — pre-practice clip analysis. Start immediately (parallel with Designer who is producing specs).\n\n## TASK 1 — Schema: observationGuide field\nAdd to Clip model in prisma/schema.prisma:\n  observationGuide Json?  // array of { atSecond, technique, what, why }\nRun: npm run db:push\n\n## TASK 2 — Types: ObservationGuide\nIn src/lib/types.ts add:\n  export interface ObservationMoment { atSecond: number; technique: string; what: string; why: string }\n  export interface ObservationGuide { moments: ObservationMoment[]; headline: string }\nAdd observationGuide: ObservationGuide | null to Clip interface.\n\n## TASK 3 — Admin: AI generation route\nCreate: src/app/api/admin/clips/[id]/observation/route.ts\nPOST handler: given clipId, call GPT-4o with the clip's annotation, sceneDescription, characterName, and script. Prompt: generate an ObservationGuide JSON with 4-6 moments identifying specific techniques used (timestamp, name, what the character does, why it works). Save to clip.observationGuide.\n\n## TASK 4 — Component: ObservationGuide.tsx\nCreate: src/components/ObservationGuide.tsx\nRead Designer spec from .shared/outputs/design/m11-spec.md (Designer is writing this in parallel — check your signal queue for their delivery signal before finalizing the component).\nCore: vertical timeline list. Each item: timestamp badge, technique name, what text, why text.\nGraceful: if observationGuide is null, show 'Analysis coming soon' placeholder.\n\n## TASK 5 — Integrate into clip detail page\nIn src/app/library/[clipId]/page.tsx:\nFetch clip including observationGuide field.\nAdd a tabbed layout below the YouTube embed: 'Watch' tab (current view) | 'How It Works' tab (ObservationGuide component).\n\n## TASK 6 — Signal Data Engineer\nAfter db:push, signal data-engineer.json that the observationGuide field is in schema and they can add curated observation_guide data to clips-seed.json for all 15 clips.\n\n## After completion: signal Tester + PM.",
+      "context": "prisma/schema.prisma, src/lib/types.ts, src/app/library/[clipId]/page.tsx",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m12_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M12-micro-practice-steps",
+      "priority": "high",
+      "message": "M12: Micro-Practice Steps (Duolingo-style). BLOCKED until M11 is complete. Start planning, implement after M11 ships.\n\n## Context\nUser feedback: practice must be split into small steps so the learner can build skill incrementally before doing the full performance. Each step focuses on ONE skill element. Max 30s recording per step. Instant feedback per step.\n\n## TASK 1 — Schema\nAdd to prisma/schema.prisma:\n  model PracticeStep {\n    id            String   @id @default(cuid())\n    clipId        String\n    clip          Clip     @relation(fields: [clipId], references: [id])\n    stepNumber    Int\n    skillFocus    String   // e.g. 'Eye Contact Duration', 'Vocal Pause'\n    instruction   String   @db.Text // what to do in this step\n    tip           String?  @db.Text // coaching tip for this step\n    targetDurationSec Int  @default(20)\n  }\n  model MicroSession {\n    id           String   @id @default(cuid())\n    sessionId    String?  // parent full session if any\n    clipId       String\n    stepNumber   Int\n    recordingUrl String?\n    frameUrls    String?  @db.Text\n    audioUrl     String?  // for Whisper transcription\n    transcript   String?  @db.Text\n    feedback     Json?\n    status       String   @default('recording')\n    createdAt    DateTime @default(now())\n  }\nRun: npm run db:push\n\n## TASK 2 — Types\nAdd PracticeStep, MicroFeedback types to src/lib/types.ts.\n\n## TASK 3 — API: micro-sessions\nCreate: src/app/api/micro-sessions/route.ts (POST: create micro session, upload recording)\nCreate: src/app/api/micro-sessions/[id]/feedback/route.ts (POST: analyze step recording)\nFeedback prompt should be highly focused: only score the ONE skill element for this step (e.g. 'Only evaluate Eye Contact Duration — ignore everything else'). Return pass (score ≥ 7/10) or needs-work.\nFor vocal-pacing + confident-disagreement clips: transcribe audio via Whisper (openai.audio.transcriptions) before sending to GPT-4o. Include transcript in the analysis prompt.\n\n## TASK 4 — Practice Steps data\nAfter db:push, signal data-engineer.json to add practice_steps (3-5 per clip) to clips-seed.json.\n\n## TASK 5 — UI: Micro-Practice Flow\nCreate: src/app/library/[clipId]/practice/page.tsx — server page, fetches clip + practiceSteps\nCreate: src/components/MicroPracticeFlow.tsx — stepper UI per Designer spec (m12-spec.md)\nCreate: src/components/MicroRecorder.tsx — recorder with 30s countdown ring, captures frames + audio blob\nOn the clip detail page: change 'Record Practice' button to route to /practice instead of /record.\n\n## After completion: signal Tester + PM. Also signal Data Engineer to add practice_steps seed data.",
+      "context": "prisma/schema.prisma, src/lib/types.ts, src/app/library/[clipId]/page.tsx, src/app/api/sessions/[id]/feedback/route.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m13_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "M13-onboarding-assessment",
+      "priority": "normal",
+      "message": "M13: Onboarding Assessment & Personalized Learning Path. BLOCKED until M12 is complete. Brief for planning:\n\n## Concept\nNew users complete a 5-skill screening when they sign up. The system scores their baseline level per skill category. A personalized learning path (ordered clip sequence) is generated. Dashboard shows their path + progress.\n\n## TASK 1 — Schema\n  model SkillBaseline {\n    id           String @id @default(cuid())\n    userId       String @unique\n    user         User   @relation(fields: [userId], references: [id])\n    eyeContact   String // 'beginner'|'intermediate'|'advanced'\n    openPosture  String\n    activeListening String\n    vocalPacing  String\n    confidentDisagreement String\n    assessedAt   DateTime @default(now())\n  }\n  model LearningPath {\n    id       String @id @default(cuid())\n    userId   String\n    user     User   @relation(fields: [userId], references: [id])\n    entries  Json   // array of { clipId, skillCategory, order, completed, completedAt }\n    generatedAt DateTime @default(now())\n    updatedAt   DateTime @updatedAt\n  }\n\n## TASK 2 — Onboarding flow\nCreate: src/app/onboarding/ — multi-step assessment (5 screens)\nSelf-rating per skill + optional 10s sample recording per skill.\nPOST to /api/onboarding/assessment → stores SkillBaseline + generates LearningPath.\n\n## TASK 3 — Learning path algorithm\nCreate: src/app/api/onboarding/learning-path/route.ts\nAlgorithm: for each skill, select clips at the user's assessed level first, then next level. Order by replicationDifficulty ASC. Interleave skills so the path stays varied.\n\n## TASK 4 — Dashboard\nCreate: src/app/dashboard/page.tsx\nShow 5 skill columns with level + progress + next recommended clip card.\n\n## After completion: signal Tester + PM.",
+      "context": "prisma/schema.prisma, src/lib/types.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_session_end_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. Outstanding work this session — M10, M11, M12, M13 all complete. Next session: (1) Standby for Tester sign-off feedback — fix any issues they file. (2) Once Tester approves, signal Builder to deploy latest commits. (3) Watch for prisma generate EPERM issue on Windows — Vercel postinstall handles it in production. (4) M13 learning path: AI video scoring component (60% weight) is scaffolded but currently uses self-report only — this is a future improvement item when enough session data exists.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_bug001_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "fix-BUG-001-clipform-score-ranges",
+      "message": "BUG-001 (medium) assigned to you. ClipForm score dimension fields in the Admin CMS allow values 1-10, but the model (difficulty score dimensions) expects 1-3. Fix the input field constraints in the admin clip create/edit form to limit score inputs to range 1-3. Reference: .shared/outputs/bugs/bug-001.json. After fixing, signal Tester for verification.",
+      "context": "src/app/admin/clips/new/page.tsx, src/app/admin/clips/[id]/edit/page.tsx",
+      "priority": "normal",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_backend-engineer",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read",
+      "to": "backend-engineer"
+    },
+    {
+      "id": "sig_designer_be_m10_specs_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "M10-UI-specs-ready",
+      "priority": "high",
+      "message": "M10 UI specs are complete and ready for implementation. File: .shared/outputs/design/m10-spec.md\n\nThree components specified:\n1. CharacterBanner — compact horizontal banner above webcam. Shows character name, actor, movie title, and skill category icon. Props: characterName, actorName, movieTitle, skillCategory.\n2. ScriptPanel — card below observation checklist. Two modes: 'dialogue' (blockquote style) or 'action' (numbered list). Props: type, content, label, tip. Renders only when clip.script is non-null.\n3. ActionPlan — numbered step list on feedback page, between improvements grid and AI Tips. Props: steps[] (action + why per step). Render only when feedbackResult.steps is non-empty.\n\nKey implementation notes in spec:\n- ActionPlan left accent border: use absolute positioned element, NOT border-l-4\n- Stagger animation: inline style animationDelay per step index\n- Add fade-in-up keyframe to tailwind.config.js (spec includes exact config)\n- All design tokens align with existing design system (amber accent, bg-surface, etc.)",
+      "artifacts": [
+        ".shared/outputs/design/m10-spec.md"
+      ],
+      "timestamp": "2026-03-23T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_be_m11_m12_m13_specs_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "M11-M12-M13-UI-specs-ready",
+      "priority": "high",
+      "message": "M11, M12, and M13 UI specs all delivered. Implement in order (M11 → M12 → M13) as per blocking dependencies.\n\n## M11 — Observation Guide (.shared/outputs/design/m11-spec.md)\nComponents: ObservationTabBar (Watch | How It Works tabs on clip detail page) + ObservationGuide (vertical technique timeline with timestamp badges, what/why per entry). Graceful null state included. Admin CMS needs a 'Generate Observation Guide' button — use existing admin card patterns.\n\n## M12 — Micro-Practice Stepper (.shared/outputs/design/m12-spec.md)\nComponents: PracticeStepperLayout (top bar + progress bar + dots), StepCard (instruction + tip + jump link), PracticeRecorder (30s countdown ring SVG spec included — ring turns amber → orange → red as time runs out), MicroFeedbackCard (pass/needs-work, slides up with animate-slide-up keyframe), PerformanceUnlockScreen (celebration after all steps). New keyframe 'slide-up' to add to tailwind.config.js is in the spec.\n\n## M13 — Onboarding Assessment & Learning Path (.shared/outputs/design/m13-spec.md)\nPart A: 5-screen OnboardingShell + AssessmentSkillScreen (3-button level selector: Beginner/Intermediate/Advanced) + ProcessingScreen + OnboardingCompleteScreen.\nPart B: LearningPathDashboard (5-column grid) + SkillTrackColumn + SkillProgressBar + LearningPathCard. YouTube thumbnail URL pattern included: https://i.ytimg.com/vi/[VIDEO_ID]/mqdefault.jpg\n\nAll specs include props interfaces, full Tailwind class lists, ASCII mockups, accessibility notes, and dev implementation notes.",
+      "artifacts": [
+        ".shared/outputs/design/m11-spec.md",
+        ".shared/outputs/design/m12-spec.md",
+        ".shared/outputs/design/m13-spec.md"
+      ],
+      "timestamp": "2026-03-23T01:15:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m14_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m14-screenplay-library-expansion",
+      "priority": "medium",
+      "message": "NEW MILESTONE M14: Content Expansion — 100+ Lessons from Screenplay Films.\n\n## YOUR TASK\nThree things to do for M14:\n\n### TASK 1 — Schema: Add screenplaySource field\nIn prisma/schema.prisma, add to Clip model:\n  screenplaySource  String?\n\nRun: npm run db:push && npx prisma generate\n\nSignal data-engineer when db:push is done so they know the field exists.\n\n### TASK 2 — Admin CMS: Add screenplaySource input\nIn src/app/admin/clips/new/page.tsx and src/app/admin/clips/[id]/edit/page.tsx:\n- Add a \"Screenplay Source URL\" text input field for screenplaySource\n- Place it after the Script textarea\n\n### TASK 3 — Library: Film filter + screenplay badge\nIn src/app/library/page.tsx:\n- Add \"Filter by Film\" dropdown (derive unique movieTitle values from clips)\n- Add \"Has Screenplay\" checkbox filter (shows only clips where screenplaySource is not null)\n\nIn src/components/ClipCard.tsx:\n- Show a small amber badge \"Screenplay\" when clip.screenplaySource is set\n\nIn src/app/library/[clipId]/page.tsx (clip detail):\n- Show a \"Read Screenplay\" link button when screenplaySource is set (opens in new tab)\n\nWait for Designer to deliver M14 UI spec (.shared/outputs/design/m14-spec.md) for exact styling of the filter and badge.\n\n### After M14 completion\nSignal PM and Tester.",
+      "context": "prisma/schema.prisma, src/app/library/page.tsx, src/components/ClipCard.tsx, src/app/admin/clips/new/page.tsx",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m15_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m15-performing-foundation-section",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation Section (separate from library/practice).\n\n## OVERVIEW\nBuild a structured learning section at /foundation — completely separate from the clip practice section. Think Udemy: courses → lessons → theory + examples + quiz. Three courses: Voice Mastery, Verbal Communication, Body Language Fundamentals.\n\n## TASK 1 — Schema: New Foundation Models\nAdd to prisma/schema.prisma:\n\nmodel FoundationCourse {\n  id          String            @id @default(cuid())\n  slug        String            @unique\n  title       String\n  description String\n  icon        String\n  color       String\n  order       Int\n  lessons     FoundationLesson[]\n  createdAt   DateTime          @default(now())\n}\n\nmodel FoundationLesson {\n  id          String              @id @default(cuid())\n  courseId    String\n  course      FoundationCourse    @relation(fields: [courseId], references: [id])\n  slug        String\n  title       String\n  theoryHtml  String              @db.Text\n  order       Int\n  examples    LessonExample[]\n  questions   QuizQuestion[]\n  progress    FoundationProgress[]\n  @@unique([courseId, slug])\n}\n\nmodel LessonExample {\n  id          String           @id @default(cuid())\n  lessonId    String\n  lesson      FoundationLesson @relation(fields: [lessonId], references: [id])\n  youtubeId   String\n  title       String\n  description String\n  startTime   Int?\n}\n\nmodel QuizQuestion {\n  id           String           @id @default(cuid())\n  lessonId     String\n  lesson       FoundationLesson @relation(fields: [lessonId], references: [id])\n  question     String\n  options      Json\n  correctIndex Int\n  explanation  String\n  order        Int              @default(0)\n}\n\nmodel FoundationProgress {\n  id          String           @id @default(cuid())\n  userId      String\n  user        User             @relation(fields: [userId], references: [id])\n  lessonId    String\n  lesson      FoundationLesson @relation(fields: [lessonId], references: [id])\n  quizScore   Int?\n  quizPassed  Boolean          @default(false)\n  completedAt DateTime?\n  @@unique([userId, lessonId])\n}\n\nAdd FoundationProgress[] to User model.\n\nRun: npm run db:push && npx prisma generate\n\n## TASK 2 — API Routes\nsrc/app/api/foundation/progress/route.ts — POST: mark lesson complete, save quiz score\nsrc/app/api/foundation/progress/[lessonId]/route.ts — GET: get user progress for a lesson\n\n## TASK 3 — Pages (wait for Designer spec in .shared/outputs/design/m15-spec.md)\nsrc/app/foundation/page.tsx — Course catalog: 3 course cards with title, description, icon, lesson count, user progress % \nsrc/app/foundation/[courseSlug]/page.tsx — Course page: lesson list with completion checkmarks, lesson order\nsrc/app/foundation/[courseSlug]/[lessonSlug]/page.tsx — Lesson page:\n  - Section 1: Theory (render theoryHtml safely with dangerouslySetInnerHTML, styled with typography)\n  - Section 2: Examples (YouTube embeds with title + description)\n  - Section 3: Quiz (MCQ cards, one at a time or all at once, submit → show score + explanations)\n  - Section 4: Navigation (Prev Lesson / Next Lesson buttons)\n  - Progress auto-saved when quiz is submitted\n\n## TASK 4 — NavBar\nAdd \"Foundation\" link to src/components/NavBar.tsx (next to Library)\n\n## TASK 5 — Seed\nWait for data-engineer to deliver .shared/outputs/data/foundation-curriculum.json.\nUpdate prisma/seed.ts to seed all FoundationCourse, FoundationLesson, LessonExample, QuizQuestion records.\n\n## After completion\nSignal Tester and PM.",
+      "context": "prisma/schema.prisma, src/components/NavBar.tsx, .shared/outputs/design/m15-spec.md (incoming from designer)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_be_m14m15_spec_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "spec-ready",
+      "message": "M14 and M15 UI specs delivered. m14-spec.md covers: Library Film filter dropdown, Screenplay toggle filter, ClipCard screenplay badge (top-right thumbnail), clip detail screenplay link. m15-spec.md covers: course catalog (3 cards), course page (lesson list), lesson page (theory/examples/quiz) with all Tailwind classes and interactive states.",
+      "context": ".shared/outputs/design/m14-spec.md, .shared/outputs/design/m15-spec.md",
+      "timestamp": "2026-03-23T07:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_be_p1_observationguide_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "bug-fix-request",
+      "priority": "p1",
+      "task": "fix-observationguide-cta-href",
+      "message": "P1 FIX REQUIRED — ObservationGuide.tsx CTA href wrong. Both CTAs link to /record but should link to /practice (the M12 micro-practice stepper). Fix both:\n\n  Line ~31 (null-state CTA): href={`/library/${clipId}/record`} → href={`/library/${clipId}/practice`}\n  Line ~86 (main CTA): href={`/library/${clipId}/record`} → href={`/library/${clipId}/practice`}\n\nWithout this fix, the Observation Guide bypasses the M12 stepper entirely. Tester sign-off on M11 is on hold until confirmed.",
+      "timestamp": "2026-03-23T09:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_m16_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m16-learning-materials-builder",
+      "priority": "high",
+      "message": "NEW MILESTONE M16: Learning Materials Builder — Backend Implementation.\n\nWAIT for Designer to deliver m16-spec.md (.shared/outputs/design/m16-spec.md) before building admin pages. Start schema + services + API immediately.\n\n## TASK 1 — Schema: CrawlJob + CrawlResult\nAdd to prisma/schema.prisma:\n\n  model CrawlJob {\n    id            String       @id @default(cuid())\n    name          String\n    skillCategory String       // standard category OR custom tactic name\n    technique     String?      // specific named tactic, e.g. 'Triangle Gaze'\n    keywords      Json         // String[] of YouTube search terms\n    difficulty    String?      // 'beginner' | 'intermediate' | 'advanced' | 'all'\n    maxResults    Int          @default(20)\n    status        String       @default('pending') // pending | running | complete | failed\n    errorMessage  String?      @db.Text\n    createdBy     String       // admin userId\n    createdAt     DateTime     @default(now())\n    updatedAt     DateTime     @updatedAt\n    results       CrawlResult[]\n    @@index([status])\n    @@index([createdBy])\n  }\n\n  model CrawlResult {\n    id               String    @id @default(cuid())\n    jobId            String\n    job              CrawlJob  @relation(fields: [jobId], references: [id], onDelete: Cascade)\n    youtubeId        String\n    title            String\n    channelName      String\n    thumbnailUrl     String\n    description      String    @db.Text\n    durationSec      Int?\n    publishedAt      String?\n    viewCount        Int?\n    relevanceScore   Float     @default(0) // 0-10 from GPT-4o\n    aiAnalysis       String?   @db.Text    // why this matches the criteria\n    status           String    @default('pending') // pending | approved | rejected\n    approvedClipId   String?   // link to Clip if approved\n    createdAt        DateTime  @default(now())\n    @@index([jobId])\n    @@index([jobId, status])\n  }\n\nRun: npm run db:push && npx prisma generate\n\n## TASK 2 — Types\nIn src/lib/types.ts add:\n  CrawlJob, CrawlResult, CrawlJobStatus, CrawlResultStatus types\n\n## TASK 3 — YouTube Crawler Service\nCreate: src/services/youtube-crawler.ts\n- Uses YOUTUBE_API_KEY from env\n- Function: searchYouTube(query: string, maxResults: number) → YouTubeSearchResult[]\n- YouTube Data API v3 endpoint: https://www.googleapis.com/youtube/v3/search\n- Params: q, part=snippet, type=video, maxResults, relevantLanguage=en, safeSearch=strict\n- Also call videos endpoint for duration: https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics\n- Return: { youtubeId, title, channelName, thumbnailUrl, description, durationSec, publishedAt, viewCount }\n\n## TASK 4 — Relevance Scorer Service\nCreate: src/services/clip-relevance-scorer.ts\n- Function: scoreClipRelevance(result: YouTubeSearchResult, criteria: JobCriteria) → { score: number, analysis: string }\n- Call GPT-4o (gpt-4o-mini for cost efficiency) with:\n  - Criteria: skill category, technique, target difficulty\n  - Video: title, description, channel name\n  - Prompt: 'Rate this YouTube video 0-10 for usefulness as a communication skill training clip. Criteria: [criteria]. Video: [title] by [channel]. [description]. Return JSON: { score: 0-10, analysis: \"1-2 sentence reason\" }'\n- Batch scoring: process results in parallel (Promise.all with rate limit)\n\n## TASK 5 — API Routes\nCreate: src/app/api/admin/crawl-jobs/route.ts\n  GET: list all jobs (paginated, sorted by createdAt desc)\n  POST: create job, status=pending, createdBy from session\n\nCreate: src/app/api/admin/crawl-jobs/[id]/route.ts\n  GET: job detail + results\n\nCreate: src/app/api/admin/crawl-jobs/[id]/run/route.ts\n  POST: execute job\n    1. Set job status=running\n    2. Build YouTube query from job.keywords + job.technique + job.skillCategory\n    3. Call youtube-crawler.ts → get candidates\n    4. For each result: call clip-relevance-scorer.ts\n    5. Save all CrawlResult records to DB (sorted by relevanceScore desc)\n    6. Set job status=complete\n    Error handling: set status=failed + errorMessage\n\nCreate: src/app/api/admin/crawl-jobs/[id]/results/[resultId]/route.ts\n  PATCH: body { action: 'approve' | 'reject', clipMetadata?: {...} }\n    - reject: set result.status=rejected\n    - approve: create Clip record from clipMetadata + result data, set result.status=approved + approvedClipId\n      After creating Clip: automatically POST to /api/admin/clips/[clipId]/observation to generate ObservationGuide\n      Then signal Data Engineer to add practice_steps (or auto-generate them)\n\n## TASK 6 — Admin Pages (wait for m16-spec.md from Designer)\nCreate:\n  src/app/admin/crawl-jobs/page.tsx — job list\n  src/app/admin/crawl-jobs/new/page.tsx — create form\n  src/app/admin/crawl-jobs/[id]/page.tsx — job detail + results browser\nAdd 'Learning Materials' link to admin sidebar/nav.\n\n## TASK 7 — Env var\nRequires YOUTUBE_API_KEY in .env.local and Vercel env vars.\nDocument in a signal to Builder after implementation.\n\n## After completion\nSignal Tester + PM.",
+      "context": "prisma/schema.prisma, src/app/api/admin/, src/app/admin/, .shared/outputs/design/m16-spec.md (incoming)",
+      "timestamp": "2026-03-23T09:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_be_m16_tactics_ready_001",
+      "from": "data-engineer",
+      "to": "backend-engineer",
+      "type": "data-ready",
+      "task": "m16-communication-tactics-taxonomy",
+      "message": "M16 communication tactics taxonomy ready.\n\nFile: .shared/outputs/data/communication-tactics.json\n\nStats:\n- 50 tactics total\n- Domains: vocal(10), verbal(16), body(12), presence(5), rapport(7)\n- Difficulty: beginner(16), intermediate(24), advanced(10)\n- Each tactic has: id, name, domain, description, difficulty, searchKeywords (3-5), scoringHints\n\nThe searchKeywords are designed for YouTube Data API v3 searches in the crawl job system. The scoringHints are for the GPT-4o relevance scorer to identify good vs poor examples.",
+      "artifact": ".shared/outputs/data/communication-tactics.json",
+      "timestamp": "2026-03-23T10:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_ds_be_m16_spec_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "spec-ready",
+      "task": "m16-learning-materials-builder-ui",
+      "priority": "high",
+      "message": "M16 UI spec delivered. Full spec at: .shared/outputs/design/m16-spec.md\n\nCovers all 4 views with ASCII mockups, Tailwind classes, and component breakdown:\n1. Job List (/admin/crawl-jobs) — JobListRow with status chips (pending/running/complete/failed), Run/View Results buttons, result count stats\n2. Create Job Form (/admin/crawl-jobs/new) — KeywordsTagInput (tag chips, Enter to add), Skill dropdown with Special Technique conditional field, difficulty pill group, Create vs Create & Run submit buttons\n3. Job Detail + Results Browser (/admin/crawl-jobs/[id]) — 4-step run progress indicator, ResultCard grid (3-col desktop), relevance score badge (green ≥7 / amber 4-6 / red <4), optimistic approve/reject with undo\n4. Approve Modal (overlay) — 2-panel: YouTube embed left + metadata form right, 'Create Clip & Generate Guide' CTA, success toast\n\nComponent suggestions: JobListRow, KeywordsTagInput, ResultCard, ResultsGrid, JobRunProgress, ApproveModal. All in src/components/admin/.",
+      "context": ".shared/outputs/design/m16-spec.md",
+      "timestamp": "2026-03-23T11:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_be_bug004_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "bug-fix",
+      "task": "BUG-004-film-filter-collapse",
+      "priority": "p1",
+      "message": "BUG-004 (P1): Library page FILM filter shows 30+ film tags with no collapse — covers entire mobile screen.\n\nWait for Designer to deliver: .shared/outputs/design/bug-004-film-filter-fix.md\nThen implement per spec. Key requirements:\n\n## Desktop behavior\n- Default (collapsed): show first row of tags only (approx 6-8 tags)\n- Show a '+ N more ▾' amber ghost pill as the last item\n- Clicking it expands to show ALL tags\n- Expanded state shows 'Show fewer ▴' pill\n- Animate with CSS: `transition-all duration-300` on max-height\n\n## Mobile (<768px)\n- Replace pill grid entirely with a native <select> dropdown\n- No pills rendered on mobile\n- Use responsive classes: `hidden sm:flex` (pills) + `flex sm:hidden` (select)\n\n## Implementation notes\n- Add `useState(false)` for collapsed/expanded to the film filter client component\n- Count total tags, compute how many fit in first row (or use a fixed threshold e.g. 8)\n- The '+ N more' count = totalTags - visibleCount\n- Likely in: src/components/library/FilmFilter.tsx or similar (check where film tags render)\n- Read bug-004-film-filter-fix.md for exact Tailwind classes + markup\n\nSignal PM when fixed.",
+      "context": ".shared/outputs/design/bug-004-film-filter-fix.md (incoming from Designer)",
+      "timestamp": "2026-03-23T21:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_builder_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "M6-deploy",
+      "priority": "high",
+      "message": "M6 is the final launch milestone. Deploy seeneyu to Vercel.",
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read",
+      "to": "builder"
+    },
+    {
+      "id": "sig_handoff_builder_001",
+      "from": "orchestrator",
+      "type": "handoff",
+      "task": "M6-deploy-resume",
+      "priority": "high",
+      "message": "M6 is COMPLETE. App is live at https://seeneyu.vercel.app. All env vars set, DB seeded. No further action needed.",
+      "timestamp": "2026-03-22T02:00:00Z",
+      "status": "read",
+      "to": "builder"
+    },
+    {
+      "id": "sig_pm_builder_wakeup_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Project status: M0–M8 COMPLETE, deployed to https://seeneyu.vercel.app. Phase 7-marketing active. New code from M7+M8 (auth system, admin CMS) needs to be deployed to production. User action required: (1) Add NEXTAUTH_SECRET and NEXTAUTH_URL to Vercel env vars. (2) Re-deploy: vercel --prod --yes. (3) Run db:push to apply new auth schema models to Neon. (4) Run admin:create to seed first admin account. When ready, signal PM and Tester.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_builder",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read",
+      "to": "builder"
+    },
+    {
+      "id": "sig_pm_de_wakeup_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Status: M0–M8 all COMPLETE, app live at https://seeneyu.vercel.app. Phase 7-marketing is active — Marketer producing VC fundraising materials. No data engineering tasks pending. BUG-002 (ClipCard 'use client') was identified and fixed by Tester. All M6 UI polish you delivered is in production. Standby for any data pipeline needs that may arise in marketing phase.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m10_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "M10-add-script-text-to-clips",
+      "priority": "high",
+      "message": "M10 task: Add script/dialogue text to all 15 clips in the seed file. WAIT for Backend Engineer to signal you that the schema is updated (they'll write a signal to your queue when db:push is done and the `script` field is live).\n\nOnce unblocked:\n1. Open prisma/seed.ts (or wherever the 15 clips are defined).\n2. For each clip, add a `script` field with:\n   - The exact dialogue the character speaks in that scene (if it's a dialogue clip), OR\n   - A numbered list of physical instructions (if it's a non-verbal behavior clip, e.g. eye contact, posture).\n3. Keep scripts concise — 2-4 sentences of dialogue or 3-4 numbered physical instructions.\n4. Run: npx prisma db seed (or npm run db:seed — check package.json for the command).\n5. Verify all 15 clips in the DB have the script field populated.\n6. Signal pm.json and tester.json: task-complete with script data seeded.",
+      "context": "prisma/seed.ts, prisma/schema.prisma (after backend-engineer updates it)",
+      "timestamp": "2026-03-22T23:45:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m11_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "M11-curate-observation-guides",
+      "priority": "high",
+      "message": "M11 task: Curate observation_guide data for all 15 clips. WAIT for Backend Engineer to signal that the observationGuide schema field is live (they'll signal you after db:push).\n\nOnce unblocked, for each clip in .shared/outputs/data/clips-seed.json, add an observation_guide field:\n{\n  'headline': 'How [CharacterName] uses [skill] — and why it works',\n  'moments': [\n    { 'at_second': 3, 'technique': 'Direct Eye Contact', 'what': 'Holds gaze without blinking for 4 seconds', 'why': 'Commands attention and signals zero anxiety' },\n    ... (4-6 moments per clip)\n  ]\n}\n\nGuidelines:\n- Use the clip's annotation, sceneDescription, contextNote and existing annotations[] to identify specific moments\n- Moments must reference actual timestamps within startSec–endSec range\n- 'what' = objective description of what the character does (≤15 words)\n- 'why' = the psychological/social effect (≤15 words)\n- 4–6 moments per clip minimum\n\nAlso add practice_steps for M12 (3-5 steps per clip):\n[\n  { 'step_number': 1, 'skill_focus': 'Eye Contact Duration', 'instruction': 'Hold eye contact with yourself in the camera for 4 full seconds without looking away', 'tip': 'Imagine the camera lens is a person's eyes. Breathe normally.', 'target_duration_sec': 20 },\n  ...\n]\n\nSave updated seed to: .shared/outputs/data/clips-seed.json\nUpdate seed.ts to patch both fields if null.\nSignal pm.json and tester.json when data is ready.",
+      "context": ".shared/outputs/data/clips-seed.json, prisma/seed.ts",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_session_end_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. Excellent work — observation_guide + practice_steps curated for all 15 clips, sample learner data seeded. Next session: (1) Confirm with PM whether user has run db:push + prisma generate + db:seed. (2) Once seed is confirmed, verify all 15 clips have non-null observationGuide and practiceSteps in production DB. (3) Future task: add 5 more clips to the library (new skills or expand existing) — PM will assign when capacity opens. (4) Consider writing a script to auto-generate observation guides for new clips via admin API.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_data-engineer",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read",
+      "to": "data-engineer"
+    },
+    {
+      "id": "sig_be_de_schema_ready_001",
+      "from": "backend-engineer",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": "M10-schema-script-field-ready",
+      "message": "M10 Task 7 complete. The `script String? @db.Text` field has been added to the Clip model in prisma/schema.prisma.\n\nIMPORTANT: The field is in the schema file but NOT yet in the database. Before you seed script text:\n1. User must run: npm run db:push (applies schema to Neon DB)\n2. User must run: npx prisma generate (updates Prisma client types)\nOnce those are run, you can proceed with adding script text to prisma/seed.ts and running the seed.\n\nYour seed signal from PM (sig_pm_de_m10_001) has all the details. You already have the script content in .shared/outputs/data/clips-seed.json. Just wait for confirmation that db:push has been run.",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m14_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "m14-curate-100-screenplay-clips",
+      "priority": "high",
+      "message": "NEW MILESTONE M14: Content Expansion — 100+ Lessons from Screenplay Films.\n\n## WHY\nUser requirement: expand the lesson library to at least 100 clips, PRIORITIZING movies that have publicly available screenplay scripts (IMSDB, Scripts.com, ScriptSlug, etc). This gives learners access to the exact written dialogue and scene directions alongside video.\n\n## YOUR TASK (primary M14 owner)\nCurate 100+ YouTube clips from films with publicly accessible screenplays. Save to: .shared/outputs/data/clips-100-seed.json\n\n### Target Films (prioritize these — all have public screenplays)\nVoice/Verbal skills: The Social Network, Good Will Hunting, A Few Good Men, Jerry Maguire, The Wolf of Wall Street, The King's Speech, Whiplash, Moneyball\nBody language/Presence: The Dark Knight, Schindler's List, The Shawshank Redemption, Gladiator, Lincoln, There Will Be Blood, No Country for Old Men\nCharisma/Charm: Pulp Fiction, The Godfather, Catch Me If You Can, Django Unchained, Inglourious Basterds\nConflict/Negotiation: 12 Angry Men, Margin Call, The Big Short, Network (1976)\nInterviews/Pitching: The Pursuit of Happyness, Pirates of Silicon Valley, Jobs (2013)\nRomance/Rapport: Before Sunrise, When Harry Met Sally, Casablanca\nLeadership/Motivation: Braveheart, Dead Poets Society, Any Given Sunday, Coach Carter\n\n### Per-clip data required\nEach clip in clips-100-seed.json must have ALL of these fields:\n{\n  \"id\": \"clip_[number]\",\n  \"movieTitle\": \"...\",\n  \"year\": 1994,\n  \"actorName\": \"...\",\n  \"characterName\": \"...\",\n  \"youtubeId\": \"...\",       // verified YouTube ID\n  \"startTime\": 0,           // seconds\n  \"endTime\": 60,            // seconds (aim for 30-90s clips)\n  \"skillFocus\": \"Eye Contact\",  // one primary skill\n  \"skillCategory\": \"body-language\" | \"voice\" | \"verbal\" | \"presence\" | \"rapport\",\n  \"difficulty\": 1 | 2 | 3,\n  \"sceneDescription\": \"...\",    // 1-2 sentences\n  \"script\": \"...\",              // actual dialogue from the screenplay\n  \"screenplaySource\": \"https://imsdb.com/...\",  // URL to screenplay PDF/page\n  \"observation_guide\": {\n    \"headline\": \"...\",\n    \"moments\": [\n      { \"timestamp\": \"0:12\", \"label\": \"...\", \"description\": \"...\" },\n      // 5-6 moments total\n    ]\n  },\n  \"practice_steps\": [\n    { \"stepNumber\": 1, \"focus\": \"...\", \"instruction\": \"...\", \"durationSeconds\": 30 },\n    // 3-5 steps total\n  ]\n}\n\n### Screenplay sources\n- IMSDB: https://imsdb.com/scripts/[Film-Title].html\n- Scripts.com: https://www.scripts.com/\n- ScriptSlug: https://www.scriptslug.com/\n- SimplyScripts: https://www.simplyscripts.com/\n\n### Verification\nVerify all YouTube IDs are real and accessible before including. Use the YouTube video URL pattern: https://www.youtube.com/watch?v=[ID]\n\n### Output\nSave final data to: .shared/outputs/data/clips-100-seed.json\nSignal backend-engineer when done so they can update prisma/seed.ts.\n\n## ALSO: M15 Foundation Curriculum (can run in parallel)\nSee separate signal for M15 data task (foundation-curriculum.json). You can work on both in parallel.",
+      "context": ".shared/outputs/data/clips-seed.json (existing 15 clips for reference format), prisma/schema.prisma",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m15_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "m15-curate-foundation-curriculum",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation Section — Curriculum Content.\n\n## YOUR TASK\nWrite all foundation curriculum content. Save to: .shared/outputs/data/foundation-curriculum.json\n\n## Structure\n3 courses, 10+ lessons each. Each lesson: theory, YouTube examples, quiz.\n\n### COURSE 1: Voice Mastery (slug: \"voice-mastery\", icon: \"🎙️\", color: amber)\nLessons (10 minimum):\n1. Vocal Projection — make your voice fill the room\n2. Pitch Variation — avoid monotone, use pitch for emphasis  \n3. Pacing & Rhythm — the power of slowing down\n4. Articulation — crisp consonants and clear diction\n5. Resonance — chest voice vs head voice\n6. Breath Control — diaphragmatic breathing for speakers\n7. Vocal Warm-ups — pre-talk rituals from professional speakers\n8. Tone Matching — adapt your tone to context (boardroom vs casual)\n9. Volume Dynamics — whisper to command\n10. Eliminating Filler Words — removing um, uh, like, basically\n\n### COURSE 2: Verbal Communication (slug: \"verbal-communication\", icon: \"💬\", color: blue)\nLessons:\n1. Word Choice & Precision — fewer words, more impact\n2. Storytelling Structure — the hero's journey framework in conversation\n3. Active Listening Cues — signals that show you're engaged\n4. Assertive Language — confident framing without aggression\n5. Pausing for Impact — strategic silence\n6. Framing & Reframing — shaping how your message lands\n7. Question Technique — asking questions that open conversations\n8. Clarity & Brevity — the bottom-line-up-front method\n9. Persuasive Language — appeals to emotion, logic, credibility\n10. Handling Objections — turn disagreement into dialogue\n\n### COURSE 3: Body Language Fundamentals (slug: \"body-language-fundamentals\", icon: \"🤝\", color: green)\nLessons:\n1. Posture & Presence — the foundation of authority\n2. Power Gestures — hands that reinforce your message\n3. Eye Contact — the 3-second rule and triangular gaze\n4. Facial Expressions — congruence between words and face\n5. Proxemics — spatial awareness and personal zones\n6. Mirroring — build rapport through subtle matching\n7. Open vs Closed Stances — what your body signals before you speak\n8. Handshake & Physical Greetings — first impressions\n9. Walking with Confidence — gait, posture, pace\n10. Nervous Habit Elimination — hands, feet, self-touching tells\n\n### Per-lesson format\n{\n  \"slug\": \"vocal-projection\",\n  \"title\": \"Vocal Projection\",\n  \"order\": 1,\n  \"theoryHtml\": \"<p>...</p><h3>...</h3><p>...</p>...\",  // 600-900 words, HTML formatted\n  \"examples\": [\n    {\n      \"youtubeId\": \"...\",\n      \"title\": \"...\",\n      \"description\": \"Notice how...\",\n      \"startTime\": 30\n    },\n    // 2-3 examples per lesson\n  ],\n  \"quiz\": [\n    {\n      \"question\": \"What does vocal projection primarily rely on?\",\n      \"options\": [\"Shouting louder\", \"Diaphragmatic breathing\", \"Speaking faster\", \"Using a microphone\"],\n      \"correctIndex\": 1,\n      \"explanation\": \"Projection comes from diaphragm support, not volume alone.\"\n    },\n    // 4 questions per lesson (total: 3-5)\n  ]\n}\n\n### Full output structure\n{\n  \"courses\": [\n    {\n      \"slug\": \"voice-mastery\",\n      \"title\": \"Voice Mastery\",\n      \"description\": \"...\",\n      \"icon\": \"🎙️\",\n      \"color\": \"amber\",\n      \"order\": 1,\n      \"lessons\": [ ...array of lesson objects above... ]\n    },\n    // voice-mastery, verbal-communication, body-language-fundamentals\n  ]\n}\n\nSave to: .shared/outputs/data/foundation-curriculum.json\nSignal backend-engineer when done so they can seed the DB.",
+      "context": ".shared/state/milestones.json (M15 spec)",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_de_m16_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "m16-communication-tactics-taxonomy",
+      "priority": "normal",
+      "message": "NEW MILESTONE M16 (DATA TASK): Communication Tactics Taxonomy.\n\nPriority order: COMPLETE M14 (clips-100-seed.json) + M15 (foundation-curriculum.json) FIRST. This M16 task is secondary.\n\n## WHY\nThe Learning Materials Builder allows admins to crawl for clips targeting specific named communication tactics — not just the 5 standard skill categories. You need to define this taxonomy so the admin can select from a curated list of named techniques.\n\n## YOUR TASK\nCreate .shared/outputs/data/communication-tactics.json with 40+ specific communication techniques organized by domain.\n\n## Structure\n{\n  'tactics': [\n    {\n      'id': 'power-pause',\n      'name': 'Power Pause',\n      'domain': 'vocal',  // vocal | verbal | body | presence | rapport\n      'description': 'A deliberate silence of 2-5 seconds used to add weight to a statement or question.',\n      'difficulty': 'intermediate',\n      'searchKeywords': ['power pause speaking', 'deliberate silence presentation', 'strategic pause TED talk'],\n      'scoringHints': 'Look for speakers who pause deliberately mid-sentence or after a key point. Not nervous pausing — intentional stillness.'\n    },\n    ...\n  ]\n}\n\n## Required tactics to include (minimum 40 total)\n\n### VOCAL domain (10+)\n- Power Pause — deliberate silence for emphasis\n- Vocal Crescendo — building intensity to a peak\n- Strategic Whisper — lowering volume for intimacy/gravity\n- Vocal Fry Control — eliminating or using fry intentionally\n- Chest Voice Anchor — grounding delivery in resonant chest voice\n- Pitch Drop — lowering pitch at end of statements (authority)\n- Staccato Delivery — punchy, separated words for impact\n- Elongation — stretching vowels for emphasis\n- Breath Pacing — using breath patterns to control audience rhythm\n- Rhythmic Cadence — poetic/musical sentence rhythm\n\n### VERBAL domain (10+)\n- Pacing and Leading — match then redirect conversation partner\n- Reframing — changing the context/meaning of a statement\n- Socratic Questioning — guide to conclusion through questions\n- Elicitation — drawing out information naturally\n- Embedded Commands — hiding directives in larger sentences\n- Future Pacing — describing desired future state vividly\n- Presupposition — assuming agreement to bypass resistance\n- The Benjamin Franklin Effect — ask a small favor first\n- Door in the Face — start with big ask, then smaller real ask\n- Strategic Vulnerability — controlled self-disclosure for rapport\n\n### BODY domain (10+)\n- Triangle Gaze — eyes moving between eyes-nose triangle\n- Open Palm Display — showing palms to signal honesty\n- Chin Tuck Authority — slight chin tuck for confident projection\n- Territorial Stance — claim physical space to signal confidence\n- Steepleing — fingertips touching to signal confidence\n- Object Barrier Removal — moving objects between you and listener\n- Feet Direction Read — feet reveal true attention/interest\n- Controlled Stillness — minimal movement to project composure\n- Proxemic Management — using space intentionally (intimate/social/public zones)\n- Head Nod Pacing — using nodding rate to control listener agreement\n\n### PRESENCE domain (5+)\n- Power Pose Transition — entering and exiting with expansive posture\n- Slow Deliberate Entry — controlling first impression with unhurried movement\n- The Gravity Walk — measured, purposeful stride\n- Pre-talk Stillness — standing still before speaking to command attention\n- Ownership Gesture — claiming the room with an opening arm sweep\n\n### RAPPORT domain (5+)\n- Full-Body Mirroring — matching posture, lean, and gesture rate\n- Cross-Over Mirroring — mirroring with opposite limb\n- Matching Breathing — syncing breath rhythm with conversation partner\n- Anchoring — associating emotional state to a physical touch/location\n- The Genuine Smile — Duchenne smile (eyes crinkle) vs social smile\n\nFor each tactic include 3-5 searchKeywords that would find good YouTube examples.\n\nSave to: .shared/outputs/data/communication-tactics.json\nSignal Backend Engineer when done.",
+      "context": ".shared/state/milestones.json (M16)",
+      "timestamp": "2026-03-23T09:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_1711000001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "design-system",
+      "message": "Deliver the seeneyu Design System for M1.",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read",
+      "to": "designer"
+    },
+    {
+      "id": "sig_pm_designer_wakeup_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Project status: M0–M8 all COMPLETE. App is live at https://seeneyu.vercel.app. Current phase: 7-marketing. M9 (Marketing Materials) is active — Marketer role is producing pitch deck + one-pager + outreach emails. BUG-001 fix assigned to Backend Engineer (ClipForm score ranges). No design tasks pending. FYI: BUG-002 (library page crash from missing 'use client' in ClipCard) was found and fixed. You may monitor ongoing work or stand by for the next phase.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_designer_m10_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "M10-UI-specs",
+      "priority": "high",
+      "message": "New milestone M10: Script-Aware Coaching Loop. Design 3 UI components. Backend Engineer is working in parallel — deliver your specs to .shared/outputs/design/m10-spec.md ASAP so they can implement.\n\n## Component 1 — CharacterBanner (record page, above webcam)\nA compact horizontal banner that tells the learner exactly who they're mimicking.\nContent: Character name (prominent), Actor name (secondary), Movie title (muted). Optional: a small icon or badge for the skill category.\nTone: Motivational, like a sports coaching card. 'You are mimicking Jordan Belfort (Leonardo DiCaprio) from The Wolf of Wall Street.'\n\n## Component 2 — ScriptPanel (record page, below the observation checklist)\nA card showing the exact dialogue or physical behavior the learner must perform.\nIf the clip has dialogue: show it as a blockquote — large readable text, styled like a script page.\nIf the clip has physical behavior (no dialogue): show a numbered instruction list.\nLabel: 'YOUR SCRIPT' or 'WHAT TO DO'.\nMust be easy to read at a glance while the webcam is live.\nInclude a small tip like: 'Say this out loud while recording.'\n\n## Component 3 — ActionPlan (feedback page, between improvements grid and AI Tips)\nA numbered step list showing the learner's personalized improvement plan.\nEach step card: step number (large, accent color), action text (bold, imperative), why text (small, muted, 1 line).\nTitle: 'YOUR ACTION PLAN'\nSubtitle: 'Do these in order at your next practice session.'\nSteps are ordered by priority (most impactful first).\nStyle: dark card with accent-left border per step number.\n\n## Output\nWrite your specs to: .shared/outputs/design/m10-spec.md\nInclude ASCII mockup for each component.\nThen write a signal to backend-engineer.json: 'M10 UI specs ready at .shared/outputs/design/m10-spec.md'.\nAlso signal pm.json: task-complete.",
+      "context": "../../.shared/memory/shared-knowledge.md, ../../.shared/outputs/design/design-system.md",
+      "timestamp": "2026-03-22T23:45:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_designer_m11_m12_m13_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "M11-M12-M13-UI-specs",
+      "priority": "high",
+      "message": "Three new milestones from user feedback. You have THREE design tasks — all can be started in parallel. Deliver each as a separate spec file.\n\n---\n## M11 — Observation Guide (file: .shared/outputs/design/m11-spec.md)\nA structured pre-practice analysis shown on the clip detail page (before the learner clicks Record).\nLayout: tabbed section below the YouTube embed. Tabs: 'Watch' (current) | 'How It Works' (new).\nHow It Works tab shows:\n  - Headline: 'What [Character] does and why it works'\n  - A vertical timeline of technique moments: timestamp badge | technique name | 1-line 'what' | 1-line 'why'\n  - Example: [0:03] Direct Eye Contact — 'Holds gaze for 4 seconds without blinking' — 'Signals absolute confidence and makes the listener feel seen.'\n  - Bottom: a 'Ready to practice?' CTA button → links to /record\nTone: like a sports coach pointing to film before a game. Clear, direct, educational.\n\n---\n## M12 — Micro-Practice Stepper (file: .shared/outputs/design/m12-spec.md)\nDuolingo-style step-by-step practice flow. Replaces the current single record page with a multi-step flow at /library/[clipId]/practice/\nFlow:\n  - Step card (top): step number badge | skill focus label | instruction text | tip\n  - Progress bar: horizontal step dots (1 completed/active/locked each)\n  - Webcam recorder: same as current but with a 30-second max timer shown as a countdown ring\n  - After each step: instant micro-feedback card slides in — pass/needs work. 'Next Step' or 'Retry' CTA.\n  - After all steps complete: 'Full Performance' unlock screen — celebrate, then CTA to do full recording\nKey constraint: each micro-step recording is max 30 seconds. Show countdown ring clearly.\n\n---\n## M13 — Onboarding Assessment & Learning Path (file: .shared/outputs/design/m13-spec.md)\nTwo parts:\n\nPart A — Onboarding Assessment (shown after signup, before first visit to library):\n  - 5-screen flow, one skill category per screen\n  - Each screen: skill name + icon | brief description | self-rating slider (Beginner / Intermediate / Advanced) | optional: record a 10s sample clip\n  - Progress bar across top: 1/5, 2/5...\n  - Final screen: 'Assessing your level...' (AI scoring animation) → 'Your Learning Path Is Ready'\n\nPart B — Learning Path Dashboard (at /dashboard or home page section):\n  - 5 skill track columns (one per skill category)\n  - Each column: current level badge | progress bar (clips completed / total for level) | next recommended clip card\n  - LearningPathCard: clip thumbnail | skill badge | difficulty pill | 'Practice Now' CTA\n  - SkillProgressBar: colored level track with milestone markers (Beginner → Intermediate → Advanced → Expert)\n\nOutput each spec separately. After all three are done, signal backend-engineer.json with a single message listing all three spec files. Also signal pm.json: task-complete.",
+      "context": "../../.shared/outputs/design/design-system.md, ../../.shared/outputs/design/m10-spec.md",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_designer_session_end_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. M10+M11+M12+M13 specs all delivered and implemented — great session. Next session: (1) Standby for any UI review requests from Tester on M11/M12/M13. (2) No new design tasks assigned yet. (3) Watch for: M13 dashboard layout may need review once real users interact with it — expect feedback on the 5-column grid on mobile. (4) Future milestone ideas: progress celebration animations, streak tracking UI, social sharing card for scores.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_designer",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read",
+      "to": "designer"
+    },
+    {
+      "id": "sig_pm_ds_m14_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "m14-library-expansion-ui",
+      "priority": "medium",
+      "status": "read",
+      "message": "NEW MILESTONE M14: Library Expansion UI Design.\n\n## CONTEXT\nThe library is expanding from 15 to 100+ clips. We also now track whether a clip has a publicly available screenplay (screenplaySource field). Users need to be able to browse and filter this larger library effectively.\n\n## YOUR TASK\nDesign the following UI additions. Deliver to: .shared/outputs/design/m14-spec.md\n\n### 1. Library Filter Enhancements (src/app/library/page.tsx)\nCurrent filters: skill focus, difficulty level.\nNEW filters to add:\n- \"Filter by Film\" — searchable dropdown or multi-select, shows all unique movieTitles\n- \"Has Screenplay\" — checkbox/toggle to show only screenplay-backed clips\n- Keep existing skill + difficulty filters\n\nDesign the filter panel layout that accommodates all 4 filter types cleanly. For 100+ clips, consider whether pagination or infinite scroll is needed.\n\n### 2. Screenplay Badge on ClipCard (src/components/ClipCard.tsx)\nWhen a clip has a screenplaySource:\n- Show a small badge (e.g., amber \"📄 Screenplay\" tag)\n- Placement: bottom-left of card or below the skill badge\n- Should be subtle but discoverable\n\n### 3. Clip Detail Page — Screenplay Link\nOn src/app/library/[clipId]/page.tsx:\n- When clip has screenplaySource, show a \"Read Screenplay →\" button\n- Style: secondary/ghost button, opens in new tab\n- Good placement: near the script panel or below the clip info header\n\nDeliver: .shared/outputs/design/m14-spec.md with ASCII mockups + Tailwind class suggestions.",
+      "context": "src/app/library/page.tsx, src/components/ClipCard.tsx, src/app/library/[clipId]/page.tsx",
+      "timestamp": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "sig_pm_ds_m15_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "m15-foundation-section-ui",
+      "priority": "high",
+      "status": "read",
+      "message": "NEW MILESTONE M15: Performing Foundation Section — Full UI Design.\n\n## CONTEXT\nWe are building a brand new section called \"Performing Foundation\" — completely separate from the movie clip practice section. It teaches fundamental communication skills through structured lessons. Think Udemy: courses → lessons → theory + examples + quiz.\n\nThree courses:\n1. Voice Mastery (🎙️) — vocal projection, tone, pacing, articulation, etc.\n2. Verbal Communication (💬) — word choice, storytelling, assertiveness, etc.\n3. Body Language Fundamentals (🤝) — posture, gestures, eye contact, etc.\n\nEach lesson has THREE parts: Theory (rich text), Examples (YouTube clips), Quiz (MCQ).\n\n## YOUR TASK\nDesign the complete Foundation section. Deliver to: .shared/outputs/design/m15-spec.md\n\n### PAGE 1: Course Catalog — /foundation\n- Hero header: \"Performing Foundation\" + tagline \"Master the fundamentals of human communication\"\n- 3 course cards: icon, title, description, lesson count, user progress bar\n- Each card links to /foundation/[courseSlug]\n- Should feel distinct from the Library but consistent with seeneyu dark UI\n\n### PAGE 2: Course Page — /foundation/[courseSlug]\n- Course header: icon, title, full description, total lessons + estimated time\n- Lesson list (ordered): lesson number, title, completion checkmark\n- Locked/unlocked state: show whether lesson is completed\n- Progress summary: \"X of Y lessons complete\"\n\n### PAGE 3: Lesson Page — /foundation/[courseSlug]/[lessonSlug]\nThis is the most important page. Three distinct sections:\n\nSECTION A: Theory\n- Full-width rich text content (theoryHtml)\n- Good typography: clear headings, readable body text, styled lists\n- Estimated read time pill\n\nSECTION B: Examples\n- Sub-header: \"See It In Action\"\n- YouTube embed cards: 2-3 per lesson\n- Each card: embed + title + description of what to observe\n\nSECTION C: Quiz\n- Sub-header: \"Test Your Understanding\"\n- Question cards (one at a time OR all visible — your design choice)\n- MCQ options: 4 choices per question\n- Submit button → reveal correct/wrong per question with explanation\n- Score display: \"3/4 correct — Lesson Complete!\" \n- CTA: \"Next Lesson →\"\n\nPROGRESS INDICATOR:\n- Sidebar or top bar showing lesson position in course (e.g., \"Lesson 3 of 10\")\n- Top: breadcrumb: Foundation > Voice Mastery > Vocal Projection\n\nNAVIGATION:\n- Bottom: ← Previous Lesson | Next Lesson →\n\n### Design notes\n- Dark UI consistent with seeneyu (#0d0d14 bg, amber accents)\n- Distinct visual identity from the clip practice section (this is structured learning, not practice)\n- Quiz: consider amber for correct, red for incorrect, gray for unselected\n- Mobile-friendly layout\n\nDeliver full spec with ASCII mockups + Tailwind class suggestions + component breakdown.\nBackend Engineer is waiting on your spec before building.",
+      "context": ".shared/memory/design-system.md, src/components/NavBar.tsx",
+      "timestamp": "2026-03-23T07:00:00Z"
+    },
+    {
+      "id": "sig_pm_ds_m16_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "m16-learning-materials-builder-ui",
+      "priority": "high",
+      "status": "read",
+      "message": "NEW MILESTONE M16: Learning Materials Builder — Admin UI Design.\n\n## WHAT IS IT\nAn admin-only tool that lets admins create 'crawl jobs' to semi-automate discovery of new YouTube clips. The admin defines criteria (skill category, specific communication technique/tactic, search keywords, difficulty). The system searches YouTube, scores each result with AI for relevance, and shows candidates for admin review and approval.\n\n## YOUR TASK\nDesign the full admin UI for the Learning Materials Builder. Deliver to: .shared/outputs/design/m16-spec.md\n\n---\n\n### PAGE 1: Job List — /admin/crawl-jobs\nList of all crawl jobs. For each job row:\n- Job name, skill/technique label, status chip (pending / running / complete / failed)\n- Result count (e.g., '18 results — 3 approved')\n- Created date + 'Run' button (if pending) or 'View Results' button (if complete)\n- 'New Job' button (top right)\n\n### PAGE 2: Create Job Form — /admin/crawl-jobs/new\nForm fields:\n1. Job Name (text) — e.g., 'Power Pause examples — advanced vocal'\n2. Skill Category (dropdown) — the 5 standard categories OR a 'Special Technique' option\n3. Technique / Tactic (text, shown when 'Special Technique' is selected) — e.g., 'Triangle Gaze', 'Power Pause', 'Open Palm Display'\n4. Search Keywords (tag input, multi-value) — terms to search on YouTube, e.g., ['power pause speaker', 'deliberate silence presentation']\n5. Difficulty Level (beginner / intermediate / advanced / all)\n6. Max Results (number, default 20, max 50)\nSubmit: 'Create Job' (saves with status=pending) + optional 'Create & Run' button\n\n### PAGE 3: Job Detail + Results Browser — /admin/crawl-jobs/[id]\nTop section: Job metadata (name, criteria, status, result counts)\nRun Job button (if pending, triggers the YouTube search + AI scoring)\nRunning state: show spinner/progress with 'Searching YouTube...' → 'Scoring results...' status updates\n\nResults section (shown once job is complete):\n- Sort controls: By Relevance Score | By View Count | By Date\n- Filter: All | Pending | Approved | Rejected\n- Result cards (grid 2-3 cols):\n  - YouTube thumbnail (clickable — opens inline preview)\n  - Title (truncated)\n  - Channel name\n  - Duration\n  - Relevance score badge (0–10, color-coded: green ≥7, amber 4–6, red <4)\n  - AI analysis snippet (1–2 lines explaining why it's relevant)\n  - Approve button (green) + Reject button (red/ghost)\n  - Status chip if already approved/rejected\n\n### PAGE 4: Approve Modal (overlay on results page)\nTriggered when admin clicks 'Approve' on a result.\nLeft panel: YouTube embed preview (autoplay from job clip window)\nRight panel: form to complete clip metadata before creating Clip record:\n- Movie/Show Title (pre-filled from YouTube title if possible)\n- Year\n- Character Name\n- Actor Name\n- Start Second + End Second (with YouTube timestamp helper: 'Current time: 0:34')\n- Scene Description\n- Skill Category (pre-filled from job)\n- Difficulty\n- Confirm button: 'Create Clip & Generate Guide'\nOn confirm: creates Clip, auto-generates ObservationGuide + PracticeSteps via admin API, shows success toast.\n\n### Design notes\n- Consistent with seeneyu dark UI\n- Relevance score: color-coded ring or pill (green/amber/red)\n- Running state: subtle pulsing indicator (not blocking full page)\n- Result card approve/reject: optimistic UI — immediately move card to approved/rejected state with undo option\n- Mobile: job list + create form should be responsive; results grid can be desktop-optimized\n\nDeliverables: ASCII mockups + Tailwind class specs + component breakdown for all 4 views.\nBackend Engineer is waiting on this spec.",
+      "context": ".shared/memory/design-system.md, src/app/admin/ (existing admin patterns)",
+      "timestamp": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "sig_pm_ds_bug004_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "bug-fix-request",
+      "task": "BUG-004-library-film-filter-collapse",
+      "priority": "p1",
+      "message": "BUG-004 (P1) — User-reported: Library FILM filter shows 30+ film tags all at once. On mobile this covers the entire viewport and blocks all other content.\n\n## Screenshots\nUser screenshot shows FILM row spanning 4 full rows of tags (30+ films).\n\n## Required behaviour\n\n### Desktop (≥768px)\n- **Collapsed (default)**: Show only the first row of film tags (approximately 6–8 tags). After the last visible tag add a pill: `+ N more ▾` (amber ghost pill, same height as tags)\n- **Expanded**: Click `+ N more ▾` → all tags reveal with a smooth max-height transition. Pill changes to `Show fewer ▴`\n- Animation: `transition-all duration-300` max-height expand\n\n### Mobile (<768px)\n- Replace pill grid entirely with a native `<select>` dropdown\n- Label above: 'FILM'\n- Styled to match dark UI: `bg-gray-800 border border-gray-700 text-white rounded-lg px-3 py-2 w-full`\n- All film options + 'All Films' default\n- No pill tags at all on mobile\n\n### Tablet (768–1024px)\n- Same as desktop collapsed/expanded behavior, but 4–5 tags per row\n\n## Deliverable\nUpdate or add to an existing spec file: `.shared/outputs/design/bug-004-film-filter-fix.md`\n\nSpec must include:\n1. ASCII mockup of collapsed state (desktop)\n2. ASCII mockup of expanded state (desktop)\n3. ASCII mockup of mobile `<select>` state\n4. Exact Tailwind classes for the `+ N more` pill\n5. Animation approach\n6. Breakpoint logic (`sm:hidden` / `hidden sm:block` pattern)\n\nBackend Engineer will implement immediately after spec is delivered.",
+      "context": "src/app/library/page.tsx (film filter section)",
+      "timestamp": "2026-03-23T21:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_reporter_001",
+      "from": "data-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M2-session-summary",
+      "message": "Data Engineer session complete. M2 pipeline infrastructure delivered.",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_reporter_m1_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "M1-complete",
+      "message": "Designer session complete. M1 Design System fully delivered.",
+      "timestamp": "2026-03-21T02:00:00Z",
+      "status": "read",
+      "to": "reporter"
+    },
+    {
+      "id": "sig_pm_reporter_001",
+      "from": "pm",
+      "type": "task-assign",
+      "task": "log-m3-m4-m5-completions",
+      "message": "Log milestone completions for M3, M4, M5.",
+      "timestamp": "2026-03-21T03:00:00Z",
+      "status": "read",
+      "to": "reporter"
+    },
+    {
+      "id": "sig_designer_reporter_uireview_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "ui-review-m6",
+      "message": "Designer UI review complete.",
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read",
+      "to": "reporter"
+    },
+    {
+      "id": "sig_de_reporter_002",
+      "from": "data-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M6-all-ui-polish-complete",
+      "message": "Data Engineer session complete. All M6 UI polish items implemented.",
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_designer_reporter_builder_001",
+      "from": "designer",
+      "type": "fyi",
+      "task": "new-role-builder",
+      "message": "Builder role created.",
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "read",
+      "to": "reporter"
+    },
+    {
+      "id": "sig_be_reporter_001",
+      "from": "backend-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M7-M8-session-complete",
+      "message": "Backend Engineer session complete. M7+M8 fully implemented.",
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_reporter_m7m8_001",
+      "from": "tester",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M7-M8-tester-session-complete",
+      "message": "Tester approved M7 and M8. BUG-001 filed (medium). BUG-002 found and fixed.",
+      "timestamp": "2026-03-22T20:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_reporter_m7m8_complete_001",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "log-m7-m8-complete-phase-advance",
+      "message": "PM session complete (2026-03-22). Log the following events: (1) M7 (Auth System) — marked COMPLETE, tester_approved. (2) M8 (Admin CMS) — marked COMPLETE, tester_approved. (3) BUG-001 assigned to Backend Engineer (ClipForm score range fix). (4) BUG-002 closed — fixed by Tester (ClipCard 'use client'). (5) Phase advanced from 5-launch to 7-marketing. (6) M9 (Marketing Materials) now active — Marketer is working on it. Update activity-log.md with all these events. Update shared-knowledge.md: 9 milestones complete (M0–M8), current phase 7-marketing, live at https://seeneyu.vercel.app.",
+      "priority": "normal",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_reporter",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "read",
+      "to": "reporter"
+    },
+    {
+      "id": "sig_be_reporter_m10_001",
+      "from": "backend-engineer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "M10-session-complete",
+      "message": "Backend Engineer M10 session complete. Deliverables: BUG-001 fix (ClipForm score ranges), schema script field, types update, feedback API enhancement (character context + steps + no-frames fallback), CharacterBanner component, ScriptPanel component, ActionPlan in feedback page, ClipForm script textarea, tailwind fade-in-up animation. Build: 0 TS errors. Awaiting user db:push + Data Engineer script seeding to be fully live.",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_tester_m1_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M1",
+      "message": "M1 Design System â€” PASSED.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read",
+      "to": "tester"
+    },
+    {
+      "id": "sig_tester_m2_001",
+      "from": "tester",
+      "type": "milestone-passed",
+      "milestone": "M2",
+      "message": "M2 Data Pipeline v1 â€” PASSED with condition.",
+      "timestamp": "2026-03-21T01:00:00Z",
+      "status": "read",
+      "to": "tester"
+    },
+    {
+      "id": "sig_de_tester_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M2-seed-script-ready",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_tester_002",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "condition-cleared",
+      "task": "M2-youtube-ids-verified",
+      "timestamp": "2026-03-21T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_tester_003",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M6-p0-fixes-review",
+      "timestamp": "2026-03-22T00:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_tester_004",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M6-p1-p2-polish-complete",
+      "timestamp": "2026-03-22T01:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_be_tester_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M7-M8-ready-for-testing",
+      "timestamp": "2026-03-22T19:00:00Z",
+      "status": "read"
+    },
+    {
+      "id": "sig_de_builder_data_ready_001",
+      "from": "data-engineer",
+      "to": "builder",
+      "type": "fyi",
+      "task": "m14-m15-data-complete",
+      "priority": "high",
+      "message": "DATA READY — run db:seed now.\n\n- .shared/outputs/data/clips-100-seed.json → 45 clips with screenplay sources (covers eye-contact, open-posture, active-listening, vocal-pacing, confident-disagreement)\n- .shared/outputs/data/foundation-curriculum.json → 3 courses × 10 lessons × 4 quiz Qs = 30 lessons total\n- prisma/seed.ts updated to auto-prefer clips-100-seed.json over clips-seed.json\n\nRun: npm run db:push && npx prisma generate && npm run db:seed",
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_bl_deploy_all_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "deploy-m10-to-m15-vercel",
+      "priority": "high",
+      "message": "PRIORITY: Deploy all M10–M15 backend code to Vercel production.\n\n## Full deploy steps (supersedes session-end signal)\n1. git pull (latest from main — includes M10, M11, M12, M13, M14, M15 backend code)\n2. vercel --prod --yes\n3. After Vercel deploy completes:\n   npm run db:push       ← applies schema (screenplaySource, Foundation models, PracticeStep, SkillBaseline, MicroSession)\n   npx prisma generate   ← regenerates Prisma client (Vercel also does this via postinstall)\n   npm run db:seed       ← seeds existing 15 clips with observationGuide + practiceSteps\n4. Verify new routes are live:\n   - https://seeneyu.vercel.app/onboarding\n   - https://seeneyu.vercel.app/dashboard\n   - https://seeneyu.vercel.app/foundation\n   - https://seeneyu.vercel.app/library (check new filters: Film + Screenplay)\n   - Any clip's /practice route\n5. Signal PM and Tester with smoke-test results.\n\n## SEPARATE step (DO NOT block deploy on this)\nOnce Data Engineer delivers:\n  - .shared/outputs/data/clips-100-seed.json → run db:seed to add 100+ clips\n  - .shared/outputs/data/foundation-curriculum.json → run db:seed to add Foundation curriculum\nYou will receive separate signals for these.",
+      "timestamp": "2026-03-23T09:15:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_bl_schema_push_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "action-required",
+      "task": "apply-m14-m15-schema",
+      "priority": "high",
+      "message": "Backend Engineer has finished. Schema is ready. Run NOW in seeneyu/:\n\n  npm run db:push\n  npx prisma generate\n\nDo NOT run db:seed yet — waiting for Data Engineer to deliver:\n  - .shared/outputs/data/clips-100-seed.json (100 clips)\n  - .shared/outputs/data/foundation-curriculum.json (30 lessons)\n\nOnce both files exist, then run: npm run db:seed",
+      "timestamp": "2026-03-23T08:30:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_be_builder_m14m15_ready_001",
+      "from": "backend-engineer",
+      "to": "builder",
+      "type": "fyi",
+      "task": "m14-m15-schema-ready",
+      "priority": "high",
+      "message": "M14 + M15 backend implementation complete. Schema changes applied to prisma/schema.prisma: (1) screenplaySource String? added to Clip model. (2) 5 new Foundation models: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress. (3) User model updated with foundationProgress relation. seed.ts updated with Foundation curriculum seeding logic. When Data Engineer delivers foundation-curriculum.json, run: npm run db:push && npx prisma generate && npm run db:seed",
+      "timestamp": "2026-03-23T08:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_bl_m15_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "m15-db-migrate-foundation",
+      "priority": "high",
+      "message": "NEW MILESTONE M15: Performing Foundation — DB Migration & Seed.\n\n## CONTEXT\nTwo changes are coming in from other roles before you act:\n1. Backend Engineer will add 5 new models to prisma/schema.prisma (FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress) and update prisma/seed.ts\n2. Data Engineer will deliver .shared/outputs/data/foundation-curriculum.json\n\n## YOUR TASK (blocked until both are done)\nWatch for signals from backend-engineer and data-engineer confirming M15 data is ready.\nThen run in seeneyu/:\n  npm run db:push\n  npx prisma generate\n  npm run db:seed\n\nVerify in DB:\n- 3 FoundationCourse records\n- 30+ FoundationLesson records (10+ per course)\n- 60+ LessonExample records (2+ per lesson)\n- 120+ QuizQuestion records (4 per lesson)\n\nSignal PM and Tester when verified.",
+      "context": "prisma/schema.prisma, prisma/seed.ts",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_builder_session_end_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "session-end",
+      "priority": "high",
+      "message": "SESSION END 2026-03-23. Next session priority: Deploy M10-M13 to Vercel production. Four milestones of new code committed (commits ae12429, 6dff36e, 538cbac, d2f93e0) — none deployed yet. Steps: (1) git pull latest (2) vercel --prod (3) After deploy: confirm new routes live — /library/[id]/practice, /onboarding, /dashboard, /library/[id] (How It Works tab). (4) Signal Tester for smoke test of new routes. NOTE: Vercel postinstall runs prisma generate automatically — no manual generate needed. BUT user still needs to run db:push + db:seed locally for the new schema fields.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_tester_session_end_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "session-end",
+      "priority": "high",
+      "message": "SESSION END 2026-03-23. Next session priority: sign off on M10, M11, M12, M13 â€” all have review-request signals in your queue. NOTE: M11-M13 require user to run `npm run db:push + npx prisma generate + npm run db:seed` before new features are live in DB. Check with PM at next session start whether those commands have been run. Sample learner data available for testing M13 dashboard (see sig_de_tester_sample_data_001 for credentials). Signal PM with a separate approval for each milestone.",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.032Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_marketer",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% — session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "archived",
+      "to": "marketer",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_checkpoint_1774163882582_tester",
+      "from": "pm",
+      "type": "session-checkpoint",
+      "priority": "high",
+      "message": "PM context window is at ~90% â€” session restart is imminent. REQUIRED BEFORE RESTART: (1) Complete your current step (do not leave work half-done). (2) Update your progress/checkpoint file in .shared/outputs/<your-role>/. (3) Write a \"checkpoint-saved\" signal to pm.json listing what you finished and what is next. The new PM session will read all signals and re-assign from checkpoint state. Your .shared/outputs/<role>/progress.json is the source of truth for recovery.",
+      "timestamp": "2026-03-22T07:18:02.581Z",
+      "status": "archived",
+      "to": "tester",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_de_builder_m14_m15_data_ready_001",
+      "from": "data-engineer",
+      "to": "builder",
+      "type": "task-unblocked",
+      "tasks": [
+        "m14-db-seed-100-clips",
+        "m15-db-migrate-seed-foundation"
+      ],
+      "message": "M14 + M15 data files ready. You are now unblocked to seed the DB.\n\nFiles:\n- .shared/outputs/data/clips-100-seed.json (65 verified clips)\n- .shared/outputs/data/foundation-curriculum.json (3 courses, 30 lessons)\n\nSteps:\n1. npm run db:push        (applies screenplaySource + Foundation models)\n2. npx prisma generate    (regenerates Prisma client)\n3. npm run db:seed        (seeds clips + foundation curriculum)\n\nVerify:\n- Clip count should be 65+ (new clips added on top of existing 15)\n- prisma.foundationCourse.count() === 3\n- prisma.foundationLesson.count() === 30\n- prisma.quizQuestion.count() === 120",
+      "timestamp": "2026-03-23T10:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m14_m15_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M14-M15-ready-for-testing",
+      "message": "M14 + M15 ready for testing on https://seeneyu.vercel.app (after db:push + db:seed)\n\nM14 â€” Content Expansion:\n1. /library â€” verify Film filter dropdown shows movie names, clicking filters clips by film\n2. /library â€” verify 'Has Screenplay' toggle chip shows only clips with screenplay links\n3. ClipCard â€” verify screenplay badge appears (top-right, amber) on cards with screenplaySource\n4. /library/[clipId] â€” verify 'Read Screenplay â†’' amber link appears below video title for clips with screenplaySource\n5. /admin/clips/[id]/edit â€” verify Screenplay Source URL input field exists and saves\n\nM15 â€” Performing Foundation:\n1. NavBar shows 'Foundation' link\n2. /foundation loads â€” 3 course cards (amber/blue/green gradient), each showing lesson count + progress bar\n3. Click a course â†’ course page shows breadcrumb + lesson list with circle/checkmark icons\n4. Click a lesson â†’ lesson page shows:\n   a. Theory section (rendered HTML content)\n   b. YouTube Examples section (embeds load)\n   c. Quiz section (4 MCQ questions)\n5. Submit quiz answers â†’ score shown, correct/incorrect highlighted per option, explanation text shown\n6. Pass quiz (â‰¥60%) â†’ progress saved. Refresh lesson page â†’ question answered state restored\n7. Return to course page â†’ completed lesson shows checkmark icon and progress bar advances\n\nP1 Fix applied: ObservationGuide 'Start Recording' CTAs now route to /practice instead of /record",
+      "timestamp": "2026-03-23T08:30:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_bl_m14_001",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "m14-db-seed-100-clips",
+      "priority": "medium",
+      "message": "NEW MILESTONE M14: Library Expansion — DB Migration & Seed.\n\n## CONTEXT\nTwo changes are coming in from other roles before you act:\n1. Backend Engineer will add screenplaySource field to prisma/schema.prisma\n2. Data Engineer will deliver 100+ clip records in .shared/outputs/data/clips-100-seed.json and update prisma/seed.ts\n\n## YOUR TASK (blocked until both are done)\nWatch for signals from backend-engineer and data-engineer confirming M14 is ready.\nThen run in seeneyu/:\n  npm run db:push\n  npx prisma generate\n  npm run db:seed\n\nVerify: count clips in DB (should be 100+). Check a few clips have screenplaySource populated.\n\nSignal PM and Tester when seeding is verified.",
+      "context": "prisma/schema.prisma, prisma/seed.ts",
+      "timestamp": "2026-03-23T07:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_tester_m11_m12_m13_standby_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M11-M12-M13-standby",
+      "priority": "normal",
+      "message": "Three new milestones from user product feedback. Standby for review-request signals from Backend Engineer as each completes.\n\nM11 â€” Observation Guide: verify 'How It Works' tab appears on clip detail page with technique timeline (timestamps, technique name, what, why). Verify AI generation route works from admin. Verify graceful null state.\n\nM12 â€” Micro-Practice: verify step-by-step flow renders all steps with progress bar. Each step's 30s recorder works and captures frames. Per-step feedback returns pass/needs-work. Full Performance unlock appears after all steps complete. Short recordings (<5s) do not return 422.\n\nM13 â€” Onboarding Assessment: verify new user flow shows 5-skill assessment. Baseline scores stored. Learning path generated and shown on dashboard. SkillProgressBar shows correct level. LearningPathCard shows correct next clip per skill.",
+      "timestamp": "2026-03-23T01:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_tester_m10_standby_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M10-standby",
+      "priority": "normal",
+      "message": "M10 (Script-Aware Coaching Loop) is now active. Three roles working on it: Designer (UI specs), Backend Engineer (bug fix + schema + AI prompt + UI), Data Engineer (seed script text). When Backend Engineer signals review-request, please test: (1) Submit for AI Feedback works end-to-end even for short recordings. (2) Record page shows character banner (who to mimic) and script panel (what to say). (3) Feedback page shows numbered Action Plan steps. (4) AI feedback references the character and script in its response. BUG-001 (ClipForm score ranges) is also bundled into M10 â€” Backend Engineer will fix it as part of the admin form updates.",
+      "timestamp": "2026-03-22T23:45:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_tester_wakeup_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "session-status-update",
+      "message": "PM session complete (2026-03-22). Status: M0â€“M8 COMPLETE, phase 7-marketing. BUG-001 fix has been assigned to Backend Engineer â€” when they signal completion, please verify and close BUG-001. BUG-002 (ClipCard 'use client') is CLOSED. M9 (Marketing Materials) is non-code â€” standby for Marketer to deliver pitch deck assets for review. No immediate action required.",
+      "timestamp": "2026-03-22T22:30:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:03:44.033Z",
+      "archive_reason": "done-or-stale"
+    },
+    {
+      "id": "sig_pm_tester_auth_smoketest_001",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "auth-production-smoke-test",
+      "message": "M7+M8 auth deployment is now complete. Please perform a smoke test on https://seeneyu.vercel.app: (1) Sign up as a new learner. (2) Sign in with new learner account. (3) Verify /admin redirects to sign-in for the learner. (4) Sign in as admin@seeneyu.com / changeme123 and verify /admin is accessible. (5) Confirm all 15 clips still load on /library. Report pass/fail to pm.json.",
+      "priority": "high",
+      "timestamp": "2026-03-22T23:30:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m16_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M16-learning-materials-builder",
+      "message": "M16 ready for testing (after Builder adds YOUTUBE_API_KEY to Vercel env + runs db:push).\n\n1. /admin/crawl-jobs loads — job list with status chips\n2. /admin/crawl-jobs/new — form submits: name, skill/technique, keywords (tag input), difficulty pills, max results\n3. Create & Run triggers job execution — status: pending → running → complete\n4. Results grid shows: thumbnail, relevance score badge (green ≥7/amber 4-6/red <4), AI analysis\n5. Filter tabs (All/Pending/Approved/Rejected) work, sort by Relevance/Views/Date works\n6. Approve → opens 2-panel modal (YouTube embed + metadata form) → submit → clip created in DB → appears in /library\n7. Approved clip has How It Works tab (observation guide auto-generated)\n8. Reject → result shows Rejected status (optimistic UI), Undo restores\n9. Non-admin cannot access /admin/crawl-jobs\n10. Missing YOUTUBE_API_KEY → graceful error (not crash)",
+      "timestamp": "2026-03-23T12:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m16_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M16-learning-materials-builder",
+      "message": "M16 ready for testing after Builder adds YOUTUBE_API_KEY + runs db:push. Test: job creation, run execution, results grid (score badges), approve modal (clip created + obs guide), reject/undo, non-admin blocked.",
+      "timestamp": "2026-03-23T12:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_ds_ts_review_m11m12m13_001",
+      "from": "designer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "ui-review-m11-m12-m13",
+      "message": "M11/M12/M13 UI review complete. All 10 components PASS against spec. Full report: .shared/outputs/design/ui-review-m11-m12-m13.md. ONE P1 FIX IN PROGRESS: ObservationGuide.tsx CTAs point to /record instead of /practice â€” bypass fix sent to backend-engineer. Please hold M11 tester sign-off until that fix is confirmed. Low-priority notes: (1) animate-slide-up keyframe should exist in tailwind.config.ts â€” verify. (2) Skill icon tinting neutral instead of skill-specific (cosmetic, future). (3) Jump link in StepCard is a non-interactive span (future wiring).",
+      "timestamp": "2026-03-23T09:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_pm_marketer_session_end_001",
+      "from": "pm",
+      "to": "marketer",
+      "type": "session-end",
+      "priority": "normal",
+      "message": "SESSION END 2026-03-23. M9 (Marketing Materials) is still in-progress — your signal queue (sig_mkt_001) has the full brief. Next session: continue producing the VC fundraising package. Product update for your pitch: the app now includes Duolingo-style micro-practice steps (M12), a personalized learning path dashboard (M13), and a pre-practice conversation analysis tab (M11). These are strong product differentiators — include them in the pitch deck. The 5-skill coaching loop is now fully interactive with step-by-step practice. Live demo URL: https://seeneyu.vercel.app",
+      "timestamp": "2026-03-23T06:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_de_tester_sample_data_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "sample-learner-data",
+      "message": "Sample learner data seeded. 6 users with realistic learning histories are now in the DB. Useful for testing M13 dashboard, learning path display, and session history UI.\n\nUsers:\n- sarah.chen@example.com â€” intermediate, eye-contact focus, 3 weeks in\n- marcus.williams@example.com â€” beginner, just started, low scores\n- priya.patel@example.com â€” advanced, 2 months in, high scores across all skills\n- jake.torres@example.com â€” intermediate, confident-disagreement focus\n- emma.lindqvist@example.com â€” beginner, active-listening focus\n- david.kim@example.com â€” advanced, nearly completed all tracks\n\nAll passwords: SamplePass123!\nVerification: npx tsx scripts/verify-sample-data.ts\nRe-seed (idempotent): npm run db:sample",
+      "timestamp": "2026-03-23T05:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m13_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M13-onboarding-assessment-learning-path",
+      "message": "M13 ready for testing on https://seeneyu.vercel.app\n\nOnboarding Assessment:\n1. Sign up as a new user â†’ verify redirect to /onboarding (not /library)\n2. Verify progress bar advances from 0% â†’ 20% â†’ ... â†’ 100% as you step through 5 questions\n3. Select a skill level on each screen â†’ verify the selected button highlights amber\n4. Complete all 5 â†’ verify processing spinner shows briefly\n5. Complete screen shows 'Your Learning Path Is Ready' with sparkle icon\n6. Click 'Go to My Learning Path' â†’ verify redirect to /dashboard\n7. Return to /onboarding as same user â†’ verify redirect to /dashboard (skip if already complete)\n\nLearning Path Dashboard (/dashboard):\n1. Sign in with the completed user â†’ verify /dashboard shows 5 skill columns\n2. Each column shows: skill name, level badge (Developing/Practising/Fluent), progress bar, 'Next Up' clip card\n3. Click a 'Practice Now' link â†’ verify navigates to /library/[id]\n4. Visit /dashboard while not signed in â†’ verify redirect to /auth/signin\n5. NavBar shows 'My Path' link for signed-in users â†’ verify it leads to /dashboard\n\nNote: Level badge color: Developing=green, Practising=yellow/warning, Fluent=amber/accent",
+      "timestamp": "2026-03-23T03:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m11_m12_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M11-M12-ready-for-testing",
+      "message": "M11 + M12 ready for testing on https://seeneyu.vercel.app\n\nM11 â€” Observation Guide:\n1. Go to any clip detail page (/library/[id])\n2. Verify 'How It Works' tab appears next to 'Watch' tab\n3. Click 'How It Works' â€” verify ObservationGuide shows timestamped technique moments\n4. If guide not yet generated: verify graceful null state ('coming soon' card)\n5. Admin: go to /admin/clips/[id]/edit â€” verify 'Generate Observation Guide' button appears. Click it and verify guide is generated and saved.\n\nM12 â€” Micro-Practice Stepper:\n1. Click 'I'm Ready to Mimic â†’' on any clip detail page â€” should route to /library/[id]/practice\n2. Verify step-by-step flow shows StepCard (left) + PracticeRecorder (right)\n3. Progress bar + dots should show current step position\n4. Start recording â†’ 30s SVG countdown ring should animate\n5. Stop recording â†’ MicroFeedbackCard should appear with pass/needs-work verdict\n6. Test short recordings (<5s) â€” should NOT return error\n7. Click Next Step â†’ advance to next step\n8. After final step â†’ PerformanceUnlockScreen with 'Full Performance Recording' CTA",
+      "timestamp": "2026-03-23T02:00:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_de_tester_m10_m11_seeded_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "tasks": [
+        "M10-script-seeding",
+        "M11-observation-guide-seeding"
+      ],
+      "message": "M10 + M11 data seeded. Please verify in DB: (1) All 15 clips have non-null script field. (2) All 15 clips have non-null observationGuide with structure { headline: string, moments: [...] } where moments.length >= 5. (3) prisma.practiceStep.count() === 60 (4 steps per clip). (4) Each PracticeStep has: stepNumber, skillFocus, instruction, tip, targetDurationSec fields populated. DB verification already run by DE: 0 missing script, 0 missing observationGuide, 60 PracticeStep rows confirmed.",
+      "timestamp": "2026-03-23T01:35:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_de_tester_m11_ready_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "M11-observation-guides-ready",
+      "message": "M11 observation guide + practice step data ready for all 15 clips. Once Backend Engineer adds schema fields and user runs db:push + prisma generate + db:seed, please verify: (1) all 15 clips have non-null observationGuide in DB, (2) all 15 clips have non-null practiceSteps in DB, (3) each observationGuide.moments array has 5+ entries, (4) each practiceSteps array has 3+ entries.",
+      "timestamp": "2026-03-23T01:15:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_designer_tester_m10_review_001",
+      "from": "designer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M10-ui-review-complete",
+      "message": "Designer UI review of M10 complete. Verdict: PASS â€” all 3 components (CharacterBanner, ScriptPanel, ActionPlan) are spec-compliant with no P0/P1 issues. Two low-priority notes: (1) CharacterBanner uses 'animate-fade-in' â€” verify keyframe is defined in tailwind config. (2) ScriptPanel type hardcoded to 'dialogue' â€” content still renders correctly for all clips. Full review: .shared/outputs/design/ui-review-m10.md",
+      "artifacts": [
+        ".shared/outputs/design/ui-review-m10.md"
+      ],
+      "timestamp": "2026-03-23T00:45:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_de_tester_m10_script_001",
+      "from": "data-engineer",
+      "to": "tester",
+      "type": "data-ready",
+      "task": "M10-script-seeding-ready",
+      "message": "M10 script data is ready. All 15 clips in clips-seed.json now have script field content. prisma/seed.ts updated to: (1) patch script on existing clips if null, (2) include script in new clip creates. Pending user actions before seed can run: npm run db:push + npx prisma generate. Once those are done, running npx prisma db seed will populate all 15 clip script fields. Please verify after seed that all clips have non-null script values.",
+      "timestamp": "2026-03-23T00:35:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_be_tester_m10_001",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "review-request",
+      "task": "M10-script-aware-coaching-loop",
+      "message": "M10 ready for testing. Also closes BUG-001.\n\nWhat to test:\n1. BUG-001 closed: Admin CMS ClipForm score dimension fields now limited to 1-3. difficultyScore 4-12. Verify inputs reject out-of-range values.\n2. Submit for AI Feedback works for short recordings (< 5s). No more 422 â€” fallback to text-only GPT call.\n3. Record page shows CharacterBanner (character name + actor + movie) when clip has characterName set.\n4. Record page shows ScriptPanel with the clip's script text (only when script is non-null â€” requires db:push + seed from Data Engineer).\n5. Feedback page shows ActionPlan section (numbered steps with action + why) between improvements grid and AI Tips.\n6. AI feedback references character and movie in the summary/tips (visible in feedback response).\n\nNote: Full script display (tasks 3-4) requires user to run db:push + prisma generate + data engineer script seeding first.",
+      "timestamp": "2026-03-23T00:30:00Z",
+      "status": "archived",
+      "archived_at": "2026-03-23T15:04:21.198Z",
+      "archive_reason": "consolidated-or-stale"
+    },
+    {
+      "id": "sig_pm_ds_m17_m18_m19_001",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "design-m17-m18-m19",
+      "priority": "high",
+      "message": "THREE design specs needed. Deliver all three this session.\n\n---\n## SPEC 1: M17 — Library UX (collapsible filters + search + thumbnails)\n\nDeliver spec to: .shared/outputs/design/m17-spec.md\n\nRequirements:\n1. **Collapsible filter panel** — all existing filters (skill, difficulty, film, screenplay) wrapped in a toggle panel. Default: collapsed on mobile, expanded on desktop. Show 'N active filters' badge on collapsed state.\n2. **Search bar** — above the filter panel toggle. Placeholder: 'Search clips, films, characters…'. Debounced. Shows inline results count ('48 clips found').\n3. **Thumbnail resize** — desktop grid moves from 3 columns to 4 columns. Cards are more compact. Title + skill badge still visible. Reduce card padding.\n4. Full Tailwind class specs, React state approach, mobile behavior.\n\n---\n## SPEC 2: M18 — PeeTeeAI Brand Refresh (Header + Footer + Homepage)\n\nDeliver spec to: .shared/outputs/design/m18-spec.md\n\nCompany: **PeeTeeAI JSC** — tagline: **'Your AI, your PT'** — website: **www.peetees.ai**\n\nHeader:\n- Left: seeneyu logo + 'by PeeTeeAI' sub-label linking to www.peetees.ai\n- Right: Nav links + auth buttons (unchanged)\n- Professional, dark, minimal\n\nFooter (new component src/components/Footer.tsx):\n- Logo + tagline\n- 3 column links: Product (Library, Foundation, Arcade), Company (About, PeeTeeAI), Support (Contact)\n- Copyright line: '© 2026 PeeTeeAI JSC. All rights reserved.'\n- Social icons (LinkedIn, YouTube placeholders)\n\nHomepage sections (add below existing hero):\n1. **Our Mission** — bold 2-sentence statement about AI-powered communication coaching. Abstract sporty gradient background (amber/purple/dark). Full-width.\n2. **Our Team** — 3 card grid. Each: circular avatar, name, title, 1-line bio. Energetic, futuristic card design.\n3. **Testimonials** — 3 quote cards in a row. Name, role, quote, star rating. Subtle glassmorphism card style.\n4. **Hero redesign** — add abstract animated gradient background (CSS keyframes, no library). Geometric shapes or particle-like dots. Dark base with amber/violet accent glows.\n\nFull Tailwind specs, component names, all copy provided in spec.\n\n---\n## SPEC 3: M19 — Micro Training Arcade Zone UI\n\nDeliver spec to: .shared/outputs/design/m19-spec.md\n\nThis is a new zone: /arcade — gamified <10s challenge activities.\n\nChallenge types:\n- **Facial Expression Mimic**: show a description (from screenplay context) + reference still frame → user records <10s → AI scores 0-100\n- **Body Gesture Mimic**: same but full-body\n\nPages to spec:\n1. **/arcade** — landing: 'Arcade Zone' header, bundle cards grid (each bundle = set of 5-10 challenges around one theme), streak counter, total points badge\n2. **/arcade/[bundleId]** — challenge list view: challenge cards in order, locked/unlocked state, XP per challenge, difficulty dots\n3. **Challenge active state** — split screen: left = reference image + description + countdown timer (10s), right = live camera preview. Big 'Submit' button.\n4. **Score result screen** — score circle (0-100, color coded: <40 red, 40-70 amber, >70 green), breakdown ('expression match: 72%, intensity: 68%'), action buttons: Retry / Next Challenge.\n\nFull Tailwind specs, animation approach, gamification visual language (XP badges, streak fire icon, locked state). Must feel fast and game-like.",
+      "context": ".shared/memory/shared-knowledge.md, src/app/library/LibraryFilters.tsx (current filter code), src/components/NavBar.tsx (current header)",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T14:48:07.875Z"
+    },
+    {
+      "id": "sig_pm_de_m19_m20_001",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "de-m19-m20-data",
+      "priority": "high",
+      "message": "Two data tasks this session. Start both in parallel.\n\n---\n## TASK 1: M19 — Arcade Challenge Seed Data\n\nDeliver: `.shared/outputs/data/arcade-challenges-seed.json`\n\nCreate 3 ArcadeBundles, each with 8-10 ArcadeChallenges. Mix of facial expression and body gesture types.\n\n**Bundle themes to cover:**\n1. **Confidence & Authority** — power poses, strong eye contact, deliberate gestures\n2. **Empathy & Warmth** — genuine smiles, open body language, nodding\n3. **Tension & Conflict** — challenging expressions, defensive posture, controlled anger\n\n**For each challenge provide:**\n```json\n{\n  \"bundleIndex\": 0,\n  \"type\": \"facial | gesture\",\n  \"title\": \"...\",\n  \"description\": \"Perform a [X] expression that conveys [Y]...\",\n  \"context\": \"In the film [X], character [Y] does this when [Z]...\",\n  \"sourceClipHint\": \"optional — clip title or film name to link to library\",\n  \"difficulty\": \"beginner | intermediate | advanced\",\n  \"xpReward\": 20\n}\n```\n\nDraw descriptions from films already in our library (Gladiator, The Devil Wears Prada, etc.) for authenticity. Do NOT invent YouTube video IDs — leave referenceImageUrl blank (system will use description-only scoring for MVP).\n\n**Target: 30 challenges total (3 bundles × 10 challenges)**\n\n---\n## TASK 2: M20 — Screenplay Source Audit\n\nDeliver: `.shared/outputs/data/m20-screenplay-audit.json`\n\nFor all clips in our seed data that have a `screenplaySource` URL:\n1. List the URL\n2. Identify the source site (imsdb, scriptsavant, etc.)\n3. Note the expected HTML structure to extract text from (e.g. `.screenplay pre`, `#script-content`)\n4. Flag any URLs that are likely broken or require login\n\nThis helps Backend Engineer write the screenplay-crawler.ts correctly.\n\nFormat:\n```json\n[\n  {\n    \"clipTitle\": \"...\",\n    \"film\": \"...\",\n    \"screenplaySource\": \"https://...\",\n    \"sourceSite\": \"imsdb | scriptsavant | other\",\n    \"expectedSelector\": \".scrtext | #script-content | ...\",\n    \"likelyWorking\": true,\n    \"notes\": \"...\"\n  }\n]\n```\n\nSignal PM when both files are delivered.",
+      "context": ".shared/outputs/data/checkpoints/m14-clips-100-seed.json, .shared/outputs/data/checkpoints/m10-script-seeding.json",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T14:50:24.226Z"
+    },
+    {
+      "id": "sig_pm_be_m17_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m17-library-ux",
+      "priority": "high",
+      "message": "M17 — Library UX improvements. Wait for Designer spec (m17-spec.md) before finalizing UI, but you can start the search API immediately.\n\n## What to build\n\n### 1. Search API\nAdd `?search=` query param to the clips data fetch on the library page.\n- Search should match: clip title, film name, character name, skill category\n- Case-insensitive, partial match (Prisma `contains` with `mode: 'insensitive'`)\n- Combine with existing skill/difficulty/film/screenplay filters\n\n### 2. Collapsible filter panel\n- Wrap all existing filter rows in a `<FilterPanel>` component with a toggle\n- Default: collapsed on mobile, expanded on desktop (use localStorage to remember)\n- Show badge: 'X active filters' when collapsed and filters are applied\n- Animate open/close (CSS max-height transition)\n\n### 3. Search input\n- Above the filter panel toggle\n- Debounced (300ms) before updating URL search param\n- Shows clip count result: '48 clips'\n- Clear button (×) when text is present\n\n### 4. Thumbnail resize\n- Library grid: change from `grid-cols-1 md:grid-cols-2 lg:grid-cols-3` to `grid-cols-2 md:grid-cols-3 lg:grid-cols-4`\n- Reduce ClipCard padding + font sizes slightly for compact layout\n- Keep clip title, film name, skill badge, difficulty pill — just smaller\n\n## Files to modify\n- src/app/library/page.tsx\n- src/app/library/LibraryFilters.tsx\n- src/components/ClipCard.tsx\n- src/components/FilterPanel.tsx (new)\n- src/app/api/clips/route.ts (if it exists) or the library data fetch function\n\nDesigner spec: .shared/outputs/design/m17-spec.md (follow it once delivered).\nSignal PM when complete.",
+      "context": ".shared/outputs/design/m17-spec.md (wait for this), src/app/library/page.tsx, src/app/library/LibraryFilters.tsx",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:20.800Z"
+    },
+    {
+      "id": "sig_pm_be_m18_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m18-brand-homepage",
+      "priority": "high",
+      "message": "M18 — PeeTeeAI brand refresh + homepage redesign. Wait for Designer spec (m18-spec.md) but you can start Footer component now.\n\n## Context\nCompany: **PeeTeeAI JSC**\nTagline: **'Your AI, your PT'**\nWebsite: **www.peetees.ai**\n\n## What to build\n\n### 1. NavBar update (src/components/NavBar.tsx)\n- Add 'by PeeTeeAI' sub-label next to seeneyu logo, link to https://www.peetees.ai (opens new tab)\n- Subtle, professional — small text below logo or inline\n\n### 2. Footer component (new: src/components/Footer.tsx)\n- Dark background (bg-bg-card or darker)\n- Logo + 'Your AI, your PT' tagline\n- 3 column link groups: Product, Company, Support\n- Copyright: '© 2026 PeeTeeAI JSC. All rights reserved.'\n- Add to src/app/layout.tsx\n\n### 3. Homepage sections (src/app/page.tsx — add below existing hero)\n\n**a) Hero background** — add abstract animated gradient behind existing hero content.\n   - CSS keyframe animation — no external library\n   - Amber/violet glows on dark base\n   - Geometric floating shapes or soft radial glows\n\n**b) Our Mission section**\n   - Full-width, bold design\n   - Headline: 'Transforming how the world communicates'\n   - Sub: 'seeneyu uses AI and cinematic storytelling to help you master the non-verbal language of confident people.'\n   - Sporty gradient background (not plain dark)\n\n**c) Our Team section**\n   - 3-column grid of team cards\n   - Use placeholder avatars (initials or stock image URLs)\n   - Names/titles: use plausible placeholder data (PM will confirm real data later)\n   - Example: 'Hai Hoang — Founder & CEO', 'AI Lead — [TBD]', 'Product Lead — [TBD]'\n\n**d) Testimonials section**\n   - 3 quote cards (grid)\n   - Use sample user names from DB as placeholder testimonials\n   - Glassmorphism card style consistent with design system\n\nDesigner spec: .shared/outputs/design/m18-spec.md (follow once delivered).\nSignal PM when complete.",
+      "context": ".shared/outputs/design/m18-spec.md (wait for this), src/app/page.tsx, src/components/NavBar.tsx, src/app/layout.tsx",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:21.311Z"
+    },
+    {
+      "id": "sig_pm_be_m19_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m19-arcade-zone",
+      "priority": "high",
+      "message": "M19 — Micro Training Arcade Zone. This is a large new feature — start with schema + API, then UI after Designer spec arrives.\n\n## Concept\nUsers do rapid <10s challenge activities. Two types:\n- **Facial Expression Mimic**: user sees a description of an emotion/expression (from screenplay context), records ≤10s, GPT-4o Vision compares their face to the reference and scores 0-100.\n- **Body Gesture Mimic**: same but full-body gesture.\n\n## Phase 1 — Schema + Seed API (start immediately)\n\n### Prisma models to add\n```\nmodel ArcadeBundle {\n  id          String @id @default(cuid())\n  title       String\n  description String\n  theme       String  // e.g. 'Confidence', 'Empathy', 'Authority'\n  difficulty  String  // beginner | intermediate | advanced\n  xpReward    Int     @default(100)\n  challenges  ArcadeChallenge[]\n  createdAt   DateTime @default(now())\n}\n\nmodel ArcadeChallenge {\n  id              String @id @default(cuid())\n  bundleId        String\n  bundle          ArcadeBundle @relation(fields: [bundleId], references: [id])\n  type            String  // facial | gesture\n  title           String\n  description     String  // what expression/gesture to mimic\n  context         String  // screenplay/scene context (why this matters)\n  referenceImageUrl String?  // still frame or generated reference\n  sourceClipId    String?  // optional: which library clip this came from\n  sourceTimestamp Int?     // seconds into clip where gesture appears\n  difficulty      String\n  xpReward        Int @default(20)\n  orderIndex      Int\n  attempts        ArcadeAttempt[]\n}\n\nmodel ArcadeAttempt {\n  id            String @id @default(cuid())\n  userId        String\n  user          User @relation(fields: [userId], references: [id])\n  challengeId   String\n  challenge     ArcadeChallenge @relation(fields: [challengeId], references: [id])\n  score         Int\n  breakdown     Json   // { expression_match: 72, intensity: 68, context_fit: 80 }\n  recordingUrl  String?\n  createdAt     DateTime @default(now())\n}\n```\n\n### API routes\n- GET /api/arcade/bundles — list all bundles with challenge count + user progress\n- GET /api/arcade/bundles/[id]/challenges — challenges for a bundle\n- POST /api/arcade/attempts — submit attempt: receives challengeId + video blob URL, calls arcade-scorer.ts, returns score\n\n### Scorer service (src/services/arcade-scorer.ts)\n- Accept: challengeDescription + referenceImageUrl (optional) + userVideoUrl\n- Extract best frame from user video (use existing frame extraction pattern from feedback API)\n- GPT-4o Vision prompt: 'Compare this user's facial expression/gesture with the challenge description: [description]. Rate similarity 0-100. Return JSON: { score, breakdown: { expression_match, intensity, context_fit }, feedback_line }'\n- Return structured score\n\n### Arcade recorder component (src/components/arcade/ArcadeRecorder.tsx)\n- Max 10s (hard cap MediaRecorder stop)\n- Large countdown timer (10 → 0)\n- Live camera preview\n- Auto-submit when timer hits 0 or user clicks Submit\n\n## Phase 2 — Full pages (after Designer spec)\n- /arcade page (bundle browser)\n- /arcade/[bundleId] page (challenge flow)\n- Score result screen\n- XP/progress tracking\n\nDesigner spec: .shared/outputs/design/m19-spec.md\nData Engineer will deliver seed challenges: .shared/outputs/data/arcade-challenges-seed.json\n\nSignal PM when schema + API complete (Phase 1 done). Then continue to Phase 2.",
+      "context": ".shared/outputs/design/m19-spec.md, .shared/outputs/data/arcade-challenges-seed.json",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:21.892Z"
+    },
+    {
+      "id": "sig_pm_be_m20_001",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "m20-learning-improvements",
+      "priority": "high",
+      "message": "M20 — Three learning feature improvements. These can run in parallel with M17-M19.\n\n## Task A: Screenplay crawl-to-DB\n\nCurrently `screenplaySource` is just a URL. We need to crawl the text and store it.\n\n1. Add `screenplayText String?` to Clip model in prisma/schema.prisma\n2. Create service: `src/services/screenplay-crawler.ts`\n   - Input: URL string\n   - Supported sources: imsdb.com, scriptsavant.com, scripts.com, scriptslug.com\n   - Strategy: HTTP GET → parse HTML → extract screenplay text block (strip headers/footers)\n   - Return: plain text string (keep scene headings + dialogue, remove HTML tags)\n3. Create API route: `POST /api/admin/clips/[id]/crawl-screenplay`\n   - Calls screenplay-crawler.ts with clip.screenplaySource\n   - Saves result to clip.screenplayText\n   - Returns { success, charCount }\n4. Add 'Crawl Screenplay' button to admin edit page for clips that have screenplaySource but no screenplayText\n5. On clip detail page: if screenplayText is populated, render it inline (expandable) instead of linking out\n\n## Task B: Fix crawl jobs\n\nThe M16 crawl job system is built but not working in production. Fix the following:\n\n1. In `src/services/youtube-crawler.ts`: ensure YOUTUBE_API_KEY is read from `process.env.YOUTUBE_API_KEY`. Add a clear error if missing: throw new Error('YOUTUBE_API_KEY not configured')\n2. In `src/app/api/admin/crawl-jobs/[id]/run/route.ts`: wrap execution in try/catch, return 400 with `{ error: 'YOUTUBE_API_KEY not configured' }` if key missing (not a 500)\n3. Check the YouTube Data API call — confirm correct endpoint, API version, and params\n4. Test locally with a real key if possible, or add a mock mode for testing\n5. Signal Builder to add YOUTUBE_API_KEY to Vercel env (already signaled but re-confirm)\n\n## Task C: Admin ZIP import\n\nAdmin can upload a .zip file to import a complete lesson/clip.\n\n**ZIP file structure expected:**\n```\nlesson-import.zip\n├── metadata.json       (required)\n├── video.mp4           (required — will be uploaded to Vercel Blob)\n├── screenplay.txt      (optional — plain text screenplay excerpt)\n└── practice_steps.json (optional — array of PracticeStep objects)\n```\n\n**metadata.json schema:**\n```json\n{\n  \"title\": \"...\",\n  \"film\": \"...\",\n  \"character\": \"...\",\n  \"skill\": \"eye-contact|posture|vocal-pacing|gestures|confidence\",\n  \"difficulty\": \"beginner|intermediate|advanced\",\n  \"youtubeId\": \"...\",\n  \"startTime\": 0,\n  \"endTime\": 30,\n  \"description\": \"...\",\n  \"screenplaySource\": \"https://...\" (optional)\n}\n```\n\n**API route:** `POST /api/admin/import-zip` (multipart form, field: `file`)\n**Service:** `src/services/zip-importer.ts`\n  - Unzip in memory (use `adm-zip` or `jszip` npm package)\n  - Validate: metadata.json exists + required fields present + video.mp4 exists\n  - Upload video.mp4 to Vercel Blob → get URL (store as clip asset reference)\n  - Create Clip record with all metadata\n  - If screenplay.txt: save text to screenplayText field\n  - If practice_steps.json: create PracticeStep records linked to new clip\n  - Return: { success, clipId, warnings[] }\n\n**Admin page:** `src/app/admin/import/page.tsx`\n  - Drag-and-drop or file picker (.zip only)\n  - Shows import progress + result: Clip created, ID, warnings\n  - Link to newly created clip's edit page\n\nSignal PM when all three tasks (A, B, C) are complete.",
+      "context": "src/services/youtube-crawler.ts, prisma/schema.prisma, src/app/admin/",
+      "timestamp": "2026-03-24T08:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:22.179Z"
+    },
+    {
+      "id": "sig_data-engineer_backend-engineer_1774363854653",
+      "from": "data-engineer",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m19-m20-data-ready",
+      "priority": "high",
+      "message": "M19 arcade seed data + M20 screenplay audit delivered — both files ready.\\n\\n## M19 Arcade Seed\\nFile: .shared/outputs/data/arcade-challenges-seed.json\\n- 3 bundles, 30 challenges total\\n- Format matches ArcadeBundle/ArcadeChallenge schema per your signal\\n- referenceImageUrl = null (MVP)\\n- bundleIndex/orderIndex fields for seeding\\n\\n## M20 Screenplay Audit\\nFile: .shared/outputs/data/m20-screenplay-audit.json\\n- Key findings for your crawler implementation:\\n  1. All sources are imsdb.com — primary selector: td.scrtext pre\\n  2. URL encoding issue: King's Speech clips have TWO different URL forms (raw apostrophe AND %27) — normalize before storing\\n  3. Schindler's List apostrophe: need to encode as Schindler%27s-List.html\\n  4. 12 Angry Men: URL slug is 'Twelve-Angry-Men.html' (not '12-Angry-Men')\\n  5. Cache by film — only 32 unique fetches needed for 53 clips\\n  6. Add 500ms delay between requests to avoid 403\\n  7. Cheerio selector: const text = .text()\\n  8. IMSDB scripts are 100k-200k chars — truncate to 50k for MVP storage\\n  9. No auth required on IMSDB",
+      "timestamp": "2026-03-24T14:50:54.653Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:23.168Z"
+    },
+    {
+      "id": "sig_ds_be_bug004_spec_001",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "spec-ready",
+      "task": "BUG-004-film-filter-collapse",
+      "priority": "p1",
+      "message": "BUG-004 spec delivered. Implement immediately.\n\nSpec file: .shared/outputs/design/bug-004-film-filter-fix.md\n\nSummary of required changes to src/app/library/LibraryFilters.tsx:\n\n1. Add `filmExpanded` useState(false) to LibraryFilters\n2. Constant COLLAPSED_COUNT = 6\n3. In the Film row: only render first 6 film tags when collapsed\n4. If active film is beyond position 6, inject it as the 6th item (replace last visible)\n5. After the visible tags, render a toggle pill:\n   - Collapsed: '+ N more ▾'\n   - Expanded: 'Show fewer ▴'\n   - Classes: `inline-flex items-center gap-1 rounded-pill px-2.5 py-1 text-xs font-medium border border-accent-400/30 bg-transparent text-accent-400 hover:bg-accent-400/10 hover:border-accent-400/50 transition-all duration-150 cursor-pointer whitespace-nowrap`\n6. Wrap the ENTIRE film pills row (label + pills + toggle) in: `className=\"hidden md:flex items-center gap-2 flex-wrap\"`\n7. Add a mobile <select> above it (block md:hidden) with 'All Films' + all filmOptions\n   - Select classes: `bg-bg-inset border border-white/10 text-text-primary rounded-lg px-3 py-2 text-sm w-full focus:border-accent-400/60 focus:outline-none`\n   - On change: call navigate(activeSkill, activeDifficulty, e.target.value || undefined, hasScreenplay)\n\nSee spec for full ASCII mockups and edge case handling.",
+      "artifacts": [
+        ".shared/outputs/design/bug-004-film-filter-fix.md"
+      ],
+      "timestamp": "2026-03-23T22:00:00Z",
+      "status": "done",
+      "done_at": "2026-03-24T16:03:23.859Z"
+    }
+  ]
+}

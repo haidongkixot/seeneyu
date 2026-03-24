@@ -8,18 +8,29 @@ import { SearchX } from 'lucide-react'
 import Link from 'next/link'
 
 interface LibraryPageProps {
-  searchParams: Promise<{ skill?: string; difficulty?: string; film?: string; screenplay?: string }>
+  searchParams: Promise<{ skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }>
 }
 
-async function ClipGrid({ skill, difficulty, film, screenplay }: { skill?: string; difficulty?: string; film?: string; screenplay?: string }) {
+function buildWhere(skill?: string, difficulty?: string, film?: string, screenplay?: string, search?: string) {
+  const where: any = { isActive: true }
+  if (skill) where.skillCategory = skill
+  if (difficulty) where.difficulty = difficulty
+  if (film) where.movieTitle = film
+  if (screenplay === 'true') where.screenplaySource = { not: null }
+  if (search) {
+    where.OR = [
+      { sceneDescription: { contains: search, mode: 'insensitive' } },
+      { movieTitle: { contains: search, mode: 'insensitive' } },
+      { characterName: { contains: search, mode: 'insensitive' } },
+      { skillCategory: { contains: search, mode: 'insensitive' } },
+    ]
+  }
+  return where
+}
+
+async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }) {
   const clips = await prisma.clip.findMany({
-    where: {
-      isActive: true,
-      ...(skill && { skillCategory: skill }),
-      ...(difficulty && { difficulty }),
-      ...(film && { movieTitle: film }),
-      ...(screenplay === 'true' && { screenplaySource: { not: null } }),
-    },
+    where: buildWhere(skill, difficulty, film, screenplay, search),
     orderBy: [{ skillCategory: 'asc' }, { difficultyScore: 'asc' }],
     select: {
       id: true,
@@ -53,7 +64,7 @@ async function ClipGrid({ skill, difficulty, film, screenplay }: { skill?: strin
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {clips.map((clip) => (
         <ClipCard key={clip.id} clip={{ ...clip, skillCategory: clip.skillCategory as SkillCategory, difficulty: clip.difficulty as Difficulty }} />
       ))}
@@ -63,7 +74,7 @@ async function ClipGrid({ skill, difficulty, film, screenplay }: { skill?: strin
 
 function ClipGridSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {Array.from({ length: 8 }).map((_, i) => (
         <ClipCardSkeleton key={i} />
       ))}
@@ -77,16 +88,11 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const difficulty = params.difficulty as Difficulty | undefined
   const film = params.film
   const screenplay = params.screenplay
+  const search = params.search
 
   const totalCount = await prisma.clip.count({ where: { isActive: true } }).catch(() => 0)
   const filteredCount = await prisma.clip.count({
-    where: {
-      isActive: true,
-      ...(skill && { skillCategory: skill }),
-      ...(difficulty && { difficulty }),
-      ...(film && { movieTitle: film }),
-      ...(screenplay === 'true' && { screenplaySource: { not: null } }),
-    },
+    where: buildWhere(skill, difficulty, film, screenplay, search),
   }).catch(() => 0)
 
   // Fetch distinct film titles for filter
@@ -104,12 +110,9 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
 
       <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
-        <div className="flex items-baseline justify-between mb-8">
+        <div className="flex items-baseline justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-text-primary">The Library</h1>
-            <p className="text-sm text-text-tertiary mt-1">
-              {skill || difficulty || film || screenplay ? `${filteredCount} of ${totalCount}` : totalCount} clips available
-            </p>
           </div>
         </div>
 
@@ -120,12 +123,14 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
           activeFilm={film}
           hasScreenplay={screenplay === 'true'}
           filmOptions={filmOptions}
+          clipCount={filteredCount}
+          initialSearch={search}
         />
 
         {/* Grid */}
         <div className="mt-8">
           <Suspense fallback={<ClipGridSkeleton />}>
-            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} />
+            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} search={search} />
           </Suspense>
         </div>
       </main>

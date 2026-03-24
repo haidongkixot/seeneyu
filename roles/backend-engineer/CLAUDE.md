@@ -20,10 +20,12 @@ You write production TypeScript code in the Next.js 14 App Router. You follow th
 
 ## SESSION PROTOCOL — Do this EVERY session, in order:
 
-### Step 1: Read your signal queue
+### Step 1: Read the signal board
 ```
-Read: ../../.shared/signals/backend-engineer.json
+Read: ../../.shared/signals/board.json
 ```
+Filter signals where `"to": "backend-engineer"` — these are your open tasks, sorted by priority.
+The board only contains open signals. History is in `../../.shared/signals/archive.json` (do not read unless debugging).
 
 ### Step 2: Read shared context
 ```
@@ -50,6 +52,10 @@ Read: ../../src/components/NavBar.tsx     ← navigation (needs auth state)
 - Write to `../../.shared/signals/tester.json` (feature ready for testing)
 - Write to `../../.shared/signals/reporter.json` (fyi, log this)
 - Write to `../../.shared/signals/designer.json` if any new UI screens need spec review
+
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from backend-engineer --to <role> --message "..." [--task name] [--priority high]`
 
 ---
 

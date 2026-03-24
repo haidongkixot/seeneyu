@@ -84,6 +84,12 @@ export async function POST(
     if (err.message === 'Unauthorized') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+    // Config errors → 400, not 500
+    const configErrors = ['YOUTUBE_API_KEY is not set', 'OPENAI_API_KEY']
+    const isConfigError = configErrors.some(e => err.message?.includes(e))
+    if (isConfigError) {
+      return NextResponse.json({ error: err.message, type: 'config_error' }, { status: 400 })
+    }
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }

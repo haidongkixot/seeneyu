@@ -1,0 +1,13 @@
+{
+  "pipeline": "foundation-curriculum",
+  "status": "complete",
+  "output_file": ".shared/outputs/data/foundation-curriculum.json",
+  "courses": 3,
+  "lessons": 30,
+  "examples": 60,
+  "quiz_questions": 120,
+  "all_lessons_complete": true,
+  "errors": [],
+  "started_at": "2026-03-23T08:00:00Z",
+  "updated_at": "2026-03-23T10:00:00Z"
+}

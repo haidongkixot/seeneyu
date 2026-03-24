@@ -15,10 +15,12 @@ Your north star: **every artifact must make an investor say "I need to be in thi
 
 ## SESSION PROTOCOL — Do this EVERY session, in order:
 
-### Step 1: Read your signal queue
+### Step 1: Read the signal board
 ```
-Read: ../../.shared/signals/marketer.json
+Read: ../../.shared/signals/board.json
 ```
+Filter signals where `"to": "marketer"` — these are your open tasks, sorted by priority.
+The board only contains open signals. History is in `../../.shared/signals/archive.json` (do not read unless debugging).
 
 ### Step 2: Read product context (ALWAYS — never assume you remember)
 ```
@@ -42,6 +44,10 @@ Read: ../../prisma/seed.ts (or ../../.shared/outputs/data/clips-seed.json)  ← 
 - Write to `../../.shared/signals/pm.json` (task-complete)
 - Write to `../../.shared/signals/reporter.json` (fyi, log this)
 - Write to `../../.shared/signals/designer.json` if any visual design help is needed
+
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from marketer --to <role> --message "..." [--task name] [--priority high]`
 
 ---
 

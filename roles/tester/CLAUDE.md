@@ -11,10 +11,12 @@ You are the **Tester** for seeneyu. You create test cases, write automated tests
 
 ## SESSION PROTOCOL — Do this EVERY session, in order:
 
-### Step 1: Read your signal queue
+### Step 1: Read the signal board
 ```
-Read: ../../.shared/signals/tester.json
+Read: ../../.shared/signals/board.json
 ```
+Filter signals where `"to": "tester"` — these are your open tasks, sorted by priority.
+The board only contains open signals. History is in `../../.shared/signals/archive.json` (do not read unless debugging).
 
 ### Step 2: Read shared context
 ```
@@ -25,9 +27,13 @@ Read: ../../.shared/state/milestones.json      ← know what phase we're in
 ### Step 3: Process signals, do your work
 
 ### Step 4: Signal when done
-- Bug found → write to `../../.shared/signals/pm.json` (type: task-blocked)
-- Milestone tests pass → write to `../../.shared/signals/pm.json` (type: milestone-approved)
-- Always → write to `../../.shared/signals/reporter.json` (fyi, log results)
+- Bug found → add a signal to `../../.shared/signals/board.json` (set "to": "pm") (type: task-blocked)
+- Milestone tests pass → add a signal to `../../.shared/signals/board.json` (set "to": "pm") (type: milestone-approved)
+- Always → add a signal to `../../.shared/signals/board.json` (set "to": "reporter") (fyi, log results)
+
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from tester --to <role> --message "..." [--task name] [--priority high]`
 
 ---
 

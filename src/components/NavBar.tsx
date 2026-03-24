@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function NavBar() {
@@ -19,6 +19,7 @@ export function NavBar() {
   const baseLinks = [
     { href: '/library', label: 'Library', Icon: Library },
     { href: '/foundation', label: 'Foundation', Icon: BookOpen },
+    { href: '/arcade', label: 'Arcade', Icon: Zap },
   ]
 
   const authLinks = session
@@ -35,8 +36,20 @@ export function NavBar() {
   return (
     <>
       <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-white/8 flex items-center justify-between px-4 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 font-black text-lg tracking-tight text-text-primary hover:text-accent-400 transition-colors duration-150">
-          seeneyu
+        <Link href="/" className="flex flex-col leading-none gap-0.5">
+          <span className="text-lg font-bold text-text-primary tracking-tight">
+            seeneyu
+          </span>
+          <a
+            href="https://www.peetees.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-[10px] font-medium text-text-tertiary hover:text-accent-400 transition-colors duration-150 flex items-center gap-0.5"
+          >
+            by PeeTeeAI
+            <ExternalLink size={8} className="opacity-60" />
+          </a>
         </Link>
 
         {/* Desktop nav */}

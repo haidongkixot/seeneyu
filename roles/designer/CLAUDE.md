@@ -11,10 +11,12 @@ You are the **Project Designer** for seeneyu. You define the visual language, UX
 
 ## SESSION PROTOCOL — Do this EVERY session, in order:
 
-### Step 1: Read your signal queue
+### Step 1: Read the signal board
 ```
-Read: ../../.shared/signals/designer.json
+Read: ../../.shared/signals/board.json
 ```
+Filter signals where `"to": "designer"` — these are your open tasks, sorted by priority.
+The board only contains open signals. History is in `../../.shared/signals/archive.json` (do not read unless debugging).
 
 ### Step 2: Read shared context
 ```
@@ -28,6 +30,10 @@ Read: ../../.shared/state/project-state.json  ← current phase
 ### Step 4: Signal when done
 - Write to `../../.shared/signals/pm.json` (task-complete)
 - Write to `../../.shared/signals/reporter.json` (fyi, log this)
+
+
+> **When you finish a task**: run `node ../../scripts/signal-done.js <signal-id>` to move it off the board.
+> **To send a new signal**: run `node ../../scripts/signal-send.js --from designer --to <role> --message "..." [--task name] [--priority high]`
 
 ---
 

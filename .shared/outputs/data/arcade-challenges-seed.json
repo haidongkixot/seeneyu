@@ -1,0 +1,402 @@
+{
+  "_meta": {
+    "status": "ready",
+    "version": "1.0",
+    "total_bundles": 3,
+    "total_challenges": 30,
+    "generated_at": "2026-03-24T09:00:00Z",
+    "note": "referenceImageUrl intentionally blank — MVP uses description-only scoring. sourceClipHint links to existing library clips for future reference."
+  },
+  "bundles": [
+    {
+      "bundleIndex": 0,
+      "title": "Confidence & Authority",
+      "description": "Master the physical language of power. These challenges train the postures, gestures, and expressions used by leaders, negotiators, and commanders — drawn directly from iconic film moments.",
+      "theme": "Confidence",
+      "difficulty": "intermediate",
+      "xpReward": 100,
+      "challenges": [
+        {
+          "bundleIndex": 0,
+          "orderIndex": 1,
+          "type": "facial",
+          "title": "The Maximus Reveal",
+          "description": "Hold a resolute, defiant facial expression — jaw set, eyes forward, absolutely no fear despite being in danger. The kind of face that says: 'I know exactly who I am.'",
+          "context": "In Gladiator, Maximus turns to face Emperor Commodus in the arena and removes his helmet. His face holds zero fear — only controlled, cold certainty. This expression of resolved defiance is one of the most powerful in cinema.",
+          "sourceClipHint": "Gladiator — Maximus arena reveal",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 2,
+          "type": "gesture",
+          "title": "The Zuckerberg Lean-Back",
+          "description": "Sit back with full spine contact against the chair, arms loosely folded or resting, chin slightly elevated. Radiate total ease and disinterest in the pressure being applied to you.",
+          "context": "In The Social Network, Mark Zuckerberg leans back in his deposition chair while being grilled by opposing lawyers. His posture communicates: 'This room can't touch me.' He occupies space completely without effort.",
+          "sourceClipHint": "The Social Network — deposition scene",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 3,
+          "type": "gesture",
+          "title": "The Gekko Point",
+          "description": "Extend your arm fully, index finger pointing directly forward. Hold for 3 seconds with conviction — body weight slightly forward, eye contact locked. This is not a request. It is a declaration.",
+          "context": "In Wall Street, Gordon Gekko uses the extended deliberate point to claim ownership of the room during speeches. The gesture says: 'This is fact, and I am the person delivering it.' It demands attention without raising volume.",
+          "sourceClipHint": "Wall Street — Gordon Gekko boardroom speech",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 4,
+          "type": "facial",
+          "title": "The Coaching Stare",
+          "description": "Lock eyes with the camera — jaw set, brow level (not furrowed), expression neutral but intense. Do not smile, do not look away, do not show any doubt. Hold for 5 full seconds.",
+          "context": "In Any Given Sunday, Coach Tony D'Amato faces down players and coaches who question him. His expression is not anger — it's absolute certainty. He does not need to raise his voice when his face says everything.",
+          "sourceClipHint": "Any Given Sunday — D'Amato locker room",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 5,
+          "type": "gesture",
+          "title": "The Commander's Stand",
+          "description": "Stand with feet shoulder-width apart, weight evenly distributed, arms at your sides (not crossed). Chin level. Shoulders back and down — not hunched. This is the physical baseline of authority.",
+          "context": "In A Few Good Men, Col. Jessup takes command of every space he enters purely through stance. Even before he speaks, his body says 'I am the person in charge here.' The stance creates presence without aggression.",
+          "sourceClipHint": "A Few Good Men — Jessup courtroom confrontation",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 6,
+          "type": "facial",
+          "title": "Pre-Battle Calm",
+          "description": "Express a state of absolute stillness and readiness — eyes soft but present, jaw relaxed, no tension visible in the face. This is the face of someone who has made peace with the outcome.",
+          "context": "In Gladiator, Maximus closes his eyes briefly before battle, opens them, and his face is completely still — not detached, but deeply present. Soldiers around him feed off this calm. It is leadership through emotional regulation.",
+          "sourceClipHint": "Gladiator — Maximus pre-battle ritual",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 7,
+          "type": "gesture",
+          "title": "The Platform Presence",
+          "description": "Stand at the front of an imaginary room. Feet planted. Arms open at your sides, palms slightly forward. Hold the space without fidgeting for 6 seconds. Own the stillness.",
+          "context": "In Network, Howard Beale moves to the window and commands absolute stillness before his iconic broadcast moments. His stillness before speaking is the signal that something important is coming — and the whole room responds.",
+          "sourceClipHint": "Network — Howard Beale broadcast",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 8,
+          "type": "facial",
+          "title": "The Cold Evaluation",
+          "description": "Look at the camera with a steady, analytical expression — slight narrowing of eyes, no emotional leak. You are assessing, not reacting. Think of it as a poker face with intelligence behind it.",
+          "context": "In Margin Call, senior partners evaluate whether to fire or keep employees after the risk discovery. Their faces show cold, efficient calculation — not cruelty, not warmth — just the dispassionate math of high-stakes decisions.",
+          "sourceClipHint": "Margin Call — senior partner decisions",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 9,
+          "type": "gesture",
+          "title": "The Coach's Rally",
+          "description": "Open your arms wide — both arms extended outward, palms up — then bring them forward and inward as if gathering the room to you. Finish with arms at your sides, weight forward on the balls of your feet.",
+          "context": "In Coach Carter, the coach uses expansive open-arm gestures to bring his team together. The body language says: 'I'm not above you — I'm with you, and we move together.' It is inclusive authority rather than hierarchical authority.",
+          "sourceClipHint": "Coach Carter — locker room speech",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 0,
+          "orderIndex": 10,
+          "type": "facial",
+          "title": "The Deliberate Smile",
+          "description": "Produce a controlled, deliberate half-smile — mouth corners up, eyes engaged, but the expression is chosen rather than spontaneous. It signals amusement and confidence simultaneously. Hold for 3 seconds.",
+          "context": "In Catch Me If You Can, Frank Abagnale uses a carefully controlled charming smile to manage tense situations. It is not nervousness — it is a tool. The smile says: 'I'm enjoying this because I know something you don't.'",
+          "sourceClipHint": "Catch Me If You Can — Frank Abagnale airport scene",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        }
+      ]
+    },
+    {
+      "bundleIndex": 1,
+      "title": "Empathy & Warmth",
+      "description": "The physical language of connection. Train the expressions and gestures that make people feel heard, seen, and valued — the foundation of true influence and trust.",
+      "theme": "Empathy",
+      "difficulty": "beginner",
+      "xpReward": 100,
+      "challenges": [
+        {
+          "bundleIndex": 1,
+          "orderIndex": 1,
+          "type": "facial",
+          "title": "The Genuine Smile",
+          "description": "Produce a true Duchenne smile — cheeks lift, eyes crinkle at the corners, the whole face participates. Not a polite smile. Think of something that genuinely delights you and let it show for 4 seconds.",
+          "context": "In Jerry Maguire, Jerry's authentic delight when things go right is deeply contagious. The genuine smile that reaches his eyes is what earns trust — clients, players, and his partner respond to it because it cannot be faked on demand.",
+          "sourceClipHint": "Jerry Maguire — 'you had me at hello'",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 2,
+          "type": "gesture",
+          "title": "The Therapist's Lean",
+          "description": "Lean your torso gently forward — 10-15 degrees — arms uncrossed, hands relaxed in your lap or on the table. Your body points entirely toward an imaginary speaker. Hold this for 5 seconds while maintaining eye contact with the camera.",
+          "context": "In Good Will Hunting, Sean Maguire's forward lean signals total investment in what Will is saying. There is nothing defensive in his body — it is completely open and facing Will. This posture is what makes Will trust him over 60+ sessions.",
+          "sourceClipHint": "Good Will Hunting — therapy office scenes",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 3,
+          "type": "facial",
+          "title": "Intellectual Delight",
+          "description": "Express pure, unguarded joy at an idea — eyes wide open with delight, a full smile, slight brow raise. The kind of face a person makes when a student surprises them with brilliance.",
+          "context": "In Dead Poets Society, John Keating's face when students make unexpected creative connections is a study in authentic enthusiasm. His delight in ideas is infectious and it's what makes students want to learn — the facial signal is: 'You matter, and what you just said matters.'",
+          "sourceClipHint": "Dead Poets Society — Keating poetry class",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 4,
+          "type": "gesture",
+          "title": "The Active Listener's Nod",
+          "description": "Perform three slow, deliberate nods — each 1 second — while maintaining eye contact with the camera. The nods are confirmations, not just movement. They say: 'I hear you. Continue. I'm with you.'",
+          "context": "In The Pursuit of Happyness, Chris Gardner nods precisely during his interview — not frantically, but with measured deliberateness. Each nod signals engagement and comprehension. It is the nonverbal equivalent of 'I understand, and I agree this is important.'",
+          "sourceClipHint": "The Pursuit of Happyness — brokerage interview",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 5,
+          "type": "facial",
+          "title": "The Curious Head Tilt",
+          "description": "Tilt your head approximately 15 degrees to one side, raise your eyebrows slightly, and let your eyes show genuine curiosity and interest. Hold for 4 seconds — this is the universal signal for 'tell me more.'",
+          "context": "In Before Sunrise, Jesse's head tilts and slightly raised brows when Celine shares something personal is what keeps the conversation alive for hours. The micro-gesture signals deep interest without interrupting — it is one of the most powerful listening signals in human communication.",
+          "sourceClipHint": "Before Sunrise — train conversation",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 6,
+          "type": "gesture",
+          "title": "The Open Chest",
+          "description": "Uncross your arms, let shoulders drop and roll back slightly, and turn your torso squarely toward the camera. Arms hanging naturally at sides or resting open. Hold for 6 seconds — maximum openness, zero defensiveness.",
+          "context": "In Forrest Gump, Forrest speaks to strangers at bus stops with total bodily openness — arms free, torso forward, completely unguarded. Despite his context, strangers open up to him because his body signals absolute safety and receptivity.",
+          "sourceClipHint": "Forrest Gump — bus stop conversations",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 7,
+          "type": "facial",
+          "title": "The Laugh-Through-Eyes",
+          "description": "Let genuine amusement show through your eyes — a smile that comes from the eyes first, then the mouth. The expression should feel surprised by delight. Let it last 3 full seconds naturally.",
+          "context": "In When Harry Met Sally, the most memorable moments of authentic connection are the laughs — especially Sally's eyes-first laugh when Harry says something unexpected. The eyes-first sequence is the marker of authentic versus performed amusement.",
+          "sourceClipHint": "When Harry Met Sally — diner and conversation scenes",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 8,
+          "type": "facial",
+          "title": "Compassionate Presence",
+          "description": "Express deep empathy — brows gently drawn together (not furrowed in frustration, but in shared feeling), eyes soft and steady, mouth relaxed. This is the face of someone who fully understands pain without being overwhelmed by it.",
+          "context": "In Good Will Hunting, Sean Maguire's face during Will's emotional breakthrough is one of cinema's great empathy expressions. His eyes are soft with understanding, his brow carries the weight of shared experience. The expression says: 'I know. And it's okay.'",
+          "sourceClipHint": "Good Will Hunting — 'it's not your fault' scene",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 9,
+          "type": "gesture",
+          "title": "The Patient Wait",
+          "description": "Sit or stand completely still for 6 seconds without fidgeting — no phone, no movement, hands resting, eyes forward. This is the physical expression of 'I have all the time in the world for you.'",
+          "context": "In Rain Man, Charlie Babbitt learns patience over the course of the film. By the end, his stillness next to Raymond is the most striking physical change — he stops filling silence with nervous motion and instead simply waits, present and calm.",
+          "sourceClipHint": "Rain Man — late film brother scenes",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 1,
+          "orderIndex": 10,
+          "type": "gesture",
+          "title": "The Welcoming Gesture",
+          "description": "Extend one arm toward the camera — palm up, hand open — as if inviting someone to continue or step forward. Hold for 3 seconds, expression warm and open. This gesture says: 'There is space for you here.'",
+          "context": "In Before Sunrise, Jesse uses subtle inviting gestures throughout his conversations with Celine — open palms, forward lean, hand movements that create space rather than close it. These micro-gestures of invitation are why she keeps talking to him for the rest of the day.",
+          "sourceClipHint": "Before Sunrise — walking Vienna scenes",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        }
+      ]
+    },
+    {
+      "bundleIndex": 2,
+      "title": "Tension & Conflict",
+      "description": "Navigate high-stakes confrontations. These challenges train the controlled expressions and precise gestures used in moments of conflict — staying grounded, projecting composure, and never leaking fear.",
+      "theme": "Conflict",
+      "difficulty": "advanced",
+      "xpReward": 100,
+      "challenges": [
+        {
+          "bundleIndex": 2,
+          "orderIndex": 1,
+          "type": "facial",
+          "title": "Fletcher's Contempt",
+          "description": "Produce a contempt expression — one corner of the mouth pulled back and slightly up, eyes narrowed and cold, jaw set. This is controlled disdain, not explosive anger. Hold for 4 seconds without breaking.",
+          "context": "In Whiplash, Fletcher's contempt for mediocrity is a precise, controlled facial weapon. He never screams randomly — the contempt expression is deployed with surgical precision. It communicates: 'You are beneath the standard and I see it clearly.'",
+          "sourceClipHint": "Whiplash — Fletcher conducting/evaluating",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 2,
+          "type": "gesture",
+          "title": "The Stillness Hold",
+          "description": "Sit with hands loosely folded, spine straight, completely motionless for 8 seconds. No shifting, no scratching, no throat-clearing. This level of physical stillness under pressure communicates total psychological control.",
+          "context": "In The Silence of the Lambs, Hannibal Lecter's absolute physical stillness in his cell during conversations with Clarice is profoundly unsettling. While everyone around him moves, he does not. The stillness itself is the signal of who holds the psychological power.",
+          "sourceClipHint": "The Silence of the Lambs — Clarice interview scenes",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 3,
+          "type": "facial",
+          "title": "The Polite Mask",
+          "description": "Produce a warm, social smile — but keep your eyes completely neutral and assessing. The mouth smiles; the eyes do not. Hold this split expression for 4 seconds. This is the advanced skill of emotional compartmentalization.",
+          "context": "In Inglourious Basterds, Hans Landa smiles pleasantly throughout some of the most threatening conversations in film history. The disconnect between his warm social expression and his cold analytical eyes is what makes him so unsettling — and so effective.",
+          "sourceClipHint": "Inglourious Basterds — Landa farmhouse interrogation",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 4,
+          "type": "gesture",
+          "title": "The Space Claim",
+          "description": "Stand in the center of your frame and do not yield any space. Feet slightly wider than shoulder-width, arms loose at sides. When someone approaches (imagined), do not step back. Hold your ground physically for 5 seconds.",
+          "context": "In No Country for Old Men, Anton Chigurh fills doorways and moves through spaces as if he has already decided no one will ask him to move. The gesture is not aggression — it is simply an absolute refusal to cede ground. The body says: 'I do not yield.'",
+          "sourceClipHint": "No Country for Old Men — Chigurh gas station scene",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 5,
+          "type": "facial",
+          "title": "Controlled Anger",
+          "description": "Show anger that is fully present but completely controlled — jaw tight, eyes narrowed, brow pulled down, but no volume, no flailing. The face is a pressure cooker with the lid held down. Hold for 4 seconds.",
+          "context": "In 12 Angry Men, several jurors hold their anger rigidly controlled for extended periods of the film. The most powerful moment is when a juror who has personal stakes in the verdict visibly seethes but keeps his voice level. The controlled anger reads as more serious than shouting.",
+          "sourceClipHint": "12 Angry Men — jury deliberation tension peak",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 6,
+          "type": "gesture",
+          "title": "The Firm Cross",
+          "description": "Cross your arms — but deliberately, not nervously. Forearms horizontal, hands resting on opposite arms, weight slightly back. Chin level. This is the physical signal of 'I disagree and I am not moving.' Hold for 5 seconds.",
+          "context": "In Glengarry Glen Ross, the characters who survive the verbal assault of Blake's sales pitch are those whose crossed-arm posture communicates immovability. The body says: 'You can keep talking. My position has not changed.' Defensive? Yes. But also deeply grounded.",
+          "sourceClipHint": "Glengarry Glen Ross — Blake confrontation scene",
+          "referenceImageUrl": null,
+          "difficulty": "beginner",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 7,
+          "type": "facial",
+          "title": "Unsettling Calm",
+          "description": "Look directly at the camera with total calm during what should be a frightening moment. Eyebrows relaxed, jaw loose, expression almost curious. The absence of expected fear is what makes this expression so powerful.",
+          "context": "In The Dark Knight, the Joker's calm in situations that terrify others is his most unsettling quality. His face shows something closer to curious interest than fear. The expression communicates: 'I have already decided the outcome of this moment, and I am comfortable with it.'",
+          "sourceClipHint": "The Dark Knight — Joker interrogation room",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 8,
+          "type": "gesture",
+          "title": "The Pressure Step",
+          "description": "Take one deliberate step toward the camera (or imagined opponent). Stop. Hold the ground you've gained. Arms loose, chin level. The step is not aggressive — it is a reclaiming of space. Hold for 4 seconds after the step.",
+          "context": "In The Shawshank Redemption, Andy Dufresne's measured steps forward when challenged — by guards, by inmates, by the warden — are the physical language of quiet defiance. He rarely retreats physically, even when it would be easier. The body communicates: 'I am still here.'",
+          "sourceClipHint": "The Shawshank Redemption — Andy vs. guards + warden",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 9,
+          "type": "facial",
+          "title": "The Pre-Confrontation Face",
+          "description": "Produce the expression of someone who is about to say something difficult but necessary — slightly raised chin, eyes level and direct, a single slow exhale visible through a barely open mouth, then composure locked in. Hold for 5 seconds.",
+          "context": "In A Few Good Men, Lt. Kaffee's face before his climactic cross-examination of Jessup shows this preparation sequence — the settling of nerves into certainty. It's the face of someone who has decided they will not back down, regardless of consequences.",
+          "sourceClipHint": "A Few Good Men — Kaffee vs. Jessup courtroom",
+          "referenceImageUrl": null,
+          "difficulty": "intermediate",
+          "xpReward": 20
+        },
+        {
+          "bundleIndex": 2,
+          "orderIndex": 10,
+          "type": "gesture",
+          "title": "The Unbroken Stand",
+          "description": "Stand completely upright under imagined pressure — someone is yelling at you, threatening you, demanding you sit down. Keep your spine tall, feet planted, hands at sides. Do not yield, do not cross arms. Simply remain. Hold for 6 seconds.",
+          "context": "In Lincoln, Lincoln physically withstands enormous political pressure in meeting after meeting — his tall, still standing figure in rooms full of agitated men is one of the film's recurring physical images. He remains. The room moves around him. His body says: 'I am not moved by this.'",
+          "sourceClipHint": "Lincoln — political negotiations and pressure scenes",
+          "referenceImageUrl": null,
+          "difficulty": "advanced",
+          "xpReward": 20
+        }
+      ]
+    }
+  ]
+}

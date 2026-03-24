@@ -1,0 +1,39 @@
+{
+  "pipeline": "m11-observation-guides",
+  "status": "complete",
+  "milestone": "M11",
+  "task": "curate-observation-guides",
+  "blocker": "Waiting for Backend Engineer to add `observationGuide Json?` and `practiceSteps Json?` to Clip model, run npm run db:push, and signal data-engineer.json",
+  "what_is_done": [
+    "observation_guide written for all 15 clips in clips-seed.json v1.2",
+    "Each guide has: headline + 5-6 timestamped moments with technique/what/why",
+    "practice_steps written for all 15 clips (3-4 steps each)",
+    "Each step has: step_number, skill_focus, instruction, tip, target_duration_sec",
+    "seed.ts interface updated: observation_guide? + practice_steps? fields",
+    "seed.ts patch logic updated: patches observationGuide + practiceSteps when null",
+    "seed.ts create logic updated: spreads new fields conditionally (won't break until schema exists)"
+  ],
+  "observation_guide_structure": {
+    "headline": "string — 'How [Character] uses [skill] — and why it works'",
+    "moments": "array of 5-6 objects: { at_second, technique, what, why }"
+  },
+  "practice_steps_structure": "array of 3-4 objects: { step_number, skill_focus, instruction, tip, target_duration_sec }",
+  "seed_file": ".shared/outputs/data/clips-seed.json",
+  "seed_script": "prisma/seed.ts",
+  "what_is_next": [
+    "Backend Engineer: add observationGuide Json? + practiceSteps Json? to Clip in schema.prisma",
+    "USER: npm run db:push",
+    "USER: npx prisma generate",
+    "USER: npx prisma db seed — patches all 15 clips with observation_guide + practice_steps",
+    "Tester: verify all 15 clips in DB have non-null observationGuide and practiceSteps values"
+  ],
+  "started_at": "2026-03-23T01:00:00Z",
+  "updated_at": "2026-03-23T01:15:00Z",
+  "completed_at": "2026-03-23T01:35:00Z",
+  "db_verified": {
+    "clips_with_observation_guide": 15,
+    "practice_step_rows": 60,
+    "avg_steps_per_clip": 4,
+    "missing": 0
+  }
+}

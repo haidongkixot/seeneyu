@@ -1,0 +1,293 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "purpose": "M13 onboarding assessment questions + learning path sequence for all 5 skills",
+    "generated_by": "data-engineer role",
+    "date": "2026-03-23",
+    "usage": "Backend Engineer uses quiz questions in onboarding flow. AI scores video attempt + self-report to set SkillBaseline. Learning path sequences drive clip ordering on dashboard."
+  },
+
+  "assessment_quiz": {
+    "instructions": "5 questions — one per skill. Each question is self-report (no video needed). Combined with a 30s video recording per skill (scored by AI), this produces the full SkillBaseline. Self-report alone is used as the initial estimate before video scoring.",
+    "questions": [
+      {
+        "skill": "eye-contact",
+        "question": "When making eye contact during a conversation or presentation, which best describes you?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I often look away, look down, or find sustained eye contact uncomfortable — especially under pressure.",
+            "maps_to": "beginner",
+            "score": 1
+          },
+          {
+            "label": "B",
+            "text": "I can maintain eye contact but sometimes hold it too rigidly, or break it too randomly — I haven't learned to use it intentionally.",
+            "maps_to": "intermediate",
+            "score": 2
+          },
+          {
+            "label": "C",
+            "text": "I consciously modulate my gaze — I hold, break, and re-engage eye contact as a deliberate communication tool.",
+            "maps_to": "advanced",
+            "score": 3
+          }
+        ]
+      },
+      {
+        "skill": "open-posture",
+        "question": "In a high-stakes situation — job interview, difficult conversation, public speaking — how would you describe your body language?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I tend to cross my arms, hunch my shoulders, or make myself physically smaller without realising it.",
+            "maps_to": "beginner",
+            "score": 1
+          },
+          {
+            "label": "B",
+            "text": "I can hold open posture when I think about it, but revert under pressure — it doesn't yet feel natural.",
+            "maps_to": "intermediate",
+            "score": 2
+          },
+          {
+            "label": "C",
+            "text": "I deliberately use my stance, chest position, and gestures to signal confidence — my posture is a tool I adjust intentionally.",
+            "maps_to": "advanced",
+            "score": 3
+          }
+        ]
+      },
+      {
+        "skill": "active-listening",
+        "question": "When someone is telling you something important, what is most likely happening in your head?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I'm mostly thinking about what I want to say next while they're still talking, and I often jump in too quickly.",
+            "maps_to": "beginner",
+            "score": 1
+          },
+          {
+            "label": "B",
+            "text": "I'm mostly listening, but I sometimes nod automatically, fill silences too quickly, or let my face go blank.",
+            "maps_to": "intermediate",
+            "score": 2
+          },
+          {
+            "label": "C",
+            "text": "I'm tracking both words and emotional cues — calibrating my nods, my silence, my proximity — to make the other person feel fully heard.",
+            "maps_to": "advanced",
+            "score": 3
+          }
+        ]
+      },
+      {
+        "skill": "vocal-pacing",
+        "question": "When presenting or speaking in an important situation, how do you typically use pace and pauses?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I speak quickly to fill space and avoid awkward silences, or rush through key points without letting them land.",
+            "maps_to": "beginner",
+            "score": 1
+          },
+          {
+            "label": "B",
+            "text": "I'm aware that pacing matters, but under pressure I speed up or struggle to use pauses intentionally.",
+            "maps_to": "intermediate",
+            "score": 2
+          },
+          {
+            "label": "C",
+            "text": "I deliberately vary my tempo — slow for emphasis, accelerate for momentum, pause before key points to control impact.",
+            "maps_to": "advanced",
+            "score": 3
+          }
+        ]
+      },
+      {
+        "skill": "confident-disagreement",
+        "question": "When you disagree with someone in a professional or social setting, what typically happens?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I either go quiet and let it pass, over-hedge ('I might be wrong but...'), or get defensive and my body language gives me away.",
+            "maps_to": "beginner",
+            "score": 1
+          },
+          {
+            "label": "B",
+            "text": "I can state my disagreement, but I sometimes add unnecessary apologies, soften it too much, or feel my body betray my anxiety.",
+            "maps_to": "intermediate",
+            "score": 2
+          },
+          {
+            "label": "C",
+            "text": "I disagree directly and without apology — I state my position clearly, stay open in my body language, and hold my ground calmly.",
+            "maps_to": "advanced",
+            "score": 3
+          }
+        ]
+      }
+    ],
+    "scoring": {
+      "method": "self_report_plus_ai_video",
+      "self_report_weight": 0.4,
+      "ai_video_weight": 0.6,
+      "note": "If no video is captured during onboarding, fall back to self-report-only score (weight 1.0). Re-score after first real practice session.",
+      "level_thresholds": {
+        "beginner": { "min_score": 1.0, "max_score": 1.7 },
+        "intermediate": { "min_score": 1.7, "max_score": 2.4 },
+        "advanced": { "min_score": 2.4, "max_score": 3.0 }
+      }
+    },
+    "video_prompt_per_skill": {
+      "eye-contact": "Record yourself maintaining eye contact with the camera for 15 seconds while introducing yourself. Speak naturally — your name, one sentence about yourself.",
+      "open-posture": "Record yourself standing for 15 seconds while telling the camera one thing you're proud of. Focus on how your body holds itself.",
+      "active-listening": "Record yourself nodding and reacting as if listening to someone deliver good news for 15 seconds. No words needed — just your listening body language.",
+      "vocal-pacing": "Record yourself saying this sentence slowly, then pausing, then finishing it: 'The most important thing I want you to know is... [3-second pause] ...this matters.'",
+      "confident-disagreement": "Record yourself saying: 'I see it differently. I think [one clear, calm sentence of disagreement]. And I'm happy to discuss why.'"
+    }
+  },
+
+  "learning_path_sequences": {
+    "description": "Default clip ordering per skill × starting level. Path advances to next difficulty when AI feedback scores ≥ 70% on two consecutive sessions.",
+    "advancement_threshold": {
+      "score_percentage": 70,
+      "consecutive_sessions_required": 2,
+      "note": "If learner scores < 70% after 3 attempts at a level, surface the observation guide as a review before next attempt."
+    },
+    "paths": {
+      "eye-contact": {
+        "beginner": {
+          "clip_id": "clip_001",
+          "movie": "The Pursuit of Happyness",
+          "character": "Chris Gardner",
+          "next": "intermediate"
+        },
+        "intermediate": {
+          "clip_id": "clip_002",
+          "movie": "The Social Network",
+          "character": "Mark Zuckerberg",
+          "next": "advanced"
+        },
+        "advanced": {
+          "clip_id": "clip_003",
+          "movie": "No Country for Old Men",
+          "character": "Anton Chigurh",
+          "next": null
+        }
+      },
+      "open-posture": {
+        "beginner": {
+          "clip_id": "clip_004",
+          "movie": "Iron Man 2",
+          "character": "Tony Stark",
+          "next": "intermediate"
+        },
+        "intermediate": {
+          "clip_id": "clip_005",
+          "movie": "The Intern",
+          "character": "Ben Whittaker",
+          "next": "advanced"
+        },
+        "advanced": {
+          "clip_id": "clip_006",
+          "movie": "There Will Be Blood",
+          "character": "Daniel Plainview",
+          "next": null
+        }
+      },
+      "active-listening": {
+        "beginner": {
+          "clip_id": "clip_007",
+          "movie": "Good Will Hunting",
+          "character": "Sean Maguire",
+          "next": "intermediate"
+        },
+        "intermediate": {
+          "clip_id": "clip_008",
+          "movie": "The King's Speech",
+          "character": "Lionel Logue",
+          "next": "advanced"
+        },
+        "advanced": {
+          "clip_id": "clip_009",
+          "movie": "Marriage Story",
+          "character": "Nicole Barber",
+          "next": null
+        }
+      },
+      "vocal-pacing": {
+        "beginner": {
+          "clip_id": "clip_010",
+          "movie": "Dead Poets Society",
+          "character": "John Keating",
+          "next": "intermediate"
+        },
+        "intermediate": {
+          "clip_id": "clip_011",
+          "movie": "Any Given Sunday",
+          "character": "Tony D'Amato",
+          "next": "advanced"
+        },
+        "advanced": {
+          "clip_id": "clip_012",
+          "movie": "Lincoln",
+          "character": "Abraham Lincoln",
+          "next": null
+        }
+      },
+      "confident-disagreement": {
+        "beginner": {
+          "clip_id": "clip_013",
+          "movie": "Legally Blonde",
+          "character": "Elle Woods",
+          "next": "intermediate"
+        },
+        "intermediate": {
+          "clip_id": "clip_014",
+          "movie": "12 Angry Men",
+          "character": "Juror #8",
+          "next": "advanced"
+        },
+        "advanced": {
+          "clip_id": "clip_015",
+          "movie": "Frost/Nixon",
+          "character": "Richard Nixon",
+          "next": null
+        }
+      }
+    },
+    "default_dashboard_order": [
+      "eye-contact",
+      "open-posture",
+      "vocal-pacing",
+      "confident-disagreement",
+      "active-listening"
+    ],
+    "note": "Skills are displayed in this order on the dashboard. Within each skill, the learner's current level determines which clip is shown as 'up next'. Skills where the learner is advanced are shown last (they need less attention)."
+  },
+
+  "skill_level_display": {
+    "description": "UI label mapping for skill levels shown on SkillProgressBar",
+    "levels": {
+      "beginner": {
+        "label": "Developing",
+        "color_token": "text-amber-400",
+        "icon": "●○○"
+      },
+      "intermediate": {
+        "label": "Practising",
+        "color_token": "text-blue-400",
+        "icon": "●●○"
+      },
+      "advanced": {
+        "label": "Fluent",
+        "color_token": "text-accent-400",
+        "icon": "●●●"
+      }
+    }
+  }
+}
