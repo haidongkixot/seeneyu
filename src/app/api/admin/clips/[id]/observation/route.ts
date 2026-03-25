@@ -5,6 +5,9 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import type { ObservationGuide } from '@/lib/types'
 
+// Allow up to 30s for OpenAI API call
+export const maxDuration = 30
+
 const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' })
 
 async function requireAdmin() {
@@ -78,16 +81,21 @@ export async function POST(
     })
 
     const response = await getOpenAI().chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       max_tokens: 800,
+      response_format: { type: 'json_object' },
       messages: [{ role: 'user', content: prompt }],
     })
 
-    const raw = response.choices[0]?.message?.content ?? ''
-    const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) throw new Error('No JSON in GPT response')
-
-    const guide = JSON.parse(jsonMatch[0]) as ObservationGuide
+    const raw = response.choices[0]?.message?.content ?? '{}'
+    let guide: ObservationGuide
+    try {
+      guide = JSON.parse(raw) as ObservationGuide
+    } catch {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/)
+      if (!jsonMatch) throw new Error('No JSON in GPT response')
+      guide = JSON.parse(jsonMatch[0]) as ObservationGuide
+    }
 
     await prisma.clip.update({
       where: { id: params.id },

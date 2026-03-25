@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+
+export const maxDuration = 30
 import { prisma } from '@/lib/prisma'
 import { scoreFullPerformanceFromAnalysis } from '@/services/expression-scorer'
 import { generateTextFeedback } from '@/services/feedback-generator'

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import OpenAI from 'openai'
+
+export const maxDuration = 30
 import { prisma } from '@/lib/prisma'
 import { scoreMicroPracticeFromAnalysis } from '@/services/expression-scorer'
 import type { MicroFeedback } from '@/lib/types'
