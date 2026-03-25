@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { NavBar } from '@/components/NavBar'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
+import { AssistantButton } from '@/components/assistant'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
 
 const SKILLS: SkillCategory[] = [
@@ -102,6 +103,9 @@ export default async function DashboardPage() {
           ))}
         </div>
       </main>
+
+      {/* AI Assistant */}
+      <AssistantButton context="general" />
     </div>
   )
 }

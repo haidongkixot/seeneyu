@@ -9,6 +9,8 @@ import { useParams } from 'next/navigation'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
 import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
 import { FreeTierBadge } from '@/components/auth/FreeTierBadge'
+import { CommentThread } from '@/components/discussions'
+import { AssistantButton } from '@/components/assistant'
 
 interface ChallengeData {
   id: string
@@ -590,7 +592,16 @@ export default function BundlePage() {
             )
           })}
         </div>
+
+        {/* Discussion */}
+        <CommentThread
+          challengeId={bundle.id}
+          placeholder="Share your thoughts on this challenge bundle..."
+        />
       </main>
+
+      {/* AI Assistant */}
+      <AssistantButton context={`arcade:${bundle.id}`} />
     </div>
   )
 }
