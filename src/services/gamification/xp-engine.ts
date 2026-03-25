@@ -77,8 +77,8 @@ export async function awardXp(
       userId,
       amount,
       source,
-      sourceId: sourceId ?? null,
-      metadata: metadata ?? null,
+      sourceId: sourceId ?? undefined,
+      metadata: metadata ?? undefined,
     },
   })
 

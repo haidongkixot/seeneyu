@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
         url,
         title: resolvedTitle,
         rawContent,
-        metadata: body.metadata ?? null,
+        metadata: body.metadata ?? undefined,
         status: 'raw',
       },
     })
