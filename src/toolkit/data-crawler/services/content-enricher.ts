@@ -68,9 +68,9 @@ Return ONLY valid JSON.`
     data: {
       metadata: {
         ...existingMetadata,
-        enrichment: result,
+        enrichment: result as unknown as Record<string, string | number>,
         enrichedAt: new Date().toISOString(),
-      },
+      } as any,
     },
   })
 

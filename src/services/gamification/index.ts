@@ -8,7 +8,7 @@ import { awardXp, XP_AMOUNTS } from './xp-engine'
 import { checkAndUpdateStreak } from './streak-tracker'
 import { updateQuestProgress } from './quest-generator'
 import { evaluateBadges } from './badge-evaluator'
-import type { Badge } from '@prisma/client'
+import type { Badge, Prisma } from '@prisma/client'
 
 // Map activity types to quest types for progress tracking
 const ACTIVITY_TO_QUEST: Record<string, string> = {
@@ -48,7 +48,7 @@ export async function processActivity(
     xpAmount,
     activityType,
     metadata?.sourceId as string | undefined,
-    metadata
+    metadata as Prisma.InputJsonValue | undefined
   )
 
   // 2. Update streak

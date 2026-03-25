@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 export const XP_AMOUNTS: Record<string, number> = {
   foundation_lesson: 25,
@@ -49,7 +50,7 @@ export async function awardXp(
   amount: number,
   source: string,
   sourceId?: string,
-  metadata?: Record<string, unknown>
+  metadata?: Prisma.InputJsonValue
 ): Promise<{ totalXp: number; level: number; leveledUp: boolean }> {
   // Upsert gamification record
   const gamification = await prisma.userGamification.upsert({
