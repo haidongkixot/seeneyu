@@ -12,9 +12,6 @@ interface AssistantButtonProps {
 
 export function AssistantButton({ context }: AssistantButtonProps) {
   const { status } = useSession()
-
-  // Don't render for unauthenticated users
-  if (status !== 'authenticated') return null
   const [open, setOpen] = useState(false)
   const [showNudge, setShowNudge] = useState(false)
   const [nudgeText, setNudgeText] = useState({
@@ -28,8 +25,7 @@ export function AssistantButton({ context }: AssistantButtonProps) {
 
   // Idle nudge: show after 60s, then 120s
   useEffect(() => {
-    if (open) {
-      // Clear nudge when panel is open
+    if (status !== 'authenticated' || open) {
       setShowNudge(false)
       if (nudgeTimerRef.current) clearTimeout(nudgeTimerRef.current)
       if (nudgeDismissRef.current) clearTimeout(nudgeDismissRef.current)
@@ -69,7 +65,10 @@ export function AssistantButton({ context }: AssistantButtonProps) {
       if (nudgeDismissRef.current) clearTimeout(nudgeDismissRef.current)
       clearTimeout(secondTimer)
     }
-  }, [open])
+  }, [open, status])
+
+  // Don't render for unauthenticated users
+  if (status !== 'authenticated') return null
 
   function dismissNudge(e: React.MouseEvent) {
     e.stopPropagation()
