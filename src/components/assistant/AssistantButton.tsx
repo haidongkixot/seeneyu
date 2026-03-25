@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useSession } from 'next-auth/react'
 import { MessageCircle, X, GraduationCap } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { AssistantPanel } from './AssistantPanel'
@@ -10,6 +11,10 @@ interface AssistantButtonProps {
 }
 
 export function AssistantButton({ context }: AssistantButtonProps) {
+  const { status } = useSession()
+
+  // Don't render for unauthenticated users
+  if (status !== 'authenticated') return null
   const [open, setOpen] = useState(false)
   const [showNudge, setShowNudge] = useState(false)
   const [nudgeText, setNudgeText] = useState({

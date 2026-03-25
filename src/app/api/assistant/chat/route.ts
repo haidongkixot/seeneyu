@@ -165,7 +165,12 @@ export async function POST(req: Request) {
       suggestions,
     })
   } catch (err: any) {
-    console.error('Assistant chat error:', err)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    console.error('Assistant chat error:', err?.message, err?.stack)
+    // Log to error system if available
+    try {
+      const { logError } = await import('@/lib/logger')
+      await logError('api', err, { route: '/api/assistant/chat', context: 'Coach Ney chat' })
+    } catch { /* logger may not be available */ }
+    return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 })
   }
 }
