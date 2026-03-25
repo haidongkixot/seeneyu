@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import GameClient from './GameClient'
 
-const VALID_GAME_TYPES = ['guess-expression', 'match-expression', 'expression-king'] as const
+const VALID_GAME_TYPES = ['guess-expression', 'match-expression', 'expression-king', 'emotion-timeline', 'spot-the-signal'] as const
 type GameType = (typeof VALID_GAME_TYPES)[number]
 
 interface GameConfig {
@@ -37,6 +37,22 @@ const GAME_CONFIGS: Record<GameType, GameConfig> = {
     totalRounds: 5,
     timePerRound: 30,
     pointsPerCorrect: 20,
+  },
+  'emotion-timeline': {
+    type: 'emotion-timeline',
+    title: 'Emotion Timeline',
+    description: 'Arrange emotions in the correct chronological order as they unfold in real scenarios.',
+    totalRounds: 8,
+    timePerRound: 20,
+    pointsPerCorrect: 40,
+  },
+  'spot-the-signal': {
+    type: 'spot-the-signal',
+    title: 'Spot the Signal',
+    description: 'Identify the body language signal hidden in each scenario. How sharp are your observation skills?',
+    totalRounds: 12,
+    timePerRound: 8,
+    pointsPerCorrect: 25,
   },
 }
 

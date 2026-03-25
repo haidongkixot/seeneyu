@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import ClipForm from '../../ClipForm'
 import { GenerateObservationGuide } from './GenerateObservationGuide'
 import { CrawlScreenplay } from './CrawlScreenplay'
+import { FetchTranscript } from './FetchTranscript'
 
 export default async function EditClipPage({ params }: { params: { id: string } }) {
   const clip = await prisma.clip.findUnique({ where: { id: params.id } })
@@ -11,6 +12,7 @@ export default async function EditClipPage({ params }: { params: { id: string } 
   const hasGuide = !!(clip as any).observationGuide
   const hasScreenplaySource = !!(clip as any).screenplaySource
   const hasScreenplayText = !!(clip as any).screenplayText
+  const existingScript = (clip.script as string | null) ?? null
 
   const initial = {
     id: clip.id,
@@ -56,6 +58,24 @@ export default async function EditClipPage({ params }: { params: { id: string } 
               : 'No guide yet. Generate one with AI — takes ~5 seconds.'}
           </p>
           <GenerateObservationGuide clipId={clip.id} hasGuide={hasGuide} />
+        </div>
+      </div>
+
+      {/* YouTube Transcript */}
+      <div className="max-w-2xl mt-6">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
+          <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-1">
+            YouTube Transcript
+          </p>
+          <p className="text-sm text-text-tertiary mb-4">
+            {existingScript
+              ? 'Transcript fetched and stored. Click to re-fetch from YouTube.'
+              : 'Fetch the video transcript from YouTube captions (no API key needed).'}
+          </p>
+          <FetchTranscript
+            clipId={clip.id}
+            existingScript={existingScript}
+          />
         </div>
       </div>
 

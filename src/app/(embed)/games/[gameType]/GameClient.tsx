@@ -5,6 +5,8 @@ import { Trophy, RotateCcw, ArrowLeft } from 'lucide-react'
 import GuessExpressionGame from '@/toolkit/mini-games/components/GuessExpressionGame'
 import MatchExpressionGame from '@/toolkit/mini-games/components/MatchExpressionGame'
 import ExpressionKingGame from '@/toolkit/mini-games/components/ExpressionKingGame'
+import EmotionTimelineGame from '@/toolkit/mini-games/components/EmotionTimelineGame'
+import SpotTheSignalGame from '@/toolkit/mini-games/components/SpotTheSignalGame'
 
 interface GameConfig {
   type: string
@@ -122,6 +124,8 @@ function IntroScreen({
     'guess-expression': '🎯',
     'match-expression': '🔗',
     'expression-king': '👑',
+    'emotion-timeline': '⏳',
+    'spot-the-signal': '🔍',
   }
 
   return (
@@ -192,6 +196,28 @@ function PlayingScreen({
   if (config.type === 'expression-king') {
     return (
       <ExpressionKingGame
+        totalRounds={config.totalRounds}
+        timePerRound={config.timePerRound}
+        pointsPerCorrect={config.pointsPerCorrect}
+        onComplete={onComplete}
+      />
+    )
+  }
+
+  if (config.type === 'emotion-timeline') {
+    return (
+      <EmotionTimelineGame
+        totalRounds={config.totalRounds}
+        timePerRound={config.timePerRound}
+        pointsPerCorrect={config.pointsPerCorrect}
+        onComplete={onComplete}
+      />
+    )
+  }
+
+  if (config.type === 'spot-the-signal') {
+    return (
+      <SpotTheSignalGame
         totalRounds={config.totalRounds}
         timePerRound={config.timePerRound}
         pointsPerCorrect={config.pointsPerCorrect}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ObservationGuide } from '@/components/ObservationGuide'
 import type { ObservationGuide as ObservationGuideType } from '@/lib/types'
 
-type Tab = 'watch' | 'how-it-works'
+type Tab = 'watch' | 'how-it-works' | 'script'
 
 interface ClipDetailTabsProps {
   clipId: string
@@ -15,6 +15,8 @@ interface ClipDetailTabsProps {
   contextNote: string | null
   observationGuide: ObservationGuideType | null
   annotations: { note: string; type: string }[]
+  scriptText: string | null
+  screenplayText: string | null
 }
 
 export function ClipDetailTabs({
@@ -25,14 +27,27 @@ export function ClipDetailTabs({
   contextNote,
   observationGuide,
   annotations,
+  scriptText,
+  screenplayText,
 }: ClipDetailTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('watch')
+  const hasScript = !!(scriptText || screenplayText)
+
+  const tabs: Tab[] = hasScript
+    ? ['watch', 'how-it-works', 'script']
+    : ['watch', 'how-it-works']
+
+  const tabLabels: Record<Tab, string> = {
+    'watch': 'Watch',
+    'how-it-works': 'How It Works',
+    'script': 'Script',
+  }
 
   return (
     <div>
       {/* Tab bar */}
       <div className="flex items-center gap-1 border-b border-black/8 mb-5" role="tablist">
-        {(['watch', 'how-it-works'] as Tab[]).map((tab) => (
+        {tabs.map((tab) => (
           <button
             key={tab}
             role="tab"
@@ -46,7 +61,7 @@ export function ClipDetailTabs({
                 : 'border-transparent text-text-secondary hover:text-text-primary',
             ].join(' ')}
           >
-            {tab === 'watch' ? 'Watch' : 'How It Works'}
+            {tabLabels[tab]}
           </button>
         ))}
       </div>
@@ -54,7 +69,7 @@ export function ClipDetailTabs({
       {/* Tab panels */}
       <div
         role="tabpanel"
-        aria-label={activeTab === 'watch' ? 'Watch' : 'How It Works'}
+        aria-label={tabLabels[activeTab]}
         className="animate-fade-in"
         key={activeTab}
       >
@@ -79,6 +94,29 @@ export function ClipDetailTabs({
                 ))}
               </div>
             </div>
+          </div>
+        ) : activeTab === 'script' ? (
+          <div className="flex flex-col gap-4">
+            {scriptText && (
+              <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 shadow-card">
+                <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+                  Transcript
+                </p>
+                <pre className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap font-mono max-h-[500px] overflow-y-auto">
+                  {scriptText}
+                </pre>
+              </div>
+            )}
+            {screenplayText && (
+              <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 shadow-card">
+                <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+                  Screenplay
+                </p>
+                <pre className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap font-mono max-h-[500px] overflow-y-auto">
+                  {screenplayText}
+                </pre>
+              </div>
+            )}
           </div>
         ) : (
           <ObservationGuide
