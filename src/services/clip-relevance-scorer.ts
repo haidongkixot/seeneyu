@@ -56,8 +56,12 @@ Return ONLY valid JSON: { "score": <number 0-10>, "analysis": "<1-2 sentence rea
       score: Math.max(0, Math.min(10, Number(parsed.score) || 0)),
       analysis: String(parsed.analysis || ''),
     }
-  } catch {
-    return { score: 0, analysis: 'Scoring failed.' }
+  } catch (err: any) {
+    console.error('Clip scoring failed:', err?.message || err)
+    const reason = !process.env.OPENAI_API_KEY
+      ? 'OPENAI_API_KEY not configured.'
+      : `Scoring error: ${err?.message || 'Unknown error'}`
+    return { score: 0, analysis: reason }
   }
 }
 
