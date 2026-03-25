@@ -2,23 +2,31 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2 } from 'lucide-react'
+import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target } from 'lucide-react'
 
 interface ToolkitStats {
   contentSources: { total: number; raw: number; curated: number; published: number }
   expressionAssets: { total: number; pending: number; verified: number }
 }
 
+interface MiniGameStats {
+  totalPlays: number
+  completionRate: number
+  totalGames: number
+}
+
 export default function AdminToolkitPage() {
   const [stats, setStats] = useState<ToolkitStats | null>(null)
+  const [gameStats, setGameStats] = useState<MiniGameStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [sourcesRes, expressionsRes] = await Promise.all([
+        const [sourcesRes, expressionsRes, analyticsRes] = await Promise.all([
           fetch('/api/admin/toolkit/crawler/jobs?page=1'),
           fetch('/api/admin/toolkit/crawler/expressions?page=1'),
+          fetch('/api/admin/toolkit/mini-games/analytics').catch(() => null),
         ])
         const sourcesData = await sourcesRes.json()
         const expressionsData = await expressionsRes.json()
@@ -40,6 +48,15 @@ export default function AdminToolkitPage() {
             verified: expressions.filter((e: any) => e.status === 'verified').length,
           },
         })
+
+        if (analyticsRes && analyticsRes.ok) {
+          const analyticsData = await analyticsRes.json()
+          setGameStats({
+            totalPlays: analyticsData.totalPlays ?? 0,
+            completionRate: analyticsData.completionRate ?? 0,
+            totalGames: analyticsData.avgScoresByGame?.length ?? 0,
+          })
+        }
       } catch {
         setStats(null)
       } finally {
@@ -62,12 +79,15 @@ export default function AdminToolkitPage() {
       ] : [],
     },
     {
-      href: '#',
+      href: '/admin/toolkit/mini-games',
       label: 'Mini-Games',
       description: 'Manage interactive mini-games for facial expression and gesture practice.',
       Icon: Gamepad2,
-      stats: [],
-      disabled: true,
+      stats: gameStats ? [
+        { label: 'Total plays', value: gameStats.totalPlays, Icon: Target },
+        { label: 'Games', value: gameStats.totalGames, Icon: Gamepad2 },
+        { label: 'Completion', value: `${Math.round(gameStats.completionRate * 100)}%`, Icon: CheckCircle2 },
+      ] : [],
     },
   ]
 
@@ -85,25 +105,14 @@ export default function AdminToolkitPage() {
           <Link
             key={tool.label}
             href={tool.href}
-            className={`group block bg-bg-surface border border-white/8 rounded-2xl p-6 transition-all duration-150 ${
-              tool.disabled
-                ? 'opacity-50 pointer-events-none'
-                : 'hover:border-accent-400/30 hover:bg-bg-overlay'
-            }`}
+            className="group block bg-bg-surface border border-white/8 rounded-2xl p-6 transition-all duration-150 hover:border-accent-400/30 hover:bg-bg-overlay"
           >
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-accent-400/10 text-accent-400 group-hover:bg-accent-400/20 transition-colors">
                 <tool.Icon size={24} />
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold text-text-primary">{tool.label}</h2>
-                  {tool.disabled && (
-                    <span className="text-[10px] font-medium bg-bg-inset text-text-muted rounded px-1.5 py-0.5 uppercase">
-                      Coming Soon
-                    </span>
-                  )}
-                </div>
+                <h2 className="text-lg font-semibold text-text-primary">{tool.label}</h2>
                 <p className="text-text-secondary text-sm mt-1">{tool.description}</p>
 
                 {tool.stats.length > 0 && (
