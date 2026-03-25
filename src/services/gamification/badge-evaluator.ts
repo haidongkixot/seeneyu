@@ -43,7 +43,7 @@ export async function checkBadgeCriteria(
   userId: string,
   badge: Badge
 ): Promise<boolean> {
-  const criteria = badge.criteria as BadgeCriteria
+  const criteria = badge.criteria as unknown as BadgeCriteria
   const threshold = criteria.threshold ?? 0
 
   switch (criteria.type) {
