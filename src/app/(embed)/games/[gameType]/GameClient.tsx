@@ -214,6 +214,10 @@ function ResultScreen({
 }) {
   const handleSignUp = () => {
     postToParent('signup-prompt', { gameType: config.type, score: result.score })
+    // If not in iframe, navigate directly to signup
+    if (typeof window !== 'undefined' && window.parent === window) {
+      window.location.href = '/auth/signup'
+    }
   }
 
   return (
