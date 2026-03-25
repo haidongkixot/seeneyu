@@ -136,3 +136,44 @@ body {
   0%   { transform: scale(0.5); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* ── Mini-games: timer pulse ─────────────────────────────── */
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ── Mini-games: light theme overrides ───────────────────── */
+.game-theme-light {
+  --bg-base: #f8f8fc;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f0f0f5;
+  --bg-overlay: #e8e8f0;
+  --bg-inset: #f0f0f5;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b6b80;
+  --text-tertiary: #9898a8;
+  --text-inverse: #ffffff;
+  --border-subtle: rgba(0,0,0,0.06);
+  --border-default: rgba(0,0,0,0.10);
+  --border-strong: rgba(0,0,0,0.20);
+}
+
+.game-theme-light {
+  background-color: var(--bg-base) !important;
+  color: var(--text-primary) !important;
+}
+
+.game-theme-light .bg-bg-base { background-color: var(--bg-base); }
+.game-theme-light .bg-bg-surface { background-color: var(--bg-surface); }
+.game-theme-light .bg-bg-elevated { background-color: var(--bg-elevated); }
+.game-theme-light .bg-bg-overlay { background-color: var(--bg-overlay); }
+.game-theme-light .bg-bg-inset { background-color: var(--bg-inset); }
+.game-theme-light .text-text-primary { color: var(--text-primary); }
+.game-theme-light .text-text-secondary { color: var(--text-secondary); }
+.game-theme-light .text-text-tertiary { color: var(--text-tertiary); }
+.game-theme-light .text-text-inverse { color: var(--text-inverse); }
+.game-theme-light .border-white\/\[0\.06\] { border-color: var(--border-subtle); }
+.game-theme-light .border-white\/\[0\.08\] { border-color: var(--border-default); }
+.game-theme-light .border-white\/10 { border-color: var(--border-default); }
+.game-theme-light .border-white\/20 { border-color: var(--border-strong); }

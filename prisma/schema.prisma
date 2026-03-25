@@ -583,3 +583,57 @@ model UserBadge {
   @@unique([userId, badgeId])
   @@index([userId])
 }
+
+// ── Mini-Games models ──────────────────────────────────────────────────
+
+model MiniGame {
+  id          String       @id @default(cuid())
+  type        String       @unique // 'guess_expression' | 'match_expression' | 'expression_king'
+  title       String
+  description String       @db.Text
+  isActive    Boolean      @default(true)
+  config      Json         // { timePerRound, totalRounds, passingScore }
+  createdAt   DateTime     @default(now())
+  rounds      MiniGameRound[]
+  sessions    MiniGameSession[]
+}
+
+model MiniGameRound {
+  id            String    @id @default(cuid())
+  gameId        String
+  game          MiniGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  orderIndex    Int
+  prompt        String    @db.Text
+  imageUrl      String?
+  correctAnswer String?
+  options       Json?     // String[] for multiple choice
+  @@index([gameId])
+}
+
+model MiniGameSession {
+  id            String    @id @default(cuid())
+  gameId        String
+  game          MiniGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  playerId      String?
+  playerName    String?
+  score         Int       @default(0)
+  totalRounds   Int
+  responses     Json      // Array of { roundId, answer, correct, timeMs }
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  @@index([gameId, score])
+  @@index([playerId])
+}
+
+model ExpressionSubmission {
+  id             String   @id @default(cuid())
+  sessionId      String?
+  challengeLabel String
+  imageUrl       String
+  aiScore        Int?
+  aiAnalysis     String?  @db.Text
+  status         String   @default("pending") // pending | approved | rejected
+  createdAt      DateTime @default(now())
+  @@index([challengeLabel])
+  @@index([status])
+}
