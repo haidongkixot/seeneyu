@@ -104,6 +104,18 @@
       ],
       "decided_by": "pm",
       "timestamp": "2026-03-25T15:00:00Z"
+    },
+    {
+      "id": "dec_012",
+      "decision": "M36-M45 Plan Approved",
+      "rationale": "Four execution phases: Phase A (parallel, no deps): M36 Error Logging + M37 CMS + M41 Sticky Practice + M42 Submission Review. Phase B (depends M37): M38 Light Mode UI Overhaul. Phase C (depends M37+M38): M39 Homepage Media + M40 App Download. Phase D (depends M25/M26/M30): M43 Tiered Feedback + M44 User Management v2 + M45 Game Data Pipeline. CMS (M37) is the critical path — M38/M39/M40 all depend on it. Error logging (M36) ships independently as infrastructure. M43/M44/M45 extend existing subscription, auth, and mini-game systems.",
+      "alternatives_considered": [
+        "Ship light mode before CMS — rejected, CMS content needed for homepage redesign",
+        "Skip error logging — rejected, needed for production debugging",
+        "Combine M39+M40 into single milestone — rejected, different content dependencies"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-25T18:00:00Z"
     }
   ]
 }

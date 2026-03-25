@@ -637,3 +637,74 @@ model ExpressionSubmission {
   @@index([challengeLabel])
   @@index([status])
 }
+
+// ── Error Logging ──────────────────────────────────────────────────
+
+model ErrorLog {
+  id          String   @id @default(cuid())
+  level       String   // 'error' | 'warn' | 'info'
+  source      String   // 'api' | 'client' | 'user-report' | 'cron'
+  message     String   @db.Text
+  stack       String?  @db.Text
+  metadata    Json?
+  userId      String?
+  resolved    Boolean  @default(false)
+  resolvedBy  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([level])
+  @@index([source])
+  @@index([resolved])
+  @@index([createdAt])
+}
+
+// ── CMS models ──────────────────────────────────────────────────────
+
+model CmsPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     Json
+  status      String   @default("draft")
+  publishedAt DateTime?
+  createdBy   String?
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  @@index([slug, status])
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String?  @db.Text
+  body        String   @db.Text
+  coverImage  String?
+  tags        Json?
+  status      String   @default("draft")
+  authorId    String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([status, publishedAt])
+}
+
+model SiteSettings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  updatedAt   DateTime @updatedAt
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  bio         String?  @db.Text
+  avatarUrl   String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  @@index([isActive, order])
+}

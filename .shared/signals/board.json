@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T08:26:27.517Z",
-    "open_count": 50
+    "last_updated": "2026-03-25T12:11:39.596Z",
+    "open_count": 55
   },
   "signals": [
     {
@@ -228,6 +228,61 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_data-engineer_1774440699595",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M37+M45 TASKS. M37: Migrate current hardcoded homepage content (skills, testimonials, team) into CMS seed script. M45: Design training data export format (CSV/JSON), define expression label taxonomy, build data standardizer service. See milestones.json.",
+      "timestamp": "2026-03-25T12:11:39.595Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_marketer_1774440697762",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M37-M40 CONTENT NEEDED. M37: Prepare content for CMS pages — About page text, Team Members bios+photos, Development Roadmap timeline, Privacy Policy, Terms of Service. M39: Homepage demo videos/photos showing the platform in action, testimonials. M40: App download copy, phone mockup image. Content will be loaded into CMS once backend is ready.",
+      "timestamp": "2026-03-25T12:11:37.762Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1774440694792",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M36-M45 DESIGN SPECS NEEDED. Priority: M38 Light Mode — full color palette spec replacing dark tokens with warm light Duolingo-inspired palette. M37 CMS page editor UX. M41 sticky split-pane practice layout spec. M42 submission gallery + comparison view. M43 blurred/locked feedback overlay. Write specs to .shared/outputs/designer/.",
+      "timestamp": "2026-03-25T12:11:34.792Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774440692167",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M36-M45 ASSIGNED. Phase A: M36 ErrorBoundary + client-logger + admin/logs page. M37 CMS admin pages (pages editor, blog editor with TipTap, team manager, settings/logo). Phase B: M38 full light mode retheme of every page + tailwind config. M39 homepage media sections. M40 app download section. Phase C: M41 StickyPracticeLayout refactor, M42 submissions gallery + comparison view, M43 LockedFeedbackSection blur overlay. Phase D: M44 admin user detail tabs. See milestones.json.",
+      "timestamp": "2026-03-25T12:11:32.167Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774440688862",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M36-M45 ASSIGNED. Start M36 (Error Logging) + M37 (CMS) in parallel. M36: ErrorLog model, src/lib/logger.ts server utility, POST /api/logs (public, rate-limited), GET/PATCH/DELETE /api/admin/logs, admin logs page. M37: CmsPage + BlogPost + SiteSettings + TeamMember models, full CRUD API at /api/admin/cms/ and public API at /api/cms/, image upload to Vercel Blob. Then M42 (Submission Review API), M43 (Tiered Feedback API filtering), M44 (User Management v2 API + User model extensions). See milestones.json.",
+      "timestamp": "2026-03-25T12:11:28.862Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_tester_1774427187516",

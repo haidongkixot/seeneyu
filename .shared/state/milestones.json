@@ -706,6 +706,202 @@
       "tailwind.config.ts — focus-visible amber ring, page transition keyframes",
       "src/app/layout.tsx — page transition wrapper"
     ]
+  },
+  {
+    "id": "M36",
+    "name": "Error Logging System",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "description": "Centralized error logging infrastructure. ErrorLog Prisma model. Server-side src/lib/logger.ts utility. Public POST /api/logs (rate-limited, no auth) for client errors. Admin GET/PATCH/DELETE /api/admin/logs. Admin logs viewer page at /admin/logs with filtering by severity, source, date range. Client-side ErrorBoundary + client-logger.ts for automatic error capture.",
+    "assigned": ["backend-engineer", "builder", "tester"],
+    "tester_condition": "(1) Client errors captured by ErrorBoundary and sent to /api/logs. (2) Server errors logged via logger.ts utility. (3) Admin /admin/logs page shows all logs with severity/source/date filters. (4) Rate limiting prevents log spam. (5) Admin can mark logs as resolved or delete. (6) ErrorBoundary renders fallback UI on crash.",
+    "deliverables": [
+      "prisma/schema.prisma — ErrorLog model",
+      "src/lib/logger.ts — server-side logging utility",
+      "src/lib/client-logger.ts — client-side error reporter",
+      "src/components/ErrorBoundary.tsx — React error boundary with fallback UI",
+      "src/app/api/logs/route.ts — POST public endpoint (rate-limited)",
+      "src/app/api/admin/logs/route.ts — GET admin endpoint with filters",
+      "src/app/api/admin/logs/[id]/route.ts — PATCH/DELETE admin endpoint",
+      "src/app/admin/logs/page.tsx — admin logs viewer"
+    ]
+  },
+  {
+    "id": "M37",
+    "name": "CMS for Frontend Content",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M38", "M39", "M40"],
+    "blockedBy": [],
+    "description": "Full CMS system for managing frontend content. Models: CmsPage (slug, title, content JSON, published), BlogPost (title, slug, excerpt, content, coverImage, author, publishedAt), SiteSettings (singleton: siteName, tagline, logoUrl, socialLinks JSON, footerText), TeamMember (name, role, bio, photoUrl, order). Full CRUD API at /api/admin/cms/ for all models. Public read API at /api/cms/. Image upload to Vercel Blob. Admin pages: page editor, blog editor with TipTap rich text, team manager, site settings with logo upload.",
+    "assigned": ["backend-engineer", "builder", "designer", "marketer", "tester"],
+    "tester_condition": "(1) Admin can create/edit/delete CMS pages with rich content. (2) Admin can manage blog posts with TipTap editor and cover images. (3) Admin can manage team members (name, role, bio, photo). (4) Admin can update site settings (name, tagline, logo, social links). (5) Public API serves published content. (6) Image uploads to Vercel Blob work. (7) Unpublished pages hidden from public API.",
+    "deliverables": [
+      "prisma/schema.prisma — CmsPage, BlogPost, SiteSettings, TeamMember models",
+      "src/app/api/admin/cms/pages/route.ts — CRUD for CMS pages",
+      "src/app/api/admin/cms/blog/route.ts — CRUD for blog posts",
+      "src/app/api/admin/cms/team/route.ts — CRUD for team members",
+      "src/app/api/admin/cms/settings/route.ts — CRUD for site settings",
+      "src/app/api/cms/route.ts — public read API",
+      "src/app/admin/cms/ — admin CMS pages (page editor, blog editor, team manager, settings)"
+    ]
+  },
+  {
+    "id": "M38",
+    "name": "Light Mode UI Overhaul",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "designer",
+    "tester_approved": false,
+    "blocks": ["M39", "M40"],
+    "blockedBy": ["M37"],
+    "description": "Full light mode retheme replacing dark UI (gray-900/950) with warm light Duolingo-inspired palette. Update tailwind.config.ts color tokens. Retheme every page: homepage, library, foundation, arcade, practice, feedback, admin, auth. Maintain amber accent. Ensure WCAG AA contrast. Designer provides full color palette spec.",
+    "assigned": ["designer", "builder", "tester"],
+    "tester_condition": "(1) All pages use light background instead of dark. (2) Amber accent preserved. (3) WCAG AA contrast passes on all text. (4) No dark mode remnants (no gray-900/950 backgrounds). (5) Cards, buttons, inputs all rethemed. (6) Admin pages also light. (7) Mobile responsive maintained.",
+    "deliverables": [
+      "tailwind.config.ts — updated color tokens for light mode",
+      "src/app/globals.css — updated base styles",
+      "All page and component files — rethemed to light palette"
+    ]
+  },
+  {
+    "id": "M39",
+    "name": "Homepage Media Content",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M37", "M38"],
+    "description": "Rich media sections on homepage sourced from CMS. Demo videos/photos showing platform in action. Testimonials carousel from CMS. Platform screenshots gallery. Before/after comparison section. All content editable via CMS admin.",
+    "assigned": ["builder", "marketer", "tester"],
+    "tester_condition": "(1) Homepage shows demo videos/photos from CMS. (2) Testimonials carousel renders from CMS data. (3) Media content editable via admin CMS. (4) Responsive on mobile. (5) Images lazy-loaded. (6) No hardcoded content — all from CMS.",
+    "deliverables": [
+      "src/app/page.tsx — media sections pulling from CMS API",
+      "src/components/homepage/ — MediaShowcase, TestimonialsCarousel, ScreenshotGallery, BeforeAfterSection"
+    ]
+  },
+  {
+    "id": "M40",
+    "name": "App Download Section",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M37", "M38"],
+    "description": "App download section on homepage and dedicated /download page. Phone mockup image. App Store / Google Play badges (placeholder links). QR code for mobile download. Download copy from CMS. Responsive design with phone mockup positioning.",
+    "assigned": ["builder", "marketer", "tester"],
+    "tester_condition": "(1) Download section visible on homepage. (2) /download page accessible. (3) Phone mockup image renders. (4) App store badges display. (5) QR code renders. (6) Copy editable via CMS. (7) Responsive on mobile.",
+    "deliverables": [
+      "src/app/page.tsx — download section component",
+      "src/app/download/page.tsx — dedicated download page",
+      "src/components/homepage/AppDownloadSection.tsx — download section with phone mockup"
+    ]
+  },
+  {
+    "id": "M41",
+    "name": "Sticky Practice Content",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "description": "Refactor practice page layout with sticky split-pane: video player sticky on left, practice steps scrollable on right. On mobile: video collapses to mini-player at top when scrolling down. Practice content stays visible while recording. StickyPracticeLayout component.",
+    "assigned": ["builder", "designer", "tester"],
+    "tester_condition": "(1) Desktop: video player sticky on left, steps scroll on right. (2) Mobile: video collapses to mini-player on scroll. (3) Practice instructions visible during recording. (4) Smooth transitions between sticky states. (5) Works on all practice pages (micro-practice, full performance).",
+    "deliverables": [
+      "src/components/StickyPracticeLayout.tsx — sticky split-pane layout",
+      "src/app/library/[clipId]/practice/page.tsx — refactored with sticky layout",
+      "src/app/library/[clipId]/record/page.tsx — refactored with sticky layout"
+    ]
+  },
+  {
+    "id": "M42",
+    "name": "Submission Review",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "description": "User can review past practice submissions in a gallery view. Side-by-side comparison of original clip vs user recording. Filter by skill, date, score. Replay recordings from Vercel Blob. Admin can view all user submissions. SubmissionGallery + ComparisonView components.",
+    "assigned": ["backend-engineer", "builder", "tester"],
+    "tester_condition": "(1) User can see gallery of past submissions. (2) Side-by-side comparison view works (original clip + user recording). (3) Filter by skill/date/score. (4) Recordings play from Vercel Blob. (5) Admin can view any user's submissions. (6) Empty state when no submissions.",
+    "deliverables": [
+      "src/app/submissions/page.tsx — submission gallery page",
+      "src/app/submissions/[id]/page.tsx — submission detail + comparison",
+      "src/components/SubmissionGallery.tsx — gallery grid component",
+      "src/components/ComparisonView.tsx — side-by-side player",
+      "src/app/api/submissions/route.ts — user submissions API",
+      "src/app/admin/submissions/page.tsx — admin all submissions view"
+    ]
+  },
+  {
+    "id": "M43",
+    "name": "Tiered Scoring Feedback",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M25"],
+    "description": "Feedback detail level gated by subscription tier. Basic: overall score + 1-line summary (rest blurred). Standard: full breakdown + action steps. Advanced: full + personalized coach notes + trend analysis. LockedFeedbackSection component with blur overlay and upgrade CTA. API filters feedback response based on user plan.",
+    "assigned": ["backend-engineer", "builder", "tester"],
+    "tester_condition": "(1) Basic users see score + summary, rest blurred with upgrade CTA. (2) Standard users see full feedback breakdown. (3) Advanced users see full + coach notes + trends. (4) Blur overlay renders correctly over locked sections. (5) Upgrade CTA links to /pricing. (6) Plan change immediately affects feedback visibility.",
+    "deliverables": [
+      "src/components/LockedFeedbackSection.tsx — blur overlay with upgrade CTA",
+      "src/app/api/sessions/[id]/feedback/route.ts — filter response by plan tier",
+      "src/app/feedback/[sessionId]/page.tsx — integrate locked sections",
+      "src/services/feedback-filter.ts — plan-based feedback filtering logic"
+    ]
+  },
+  {
+    "id": "M44",
+    "name": "User Management v2",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M25", "M26"],
+    "description": "Enhanced admin user management. User model extensions: displayName, avatarUrl, bio, phone, lastActiveAt, loginCount. Admin user detail page with tabs: Profile, Activity, Submissions, Subscription, Logs. Bulk actions (approve, suspend, export). User search and advanced filters. User export to CSV.",
+    "assigned": ["backend-engineer", "builder", "tester"],
+    "tester_condition": "(1) User detail page shows tabbed view (Profile/Activity/Submissions/Subscription/Logs). (2) Bulk approve/suspend works. (3) User search by name/email. (4) Advanced filters (status, plan, last active). (5) CSV export downloads. (6) New User fields (displayName, avatarUrl, bio, phone, lastActiveAt, loginCount) persist.",
+    "deliverables": [
+      "prisma/schema.prisma — User model extensions",
+      "src/app/admin/users/[id]/page.tsx — tabbed user detail page",
+      "src/app/api/admin/users/route.ts — enhanced search/filter/bulk/export",
+      "src/app/api/admin/users/export/route.ts — CSV export endpoint",
+      "src/app/admin/users/page.tsx — bulk actions, advanced filters"
+    ]
+  },
+  {
+    "id": "M45",
+    "name": "Game Data Collection Pipeline",
+    "phase": "36-cms-logging-rebrand",
+    "status": "planning",
+    "owner": "data-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M30"],
+    "description": "Pipeline for exporting and standardizing expression data collected from mini-games and arcade. Training data export format (CSV/JSON). Expression label taxonomy definition. Data standardizer service that normalizes raw submissions into labeled training data. Export API at /api/admin/data-export/. Admin data export page with format selection and date range filtering.",
+    "assigned": ["data-engineer", "backend-engineer", "builder", "tester"],
+    "tester_condition": "(1) Admin can export expression data as CSV or JSON. (2) Export filters by date range and expression type. (3) Data standardizer normalizes raw submissions. (4) Expression label taxonomy documented. (5) Export includes metadata (user anonymized, timestamp, game type, scores). (6) Large exports don't timeout.",
+    "deliverables": [
+      "src/services/data-standardizer.ts — normalize raw submissions to labeled data",
+      "src/lib/expression-taxonomy.ts — expression label taxonomy definition",
+      "src/app/api/admin/data-export/route.ts — export API (CSV/JSON)",
+      "src/app/admin/data-export/page.tsx — admin export page",
+      "prisma/seed.ts — seed expression taxonomy"
+    ]
   }
   ]
 }

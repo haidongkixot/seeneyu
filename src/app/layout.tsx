@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { Providers } from '@/components/Providers'
 import { Footer } from '@/components/Footer'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import './globals.css'
 
 const sans = Plus_Jakarta_Sans({
@@ -28,8 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body className="font-sans bg-bg-base text-text-primary antialiased min-h-screen flex flex-col">
         <Providers>
-          <div className="flex-1">{children}</div>
-          <Footer />
+          <ErrorBoundary>
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </ErrorBoundary>
         </Providers>
       </body>
     </html>
