@@ -92,6 +92,18 @@
       ],
       "decided_by": "pm",
       "timestamp": "2026-03-25T12:00:00Z"
+    },
+    {
+      "id": "dec_011",
+      "decision": "M29-M35 Toolkit + Gamification + UX Plan Approved",
+      "rationale": "Three initiatives approved: (1) Backend Toolkit with data crawler and embeddable mini-games for data collection, (2) Duolingo-style gamification with XP, streaks, hearts, quests, badges, leagues, leaderboards, (3) UI/UX overhaul with micro-interactions, Coach Ney mascot, bottom tab bar, skill tree. Execution: M29→M30 sequential, M31 parallel with M29, M32 after M31, M33-M35 sequential after M31. 14 new DB models, 21 new API endpoints.",
+      "alternatives_considered": [
+        "Gamification without social features — rejected, leaderboards drive retention",
+        "Skip mini-games — rejected, needed for expression data collection",
+        "Third-party gamification SDK — rejected, too opinionated for our dark UI"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-25T15:00:00Z"
     }
   ]
 }

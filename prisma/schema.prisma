@@ -105,6 +105,7 @@ model User {
   subscriptions      Subscription[]
   comments           Comment[]
   assistantConversations AssistantConversation[]
+  gamification       UserGamification?
 
   @@index([status])
 }
@@ -479,4 +480,106 @@ model AssistantMessage {
   createdAt      DateTime              @default(now())
 
   @@index([conversationId, createdAt])
+}
+
+// ── Toolkit: Data Crawler models ──────────────────────────────────────
+
+model ContentSource {
+  id           String   @id @default(cuid())
+  type         String   // 'article' | 'research_paper' | 'expression_db' | 'youtube_timestamp'
+  url          String
+  title        String
+  rawContent   String?  @db.Text
+  metadata     Json?
+  status       String   @default("raw") // raw | curated | published | rejected
+  curatedBy    String?
+  curatedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([type, status])
+  @@index([createdAt])
+}
+
+model ExpressionAsset {
+  id           String   @id @default(cuid())
+  imageUrl     String
+  sourceUrl    String?
+  label        String   // "surprise", "contempt", etc.
+  description  String?  @db.Text
+  tags         Json     // String[] of descriptive tags
+  confidence   Float?
+  userVotes    Int      @default(0)
+  status       String   @default("pending") // pending | verified | rejected
+  createdAt    DateTime @default(now())
+
+  @@index([label])
+  @@index([status])
+}
+
+// ── Gamification models ──────────────────────────────────────────────
+
+model UserGamification {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalXp          Int      @default(0)
+  level            Int      @default(1)
+  currentStreak    Int      @default(0)
+  longestStreak    Int      @default(0)
+  lastActivityDate String?
+  streakFreezes    Int      @default(0)
+  hearts           Int      @default(5)
+  heartsRefillAt   DateTime?
+  updatedAt        DateTime @updatedAt
+  @@index([totalXp])
+  @@index([currentStreak])
+}
+
+model XpTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int
+  source    String
+  sourceId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
+}
+
+model DailyQuest {
+  id          String   @id @default(cuid())
+  userId      String
+  date        String
+  questType   String
+  description String
+  target      Int      @default(1)
+  progress    Int      @default(0)
+  xpReward    Int      @default(50)
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  @@unique([userId, date, questType])
+  @@index([userId, date])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  name        String
+  description String
+  iconEmoji   String      @default("\uD83C\uDFC6")
+  category    String
+  criteria    Json
+  createdAt   DateTime    @default(now())
+  userBadges  UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  earnedAt  DateTime @default(now())
+  @@unique([userId, badgeId])
+  @@index([userId])
 }

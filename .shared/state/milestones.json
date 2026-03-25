@@ -573,6 +573,139 @@
       "src/components/VoiceRecorder.tsx — voice recording with waveform",
       "src/hooks/useAssistant.ts — chat state + idle detection hook"
     ]
+  },
+  {
+    "id": "M29",
+    "name": "Backend Toolkit — Data Crawler",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M30"],
+    "blockedBy": ["M26"],
+    "description": "Multi-source content crawler for enriching library. ContentSource + ExpressionAsset models. Crawls articles, research papers, expression databases, YouTube timestamps. Admin curation workflow at /admin/toolkit/crawler. Services under src/toolkit/data-crawler/.",
+    "assigned": ["backend-engineer", "data-engineer", "tester"],
+    "tester_condition": "Crawler pipeline works end-to-end: create job, run, curate results, publish to library. ContentSource and ExpressionAsset records persist. Admin UI at /admin/toolkit/crawler is functional.",
+    "deliverables": [
+      "prisma/schema.prisma — ContentSource, ExpressionAsset models",
+      "src/toolkit/data-crawler/ — article-crawler, research-crawler, expression-db-crawler, youtube-timestamp-parser, content-enricher services",
+      "src/app/api/admin/toolkit/crawler/ — admin API routes",
+      "src/app/admin/toolkit/crawler/ — admin curation pages"
+    ]
+  },
+  {
+    "id": "M30",
+    "name": "Backend Toolkit — Mini-Games + Embeddable iframe",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M29"],
+    "description": "3 mini-games for data collection: Guess Expression, Match Expression, Expression King Challenge. MiniGame/MiniGameRound/MiniGameSession/ExpressionSubmission models. Embeddable via iframe under src/app/(embed)/games/. Anonymous play, PostMessage bridge, certificate generator. Public API at /api/public/games/. Expression King reuses MediaPipe expression-scorer.",
+    "assigned": ["backend-engineer", "builder", "designer", "data-engineer", "tester"],
+    "tester_condition": "All 3 mini-games playable end-to-end. Iframe embedding works (CORS, PostMessage). Anonymous play supported with optional signup linking. Expression King uses MediaPipe scoring. Certificate generated on completion.",
+    "deliverables": [
+      "prisma/schema.prisma — MiniGame, MiniGameRound, MiniGameSession, ExpressionSubmission models",
+      "src/app/(embed)/games/ — embeddable game routes",
+      "src/app/(embed)/layout.tsx — minimal embed layout (no NavBar)",
+      "src/app/api/public/games/ — public game API",
+      "src/toolkit/mini-games/components/ — GuessExpressionGame, MatchExpressionGame, ExpressionKingGame, GameShell, LeaderboardPanel, CertificateCard"
+    ]
+  },
+  {
+    "id": "M31",
+    "name": "Core Gamification Engine",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M32", "M33", "M34"],
+    "blockedBy": ["M26"],
+    "description": "Duolingo-style gamification: XP system (25-100 XP per activity), streaks with flame icon, hearts/energy (5/day Basic, unlimited paid), daily quests (3/day + bonus), 30+ achievement badges, levels (1-50), celebration animations (confetti, star burst, badge reveal). UserGamification/XpTransaction/DailyQuest/Badge/UserBadge models. Services under src/services/gamification/. API at /api/gamification/.",
+    "assigned": ["backend-engineer", "builder", "designer", "data-engineer", "tester"],
+    "tester_condition": "XP awards correctly for all activity types (25-100 range). Streaks track daily login/practice. Hearts deduct on wrong answers and refill daily. Daily quests generate 3/day + bonus. Badges unlock on criteria met. Levels progress 1-50. Celebration animations trigger.",
+    "deliverables": [
+      "prisma/schema.prisma — UserGamification, XpTransaction, DailyQuest, Badge, UserBadge models",
+      "src/services/gamification/ — xp-engine, streak-tracker, hearts-manager, quest-generator, badge-evaluator",
+      "src/app/api/gamification/ — gamification API routes",
+      "src/components/gamification/ — celebration components (confetti, star burst, badge reveal, level-up modal)"
+    ]
+  },
+  {
+    "id": "M32",
+    "name": "Social & Competitive Features",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M31"],
+    "description": "Leaderboards (weekly XP, per-skill, mini-game), 5-tier league system (Bronze/Silver/Gold/Platinum/Diamond with weekly promotion/demotion), follow/friends system, activity feed, combo multiplier (2x-5x XP), web push notifications for streaks/quests. Leaderboard/UserFollow/PushSubscription models.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "Leaderboards rank users correctly (weekly XP, per-skill, mini-game). League promotion/demotion works weekly. Follow/unfollow works. Activity feed shows recent actions. Combo multiplier applies correctly. Push notifications fire for streaks/quests.",
+    "deliverables": [
+      "prisma/schema.prisma — Leaderboard, UserFollow, PushSubscription models",
+      "src/services/gamification/ — leaderboard-service, league-manager, combo-tracker, notification-sender",
+      "src/app/api/gamification/leaderboard/ — leaderboard API",
+      "src/components/gamification/ — LeaderboardTable, LeagueCard, FollowButton, ActivityFeed, ComboCounter"
+    ]
+  },
+  {
+    "id": "M33",
+    "name": "UI Micro-Interactions & Coach Ney Mascot",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": ["M35"],
+    "blockedBy": ["M31"],
+    "description": "Coach Ney avatar component in 3 sizes throughout app (empty states, encouragements, errors, celebrations). CoachNeySays speech bubble component. CelebrationOverlay (confetti/particles), LevelUpModal, BadgeReveal, StreakToast, ComboCounter, XP float text. Micro-copy system in src/lib/micro-copy.ts with context-aware encouraging messages.",
+    "assigned": ["builder", "designer", "tester"],
+    "tester_condition": "Coach Ney avatar renders in 3 sizes. Speech bubble shows context-aware messages. CelebrationOverlay triggers on achievements. LevelUpModal, BadgeReveal, StreakToast all animate correctly. Micro-copy varies by context.",
+    "deliverables": [
+      "src/components/coach-ney/ — CoachNeyAvatar (sm/md/lg), CoachNeySays speech bubble",
+      "src/components/celebrations/ — CelebrationOverlay, LevelUpModal, BadgeReveal, StreakToast, ComboCounter, XpFloatText",
+      "src/lib/micro-copy.ts — context-aware encouraging messages"
+    ]
+  },
+  {
+    "id": "M34",
+    "name": "Navigation & Layout Overhaul",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": ["M35"],
+    "blockedBy": ["M31", "M33"],
+    "description": "Mobile bottom tab bar (5 tabs: Home/Learn/Practice/Arcade/Profile, amber active state). NavBar gamification widgets (streak flame, heart counter, XP mini-bar, level badge). Skill tree visualization (vertical node path like Duolingo). ProgressRing SVG component. Dashboard redesign with skill tree.",
+    "assigned": ["builder", "designer", "tester"],
+    "tester_condition": "Bottom tab bar shows on mobile with 5 tabs and amber active state. NavBar widgets display streak/hearts/XP/level. Skill tree renders vertical node path. ProgressRing SVG animates. Dashboard redesigned with skill tree.",
+    "deliverables": [
+      "src/components/navigation/ — BottomTabBar, NavBarWidgets (StreakFlame, HeartCounter, XpBar, LevelBadge)",
+      "src/components/skill-tree/ — SkillTree vertical node path, SkillNode",
+      "src/components/ProgressRing.tsx — SVG progress ring",
+      "src/app/dashboard/page.tsx — redesigned with skill tree"
+    ]
+  },
+  {
+    "id": "M35",
+    "name": "Accessibility & Polish",
+    "phase": "29-toolkit-and-gamification",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M33", "M34"],
+    "description": "Reduced motion support (prefers-reduced-motion disables animations). ARIA live regions for XP gains, level ups, badge unlocks. Focus-visible amber ring outlines. Page transition animations. WCAG AA color contrast audit. Keyboard navigation for bottom tab + skill tree. Loading skeleton consistency.",
+    "assigned": ["builder", "designer", "tester"],
+    "tester_condition": "prefers-reduced-motion disables all animations. ARIA live regions announce XP/level/badge changes. Focus-visible shows amber ring. Keyboard navigation works for bottom tab and skill tree. WCAG AA contrast passes audit. Loading skeletons consistent across pages.",
+    "deliverables": [
+      "src/lib/motion.ts — reduced motion utilities",
+      "src/components/ — ARIA live regions on gamification components",
+      "tailwind.config.ts — focus-visible amber ring, page transition keyframes",
+      "src/app/layout.tsx — page transition wrapper"
+    ]
   }
   ]
 }

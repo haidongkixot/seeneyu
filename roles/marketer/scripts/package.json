@@ -1,0 +1,11 @@
+{
+  "name": "seeneyu-marketer-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deck": "node generate-pitch.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}

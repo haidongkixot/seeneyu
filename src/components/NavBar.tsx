@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, ExternalLink, CreditCard } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { GamificationBar } from '@/components/gamification/GamificationBar'
 
 export function NavBar() {
   const pathname = usePathname()
@@ -72,14 +73,18 @@ export function NavBar() {
           ))}
 
           {session ? (
-            <div className="relative ml-2">
-              <button
-                onClick={() => setAvatarOpen(o => !o)}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-400/20 text-accent-400 text-xs font-bold hover:bg-accent-400/30 transition-colors"
-                aria-label="Account menu"
-              >
-                {initials}
-              </button>
+            <>
+              <div className="hidden md:flex ml-2">
+                <GamificationBar />
+              </div>
+              <div className="relative ml-2">
+                <button
+                  onClick={() => setAvatarOpen(o => !o)}
+                  className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-400/20 text-accent-400 text-xs font-bold hover:bg-accent-400/30 transition-colors"
+                  aria-label="Account menu"
+                >
+                  {initials}
+                </button>
               {avatarOpen && (
                 <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-white/8 rounded-xl shadow-xl py-1 z-50">
                   <div className="px-3 py-2 border-b border-white/8">
@@ -106,6 +111,7 @@ export function NavBar() {
                 </div>
               )}
             </div>
+            </>
           ) : (
             <div className="flex items-center gap-2 ml-2">
               <Link
@@ -153,6 +159,12 @@ export function NavBar() {
               {label}
             </Link>
           ))}
+
+          {session && (
+            <div className="flex items-center gap-3 px-3 py-2 border-t border-white/6 mt-1">
+              <GamificationBar />
+            </div>
+          )}
 
           {session ? (
             <>

@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T04:07:35.944Z",
-    "open_count": 45
+    "last_updated": "2026-03-25T08:26:27.517Z",
+    "open_count": 50
   },
   "signals": [
     {
@@ -228,6 +228,61 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_tester_1774427187516",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M29-M35 — TEST PLANNING. M29: Test crawler pipeline (create job, run, curate, publish). M30: Test all 3 mini-games end-to-end, test iframe embedding (CORS, PostMessage), test anonymous play + optional signup linking, test Expression King camera+MediaPipe scoring. M31: Test XP award math for all activity types, streak logic (continue/break/freeze), heart deduction+refill, daily quest generation+completion, badge criteria evaluation. M32: Test leaderboard ranking, league promotion/demotion, follow/unfollow, push notifications. M33-M35: Test animations with prefers-reduced-motion, ARIA announcements, keyboard navigation, WCAG AA contrast. Begin test case writing now.",
+      "timestamp": "2026-03-25T08:26:27.516Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1774427183217",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M29-M31 TASKS. M29: Configure initial crawler sources — identify 10+ body language article sites, expression image databases (FER, AffectNet, CK+ public metadata), YouTube channels with body language content. Create seed data script. M30: Create mini-game round data — curate 50+ expression images with labels for Guess/Match games, write 10 Expression King challenge prompts. M31: Define 30+ badge criteria in JSON format (e.g., {type: 'streak', threshold: 7} for 7-day streak badge), define XP level thresholds (Level 1-50), seed Badge table. Write all seed scripts under scripts/.",
+      "timestamp": "2026-03-25T08:26:23.217Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1774427177521",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M29-M35 — DESIGN SPECS NEEDED. Priority specs: (1) M30: Mini-game UI — GameShell layout, Guess/Match/ExpressionKing screens, embed theme (dark+light), certificate SVG template. (2) M31: Badge designs (30+ across 5 categories: consistency/mastery/social/volume/special), celebration animation specs (confetti, star burst, badge reveal, level-up modal). (3) M33: Coach Ney visual identity — SVG avatar in 3 sizes (sm/md/lg), speech bubble component, placement guidelines for empty states/encouragements/errors. (4) M34: Bottom tab bar spec (5 tabs with icons), skill tree visualization (vertical node path), progress ring styles, NavBar gamification widget layout. (5) M35: WCAG AA contrast audit of current palette. New Tailwind keyframes needed: confetti-fall, star-burst, bounce-in, flame-flicker, xp-float. Write specs to .shared/outputs/designer/.",
+      "timestamp": "2026-03-25T08:26:17.521Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774427170242",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M29-M35. After backend-engineer completes M30+M31 APIs: M30 UI: Build 3 game components (GuessExpressionGame, MatchExpressionGame, ExpressionKingGame) + GameShell wrapper (timer/score/progress) + LeaderboardPanel + CertificateCard under src/toolkit/mini-games/components/. Embed layout at src/app/(embed)/layout.tsx (minimal, no NavBar). M33: CelebrationOverlay (amber confetti), LevelUpModal, BadgeReveal (bounce-in+glow), StreakToast, ComboCounter, XpFloatText, CoachNeyAvatar (3 sizes), CoachNeySays speech bubble. M34: BottomTabBar (5 tabs, fixed bottom, amber active), NavBar gamification widgets (StreakFlame, HeartCounter, XpBar, LevelBadge), SkillTree (vertical node path), ProgressRing SVG. M35: prefers-reduced-motion, ARIA live regions, focus-visible rings, page transitions. See milestones.json + designer specs.",
+      "timestamp": "2026-03-25T08:26:10.242Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774427165213",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M29-M35. Start M29 (Data Crawler) + M31 (Gamification Engine) IN PARALLEL. M29: Create src/toolkit/data-crawler/ with article-crawler, research-crawler, expression-db-crawler, youtube-timestamp-parser, content-enricher services. Models: ContentSource (type/url/title/rawContent/metadata/status), ExpressionAsset (imageUrl/label/tags/confidence/userVotes/status). Admin API at /api/admin/toolkit/crawler/. M31: Create src/services/gamification/ with xp-engine, streak-tracker, hearts-manager, quest-generator, badge-evaluator. Models: UserGamification (totalXp/level/currentStreak/hearts), XpTransaction, DailyQuest, Badge, UserBadge. API at /api/gamification/. After both: M30 (Mini-Games with MiniGame/MiniGameRound/MiniGameSession/ExpressionSubmission models, embeddable routes at src/app/(embed)/games/, public API at /api/public/games/), then M32 (Leaderboard/UserFollow/PushSubscription). See milestones.json.",
+      "timestamp": "2026-03-25T08:26:05.213Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_reporter_1774411126425",

@@ -1,8 +1,8 @@
 {
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
-  "phase": "26-registration-approval",
-  "phase_note": "M26-M28 planning complete. M26 (Registration Approval) executes first, blocking M27 (Discussions) and M28 (AI Assistant). M27+M28 proceed in parallel after M26.",
+  "phase": "29-toolkit-and-gamification",
+  "phase_note": "M29-M35 planned: Backend Toolkit (crawler + mini-games), Duolingo-style gamification, UI/UX overhaul",
   "active_tasks": [
     {
       "id": "task_m11_designer",
@@ -571,7 +571,8 @@
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-25T12:00:00Z",
+  "milestones_planning": ["M26", "M27", "M28", "M29", "M30", "M31", "M32", "M33", "M34", "M35"],
+  "last_updated": "2026-03-25T15:00:00Z",
   "deployments": [
     {
       "version": "M14+M15",
