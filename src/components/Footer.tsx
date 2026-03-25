@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ExternalLink, Linkedin, Youtube } from 'lucide-react'
+import { AppDownloadBanner } from '@/components/AppDownloadBanner'
 
 export function Footer() {
   return (
@@ -40,6 +41,11 @@ export function Footer() {
           <FooterLinkGroup title="Support" links={[
             { label: 'Contact', href: 'mailto:hello@seeneyu.com' },
           ]} />
+        </div>
+
+        {/* App download banner */}
+        <div className="mb-10">
+          <AppDownloadBanner />
         </div>
 
         {/* Divider */}

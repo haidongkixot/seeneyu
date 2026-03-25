@@ -92,6 +92,10 @@ model User {
   approvedBy         String?
   passwordHash       String?
   emailVerified      DateTime?
+  bio                String?         @db.Text
+  avatarUrl          String?
+  phone              String?
+  location           String?
   onboardingComplete Boolean         @default(false)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -708,4 +712,32 @@ model TeamMember {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   @@index([isActive, order])
+}
+
+// ── Game Data Pipeline models ──────────────────────────────────────────
+
+model GameDataExport {
+  id            String    @id @default(cuid())
+  name          String
+  format        String    // 'csv' | 'json'
+  filters       Json
+  recordCount   Int       @default(0)
+  fileUrl       String?
+  status        String    @default("pending")
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  completedAt   DateTime?
+  @@index([status])
+}
+
+model TrainingDataLabel {
+  id              String    @id @default(cuid())
+  submissionId    String
+  expressionLabel String
+  confidence      Float
+  validatedBy     String?
+  validatedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  @@index([expressionLabel])
+  @@index([submissionId])
 }

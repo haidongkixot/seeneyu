@@ -1,7 +1,12 @@
 import Link from 'next/link'
 import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
-import { Eye, PersonStanding, Ear, Mic2, ShieldCheck, Film, Video, Sparkles, Star } from 'lucide-react'
+import { PracticeShowcase } from '@/components/cms/PracticeShowcase'
+import { HeroVideo } from '@/components/cms/HeroVideo'
+import { BeforeAfterCompare } from '@/components/cms/BeforeAfterCompare'
+import { TestimonialSection } from '@/components/cms/TestimonialSection'
+import { AppDownloadSection } from '@/components/AppDownloadSection'
+import { Eye, PersonStanding, Ear, Mic2, ShieldCheck, Film } from 'lucide-react'
 import type { SkillCategory } from '@/lib/types'
 import { SKILL_LABELS, SKILL_COLORS } from '@/lib/types'
 
@@ -57,26 +62,6 @@ const TEAM = [
   },
 ]
 
-const TESTIMONIALS = [
-  {
-    name: 'Sarah Chen',
-    role: 'UX Designer',
-    quote: 'After just 2 weeks with seeneyu, I landed a job interview and the hiring manager specifically complimented my presence. I\'m not kidding.',
-    rating: 5,
-  },
-  {
-    name: 'Marcus Williams',
-    role: 'Sales Manager',
-    quote: 'The AI feedback is surprisingly spot-on. It caught a habit I had of looking away when answering tough questions. My close rate has gone up.',
-    rating: 5,
-  },
-  {
-    name: 'Priya Patel',
-    role: 'PhD Student',
-    quote: 'I used to avoid eye contact in presentations. Two months in, my advisor told me my defense was the most confident she\u2019d seen from a first-year.',
-    rating: 5,
-  },
-]
 
 export default function HomePage() {
   return (
@@ -156,6 +141,18 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── M39: Practice Showcase (How it works — 5 steps) ── */}
+      <PracticeShowcase />
+
+      {/* ── M39: Hero Video (See it in action) ────────────── */}
+      <HeroVideo />
+
+      {/* ── M39: Before/After Compare ──────────────────────── */}
+      <BeforeAfterCompare />
+
+      {/* ── M39: Testimonials (enhanced) ───────────────────── */}
+      <TestimonialSection />
+
       {/* ── Our Mission ─────────────────────────────────────── */}
       <section className="relative py-20 overflow-hidden">
         <div
@@ -182,30 +179,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────────── */}
-      <section className="bg-bg-surface py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-text-primary text-center mb-16">
-            How seeneyu works
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: <Film size={28} />, step: '01', title: 'Watch', desc: 'Study how Hollywood actors command attention in curated scenes.' },
-              { icon: <Video size={28} />, step: '02', title: 'Mimic', desc: 'Record yourself attempting the same body language behavior.' },
-              { icon: <Sparkles size={28} />, step: '03', title: 'Improve', desc: 'Get AI coaching with a score and specific, actionable tips.' },
-            ].map(({ icon, step, title, desc }) => (
-              <div key={step} className="bg-bg-elevated rounded-2xl p-8 text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-accent-400/10 rounded-full text-accent-400 mb-4">
-                  {icon}
-                </div>
-                <p className="text-xs font-bold text-accent-400 uppercase tracking-widest mb-2">{step}</p>
-                <h3 className="text-xl font-semibold text-text-primary mb-2">{title}</h3>
-                <p className="text-sm text-text-secondary leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── Skills grid ──────────────────────────────────────── */}
       <section className="bg-bg-base py-24 px-4">
@@ -267,53 +240,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Testimonials ─────────────────────────────────────── */}
-      <section className="py-20 max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-xs font-semibold text-accent-400 uppercase tracking-widest mb-3">
-            Real Results
-          </p>
-          <h2 className="text-3xl lg:text-4xl font-bold text-text-primary">
-            What learners say
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t) => (
-            <div
-              key={t.name}
-              className="relative p-6 rounded-2xl overflow-hidden bg-white border border-black/8 shadow-card hover:border-accent-400/30 hover:shadow-card-hover transition-all duration-300"
-            >
-              {/* Quote mark decoration */}
-              <div className="absolute top-4 right-5 text-6xl font-serif text-accent-400/10 leading-none select-none pointer-events-none">
-                &ldquo;
-              </div>
 
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} size={14} className="text-accent-400 fill-accent-400" />
-                ))}
-              </div>
-
-              {/* Quote */}
-              <p className="text-sm text-text-primary leading-relaxed mb-5 relative z-10">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-bg-elevated border border-black/10 flex items-center justify-center text-xs font-semibold text-text-secondary">
-                  {t.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-text-primary leading-tight">{t.name}</p>
-                  <p className="text-xs text-text-tertiary">{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ── M40: App Download Section ─────────────────────── */}
+      <AppDownloadSection />
 
       {/* ── CTA banner ───────────────────────────────────────── */}
       <section className="bg-bg-surface border-t border-black/8 py-20 px-4">
