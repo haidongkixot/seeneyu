@@ -1,8 +1,8 @@
 {
   "_meta": {
     "description": "Signal archive — completed/read signals. Append-only. Do NOT read this during normal sessions.",
-    "last_updated": "2026-03-25T00:57:35.084Z",
-    "total": 140
+    "last_updated": "2026-03-25T01:20:54.976Z",
+    "total": 145
   },
   "signals": [
     {
@@ -1673,6 +1673,66 @@
       "timestamp": "2026-03-24T08:00:00Z",
       "status": "done",
       "done_at": "2026-03-25T00:57:35.084Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774400769703",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m21-arcade-content-management",
+      "priority": "high",
+      "message": "M21 — Arcade Content Management. Admin CRUD for ArcadeBundle + ArcadeChallenge. Reference images: auto-capture from YouTube at sourceTimestamp or manual upload to Vercel Blob. Edit/delete existing content. Reorder challenges within bundles. Add Arcade to admin sidebar. API routes: /api/admin/arcade/bundles (CRUD) + /api/admin/arcade/challenges (CRUD) + /api/admin/arcade/challenges/[id]/capture-frame. Pages: /admin/arcade, /admin/arcade/new, /admin/arcade/[bundleId]. Update /arcade display to show referenceImageUrl. Signal PM when complete.",
+      "timestamp": "2026-03-25T01:06:09.703Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:20:51.657Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774400775724",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m22-user-activity-dashboard",
+      "priority": "high",
+      "message": "M22 — User Activity Analytics Dashboard. New ActivityEvent model (userId, type, metadata, ipAddress, createdAt, indexes). POST /api/activity/track endpoint. Client-side tracker (src/lib/activity-tracker.ts) for page views, logins, clip watches, practices, arcade attempts. Admin dashboard at /admin/analytics: DAU/WAU/MAU stat cards, daily signups bar chart, daily active users line chart, feature usage breakdown, learning curves. Per-user view at /admin/analytics/users/[id]: activity timeline, skill progression line chart, usage stats. Use recharts or lightweight SVG charts. Signal PM when complete.",
+      "timestamp": "2026-03-25T01:06:15.724Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:20:52.470Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774400875060",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m23-feature-performance-dashboard",
+      "priority": "high",
+      "message": "M23 — Feature Performance Dashboard. New AnalysisMetric model (sessionType, analysisType, durationMs, faceDetected, poseDetected, score, snapshotCount). Instrument expression-scorer.ts and useMediaPipe.ts to record metrics. Admin page at /admin/analytics/features: crawl job stats (total/success/fail, approval rate, top skills), MediaPipe performance (avg analysis time, detection rates, score distribution histogram), content pipeline stats (clips with screenplay/guides/steps). API: GET /api/admin/analytics/features. Signal PM when complete.",
+      "timestamp": "2026-03-25T01:07:55.060Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:20:53.461Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774400880182",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m24-access-control",
+      "priority": "high",
+      "message": "M24 — Access Control and Content Gating. Create src/lib/access-control.ts with centralized access rules. Arcade: first 3 challenges per type (facial/gesture) free for non-logged-in users; challenges 4+ show LockedContentCard (blurred + lock icon + Sign in button). Practice/record require auth (AuthGate component). Library browsing and clip watching remain FREE. Logged-in users (any plan) get all arcade + practice. Components: AuthGate.tsx (full-page lock overlay), LockedContentCard.tsx (blurred content with lock). Update middleware.ts for practice/record auth. Signal PM when complete. M25 depends on this.",
+      "timestamp": "2026-03-25T01:08:00.182Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:20:54.224Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774400894038",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m25-subscription-payment",
+      "priority": "high",
+      "message": "M25 — Subscription Plans and Payment (BLOCKED BY M24). New models: Plan (name, monthlyPrice, annualPrice, currency, maxVideoSeconds, feedbackLevel, hasVipContent, hasCoachSummary, isActive), Subscription (userId, planId, status, billingCycle, periodStart/End, paymentGateway, gatewaySubId), Payment (userId, subscriptionId, amount, currency, gateway, gatewayPaymentId, status, metadata). Add planId to User. Pricing page at /pricing: 3 plans, monthly/annual toggle. PayPal checkout (REST API v2, sandbox). VNPay checkout (vnp_Amount, vnp_ReturnUrl, vnp_IpnUrl, checksum). API routes: /api/payments/paypal/create-order, /api/payments/paypal/capture, /api/payments/vnpay/create, /api/payments/vnpay/return, /api/payments/vnpay/ipn, /api/subscriptions, /api/subscriptions/cancel. Admin plan management at /admin/plans. Plan enforcement: Basic=5s+short feedback, Standard=30s+full, Advanced=3min+VIP+coach summary. Env vars needed: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_MODE, VNPAY_TMN_CODE, VNPAY_HASH_SECRET, VNPAY_URL. Signal PM when complete.",
+      "timestamp": "2026-03-25T01:08:14.038Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:20:54.975Z"
     }
   ]
 }

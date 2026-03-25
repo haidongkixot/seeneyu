@@ -36,9 +36,21 @@ All roles read/write to `../../.shared/` (relative to their role directory):
 - `outputs/` — artifacts from each role
 
 ## Signal Protocol
-When starting a session: **always read your signal queue first** (`../../.shared/signals/<your-role>.json`)
-When completing a task: **write signals to affected roles' queues**
-Signal status: `unread` → `read` (never delete signals)
+- Signals are stored in `../../.shared/signals/board.json` (centralized board).
+- When starting a session: **read board.json**, filter signals by your role's `"to"` field.
+- To send a signal: `node ../../scripts/signal-send.js --from <your-role> --to <target> --message "..."` (uses file locking to prevent race conditions).
+- To complete a signal: `node ../../scripts/signal-done.js <signal-id>` (moves to archive.json).
+- Signal status: `unread` → `read` → `done` (never delete signals).
+
+## State File Ownership (CRITICAL — prevents data loss)
+**ONLY PM edits these files directly:**
+- `.shared/state/milestones.json`
+- `.shared/state/project-state.json`
+- `.shared/state/decisions.json`
+
+**All other roles: signal PM with status updates instead of editing state files.**
+If you need to update a milestone status or add a task, send a signal to PM. PM will apply the change.
+Each role may freely edit its own output files (`.shared/outputs/<role>/`).
 
 ## Current Phase
 See `../../.shared/state/project-state.json`
@@ -49,3 +61,4 @@ See `../../.shared/state/project-state.json`
 3. PM is source of truth — all milestone decisions go through PM
 4. Append-only logs — activity-log.md and signals are never deleted
 5. Tester sign-off required before any milestone is marked complete
+6. **Never edit shared state files unless you are PM** — signal PM instead

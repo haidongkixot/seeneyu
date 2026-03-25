@@ -1,38 +1,70 @@
 {
   "target": "production",
-  "last_updated": "2026-03-22T02:00:00Z",
+  "last_updated": "2026-03-25T10:00:00Z",
   "github_repo": "https://github.com/haidongkixot/seeneyu.git",
   "github_branch": "master",
   "vercel_project_id": "prj_d5GBBZRuoiyM5wteZAcIH8kKqMhW",
   "vercel_url": "https://seeneyu.vercel.app",
+  "latest_commit": "b56564b",
+  "latest_deploy": "MediaPipe integration — 2026-03-25",
   "steps": {
-    "env_file_local":       "partial",
+    "env_file_local":       "complete",
     "youtube_verification": "complete",
-    "db_push":              "pending",
-    "db_seed":              "pending",
+    "db_push":              "complete",
+    "db_seed":              "complete",
     "npm_build_verify":     "complete",
     "build_errors_fixed":   "complete",
     "github_repo_setup":    "complete",
     "github_push":          "complete",
     "vercel_project_link":  "complete",
-    "vercel_env_vars":      "partial",
+    "vercel_env_vars":      "complete",
     "vercel_deploy":        "complete",
-    "health_check":         "pending"
+    "health_check":         "complete"
   },
   "vercel_env_vars_status": {
+    "DATABASE_URL":          "set",
+    "DIRECT_URL":            "set",
     "YOUTUBE_API_KEY":       "set",
-    "DATABASE_URL":          "missing — waiting for user",
-    "DIRECT_URL":            "missing — waiting for user",
-    "OPENAI_API_KEY":        "missing — waiting for user",
-    "BLOB_READ_WRITE_TOKEN": "missing — waiting for user"
+    "OPENAI_API_KEY":        "set",
+    "BLOB_READ_WRITE_TOKEN": "set",
+    "NEXTAUTH_SECRET":       "set",
+    "NEXTAUTH_URL":          "set"
+  },
+  "deployments": [
+    {
+      "version": "M6 MVP Launch",
+      "commit": "2f1800a",
+      "deployed_at": "2026-03-22"
+    },
+    {
+      "version": "M10-M15",
+      "deployed_at": "2026-03-23"
+    },
+    {
+      "version": "M16 + YOUTUBE_API_KEY",
+      "commit": "6bd9218",
+      "deployed_at": "2026-03-24T12:00:00Z"
+    },
+    {
+      "version": "M17-M20",
+      "commit": "d6b8cbf",
+      "deployed_at": "2026-03-24T16:23:00Z"
+    },
+    {
+      "version": "MediaPipe integration (replaces GPT-4o Vision)",
+      "commit": "b56564b",
+      "deployed_at": "2026-03-25T10:00:00Z"
+    }
+  ],
+  "pending_for_next_deploy": {
+    "description": "M21-M25 — Arcade CRUD, Analytics, Access Control, Subscription+Payment",
+    "new_env_vars_needed": ["PAYPAL_CLIENT_ID", "PAYPAL_CLIENT_SECRET", "PAYPAL_MODE", "VNPAY_TMN_CODE", "VNPAY_HASH_SECRET", "VNPAY_URL"],
+    "new_prisma_models": ["ActivityEvent", "AnalysisMetric (already in schema)", "Plan", "Subscription", "Payment"],
+    "status": "waiting for Backend Engineer to complete M21-M25"
   },
   "notes": [
-    "youtube_verification: All 15 YouTube IDs verified. clips-seed.json has zero NEEDS_VERIFICATION entries.",
-    "npm_build_verify: next build passes — 0 errors, all 9 routes compile.",
-    "build_errors_fixed: (1) Prisma Json type — JSON.parse(JSON.stringify()) cast. (2) OpenAI lazy init — getOpenAI() fn. (3) postinstall: prisma generate added to package.json. (4) Vercel Blob hostname added to next.config.mjs.",
-    "github_push: Committed and pushed to master. Latest commit: 2f1800a.",
-    "vercel_deploy: App live at https://seeneyu.vercel.app — build passes, UI loads. DB-dependent pages (/library, /feedback) will error until DATABASE_URL is configured.",
-    "vercel_env_vars: YOUTUBE_API_KEY added via `vercel env add`. Still waiting on 4 more from user.",
-    "next_action: Wait for user to provide DATABASE_URL, DIRECT_URL, OPENAI_API_KEY, BLOB_READ_WRITE_TOKEN. Then add via vercel env add, redeploy, run db:push + db:seed."
+    "2026-03-25: Deployed MediaPipe integration (b56564b). 0 TS errors, 31 pages. All health checks 200.",
+    "2026-03-25: DB has Plan/Subscription tables from previous WIP push. Current HEAD schema doesn't include them. Will reconcile when M25 is committed.",
+    "2026-03-25: BE has M21-M25 WIP in working tree (uncommitted). Standing by for completion signals."
   ]
 }

@@ -3,10 +3,21 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T00:57:48.749Z",
-    "open_count": 26
+    "last_updated": "2026-03-25T01:20:54.976Z",
+    "open_count": 30
   },
   "signals": [
+    {
+      "id": "sig_pm_designer_1774400899401",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "m21-m25-design-specs",
+      "priority": "high",
+      "message": "M21-M25 design specs needed. Priority order: (1) M24 AuthGate + LockedContentCard (lock overlay, blurred content, sign-in prompt), (2) M25 Pricing page (3-tier plan cards, monthly/annual toggle, feature comparison table, PlanBadge, UpgradePrompt), (3) M22 Admin Analytics Dashboard (stat cards, line/bar charts, per-user activity detail), (4) M23 Feature Performance Dashboard (crawl stats, MediaPipe metrics, histograms), (5) M21 Arcade Admin (bundle/challenge CRUD, image upload, reorder UI). Save to .shared/outputs/design/m21-spec.md through m25-spec.md.",
+      "timestamp": "2026-03-25T01:08:19.401Z",
+      "status": "unread"
+    },
     {
       "id": "sig_builder_pm_1774400267167",
       "from": "builder",
@@ -16,7 +27,7 @@
       "priority": "high",
       "message": "MediaPipe integration deployed to production (commit b56564b). All health checks pass (/, /library, /arcade, /foundation — all 200). This replaces GPT-4o Vision with client-side MediaPipe for all recording flows. Zero AI API cost for Arcade + Micro scoring. Standing by for M21-M25 BE completion signals.",
       "timestamp": "2026-03-25T00:57:47.167Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_builder_tester_1774400264299",
@@ -49,7 +60,7 @@
       "priority": "high",
       "message": "MediaPipe integration complete. Replaced GPT-4o Vision with client-side MediaPipe (FaceLandmarker + PoseLandmarker) for all 3 recording flows: Arcade, Micro-Practice, Full Performance. Zero AI API dependency for Arcade + Micro scoring. Full Performance uses optional GPT-4o TEXT with template fallback. 0 TS errors.",
       "timestamp": "2026-03-24T17:00:58.991Z",
-      "status": "unread"
+      "status": "read"
     },
     {
       "id": "sig_builder_tester_1774369415176",
@@ -129,6 +140,39 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_tester_1774400916299",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "m21-m25-upcoming-reviews",
+      "priority": "normal",
+      "message": "UPCOMING M21-M25 reviews after BE + Builder complete. M21: arcade admin CRUD. M22: analytics dashboard DAU/WAU/MAU. M23: feature performance metrics. M24: first 3 arcade challenges free, practice/record auth-gated. M25: 3 subscription plans, PayPal + VNPay sandbox checkout.",
+      "timestamp": "2026-03-25T01:08:36.299Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774400916211",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "m21-m25-upcoming-deploy",
+      "priority": "normal",
+      "message": "UPCOMING M21-M25 deploy. New env vars needed: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_MODE=sandbox, VNPAY_TMN_CODE, VNPAY_HASH_SECRET, VNPAY_URL. New npm packages expected: paypal SDK, vnpay, recharts. New Prisma models: ActivityEvent, AnalysisMetric, Plan, Subscription, Payment. Stand by for BE completion signals.",
+      "timestamp": "2026-03-25T01:08:36.211Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1774400726211",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "signal-system-fix",
+      "priority": "normal",
+      "message": "Signal system updated with file locking to prevent race conditions. State file ownership rule enforced: only PM edits milestones.json, project-state.json, decisions.json. All other roles must signal PM with updates.",
+      "timestamp": "2026-03-25T01:05:26.211Z",
+      "status": "unread"
     },
     {
       "id": "sig_builder_reporter_1774400268748",

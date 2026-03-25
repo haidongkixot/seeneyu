@@ -1,14 +1,17 @@
 {
-  "last_updated": "2026-03-22T20:00:00Z",
+  "last_updated": "2026-03-25T07:50:00Z",
   "deliverables": {
-    "brand_brief":           "pending",
-    "pitch_deck_script":     "pending",
-    "pitch_deck_pptx":       "pending",
-    "one_pager":             "pending",
-    "vc_outreach_emails":    "pending",
-    "demo_script":           "pending",
-    "market_research":       "pending",
-    "website_copy_audit":    "pending"
+    "brand_brief":           "complete",
+    "pitch_deck_script":     "complete",
+    "pitch_deck_pptx":       "complete",
+    "one_pager":             "complete",
+    "vc_outreach_emails":    "complete",
+    "demo_script":           "complete",
+    "market_research":       "complete",
+    "website_copy_audit":    "complete"
   },
-  "notes": []
+  "notes": [
+    "All 8 deliverables regenerated after file loss. PPTX is 14 slides.",
+    "Script at roles/marketer/scripts/generate-pitch.js — re-run with: node generate-pitch.js"
+  ]
 }
