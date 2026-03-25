@@ -31,7 +31,7 @@ export default function PricingPage() {
   const userPlan = (session?.user as any)?.plan || 'basic'
 
   useEffect(() => {
-    fetch('/api/admin/plans')
+    fetch('/api/public/plans')
       .then(r => r.json())
       .then(data => {
         const active = (data as PlanInfo[]).filter((p: any) => p.isActive !== false)
