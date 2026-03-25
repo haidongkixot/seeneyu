@@ -11,16 +11,26 @@ async function requireAdmin() {
   return session
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     await requireAdmin()
+    const { searchParams } = new URL(req.url)
+    const statusFilter = searchParams.get('status')
+
+    const where = statusFilter ? { status: statusFilter } : {}
+
     const users = await prisma.user.findMany({
+      where,
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         name: true,
         email: true,
         role: true,
+        status: true,
+        statusNote: true,
+        approvedAt: true,
+        approvedBy: true,
         createdAt: true,
         _count: { select: { userSessions: true } },
       },

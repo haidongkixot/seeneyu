@@ -26,7 +26,15 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.passwordHash) return null
         const valid = await bcrypt.compare(credentials.password, user.passwordHash)
         if (!valid) return null
-        return { id: user.id, email: user.email, name: user.name, role: user.role }
+
+        // Check approval status — only approved users can sign in
+        if (user.status !== 'approved') {
+          // Encode status (and optional note) so the client can parse it
+          const note = user.statusNote || ''
+          throw new Error(`status:${user.status}|${note}`)
+        }
+
+        return { id: user.id, email: user.email, name: user.name, role: user.role, status: user.status }
       },
     }),
   ],
@@ -35,6 +43,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.role = (user as any).role
+        token.status = (user as any).status
       }
       return token
     },
@@ -42,6 +51,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).id = token.id as string
         ;(session.user as any).role = token.role
+        ;(session.user as any).status = token.status
       }
       return session
     },

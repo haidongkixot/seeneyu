@@ -85,6 +85,10 @@ model User {
   name               String?
   image              String?
   role               String          @default("learner")
+  status             String          @default("pending") // pending | approved | rejected | suspended
+  statusNote         String?         @db.Text
+  approvedAt         DateTime?
+  approvedBy         String?
   passwordHash       String?
   emailVerified      DateTime?
   onboardingComplete Boolean         @default(false)
@@ -99,6 +103,8 @@ model User {
   activityEvents     ActivityEvent[]
   plan               String          @default("basic")
   subscriptions      Subscription[]
+
+  @@index([status])
 }
 
 model SkillBaseline {

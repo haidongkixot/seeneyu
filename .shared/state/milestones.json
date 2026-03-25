@@ -501,6 +501,78 @@
       "src/services/payment-gateway.ts — PayPal + VNPay integration",
       "src/services/subscription-manager.ts — plan enforcement"
     ]
+  },
+  {
+    "id": "M26",
+    "name": "Sign-Up with Registration Approval",
+    "phase": "26-registration-approval",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M27", "M28"],
+    "blockedBy": ["M24", "M25"],
+    "description": "Email/password signup with admin approval gate. User registers → status 'pending' → admin approves/rejects → user gains access. Schema adds status/statusNote/approvedAt/approvedBy to User. Modify auth to check approval. New /auth/pending page. Admin approval UI on /admin/users.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) New user signup sets status='pending'. (2) Pending user cannot access protected routes. (3) Admin can approve/reject from /admin/users with statusNote. (4) Approved user can sign in normally. (5) Rejected user sees rejection reason. (6) Existing users remain status='approved' after migration. (7) /auth/pending page shows 'account under review' message.",
+    "deliverables": [
+      "prisma/schema.prisma — add status, statusNote, approvedAt, approvedBy to User + @@index([status])",
+      "prisma/migrations/ — migration sets existing users to status='approved'",
+      "src/app/api/auth/signup/route.ts — return pending message, no auto-login",
+      "src/lib/auth.ts — check user.status==='approved' in authorize()",
+      "src/app/api/admin/users/[id]/route.ts — PATCH for status updates",
+      "src/app/api/admin/users/route.ts — add ?status= filter",
+      "src/app/auth/pending/page.tsx — 'account under review' page",
+      "src/app/auth/signin/page.tsx — handle non-approved error messages",
+      "src/app/admin/users/page.tsx — status column, filter tabs, approve/reject buttons"
+    ]
+  },
+  {
+    "id": "M27",
+    "name": "Discussions (Comments & Replies)",
+    "phase": "27-discussions",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M26"],
+    "description": "Text comment/reply threads on lessons and arcade challenges. New Comment model with flat threading (1 level), polymorphic target (lessonId or challengeId), admin moderation (isHidden). CRUD API at /api/comments, admin moderation at /api/admin/comments. CommentThread/CommentCard/CommentForm components. Rate limiting 5/min, XSS sanitization.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) Users can post comments on lessons and arcade challenges. (2) Users can reply to comments (1 level deep). (3) Users can edit own comments within 15min. (4) Users can delete own comments. (5) Admin can hide/unhide comments. (6) Rate limiting: max 5 comments/min. (7) XSS sanitization on all input. (8) CommentThread renders correctly with replies.",
+    "deliverables": [
+      "prisma/schema.prisma — Comment model (flat threading, polymorphic target)",
+      "src/app/api/comments/route.ts — CRUD API",
+      "src/app/api/admin/comments/route.ts — admin moderation API",
+      "src/components/CommentThread.tsx — thread container",
+      "src/components/CommentCard.tsx — individual comment display",
+      "src/components/CommentForm.tsx — comment/reply input",
+      "src/app/foundation/[courseSlug]/[lessonSlug]/page.tsx — integrate comments",
+      "src/app/arcade/[bundleId]/page.tsx — integrate comments",
+      "src/app/admin/comments/page.tsx — admin moderation page"
+    ]
+  },
+  {
+    "id": "M28",
+    "name": "Learning & Practicing AI Assistant (Coach Ney)",
+    "phase": "28-ai-assistant",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M26"],
+    "description": "Voice-enabled AI coach 'Coach Ney' using OpenAI (Whisper STT + GPT-4o + TTS). New AssistantConversation + AssistantMessage models. assistant-service.ts builds dynamic system prompt with learner context + lesson script. API at /api/assistant/chat with streaming. Floating button bottom-right, slide-up chat panel, voice recorder. Idle nudge at 60s/120s. Plan limits: Basic=5msg/day text-only, Standard=50+voice, Advanced=unlimited.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) Floating amber button visible bottom-right on lesson/arcade pages. (2) Click opens chat panel (slide-up mobile, side panel desktop). (3) Text chat works with streaming response. (4) Voice recording via microphone works (Whisper STT). (5) TTS playback of assistant responses. (6) Context-aware: assistant knows current lesson/arcade content. (7) Idle nudge appears at 60s and 120s of inactivity. (8) Plan limits enforced: Basic=5msg/day text-only, Standard=50+voice, Advanced=unlimited. (9) Quick-reply suggestion chips shown.",
+    "deliverables": [
+      "prisma/schema.prisma — AssistantConversation, AssistantMessage models",
+      "src/services/assistant-service.ts — dynamic system prompt + context builder",
+      "src/app/api/assistant/chat/route.ts — streaming chat API",
+      "src/app/api/assistant/stt/route.ts — Whisper STT endpoint",
+      "src/app/api/assistant/tts/route.ts — TTS endpoint",
+      "src/components/AssistantButton.tsx — floating amber glow button",
+      "src/components/AssistantPanel.tsx — slide-up/side chat panel",
+      "src/components/VoiceRecorder.tsx — voice recording with waveform",
+      "src/hooks/useAssistant.ts — chat state + idle detection hook"
+    ]
   }
   ]
 }

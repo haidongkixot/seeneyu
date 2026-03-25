@@ -80,6 +80,18 @@
       "alternatives_considered": ["Per-role signal files (original design)", "Database-backed signals", "Append-only log format"],
       "decided_by": "pm",
       "timestamp": "2026-03-25T09:00:00Z"
+    },
+    {
+      "id": "dec_010",
+      "decision": "M26-M28 Feature Plan Approved",
+      "rationale": "Three new milestones approved. M26 (Registration Approval) executes first as it blocks M27 and M28. M27 (Discussions) and M28 (AI Assistant) proceed in parallel after M26. Voice platform: OpenAI (Whisper + GPT-4o + TTS) — already a dependency, no new vendor. Comment threading: flat (1 level). Assistant persona: Coach Ney.",
+      "alternatives_considered": [
+        "Deep threading (Reddit-style) — rejected for complexity",
+        "Separate voice vendor (ElevenLabs) — rejected to avoid new dependency",
+        "Sequential M27 then M28 — rejected, they are independent after M26"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-25T12:00:00Z"
     }
   ]
 }

@@ -1,19 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2 } from 'lucide-react'
+import { Loader2, CheckCircle2, Clock } from 'lucide-react'
 
 export default function SignUpPage() {
-  const router = useRouter()
-
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -31,26 +28,53 @@ export default function SignUpPage() {
       body: JSON.stringify({ name, email, password }),
     })
     const data = await res.json()
+    setLoading(false)
 
     if (!res.ok) {
-      setLoading(false)
       setError(data.error || 'Something went wrong.')
       return
     }
 
-    // Auto sign-in after registration
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    })
-    setLoading(false)
-    if (result?.error) {
-      setError('Account created but sign-in failed. Please sign in manually.')
-    } else {
-      router.push('/onboarding')
-      router.refresh()
-    }
+    setSubmitted(true)
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-bg-base flex items-center justify-center px-4">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 text-center">
+            <Link href="/" className="text-2xl font-black tracking-tight text-text-primary hover:text-accent-400 transition-colors">
+              seeneyu
+            </Link>
+          </div>
+
+          <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 text-center">
+            <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-accent-400/15 flex items-center justify-center">
+              <CheckCircle2 size={28} className="text-accent-400" />
+            </div>
+
+            <h1 className="text-lg font-bold text-text-primary mb-2">
+              Registration Submitted
+            </h1>
+            <p className="text-sm text-text-secondary leading-relaxed mb-2">
+              Your account is under review. An administrator will approve your access shortly.
+            </p>
+
+            <div className="flex items-center justify-center gap-2 mt-4 mb-6 bg-accent-400/10 border border-accent-400/20 rounded-xl px-3 py-2">
+              <Clock size={14} className="text-accent-400 shrink-0" />
+              <span className="text-xs text-accent-400 font-medium">Pending admin approval</span>
+            </div>
+
+            <Link
+              href="/auth/signin"
+              className="inline-flex items-center justify-center gap-2 bg-accent-400 text-text-inverse rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-accent-500 transition-all duration-150 w-full"
+            >
+              Go to Sign In
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -116,7 +140,7 @@ export default function SignUpPage() {
               className="mt-1 flex items-center justify-center gap-2 bg-accent-400 text-text-inverse rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-accent-500 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading && <Loader2 size={15} className="animate-spin" />}
-              {loading ? 'Creating account…' : 'Create account'}
+              {loading ? 'Creating account...' : 'Create account'}
             </button>
           </form>
         </div>

@@ -1,7 +1,7 @@
 {
-  "current_milestone": "M25",
-  "last_updated": "2026-03-25T12:30:00Z",
-  "milestones_completed_this_session": ["M21", "M22", "M23", "M24", "M25"],
+  "current_milestone": "M26",
+  "last_updated": "2026-03-25T14:00:00Z",
+  "milestones_completed_this_session": ["M26"],
   "steps": {
     "m21_admin_layout_arcade": "complete",
     "m21_bundles_api": "complete",
@@ -56,9 +56,22 @@
     "m25_access_control_plan_limits": "complete",
     "m25_seed_plans": "complete",
     "m25_tsc_check": "complete",
-    "db_push": "complete"
+    "db_push": "complete",
+    "m26_schema_status_fields": "complete",
+    "m26_data_migration_script": "complete",
+    "m26_signup_api_pending": "complete",
+    "m26_auth_status_check": "complete",
+    "m26_admin_users_get_filter": "complete",
+    "m26_admin_users_id_patch": "complete",
+    "m26_create_admin_approved": "complete",
+    "m26_prisma_generate": "complete",
+    "m26_tsc_check": "complete"
   },
   "notes": [
+    "M26 code-complete, 0 TypeScript errors (2026-03-25)",
+    "M26: Registration Approval — status/statusNote/approvedAt/approvedBy on User, @@index([status])",
+    "M26: signup returns pending, auth.ts checks status before login, admin PATCH /api/admin/users/[id] for approve/reject",
+    "M26: GET /api/admin/users?status=pending filter, migrate-user-status.ts script for existing users",
     "M21-M25 all code-complete, 0 TypeScript errors (2026-03-25)",
     "M21: admin CRUD for arcade bundles + challenges with reorder and image upload (Vercel Blob)",
     "M22: ActivityEvent model, tracking API + client helper, analytics dashboard (DAU/WAU/MAU, CSS bar charts)",

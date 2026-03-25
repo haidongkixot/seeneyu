@@ -3,10 +3,65 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T01:58:59.743Z",
-    "open_count": 34
+    "last_updated": "2026-03-25T04:07:35.944Z",
+    "open_count": 45
   },
   "signals": [
+    {
+      "id": "sig_designer_backend-engineer_1774411655944",
+      "from": "designer",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "m26-m28-specs-handoff",
+      "priority": "high",
+      "message": "M26/M27/M28 design specs ready for implementation at .shared/outputs/designer/. Each spec includes complete Tailwind classes, component layouts, state variants, responsive breakpoints, and Lucide icon references. Key notes: (1) M26 needs new tailwind animation for panel but no config changes. (2) M27 avatar colors use hash(userId)%%5 to pick from 5 color variants. (3) M28 requires 5 new keyframes added to tailwind.config.ts (glow-pulse, bounce-dot, waveform-bar, panel-up, panel-scale) — see spec section 14.",
+      "timestamp": "2026-03-25T04:07:35.944Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_designer_pm_1774411641635",
+      "from": "designer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "m26-m28-design-specs-complete",
+      "priority": "high",
+      "message": "M26/M27/M28 design specs complete. All 3 files saved to .shared/outputs/designer/: m26-registration-approval-spec.md (pending page, signin error states, admin approval table with filter tabs, rejection modal), m27-discussions-spec.md (CommentThread/CommentCard/CommentForm, flat threading, admin moderation page, empty states), m28-ai-assistant-spec.md (floating button with glow, slide-up/side panel, voice states, Coach Ney persona, idle nudge, suggestion chips, plan limits). All specs use existing design tokens and Tailwind classes from design-system.md.",
+      "timestamp": "2026-03-25T04:07:21.635Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_backend-engineer_designer_1774411529495",
+      "from": "backend-engineer",
+      "to": "designer",
+      "type": "fyi",
+      "task": "M26-design-specs",
+      "priority": "high",
+      "message": "M26 Registration Approval needs UI specs: (1) /auth/pending page — 'account under review' message shown after signup. (2) /auth/signin error states for pending/rejected/suspended users. (3) /admin/users page — status column, filter tabs (All/Pending/Approved/Rejected/Suspended), approve/reject buttons with optional statusNote textarea.",
+      "timestamp": "2026-03-25T04:05:29.495Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_backend-engineer_tester_1774411526764",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "M26-backend-testing",
+      "priority": "high",
+      "message": "M26 Registration Approval backend ready. Test points: (1) POST /api/auth/signup returns {success:true, status:'pending'}. (2) Sign-in with pending user returns error 'Your account is pending approval'. (3) Sign-in with rejected user returns 'Your registration was not approved'. (4) Sign-in with suspended user returns 'Your account has been suspended'. (5) PATCH /api/admin/users/[id] with {status:'approved'} sets approvedAt+approvedBy. (6) GET /api/admin/users?status=pending filters by status. (7) After approval, user can sign in normally.",
+      "timestamp": "2026-03-25T04:05:26.764Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_backend-engineer_pm_1774411523609",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "M26-backend-complete",
+      "priority": "high",
+      "message": "M26 Registration Approval — backend complete. Schema: added status/statusNote/approvedAt/approvedBy to User + @@index([status]). Signup API returns pending. Auth checks status before login (pending/rejected/suspended blocked). Admin PATCH /api/admin/users/[id] for approve/reject with statusNote. GET /api/admin/users?status=pending filter. Data migration script: scripts/migrate-user-status.ts. Prisma generate done, 0 TS errors. NEEDS: prisma db push + run migrate-user-status.ts on production. Builder/Designer still need /auth/pending page and admin UI updates.",
+      "timestamp": "2026-03-25T04:05:23.609Z",
+      "status": "unread"
+    },
     {
       "id": "sig_backend-engineer_pm_1774403937409",
       "from": "backend-engineer",
@@ -173,6 +228,61 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_reporter_1774411126425",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M26-M28 APPROVED. Please document: 1) Decision: M26-M28 feature plan approved 2026-03-25. M26 Registration Approval, M27 Discussions, M28 AI Voice Assistant (Coach Ney). 2) Architecture decisions: OpenAI for voice (no new vendor), flat comment threading, plan-based assistant limits. 3) Dependency: M26 blocks M27+M28, then M27 and M28 parallel. Update shared-knowledge.md and activity logs.",
+      "timestamp": "2026-03-25T03:58:46.425Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1774411113647",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M26-M28 — TEST PLANNING. M26: Test all status transitions (pending→approved→active, pending→rejected, suspended). Test signup no longer auto-logs in. Test non-approved users cannot access protected routes. Test admin approval/rejection flow. Test existing users remain approved after migration. M27: Test comment CRUD, threading (reply to comment), edit within 15min window, delete own comment, admin hide/unhide, rate limiting (5/min), XSS sanitization. M28: Test chat flow (text + voice), context passing (lesson/arcade), plan limits (Basic=5/day, Standard=50, Advanced=unlimited), idle nudge timing, audio playback. Begin test case writing now.",
+      "timestamp": "2026-03-25T03:58:33.647Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1774411105758",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M26-M28 — DESIGN SPECS NEEDED. M26: Design approval states UX — pending screen, rejection screen with reason, signin error states for non-approved users, admin approval table with filter tabs. M27: Comment thread design — flat threading (top-level + replies), CommentCard style matching bg-bg-surface border-white/8 rounded-2xl, reply inline textarea, admin hide/unhide UI. M28: AI Assistant UI — floating amber glow button bottom-right, slide-up panel (mobile) / side panel (desktop), chat bubbles, voice recording state (red dot + timer), waveform during playback, quick-reply suggestion chips. Persona: Coach Ney.",
+      "timestamp": "2026-03-25T03:58:25.758Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774411097012",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M26-M28 ASSIGNED. Start with M26 after backend-engineer completes schema: 1) New /auth/pending page showing 'account under review' with amber info card. 2) Update signup page to show pending confirmation instead of redirect. 3) Update signin to handle non-approved error messages. 4) Admin /admin/users: add status column, filter tabs (All|Pending|Approved|Rejected), Approve/Reject buttons with statusNote input. After M26, M27: build CommentThread/CommentCard/CommentForm components, integrate into lesson and arcade pages, admin moderation page. M28: AssistantButton (floating bottom-right, amber glow), AssistantPanel (slide-up/side), VoiceRecorder, useAssistant hook, idle detection. See milestones.json for full specs.",
+      "timestamp": "2026-03-25T03:58:17.012Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774411040468",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "NEW MILESTONES M26-M28 ASSIGNED. Start with M26 (Registration Approval): 1) Add to User model: status String @default('pending'), statusNote String?, approvedAt DateTime?, approvedBy String?. Add @@index([status]). 2) Migration must set existing users to status='approved'. 3) Modify /api/auth/signup to NOT auto-login, return pending message. 4) In auth.ts authorize(), check user.status==='approved' before allowing login. 5) Add PATCH /api/admin/users/[id] for status updates. 6) Add ?status= filter to GET /api/admin/users. After M26, proceed to M27 (Comment model + CRUD API) and M28 (assistant-service.ts + /api/assistant/chat with OpenAI Whisper STT + GPT-4o + TTS). See milestones.json for full specs.",
+      "timestamp": "2026-03-25T03:57:20.468Z",
+      "status": "unread"
     },
     {
       "id": "sig_backend-engineer_tester_1774403939741",
@@ -361,6 +471,17 @@
       "priority": "normal",
       "message": "SESSION END 2026-03-23. Next session tasks: (1) Log M10–M13 completions in activity-log.md AFTER Tester signs off on each (wait for PM approval signals). (2) Update shared-knowledge.md: current phase is 10-personalization, routes added: /practice /onboarding /dashboard. (3) Log the 5-point user product feedback session as a product decision in decisions.json. (4) Write milestone reports for M10, M11, M12, M13 once tester_approved=true.",
       "timestamp": "2026-03-23T06:00:00Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_designer_reporter_1774411646016",
+      "from": "designer",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "m26-m28-design-specs-log",
+      "priority": "low",
+      "message": "Designer completed M26/M27/M28 design specs. Files: .shared/outputs/designer/m26-registration-approval-spec.md, m27-discussions-spec.md, m28-ai-assistant-spec.md. Key design decisions: pending approval page uses Clock icon with amber glow circle, signin shows contextual error banners (warning for pending, error for rejected/suspended), admin users table adds filter tabs and status pills, discussions use flat threading with avatar color hashing, Coach Ney uses GraduationCap icon with amber identity, floating button has ambient glow-pulse animation, mobile gets slide-up sheet while desktop gets fixed side panel.",
+      "timestamp": "2026-03-25T04:07:26.016Z",
       "status": "unread"
     },
     {

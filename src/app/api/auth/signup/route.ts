@@ -21,8 +21,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Email already in use' }, { status: 409 })
   }
   const passwordHash = await bcrypt.hash(password, 12)
-  const user = await prisma.user.create({
-    data: { name, email, passwordHash, role: 'learner' },
+  await prisma.user.create({
+    data: { name, email, passwordHash, role: 'learner', status: 'pending' },
   })
-  return NextResponse.json({ id: user.id, email: user.email }, { status: 201 })
+  return NextResponse.json(
+    { success: true, message: 'Registration submitted, pending admin approval', status: 'pending' },
+    { status: 201 }
+  )
 }
