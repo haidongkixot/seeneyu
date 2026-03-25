@@ -207,6 +207,10 @@ const config: Config = {
           '60%': { transform: 'translateY(-10px) scale(1.05)', opacity: '1' },
           '100%': { transform: 'translateY(0) scale(1)' },
         },
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
       },
       animation: {
         shimmer:      'shimmer 1.5s infinite linear',
@@ -226,6 +230,7 @@ const config: Config = {
         'heart-pulse': 'heart-pulse 600ms ease-in-out',
         'combo-glow': 'combo-glow 1.5s ease-in-out infinite',
         'badge-reveal': 'badge-reveal 800ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'slide-in-right': 'slide-in-right 300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },

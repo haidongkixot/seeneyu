@@ -13,7 +13,14 @@ export function LevelBadge({ level, progress }: LevelBadgeProps) {
   const dashOffset = circumference * (1 - Math.min(Math.max(progress, 0), 1))
 
   return (
-    <div className="relative w-7 h-7 flex items-center justify-center">
+    <div
+      className="relative w-7 h-7 flex items-center justify-center"
+      role="progressbar"
+      aria-valuenow={Math.round(progress * 100)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={`Level ${level}, ${Math.round(progress * 100)}% to next level`}
+    >
       {/* Background ring */}
       <svg
         width={size}

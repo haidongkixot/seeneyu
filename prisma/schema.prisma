@@ -741,3 +741,33 @@ model TrainingDataLabel {
   @@index([expressionLabel])
   @@index([submissionId])
 }
+
+// ── Social & Competitive models ──────────────────────────────────────
+
+model Leaderboard {
+  id        String   @id @default(cuid())
+  type      String
+  period    String
+  entries   Json
+  updatedAt DateTime @updatedAt
+  @@unique([type, period])
+}
+
+model UserFollow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model PushSubscription {
+  id           String   @id @default(cuid())
+  userId       String
+  endpoint     String   @db.Text
+  keys         Json
+  createdAt    DateTime @default(now())
+  @@index([userId])
+}

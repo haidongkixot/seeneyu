@@ -4,7 +4,18 @@ import { useState, useEffect } from 'react'
 import { StreakFlame } from './StreakFlame'
 import { HeartCounter } from './HeartCounter'
 import { LevelBadge } from './LevelBadge'
+import { TierBadge } from './TierBadge'
 import { Zap } from 'lucide-react'
+
+type TierName = 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond'
+
+function getTierForXp(totalXp: number): TierName {
+  if (totalXp >= 50000) return 'Diamond'
+  if (totalXp >= 15000) return 'Platinum'
+  if (totalXp >= 5000) return 'Gold'
+  if (totalXp >= 1000) return 'Silver'
+  return 'Bronze'
+}
 
 interface GamificationProfile {
   level: number
@@ -13,6 +24,7 @@ interface GamificationProfile {
   streak: number
   hearts: number
   unlimited: boolean
+  totalXp?: number
 }
 
 export function GamificationBar() {
@@ -48,6 +60,9 @@ export function GamificationBar() {
       </div>
 
       <LevelBadge level={profile.level} progress={progress} />
+      {profile.totalXp !== undefined && (
+        <TierBadge tier={getTierForXp(profile.totalXp)} />
+      )}
     </div>
   )
 }

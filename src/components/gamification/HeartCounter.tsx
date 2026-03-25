@@ -29,6 +29,7 @@ export function HeartCounter({ hearts, unlimited }: HeartCounterProps) {
       <div className="flex items-center gap-1">
         <Heart size={14} className="text-red-500" fill="currentColor" />
         <span className="text-xs font-bold text-red-500">&infin;</span>
+        <span className="sr-only">Unlimited hearts</span>
       </div>
     )
   }
@@ -36,7 +37,7 @@ export function HeartCounter({ hearts, unlimited }: HeartCounterProps) {
   const total = 5
 
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex items-center gap-0.5" aria-label={`${hearts} of ${total} hearts remaining`}>
       {Array.from({ length: total }, (_, i) => {
         const filled = i < hearts
         const isPulsing = pulsingIndex === i

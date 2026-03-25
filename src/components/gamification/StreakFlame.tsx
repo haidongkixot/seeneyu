@@ -20,7 +20,7 @@ export function StreakFlame({ streak }: StreakFlameProps) {
   const size = getFlameSize(streak)
 
   return (
-    <div className="relative group" title={`${streak}-day streak`}>
+    <div className="relative group" title={`${streak}-day streak`} aria-label={`${streak}-day streak`}>
       <Flame
         size={size}
         className={cn(

@@ -85,6 +85,8 @@ export function CelebrationOverlay({ type, data, onDismiss }: CelebrationOverlay
 
   return (
     <div
+      role="alert"
+      aria-live="polite"
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
       onClick={onDismiss}
     >

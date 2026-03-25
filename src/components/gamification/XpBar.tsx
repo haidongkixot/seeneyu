@@ -22,7 +22,14 @@ export function XpBar({ currentXp, xpForNextLevel, recentGain }: XpBarProps) {
   }, [recentGain])
 
   return (
-    <div className="relative w-full h-1 bg-bg-overlay">
+    <div
+      className="relative w-full h-1 bg-bg-overlay"
+      role="progressbar"
+      aria-valuenow={Math.round(progress)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={`XP progress: ${Math.round(progress)}%`}
+    >
       <div
         className="h-full bg-accent-400 transition-all duration-700 ease-smooth"
         style={{ width: `${progress}%` }}

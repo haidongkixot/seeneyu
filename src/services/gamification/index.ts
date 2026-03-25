@@ -3,6 +3,8 @@ export { checkAndUpdateStreak, useStreakFreeze } from './streak-tracker'
 export { getHearts, deductHeart, refillHearts } from './hearts-manager'
 export { generateDailyQuests, updateQuestProgress, getTodayQuests } from './quest-generator'
 export { evaluateBadges, checkBadgeCriteria } from './badge-evaluator'
+export { updateWeeklyLeaderboard, getLeaderboard, getUserRank, getWeekPeriod } from './leaderboard-updater'
+export { incrementCombo, resetCombo, getCombo } from './combo-tracker'
 
 import { awardXp, XP_AMOUNTS } from './xp-engine'
 import { checkAndUpdateStreak } from './streak-tracker'

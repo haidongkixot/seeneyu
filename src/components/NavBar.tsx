@@ -55,12 +55,13 @@ export function NavBar() {
           </a>
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — hidden on mobile (BottomTabBar handles mobile nav) */}
         <div className="hidden md:flex items-center gap-1 md:gap-2">
           {navLinks.map(({ href, label, Icon }) => (
             <Link
               key={href}
               href={href}
+              aria-current={isActive(href) ? 'page' : undefined}
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-all duration-150',
                 isActive(href)
@@ -131,83 +132,54 @@ export function NavBar() {
           )}
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
-          onClick={() => setDrawerOpen(o => !o)}
-          aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
-        >
-          {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-
-      {/* Mobile drawer */}
-      {drawerOpen && (
-        <div className="md:hidden sticky top-14 z-[49] bg-bg-surface/95 backdrop-blur-md border-b border-black/8 px-4 py-3 flex flex-col gap-1">
-          {navLinks.map(({ href, label, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setDrawerOpen(false)}
-              className={cn(
-                'flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all duration-150',
-                isActive(href)
-                  ? 'text-accent-400 bg-accent-400/10'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-overlay',
-              )}
-            >
-              <Icon size={16} strokeWidth={1.5} />
-              {label}
-            </Link>
-          ))}
-
-          {session && (
-            <div className="flex items-center gap-3 px-3 py-2 border-t border-black/6 mt-1">
-              <GamificationBar />
-            </div>
-          )}
-
+        {/* Mobile: gamification bar + avatar only (nav links in BottomTabBar) */}
+        <div className="flex md:hidden items-center gap-2">
+          {session && <GamificationBar />}
           {session ? (
-            <>
-              {userRole === 'admin' && (
-                <Link
-                  href="/admin"
-                  onClick={() => setDrawerOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
-                >
-                  <ShieldCheck size={16} strokeWidth={1.5} />
-                  Admin
-                </Link>
-              )}
+            <div className="relative">
               <button
-                onClick={() => { setDrawerOpen(false); signOut({ callbackUrl: '/' }) }}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
+                onClick={() => setAvatarOpen(o => !o)}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-400/20 text-accent-400 text-xs font-bold hover:bg-accent-400/30 transition-colors"
+                aria-label="Account menu"
               >
-                <LogOut size={16} strokeWidth={1.5} />
-                Sign out
+                {initials}
               </button>
-            </>
+              {avatarOpen && (
+                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-50">
+                  <div className="px-3 py-2 border-b border-black/8">
+                    <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
+                    <p className="text-xs text-text-muted capitalize">{userRole}</p>
+                  </div>
+                  {userRole === 'admin' && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setAvatarOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                    >
+                      <ShieldCheck size={14} />
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { setAvatarOpen(false); signOut({ callbackUrl: '/' }) }}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <LogOut size={14} />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
-            <>
-              <Link
-                href="/auth/signin"
-                onClick={() => setDrawerOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
-              >
-                <User size={16} strokeWidth={1.5} />
-                Sign in
-              </Link>
-              <Link
-                href="/auth/signup"
-                onClick={() => setDrawerOpen(false)}
-                className="mt-1 bg-accent-400 text-text-inverse rounded-pill px-4 py-2.5 text-sm font-semibold text-center hover:bg-accent-500 transition-all duration-150"
-              >
-                Get Started
-              </Link>
-            </>
+            <Link
+              href="/auth/signin"
+              className="px-3 py-1.5 text-sm text-text-secondary hover:text-text-primary rounded-lg transition-all duration-150"
+            >
+              Sign in
+            </Link>
           )}
         </div>
-      )}
+      </nav>
     </>
   )
 }
