@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { NavBar } from '@/components/NavBar'
 import {
   Gamepad2, Play, Trophy, Copy, Check, Eye, Shuffle, Crown,
-  ChevronRight,
+  ChevronRight, Clock, Search,
 } from 'lucide-react'
 
 // ── Types ──────────────────────────────────────────────────────────────
@@ -47,6 +47,17 @@ const GAME_META: Record<string, {
     color: 'from-pink-500/20 to-pink-600/5',
     badge: 'Earn Certificate!',
     playPath: '/games/expression-king',
+  },
+  emotion_timeline: {
+    icon: Clock,
+    color: 'from-amber-500/20 to-amber-600/5',
+    playPath: '/games/emotion-timeline',
+  },
+  spot_the_signal: {
+    icon: Search,
+    color: 'from-emerald-500/20 to-emerald-600/5',
+    badge: 'Fast-paced!',
+    playPath: '/games/spot-the-signal',
   },
 }
 
