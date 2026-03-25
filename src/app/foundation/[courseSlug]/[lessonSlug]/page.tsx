@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import LessonClient from './LessonClient'
+import { CommentThread } from '@/components/discussions'
+import { AssistantButton } from '@/components/assistant'
 
 export default async function LessonPage({
   params,
@@ -107,6 +109,12 @@ export default async function LessonPage({
           isLoggedIn={!!session?.user}
         />
 
+        {/* Discussion */}
+        <CommentThread
+          lessonId={lesson.id}
+          placeholder="Share your thoughts on this lesson..."
+        />
+
         {/* Navigation */}
         <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/8">
           {prevLesson ? (
@@ -139,6 +147,9 @@ export default async function LessonPage({
           )}
         </div>
       </main>
+
+      {/* AI Assistant */}
+      <AssistantButton context={`lesson:${lesson.id}`} />
     </div>
   )
 }

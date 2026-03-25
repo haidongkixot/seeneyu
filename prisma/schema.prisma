@@ -103,6 +103,8 @@ model User {
   activityEvents     ActivityEvent[]
   plan               String          @default("basic")
   subscriptions      Subscription[]
+  comments           Comment[]
+  assistantConversations AssistantConversation[]
 
   @@index([status])
 }
@@ -206,6 +208,7 @@ model FoundationLesson {
   examples   LessonExample[]
   questions  QuizQuestion[]
   progress   FoundationProgress[]
+  comments   Comment[]
 
   @@unique([courseId, slug])
   @@index([courseId])
@@ -321,6 +324,7 @@ model ArcadeChallenge {
   xpReward          Int             @default(20)
   orderIndex        Int
   attempts          ArcadeAttempt[]
+  comments          Comment[]
 
   @@index([bundleId])
 }
@@ -422,4 +426,57 @@ model Payment {
 
   @@index([subscriptionId])
   @@index([gateway, gatewayOrderId])
+}
+
+// ── Discussion models ────────────────────────────────────────────────
+
+model Comment {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String?
+  lesson      FoundationLesson? @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  challengeId String?
+  challenge   ArcadeChallenge?  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  parentId    String?
+  parent      Comment?          @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies     Comment[]         @relation("CommentReplies")
+  body        String            @db.Text
+  isHidden    Boolean           @default(false)
+  hiddenBy    String?
+  hiddenAt    DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([lessonId, createdAt])
+  @@index([challengeId, createdAt])
+  @@index([parentId])
+  @@index([userId])
+}
+
+// ── AI Assistant models ──────────────────────────────────────────────
+
+model AssistantConversation {
+  id        String              @id @default(cuid())
+  userId    String
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  context   String
+  messages  AssistantMessage[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@index([userId])
+  @@index([userId, context])
+}
+
+model AssistantMessage {
+  id             String                @id @default(cuid())
+  conversationId String
+  conversation   AssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String
+  content        String                @db.Text
+  audioUrl       String?
+  createdAt      DateTime              @default(now())
+
+  @@index([conversationId, createdAt])
 }

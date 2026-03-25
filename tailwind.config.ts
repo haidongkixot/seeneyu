@@ -148,12 +148,37 @@ const config: Config = {
           '0%':   { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'glow-pulse': {
+          '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+          '50%': { opacity: '0.15', transform: 'scale(1.15)' },
+        },
+        'bounce-dot': {
+          '0%, 80%, 100%': { transform: 'translateY(0)' },
+          '40%': { transform: 'translateY(-6px)' },
+        },
+        'waveform-bar': {
+          '0%, 100%': { height: '4px' },
+          '50%': { height: '20px' },
+        },
+        'panel-up': {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'panel-scale': {
+          '0%': { transform: 'scale(0.9) translateY(16px)', opacity: '0' },
+          '100%': { transform: 'scale(1) translateY(0)', opacity: '1' },
+        },
       },
       animation: {
         shimmer:      'shimmer 1.5s infinite linear',
         'fade-in':    'fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         'fade-in-up': 'fade-in-up 200ms cubic-bezier(0.34, 1.56, 0.64, 1) both',
         'slide-up':   'slide-up 250ms cubic-bezier(0.34, 1.56, 0.64, 1) both',
+        'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+        'bounce-dot': 'bounce-dot 1.4s ease-in-out infinite',
+        'waveform-bar': 'waveform-bar 0.8s ease-in-out infinite',
+        'panel-up':   'panel-up 300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'panel-scale':'panel-scale 250ms cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },
