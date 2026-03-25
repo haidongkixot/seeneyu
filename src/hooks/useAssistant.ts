@@ -54,9 +54,9 @@ export function useAssistant({ context }: UseAssistantOptions) {
           }),
         })
 
-        if (!res.ok) throw new Error('Failed to send')
-
         const data = await res.json()
+
+        if (!res.ok) throw new Error(data.error || 'Failed to send')
 
         if (data.conversationId) {
           setConversationId(data.conversationId)
@@ -65,17 +65,18 @@ export function useAssistant({ context }: UseAssistantOptions) {
         const assistantMsg: ChatMessage = {
           id: generateId(),
           role: 'assistant',
-          content: data.response ?? data.message ?? '',
+          content: data.reply ?? data.response ?? data.message ?? '',
           audioUrl: data.audioUrl,
           timestamp: new Date(),
         }
         setMessages((prev) => [...prev, assistantMsg])
-      } catch {
+      } catch (err: any) {
         const errorMsg: ChatMessage = {
           id: generateId(),
           role: 'assistant',
-          content:
-            "Sorry, I couldn't process that. Please try again in a moment.",
+          content: err?.message === 'Daily message limit reached'
+            ? "You've reached your daily message limit. Upgrade your plan for more!"
+            : `Sorry, I couldn't process that: ${err?.message || 'Unknown error'}. Please try again.`,
           timestamp: new Date(),
         }
         setMessages((prev) => [...prev, errorMsg])
