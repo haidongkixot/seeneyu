@@ -406,8 +406,10 @@
       "role": "backend-engineer",
       "task": "m21-arcade-content-management",
       "description": "Admin CRUD for ArcadeBundle + ArcadeChallenge. Reference image capture from YouTube frames or web. Edit/delete. Reorder. Image upload to Vercel Blob.",
-      "status": "pending",
-      "assigned_at": "2026-03-25T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-25T08:00:00Z",
+      "completed_at": "2026-03-25T10:00:00Z",
+      "commit": "38d204a"
     },
     {
       "id": "task_m22_backend",
@@ -415,8 +417,10 @@
       "role": "backend-engineer",
       "task": "m22-user-activity-dashboard",
       "description": "ActivityEvent model + tracking. Admin analytics dashboard: DAU/WAU/MAU, signups, learning curves, per-user detail. Charts.",
-      "status": "pending",
-      "assigned_at": "2026-03-25T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-25T08:00:00Z",
+      "completed_at": "2026-03-25T10:00:00Z",
+      "commit": "38d204a"
     },
     {
       "id": "task_m23_backend",
@@ -424,8 +428,10 @@
       "role": "backend-engineer",
       "task": "m23-feature-performance-dashboard",
       "description": "AnalysisMetric model. Admin feature dashboard: crawl job stats, MediaPipe performance, content pipeline metrics.",
-      "status": "pending",
-      "assigned_at": "2026-03-25T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-25T08:00:00Z",
+      "completed_at": "2026-03-25T10:00:00Z",
+      "commit": "38d204a"
     },
     {
       "id": "task_m24_backend",
@@ -433,8 +439,10 @@
       "role": "backend-engineer",
       "task": "m24-access-control",
       "description": "Auth gating: first 3 arcade challenges per type free without login. Practice/record require auth. Locked content blurred with lock icon. Centralized access-control.ts.",
-      "status": "pending",
-      "assigned_at": "2026-03-25T08:00:00Z"
+      "status": "complete",
+      "assigned_at": "2026-03-25T08:00:00Z",
+      "completed_at": "2026-03-25T10:00:00Z",
+      "commit": "38d204a"
     },
     {
       "id": "task_m25_backend",
@@ -442,8 +450,10 @@
       "role": "backend-engineer",
       "task": "m25-subscription-payment",
       "description": "Plan/Subscription/Payment models. 3 tiers: Basic(free,5s)/Standard(30s)/Advanced(3min,VIP,coach). PayPal + VNPay. Admin plan management. Pricing page.",
-      "status": "pending",
+      "status": "complete",
       "assigned_at": "2026-03-25T08:00:00Z",
+      "completed_at": "2026-03-25T10:00:00Z",
+      "commit": "38d204a",
       "blockedBy": ["task_m24_backend"]
     }
   ],
@@ -480,7 +490,22 @@
       "resolved_by": "pm"
     }
   ],
-  "open_bugs": [],
+  "open_bugs": [
+    {
+      "id": "BUG-005",
+      "severity": "p1",
+      "description": "Pricing page fetches from /api/admin/plans (requires admin auth) — public users get 401, plans never load. Fix: create public /api/public/plans endpoint or remove requireAdmin() from GET.",
+      "milestone": "M25",
+      "assigned_to": "backend-engineer"
+    },
+    {
+      "id": "BUG-006",
+      "severity": "p1",
+      "description": "Plan + ArcadeBundle tables empty in production DB. seed-plans.ts and db:seed (arcade) never ran on production. Pages show skeleton loading.",
+      "milestone": "M21+M25",
+      "assigned_to": "builder"
+    }
+  ],
   "closed_bugs": [
     {
       "id": "BUG-003",
@@ -533,16 +558,19 @@
     "M17",
     "M18",
     "M19",
-    "M20"
+    "M20",
+    "M21",
+    "M22",
+    "M23",
+    "M24",
+    "M25"
   ],
-  "milestones_in_progress": [
-    "M21", "M22", "M23", "M24", "M25"
-  ],
+  "milestones_in_progress": [],
   "milestones_pending": [
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-25T09:00:00Z",
+  "last_updated": "2026-03-25T11:00:00Z",
   "deployments": [
     {
       "version": "M14+M15",
@@ -569,6 +597,13 @@
         "M20"
       ],
       "notes": "Library UX (search + collapsible filters + 4-col grid), PeeTeeAI brand (hero, footer, mission/team), Arcade Zone (3 bundles, 30 challenges), Learning improvements (screenplay crawler, ZIP import)"
+    },
+    {
+      "version": "M21-M25",
+      "url": "https://seeneyu.vercel.app",
+      "deployed_at": "2026-03-25T10:30:00Z",
+      "includes": ["M21", "M22", "M23", "M24", "M25"],
+      "notes": "Arcade admin CRUD, activity analytics, feature performance, access control, subscription/payment. KNOWN ISSUES: BUG-005 (pricing uses admin endpoint), BUG-006 (Plan + ArcadeBundle tables not seeded)."
     }
   ]
 }

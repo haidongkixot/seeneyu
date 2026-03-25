@@ -1,8 +1,8 @@
 {
   "_meta": {
     "description": "Signal archive — completed/read signals. Append-only. Do NOT read this during normal sessions.",
-    "last_updated": "2026-03-25T01:20:54.976Z",
-    "total": 145
+    "last_updated": "2026-03-25T01:58:49.856Z",
+    "total": 146
   },
   "signals": [
     {
@@ -1733,6 +1733,18 @@
       "timestamp": "2026-03-25T01:08:14.038Z",
       "status": "done",
       "done_at": "2026-03-25T01:20:54.975Z"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774403642218",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "BUG-005-public-plans-endpoint",
+      "priority": "high",
+      "message": "BUG-005 (P1): Pricing page /pricing fetches plans from /api/admin/plans which requires requireAdmin() — public users get 401, plans never load. FIX: Create src/app/api/public/plans/route.ts that does a simple prisma.plan.findMany({ where: { isActive: true }, orderBy: { monthlyPrice: 'asc' }}) without auth check. Then update src/app/pricing/page.tsx line 34 to fetch from /api/public/plans instead of /api/admin/plans. Keep the admin endpoint as-is for admin CRUD.",
+      "timestamp": "2026-03-25T01:54:02.218Z",
+      "status": "done",
+      "done_at": "2026-03-25T01:58:49.856Z"
     }
   ]
 }

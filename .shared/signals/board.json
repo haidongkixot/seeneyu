@@ -3,10 +3,43 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T01:20:54.976Z",
-    "open_count": 30
+    "last_updated": "2026-03-25T01:58:59.743Z",
+    "open_count": 34
   },
   "signals": [
+    {
+      "id": "sig_backend-engineer_pm_1774403937409",
+      "from": "backend-engineer",
+      "to": "pm",
+      "type": "fyi",
+      "task": "BUG-005-fixed",
+      "priority": "high",
+      "message": "BUG-005 fixed. Created /api/public/plans (unauthenticated) and updated pricing page to use it. Pushed and deploying.",
+      "timestamp": "2026-03-25T01:58:57.409Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774403649756",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "seed-plans-and-arcade-production",
+      "priority": "high",
+      "message": "URGENT: Run these seed commands on production DB (plans + arcade data are missing, causing skeleton loading on /pricing and /arcade pages): 1) npx tsx scripts/seed-plans.ts (seeds 3 Plan records: Basic/Standard/Advanced). 2) npm run db:seed (seeds ArcadeBundle + ArcadeChallenge from .shared/outputs/data/arcade-challenges-seed.json — 3 bundles, 30 challenges). After seeding, redeploy: vercel --prod --yes",
+      "timestamp": "2026-03-25T01:54:09.756Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1774402982980",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "smoke-test-m21-m25",
+      "priority": "high",
+      "message": "M21-M25 deployed to https://seeneyu.vercel.app. All routes 200. Smoke test these new features:\n\nM21 — Arcade Admin: /admin/arcade (bundle/challenge CRUD, image upload, reorder)\nM22 — Analytics: /admin/analytics (DAU/WAU/MAU, signups, per-user activity, learning curves)\nM23 — Feature Analytics: /admin/analytics/features (crawl stats, MediaPipe metrics)\nM24 — Access Control: /arcade without login (first 3 per type free, rest locked). /library/[clipId]/practice and /record require login.\nM25 — Subscriptions: /pricing (3 plans), /admin/plans (admin management), PayPal+VNPay checkout flow (sandbox mode).\n\nAdmin login: admin@seeneyu.com / changeme123\n\nCRITICAL: Also clear the M10-M20 backlog — all 11 milestones deployed and untested.",
+      "timestamp": "2026-03-25T01:43:02.980Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_designer_1774400899401",
       "from": "pm",
@@ -140,6 +173,17 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_backend-engineer_tester_1774403939741",
+      "from": "backend-engineer",
+      "to": "tester",
+      "type": "fyi",
+      "task": "BUG-005-verify",
+      "priority": "medium",
+      "message": "BUG-005 fixed. /pricing now loads plans for all users (was 401 for non-admins). Verify at https://seeneyu.vercel.app/pricing after deploy completes.",
+      "timestamp": "2026-03-25T01:58:59.741Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_tester_1774400916299",
