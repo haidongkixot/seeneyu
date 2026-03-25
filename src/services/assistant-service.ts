@@ -37,8 +37,8 @@ export async function buildSystemPrompt(
   userId: string,
   context: string
 ): Promise<string> {
-  // Fetch user progress summary
-  const [user, foundationProgress, arcadeAttempts] = await Promise.all([
+  // Fetch user progress summary + full course catalog + gamification
+  const [user, foundationProgress, arcadeAttempts, allCourses, gamification] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { name: true, plan: true },
@@ -47,7 +47,8 @@ export async function buildSystemPrompt(
       where: { userId },
       select: {
         quizPassed: true,
-        lesson: { select: { title: true, course: { select: { title: true } } } },
+        quizScore: true,
+        lesson: { select: { title: true, slug: true, order: true, course: { select: { title: true, slug: true, order: true } } } },
       },
     }),
     prisma.arcadeAttempt.findMany({
@@ -59,6 +60,22 @@ export async function buildSystemPrompt(
       orderBy: { createdAt: 'desc' },
       take: 10,
     }),
+    prisma.foundationCourse.findMany({
+      orderBy: { order: 'asc' },
+      select: {
+        title: true,
+        slug: true,
+        order: true,
+        lessons: {
+          orderBy: { order: 'asc' },
+          select: { title: true, slug: true, order: true },
+        },
+      },
+    }),
+    prisma.userGamification.findUnique({
+      where: { userId },
+      select: { totalXp: true, level: true, currentStreak: true, longestStreak: true },
+    }).catch(() => null),
   ])
 
   // Try to load context-specific content
@@ -87,8 +104,26 @@ export async function buildSystemPrompt(
 
   // Build progress summary
   const completedLessons = foundationProgress.filter(p => p.quizPassed).length
-  const totalLessons = foundationProgress.length
+  const totalLessonsAttempted = foundationProgress.length
   const recentScores = arcadeAttempts.map(a => `${a.challenge.title}: ${a.score}/100`).join(', ')
+
+  // Build course catalog with progress
+  const completedSlugs = new Set(
+    foundationProgress.filter(p => p.quizPassed).map(p => `${p.lesson.course.slug}/${p.lesson.slug}`)
+  )
+  const courseMap = allCourses.map(c => {
+    const lessonStatus = c.lessons.map(l => {
+      const done = completedSlugs.has(`${c.slug}/${l.slug}`)
+      return `  ${done ? '✅' : '⬜'} ${l.title}`
+    }).join('\n')
+    const completed = c.lessons.filter(l => completedSlugs.has(`${c.slug}/${l.slug}`)).length
+    return `${c.title} (${completed}/${c.lessons.length} done):\n${lessonStatus}`
+  }).join('\n\n')
+
+  // Gamification summary
+  const gamStr = gamification
+    ? `- Level: ${gamification.level} | XP: ${gamification.totalXp} | Streak: ${gamification.currentStreak} days (best: ${gamification.longestStreak})`
+    : '- No gamification data yet (new user)'
 
   return `You are Coach Ney, a friendly and encouraging body language & communication coach for the Seeneyu learning platform.
 
@@ -102,8 +137,12 @@ Your personality:
 About the learner:
 - Name: ${user?.name || 'Learner'}
 - Plan: ${user?.plan || 'basic'}
-- Foundation progress: ${completedLessons}/${totalLessons} lessons completed
+- Foundation lessons completed: ${completedLessons} (out of ${totalLessonsAttempted} attempted)
+${gamStr}
 ${recentScores ? `- Recent arcade scores: ${recentScores}` : '- No arcade attempts yet'}
+
+Available courses & learner progress:
+${courseMap || '(No courses in the system yet)'}
 ${contextContent}
 
 Guidelines:
@@ -111,6 +150,7 @@ Guidelines:
 - If asked about non-relevant topics, gently redirect to communication coaching
 - Suggest specific exercises or techniques when giving advice
 - Reference the current lesson/challenge content when relevant
+- When asked about learning path, use the course catalog above to recommend what to do next
 - Never make up information about the platform or its features`
 }
 
