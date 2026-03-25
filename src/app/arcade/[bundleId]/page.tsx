@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/NavBar'
-import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
 import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
+import { FreeTierBadge } from '@/components/auth/FreeTierBadge'
 
 interface ChallengeData {
   id: string
@@ -33,9 +35,13 @@ interface BundleDetail {
 
 type Screen = 'list' | 'challenge' | 'scoring' | 'result'
 
+const FREE_PER_TYPE = 3
+
 export default function BundlePage() {
   const params = useParams()
   const bundleId = params.bundleId as string
+  const { data: session } = useSession()
+  const isAuthenticated = !!session
 
   const [bundle, setBundle] = useState<BundleDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -474,6 +480,14 @@ export default function BundlePage() {
   const completedCount = bundle.challenges.filter(c => c.isComplete).length
   const totalCount = bundle.challenges.length
 
+  // Count per-type indices for free tier gating
+  const typeCountMap: Record<string, number> = {}
+  const challengeTypeIndex = bundle.challenges.map(c => {
+    const count = typeCountMap[c.type] || 0
+    typeCountMap[c.type] = count + 1
+    return count
+  })
+
   return (
     <div className="min-h-screen bg-bg-base">
       <NavBar />
@@ -501,62 +515,80 @@ export default function BundlePage() {
           </div>
         </div>
 
+        {/* Free tier badge */}
+        {!isAuthenticated && (
+          <div className="mb-4">
+            <FreeTierBadge used={Math.min(FREE_PER_TYPE, completedCount)} total={FREE_PER_TYPE} />
+          </div>
+        )}
+
         {/* Challenge list */}
         <div className="flex flex-col gap-3">
-          {bundle.challenges.map((challenge, i) => (
-            <div
-              key={challenge.id}
-              onClick={() => !challenge.isLocked && startChallenge(i)}
-              className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
-                challenge.isLocked
-                  ? 'border-white/6 bg-bg-surface/50 opacity-50 cursor-not-allowed'
-                  : challenge.isComplete
-                  ? 'border-success/20 bg-success/5 cursor-pointer'
-                  : 'border-white/8 bg-bg-surface hover:border-accent-400/20 hover:bg-bg-elevated cursor-pointer'
-              }`}
-            >
-              {/* Status icon */}
-              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border border-white/10">
-                {challenge.isLocked ? (
-                  <Lock size={14} className="text-text-tertiary" />
-                ) : challenge.isComplete ? (
-                  <CheckCircle size={16} className="text-success" />
-                ) : (
-                  <span className="text-text-secondary">{challenge.orderIndex}</span>
-                )}
-              </div>
+          {bundle.challenges.map((challenge, i) => {
+            const accessLocked = !isAuthenticated && challengeTypeIndex[i] >= FREE_PER_TYPE
+            const isLocked = challenge.isLocked || accessLocked
 
-              {/* Main info */}
-              <div className="flex-1 min-w-0">
-                <p className={`font-semibold text-sm leading-tight ${challenge.isLocked ? 'text-text-tertiary' : 'text-text-primary'}`}>
-                  {challenge.title}
-                </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-xs px-1.5 py-0.5 rounded-md font-medium ${
-                    challenge.type === 'facial'
-                      ? 'bg-violet-500/15 text-violet-300'
-                      : 'bg-cyan-500/15 text-cyan-300'
-                  }`}>
-                    {challenge.type === 'facial' ? 'Facial' : 'Gesture'}
-                  </span>
-                  <span className="text-xs text-text-tertiary">
-                    {challenge.isComplete ? 'Complete' : challenge.isLocked ? 'Locked' : 'Not started'}
-                  </span>
+            return (
+              <div
+                key={challenge.id}
+                onClick={() => !isLocked && startChallenge(i)}
+                className={`relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
+                  isLocked
+                    ? 'border-white/6 bg-bg-surface/50 opacity-50 cursor-not-allowed'
+                    : challenge.isComplete
+                    ? 'border-success/20 bg-success/5 cursor-pointer'
+                    : 'border-white/8 bg-bg-surface hover:border-accent-400/20 hover:bg-bg-elevated cursor-pointer'
+                }`}
+              >
+                {/* Status icon */}
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border border-white/10">
+                  {isLocked ? (
+                    <Lock size={14} className="text-text-tertiary" />
+                  ) : challenge.isComplete ? (
+                    <CheckCircle size={16} className="text-success" />
+                  ) : (
+                    <span className="text-text-secondary">{challenge.orderIndex}</span>
+                  )}
+                </div>
+
+                {/* Main info */}
+                <div className="flex-1 min-w-0">
+                  <p className={`font-semibold text-sm leading-tight ${isLocked ? 'text-text-tertiary' : 'text-text-primary'}`}>
+                    {challenge.title}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-xs px-1.5 py-0.5 rounded-md font-medium ${
+                      challenge.type === 'facial'
+                        ? 'bg-violet-500/15 text-violet-300'
+                        : 'bg-cyan-500/15 text-cyan-300'
+                    }`}>
+                      {challenge.type === 'facial' ? 'Facial' : 'Gesture'}
+                    </span>
+                    <span className="text-xs text-text-tertiary">
+                      {challenge.isComplete ? 'Complete' : isLocked ? 'Locked' : 'Not started'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right */}
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="text-xs font-semibold text-accent-400">+{challenge.xpReward} XP</span>
+                  {challenge.isComplete && challenge.bestScore !== null && (
+                    <ScoreBadge score={challenge.bestScore} />
+                  )}
+                  {accessLocked && (
+                    <Link href="/auth/signin" onClick={e => e.stopPropagation()} className="flex items-center gap-1 text-xs font-semibold text-accent-400 hover:underline">
+                      <Sparkles size={12} />
+                      Sign in
+                    </Link>
+                  )}
+                  {!isLocked && !challenge.isComplete && (
+                    <ArrowRight size={16} className="text-accent-400" />
+                  )}
                 </div>
               </div>
-
-              {/* Right */}
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <span className="text-xs font-semibold text-accent-400">+{challenge.xpReward} XP</span>
-                {challenge.isComplete && challenge.bestScore !== null && (
-                  <ScoreBadge score={challenge.bestScore} />
-                )}
-                {!challenge.isLocked && !challenge.isComplete && (
-                  <ArrowRight size={16} className="text-accent-400" />
-                )}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </main>
     </div>

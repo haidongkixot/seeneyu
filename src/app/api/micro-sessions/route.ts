@@ -106,6 +106,19 @@ export async function POST(req: NextRequest) {
               status: 'complete',
             },
           })
+
+          // Log analysis metric (fire-and-forget)
+          ;(prisma as any).analysisMetric.create({
+            data: {
+              sessionType: 'micro',
+              durationMs: Date.now() - ts,
+              faceDetected: snapshots.some((s: any) => s.faceDetected),
+              poseDetected: snapshots.some((s: any) => s.poseLandmarks),
+              snapshotCount: snapshots.length,
+              score: result.verdict === 'pass' ? 80 : 40,
+            },
+          }).catch(() => {})
+
           return NextResponse.json({ microSessionId: microSession.id, ...feedback })
         }
       } catch (e) {

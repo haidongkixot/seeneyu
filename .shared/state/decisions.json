@@ -64,6 +64,22 @@
       ],
       "decided_by": "user",
       "timestamp": "2026-03-23T09:30:00Z"
+    },
+    {
+      "id": "dec_008",
+      "decision": "M21-M25: Platform expansion — arcade admin, analytics dashboards, access control, subscription monetization with PayPal + VNPay",
+      "rationale": "User requirement: arcade content management with reference images, user activity analytics, feature performance monitoring, freemium access model (first 3 challenges free), 3-tier subscription (Basic free/Standard/Advanced) with PayPal + VNPay for Vietnam market.",
+      "alternatives_considered": ["Stripe-only payment", "2-tier pricing", "No free tier"],
+      "decided_by": "user",
+      "timestamp": "2026-03-25T08:00:00Z"
+    },
+    {
+      "id": "dec_009",
+      "decision": "Fix signal system race conditions: add file locking to signal-send.js, signal-done.js, and create state-update.js helper",
+      "rationale": "Multiple roles editing board.json and state files simultaneously caused data loss — M21-M25 milestones were wiped out by concurrent edits. Fix: exclusive file locks (O_EXCL) with stale lock detection + atomic writes (temp+rename).",
+      "alternatives_considered": ["Per-role signal files (original design)", "Database-backed signals", "Append-only log format"],
+      "decided_by": "pm",
+      "timestamp": "2026-03-25T09:00:00Z"
     }
   ]
 }

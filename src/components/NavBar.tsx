@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, ExternalLink } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, ExternalLink, CreditCard } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function NavBar() {
@@ -20,6 +20,7 @@ export function NavBar() {
     { href: '/library', label: 'Library', Icon: Library },
     { href: '/foundation', label: 'Foundation', Icon: BookOpen },
     { href: '/arcade', label: 'Arcade', Icon: Zap },
+    { href: '/pricing', label: 'Pricing', Icon: CreditCard },
   ]
 
   const authLinks = session

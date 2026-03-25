@@ -1,5 +1,7 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
@@ -15,6 +17,9 @@ interface PageProps {
 }
 
 export default async function RecordPage({ params }: PageProps) {
+  const session = await getServerSession(authOptions)
+  if (!session) redirect('/auth/signin')
+
   const { clipId } = await params
 
   const clip = await prisma.clip.findUnique({

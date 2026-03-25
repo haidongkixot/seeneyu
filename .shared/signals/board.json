@@ -3,10 +3,32 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-24T17:01:05.526Z",
-    "open_count": 28
+    "last_updated": "2026-03-25T00:57:48.749Z",
+    "open_count": 26
   },
   "signals": [
+    {
+      "id": "sig_builder_pm_1774400267167",
+      "from": "builder",
+      "to": "pm",
+      "type": "fyi",
+      "task": "mediapipe-deploy-complete",
+      "priority": "high",
+      "message": "MediaPipe integration deployed to production (commit b56564b). All health checks pass (/, /library, /arcade, /foundation — all 200). This replaces GPT-4o Vision with client-side MediaPipe for all recording flows. Zero AI API cost for Arcade + Micro scoring. Standing by for M21-M25 BE completion signals.",
+      "timestamp": "2026-03-25T00:57:47.167Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_builder_tester_1774400264299",
+      "from": "builder",
+      "to": "tester",
+      "type": "fyi",
+      "task": "mediapipe-deploy-smoke-test",
+      "priority": "high",
+      "message": "MediaPipe integration deployed to https://seeneyu.vercel.app. All 3 recording flows now use client-side MediaPipe instead of GPT-4o Vision: (1) Arcade /arcade/[bundleId] — 10s challenge, score screen; (2) Micro-Practice /library/[clipId]/practice — per-step feedback; (3) Full Performance /library/[clipId]/record — full coaching feedback. All routes returning 200. Please smoke-test camera + scoring flows.",
+      "timestamp": "2026-03-25T00:57:44.299Z",
+      "status": "unread"
+    },
     {
       "id": "sig_backend-engineer_tester_1774371662026",
       "from": "backend-engineer",
@@ -41,17 +63,6 @@
       "status": "unread"
     },
     {
-      "id": "sig_backend-engineer_builder_1774368230592",
-      "from": "backend-engineer",
-      "to": "builder",
-      "type": "fyi",
-      "task": "deploy-m17-m20",
-      "priority": "high",
-      "message": "M17–M20 code complete. Deploy steps:\n\n1. git pull (get all new files)\n2. npm install (jszip added for M20)\n3. npx prisma db push (new models: ArcadeBundle, ArcadeChallenge, ArcadeAttempt + screenplayText on Clip)\n4. npx prisma generate\n5. npm run db:seed (seeds arcade challenges from arcade-challenges-seed.json)\n6. vercel --prod --yes\n\nNew routes to verify after deploy:\n- /arcade, /arcade/[bundleId]\n- /admin/import\n- Library search + collapsible filters\n- Homepage new sections",
-      "timestamp": "2026-03-24T16:03:50.592Z",
-      "status": "unread"
-    },
-    {
       "id": "sig_backend-engineer_tester_1774368227034",
       "from": "backend-engineer",
       "to": "tester",
@@ -83,39 +94,6 @@
       "message": "M17, M18, M19 design specs delivered this session.\n\nArtifacts:\n- .shared/outputs/design/m17-spec.md — Library UX (search bar, collapsible filter panel, 4-col grid, FilterPanel component, compact ClipCard)\n- .shared/outputs/design/m18-spec.md — PeeTeeAI Brand (NavBar sub-label, Footer component, animated hero, Mission/Team/Testimonials sections with all copy)\n- .shared/outputs/design/m19-spec.md — Arcade Zone (/arcade bundle browser, /arcade/[id] challenge list, active challenge split-screen, score result screen with SVG ring)\n\nAll specs include: full Tailwind classes, React state approach, responsive behavior, component interfaces, file list. Backend Engineer can implement immediately.",
       "timestamp": "2026-03-24T14:50:20.782Z",
       "status": "read"
-    },
-    {
-      "id": "sig_pm_bl_m17_m20_001",
-      "from": "pm",
-      "to": "builder",
-      "type": "task-assign",
-      "task": "builder-m17-m20-deploy",
-      "priority": "high",
-      "message": "Multiple deploy tasks incoming for M17-M20. Priority order:\n\n## CRITICAL (do now)\n1. **YOUTUBE_API_KEY** — still pending from M16. Add to Vercel env vars immediately.\n   - `vercel env add YOUTUBE_API_KEY production` (user has confirmed key)\n   - Run `npm run db:push` after — creates CrawlJob/CrawlResult tables\n   - Redeploy: `vercel --prod --yes`\n   - Signal PM + Tester when done\n\n## When Backend Engineer signals M17-M20 code complete\n2. `npm run db:push` — for M19 ArcadeBundle/ArcadeChallenge/ArcadeAttempt models + M20 screenplayText field\n3. `npx prisma generate`\n4. `npm run db:seed` — seeds arcade challenges\n5. Install new npm packages if BE added any (adm-zip or jszip for M20)\n6. `vercel --prod --yes`\n7. Signal Tester to run smoke tests on all new routes:\n   - /arcade\n   - /arcade/[bundleId]\n   - /admin/import\n   - Library search + filter panel\n\nKeep monitoring for backend-engineer signals — they'll flag when each milestone is code-complete.",
-      "timestamp": "2026-03-24T08:00:00Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_pm_bl_youtube_key_ready_001",
-      "from": "pm",
-      "to": "builder",
-      "type": "action-required",
-      "task": "m16-add-youtube-api-key",
-      "priority": "high",
-      "message": "YOUTUBE_API_KEY is ready — user confirmed. Add it to Vercel env vars now.\n\nSteps:\n1. vercel env add YOUTUBE_API_KEY production\n   (paste the key when prompted)\n2. Also add to .env.local for local dev\n3. Redeploy: vercel --prod --yes\n4. Signal PM + Tester when done — M16 crawl jobs are now executable.",
-      "timestamp": "2026-03-23T22:00:00Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_be_builder_m16_youtube_key_001",
-      "from": "backend-engineer",
-      "to": "builder",
-      "type": "task-assign",
-      "task": "m16-youtube-api-key",
-      "priority": "high",
-      "message": "M16 needs YOUTUBE_API_KEY in Vercel env (YouTube Data API v3). Steps: (1) Get key from Google Cloud Console with YouTube Data API v3 enabled. (2) Add YOUTUBE_API_KEY to Vercel env vars. (3) After deploy run npm run db:push (CrawlJob/CrawlResult tables). (4) Signal Tester.",
-      "timestamp": "2026-03-23T12:00:00Z",
-      "status": "unread"
     },
     {
       "id": "sig_builder_tester_m14m15_001",
@@ -153,6 +131,17 @@
       "to": "marketer"
     },
     {
+      "id": "sig_builder_reporter_1774400268748",
+      "from": "builder",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "log-mediapipe-deploy",
+      "priority": "medium",
+      "message": "MediaPipe integration deployed to https://seeneyu.vercel.app. Commit b56564b. Replaced GPT-4o Vision with client-side Google MediaPipe ML. 0 TS errors, 31 pages generated. All health checks pass.",
+      "timestamp": "2026-03-25T00:57:48.748Z",
+      "status": "unread"
+    },
+    {
       "id": "sig_backend-engineer_reporter_1774371665524",
       "from": "backend-engineer",
       "to": "reporter",
@@ -161,17 +150,6 @@
       "priority": "medium",
       "message": "MediaPipe integration complete. Replaced GPT-4o Vision dependency with client-side Google MediaPipe ML. New files: mediapipe-types.ts, mediapipe-init.ts, useMediaPipe.ts, analysis-helpers.ts, expression-scorer.ts, feedback-generator.ts. Modified 8 existing files across all 3 recording flows.",
       "timestamp": "2026-03-24T17:01:05.524Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_backend-engineer_builder_1774371663753",
-      "from": "backend-engineer",
-      "to": "builder",
-      "type": "fyi",
-      "task": "mediapipe-integration",
-      "priority": "medium",
-      "message": "MediaPipe integration code complete. npm install @mediapipe/tasks-vision already done. No schema changes. Ready for deploy: git pull && vercel --prod.",
-      "timestamp": "2026-03-24T17:01:03.753Z",
       "status": "unread"
     },
     {

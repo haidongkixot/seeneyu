@@ -52,6 +52,18 @@ export async function POST(req: Request) {
     },
   })
 
+  // Log analysis metric (fire-and-forget)
+  ;(prisma as any).analysisMetric.create({
+    data: {
+      sessionType: 'arcade',
+      durationMs: 0,
+      faceDetected: !!peakSnapshot?.faceDetected,
+      poseDetected: !!peakSnapshot?.poseLandmarks,
+      snapshotCount: snapshots.length,
+      score: result.score,
+    },
+  }).catch(() => {})
+
   return NextResponse.json({
     id: attempt.id,
     score: result.score,

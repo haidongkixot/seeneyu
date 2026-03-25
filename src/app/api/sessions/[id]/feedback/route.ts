@@ -147,6 +147,18 @@ export async function POST(
         },
       })
 
+      // Log analysis metric (fire-and-forget)
+      ;(prisma as any).analysisMetric.create({
+        data: {
+          sessionType: 'full_performance',
+          durationMs: Date.now() - startMs,
+          faceDetected: analysisSnapshots.some((s: any) => s.faceDetected),
+          poseDetected: analysisSnapshots.some((s: any) => s.poseLandmarks),
+          snapshotCount: analysisSnapshots.length,
+          score: feedback.overallScore,
+        },
+      }).catch(() => {})
+
       return NextResponse.json({ feedback })
     }
 

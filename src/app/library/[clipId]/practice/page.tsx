@@ -1,4 +1,6 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { MicroPracticeFlow } from '@/components/MicroPracticeFlow'
 import type { PracticeStep } from '@/lib/types'
@@ -8,6 +10,9 @@ interface PageProps {
 }
 
 export default async function PracticePage({ params }: PageProps) {
+  const session = await getServerSession(authOptions)
+  if (!session) redirect('/auth/signin')
+
   const { clipId } = await params
 
   const clip = await prisma.clip.findUnique({

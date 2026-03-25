@@ -411,6 +411,91 @@
       "src/services/clip-relevance-scorer.ts — GPT-4o relevance scoring",
       ".shared/outputs/data/communication-tactics.json — taxonomy of 40+ specific techniques"
     ]
+  },
+  {
+    "id": "M21",
+    "name": "Arcade Content Management — Admin CRUD + Reference Images",
+    "phase": "16-admin-arcade",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "tester_condition": "(1) Admin can create new ArcadeBundle + ArcadeChallenge from /admin/arcade. (2) Admin can edit existing bundles and challenges. (3) Admin can delete bundles/challenges. (4) Each challenge has a referenceImageUrl — auto-captured from YouTube or uploaded. (5) Reference images display on challenge cards. (6) Challenges can be reordered. (7) Image upload to Vercel Blob works.",
+    "deliverables": [
+      "src/app/admin/arcade/ — bundle + challenge CRUD pages",
+      "src/app/api/admin/arcade/ — bundle + challenge API routes",
+      "src/services/frame-capture.ts — YouTube frame capture / image upload"
+    ]
+  },
+  {
+    "id": "M22",
+    "name": "User Activity Analytics Dashboard — Admin",
+    "phase": "17-analytics",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "tester_condition": "(1) /admin/analytics shows DAU/WAU/MAU, signups chart. (2) Per-user activity view with login timestamps, usage stats. (3) Learning curves per user (line chart). (4) Aggregated usage: most practiced clips, popular skills. (5) Activity tracking captures page views, logins, practices, arcade attempts.",
+    "deliverables": [
+      "prisma/schema.prisma — ActivityEvent model",
+      "src/app/admin/analytics/ — dashboard + per-user pages",
+      "src/app/api/admin/analytics/ — stats APIs",
+      "src/lib/activity-tracker.ts — client-side event tracker"
+    ]
+  },
+  {
+    "id": "M23",
+    "name": "Feature Performance Dashboard — Crawling & MediaPipe Analytics",
+    "phase": "17-analytics",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": [],
+    "tester_condition": "(1) /admin/analytics/features shows crawl job stats. (2) MediaPipe performance: analysis time, detection rates, score distributions. (3) Content pipeline stats. (4) Data refreshes on page load.",
+    "deliverables": [
+      "prisma/schema.prisma — AnalysisMetric model",
+      "src/app/admin/analytics/features/ — feature performance page",
+      "src/services/expression-scorer.ts — add metric recording"
+    ]
+  },
+  {
+    "id": "M24",
+    "name": "Access Control — Auth Gating, Free Tier Limits",
+    "phase": "18-monetization",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M25"],
+    "blockedBy": [],
+    "tester_condition": "(1) Non-logged-in: first 3 arcade challenges per type free, rest locked. (2) Locked content shows blurred with lock icon + sign-in prompt. (3) Practice/record require auth. (4) Library browsing free for all. (5) Signed-in users can access all arcade + practice.",
+    "deliverables": [
+      "src/lib/access-control.ts — centralized access rules",
+      "src/components/AuthGate.tsx — lock overlay",
+      "src/components/LockedContentCard.tsx — blurred locked content",
+      "src/middleware.ts — updated auth rules"
+    ]
+  },
+  {
+    "id": "M25",
+    "name": "Subscription Plans & Payment — Basic/Standard/Advanced + PayPal + VNPay",
+    "phase": "18-monetization",
+    "status": "pending",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M24"],
+    "tester_condition": "(1) 3 plans on /pricing page. (2) Admin-configurable pricing at /admin/plans. (3) Basic: free, 5s video, short feedback. (4) Standard: monthly+annual, 30s video, full feedback. (5) Advanced: monthly+annual, 3min video, VIP lessons, monthly coach summary. (6) PayPal sandbox checkout works. (7) VNPay sandbox checkout works. (8) Plan enforcement across all features.",
+    "deliverables": [
+      "prisma/schema.prisma — Plan, Subscription, Payment models",
+      "src/app/pricing/ — pricing page",
+      "src/app/api/payments/ — PayPal + VNPay routes",
+      "src/app/admin/plans/ — admin plan management",
+      "src/services/payment-gateway.ts — PayPal + VNPay integration",
+      "src/services/subscription-manager.ts — plan enforcement"
+    ]
   }
   ]
 }

@@ -399,6 +399,52 @@
       "status": "complete",
       "assigned_at": "2026-03-24T08:00:00Z",
       "completed_at": "2026-03-24T16:03:00Z"
+    },
+    {
+      "id": "task_m21_backend",
+      "milestone": "M21",
+      "role": "backend-engineer",
+      "task": "m21-arcade-content-management",
+      "description": "Admin CRUD for ArcadeBundle + ArcadeChallenge. Reference image capture from YouTube frames or web. Edit/delete. Reorder. Image upload to Vercel Blob.",
+      "status": "pending",
+      "assigned_at": "2026-03-25T08:00:00Z"
+    },
+    {
+      "id": "task_m22_backend",
+      "milestone": "M22",
+      "role": "backend-engineer",
+      "task": "m22-user-activity-dashboard",
+      "description": "ActivityEvent model + tracking. Admin analytics dashboard: DAU/WAU/MAU, signups, learning curves, per-user detail. Charts.",
+      "status": "pending",
+      "assigned_at": "2026-03-25T08:00:00Z"
+    },
+    {
+      "id": "task_m23_backend",
+      "milestone": "M23",
+      "role": "backend-engineer",
+      "task": "m23-feature-performance-dashboard",
+      "description": "AnalysisMetric model. Admin feature dashboard: crawl job stats, MediaPipe performance, content pipeline metrics.",
+      "status": "pending",
+      "assigned_at": "2026-03-25T08:00:00Z"
+    },
+    {
+      "id": "task_m24_backend",
+      "milestone": "M24",
+      "role": "backend-engineer",
+      "task": "m24-access-control",
+      "description": "Auth gating: first 3 arcade challenges per type free without login. Practice/record require auth. Locked content blurred with lock icon. Centralized access-control.ts.",
+      "status": "pending",
+      "assigned_at": "2026-03-25T08:00:00Z"
+    },
+    {
+      "id": "task_m25_backend",
+      "milestone": "M25",
+      "role": "backend-engineer",
+      "task": "m25-subscription-payment",
+      "description": "Plan/Subscription/Payment models. 3 tiers: Basic(free,5s)/Standard(30s)/Advanced(3min,VIP,coach). PayPal + VNPay. Admin plan management. Pricing page.",
+      "status": "pending",
+      "assigned_at": "2026-03-25T08:00:00Z",
+      "blockedBy": ["task_m24_backend"]
     }
   ],
   "blockers": [],
@@ -489,12 +535,14 @@
     "M19",
     "M20"
   ],
-  "milestones_in_progress": [],
+  "milestones_in_progress": [
+    "M21", "M22", "M23", "M24", "M25"
+  ],
   "milestones_pending": [
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "last_updated": "2026-03-24T17:00:00Z",
+  "last_updated": "2026-03-25T09:00:00Z",
   "deployments": [
     {
       "version": "M14+M15",

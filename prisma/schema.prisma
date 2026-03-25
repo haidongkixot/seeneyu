@@ -96,6 +96,9 @@ model User {
   skillBaselines     SkillBaseline[]
   foundationProgress FoundationProgress[]
   arcadeAttempts     ArcadeAttempt[]
+  activityEvents     ActivityEvent[]
+  plan               String          @default("basic")
+  subscriptions      Subscription[]
 }
 
 model SkillBaseline {
@@ -331,4 +334,86 @@ model ArcadeAttempt {
   @@index([userId])
   @@index([challengeId])
   @@index([userId, challengeId])
+}
+
+// ── Activity & Analytics models ────────────────────────────────────────
+
+model ActivityEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type      String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+  @@index([userId, type])
+}
+
+model AnalysisMetric {
+  id            String   @id @default(cuid())
+  sessionType   String
+  durationMs    Int
+  faceDetected  Boolean
+  poseDetected  Boolean
+  snapshotCount Int
+  score         Int?
+  createdAt     DateTime @default(now())
+
+  @@index([sessionType])
+  @@index([createdAt])
+}
+
+// ── Subscription & Payment models ──────────────────────────────────────
+
+model Plan {
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  name          String
+  tagline       String?
+  monthlyPrice  Float          @default(0)
+  annualPrice   Float?
+  features      Json
+  videoLimitSec Int            @default(5)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId       String
+  plan         Plan      @relation(fields: [planId], references: [id])
+  status       String    @default("active")
+  period       String    @default("monthly")
+  startDate    DateTime  @default(now())
+  endDate      DateTime?
+  cancelledAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  payments     Payment[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Payment {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  gateway        String
+  gatewayOrderId String?
+  amount         Float
+  currency       String       @default("USD")
+  status         String       @default("pending")
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+
+  @@index([subscriptionId])
+  @@index([gateway, gatewayOrderId])
 }
