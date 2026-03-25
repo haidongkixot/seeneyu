@@ -17,13 +17,18 @@ export function GenerateObservationGuide({ clipId, hasGuide }: Props) {
     setLoading(true)
     setError('')
     setDone(false)
-    const res = await fetch(`/api/admin/clips/${clipId}/observation`, { method: 'POST' })
-    setLoading(false)
-    if (!res.ok) {
-      const data = await res.json()
-      setError(data.error ?? 'Generation failed')
-    } else {
-      setDone(true)
+    try {
+      const res = await fetch(`/api/admin/clips/${clipId}/observation`, { method: 'POST' })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error ?? `Generation failed (${res.status})`)
+      } else {
+        setDone(true)
+      }
+    } catch (err: any) {
+      setError(`Connection error: ${err?.message || 'Network request failed'}`)
+    } finally {
+      setLoading(false)
     }
   }
 

@@ -68,6 +68,10 @@ export async function POST(
     const clip = await prisma.clip.findUnique({ where: { id: params.id } })
     if (!clip) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: 'OPENAI_API_KEY is not configured on the server.' }, { status: 500 })
+    }
+
     const prompt = buildObservationPrompt({
       ...clip,
       script: (clip as any).script ?? null,
