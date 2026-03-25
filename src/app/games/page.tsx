@@ -134,7 +134,7 @@ export default function GamesPage() {
               return (
                 <div
                   key={game.id}
-                  className="group relative flex flex-col rounded-2xl bg-bg-surface border border-white/8 overflow-hidden hover:border-accent-400/20 hover:-translate-y-1 transition-all duration-300"
+                  className="group relative flex flex-col rounded-2xl bg-bg-surface border border-black/8 overflow-hidden hover:border-accent-400/20 hover:-translate-y-1 transition-all duration-300"
                 >
                   {/* Gradient header */}
                   <div className={`h-24 bg-gradient-to-br ${meta.color} flex items-center justify-center relative`}>
@@ -200,7 +200,7 @@ export default function GamesPage() {
               ))}
             </div>
 
-            <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+            <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
               {lbLoading ? (
                 <div className="text-center py-12 text-text-muted">Loading...</div>
               ) : leaderboard.length === 0 ? (
@@ -208,7 +208,7 @@ export default function GamesPage() {
               ) : (
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/8">
+                    <tr className="border-b border-black/8">
                       <th className="text-left px-4 py-3 text-text-secondary font-medium w-12">#</th>
                       <th className="text-left px-4 py-3 text-text-secondary font-medium">Player</th>
                       <th className="text-right px-4 py-3 text-text-secondary font-medium">Score</th>
@@ -217,7 +217,7 @@ export default function GamesPage() {
                   </thead>
                   <tbody>
                     {leaderboard.slice(0, 10).map((entry, i) => (
-                      <tr key={i} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                      <tr key={i} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                         <td className="px-4 py-3 text-text-muted">
                           {i === 0 ? (
                             <span className="text-accent-400 font-bold">1</span>
@@ -246,12 +246,12 @@ export default function GamesPage() {
         {/* Embed Code Section */}
         <div>
           <h2 className="text-xl font-bold text-text-primary mb-4">Put this game on your website</h2>
-          <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
             <p className="text-sm text-text-secondary mb-3">
               Copy the embed code below and paste it into your website HTML:
             </p>
             <div className="relative">
-              <pre className="bg-bg-inset border border-white/10 rounded-xl p-4 text-xs text-text-muted overflow-x-auto">
+              <pre className="bg-bg-inset border border-black/10 rounded-xl p-4 text-xs text-text-muted overflow-x-auto">
 {`<iframe
   src="${origin}/games/guess-expression"
   width="100%" height="600"
@@ -262,7 +262,7 @@ export default function GamesPage() {
               </pre>
               <button
                 onClick={copyEmbed}
-                className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 text-xs font-medium bg-bg-surface border border-white/10 rounded-lg text-text-secondary hover:text-text-primary transition-colors"
+                className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 text-xs font-medium bg-bg-surface border border-black/10 rounded-lg text-text-secondary hover:text-text-primary transition-colors"
               >
                 {copiedEmbed ? (
                   <><Check size={12} className="text-emerald-400" /> Copied</>

@@ -63,14 +63,14 @@ export default function AdminArcadePage() {
           placeholder="Search by title or theme…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full bg-bg-surface border border-white/8 rounded-xl pl-8 pr-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+          className="w-full bg-bg-surface border border-black/8 rounded-xl pl-8 pr-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
         />
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Title</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Theme</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Difficulty</th>
@@ -90,7 +90,7 @@ export default function AdminArcadePage() {
               </tr>
             ) : (
               filtered.map(bundle => (
-                <tr key={bundle.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={bundle.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3">
                     <Link href={`/admin/arcade/${bundle.id}`} className="text-text-primary font-medium hover:text-accent-400 transition-colors">
                       {bundle.title}

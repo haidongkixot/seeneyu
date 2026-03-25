@@ -55,7 +55,7 @@ async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill
         <p className="text-sm text-text-tertiary mt-2">Try removing some filters to see more clips</p>
         <Link
           href="/library"
-          className="mt-6 border border-white/10 text-text-primary rounded-xl px-6 py-2.5 text-sm hover:border-white/20 hover:bg-bg-overlay transition-all duration-150"
+          className="mt-6 border border-black/10 text-text-primary rounded-xl px-6 py-2.5 text-sm hover:border-black/20 hover:bg-bg-overlay transition-all duration-150"
         >
           Clear all filters
         </Link>

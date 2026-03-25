@@ -131,7 +131,7 @@ function AddSourceModal({ onClose, onCreated }: { onClose: () => void; onCreated
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div className="bg-bg-surface border border-white/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+      <div className="bg-bg-surface border border-black/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">Add Content Source</h3>
           <button onClick={onClose} className="text-text-muted hover:text-text-secondary">
@@ -148,7 +148,7 @@ function AddSourceModal({ onClose, onCreated }: { onClose: () => void; onCreated
               onChange={e => setUrl(e.target.value)}
               placeholder="https://..."
               required
-              className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
             />
           </div>
 
@@ -157,7 +157,7 @@ function AddSourceModal({ onClose, onCreated }: { onClose: () => void; onCreated
             <select
               value={type}
               onChange={e => setType(e.target.value)}
-              className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             >
               <option value="article">Article</option>
               <option value="research_paper">Research Paper</option>
@@ -173,7 +173,7 @@ function AddSourceModal({ onClose, onCreated }: { onClose: () => void; onCreated
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Auto-detected if crawled"
-              className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
             />
           </div>
 
@@ -183,7 +183,7 @@ function AddSourceModal({ onClose, onCreated }: { onClose: () => void; onCreated
                 type="checkbox"
                 checked={crawl}
                 onChange={e => setCrawl(e.target.checked)}
-                className="rounded border-white/20 bg-bg-inset accent-accent-400"
+                className="rounded border-black/20 bg-bg-inset accent-accent-400"
               />
               Auto-crawl content from URL
             </label>
@@ -431,16 +431,16 @@ export default function AdminCrawlerPage() {
                 value={searchQuery}
                 onChange={e => { setSearchQuery(e.target.value); setSourcePage(1) }}
                 placeholder="Search title or URL..."
-                className="pl-7 pr-3 py-1.5 text-xs bg-bg-inset border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 w-52"
+                className="pl-7 pr-3 py-1.5 text-xs bg-bg-inset border border-black/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 w-52"
               />
             </div>
           </div>
 
           {/* Table */}
-          <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/8">
+                <tr className="border-b border-black/8">
                   <th className="text-left px-4 py-3 text-text-secondary font-medium">Title</th>
                   <th className="text-left px-4 py-3 text-text-secondary font-medium">Type</th>
                   <th className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
@@ -458,7 +458,7 @@ export default function AdminCrawlerPage() {
                   sources.map(source => {
                     const enrichment = (source.metadata as any)?.enrichment
                     return (
-                      <tr key={source.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                      <tr key={source.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                         <td className="px-4 py-3 max-w-[300px]">
                           <p className="text-text-primary font-medium truncate">{source.title}</p>
                           <a
@@ -540,7 +540,7 @@ export default function AdminCrawlerPage() {
 
             {/* Pagination */}
             {sourcePages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+              <div className="flex items-center justify-between px-4 py-3 border-t border-black/[0.04]">
                 <span className="text-xs text-text-muted">{sourceTotal} total</span>
                 <div className="flex items-center gap-1">
                   <button
@@ -603,7 +603,7 @@ export default function AdminCrawlerPage() {
           </div>
 
           {/* Grid */}
-          <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
             {loading ? (
               <div className="text-center py-12 text-text-muted">Loading...</div>
             ) : expressions.length === 0 ? (
@@ -611,7 +611,7 @@ export default function AdminCrawlerPage() {
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                 {expressions.map(asset => (
-                  <div key={asset.id} className="bg-bg-overlay border border-white/5 rounded-xl overflow-hidden group">
+                  <div key={asset.id} className="bg-bg-overlay border border-black/[0.04] rounded-xl overflow-hidden group">
                     <div className="aspect-square bg-bg-inset relative">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -642,7 +642,7 @@ export default function AdminCrawlerPage() {
                           ))}
                         </div>
                       )}
-                      <div className="flex items-center gap-1 pt-1 border-t border-white/5">
+                      <div className="flex items-center gap-1 pt-1 border-t border-black/[0.04]">
                         {asset.status === 'pending' && (
                           <>
                             <button
@@ -677,7 +677,7 @@ export default function AdminCrawlerPage() {
 
             {/* Pagination */}
             {exprPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+              <div className="flex items-center justify-between px-4 py-3 border-t border-black/[0.04]">
                 <span className="text-xs text-text-muted">{exprTotal} total</span>
                 <div className="flex items-center gap-1">
                   <button

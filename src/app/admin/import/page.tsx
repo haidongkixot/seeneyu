@@ -78,7 +78,7 @@ export default function ImportPage() {
           relative cursor-pointer rounded-2xl border-2 border-dashed p-12 text-center transition-all duration-200
           ${dragging
             ? 'border-accent-400 bg-accent-400/10'
-            : 'border-white/10 bg-bg-surface hover:border-white/20 hover:bg-bg-overlay'
+            : 'border-black/10 bg-bg-surface hover:border-black/20 hover:bg-bg-overlay'
           }
         `}
       >
@@ -156,7 +156,7 @@ export default function ImportPage() {
       )}
 
       {/* Help section */}
-      <div className="mt-8 bg-bg-surface border border-white/8 rounded-2xl p-6">
+      <div className="mt-8 bg-bg-surface border border-black/8 rounded-2xl p-6">
         <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
           ZIP File Format
         </p>

@@ -27,7 +27,7 @@ export function SkillProgressBar({ completed, total, currentLevel }: SkillProgre
         <span className="text-xs text-text-tertiary capitalize">{LEVEL_LABELS[currentLevel]}</span>
         <span className="text-xs text-text-tertiary">{NEXT_LEVEL[currentLevel]}</span>
       </div>
-      <div className="relative h-2 bg-white/8 rounded-pill overflow-hidden">
+      <div className="relative h-2 bg-black/5 rounded-pill overflow-hidden">
         <div
           className="absolute left-0 top-0 h-full bg-accent-400 rounded-pill transition-all duration-700 ease-smooth"
           style={{ width: `${pct}%` }}

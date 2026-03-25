@@ -195,7 +195,7 @@ export default function ExpressionKingGame({
 
       {/* Camera viewfinder */}
       <div className="flex-1 flex items-center justify-center px-4 py-3">
-        <div className="relative w-full max-w-[300px] aspect-[3/4] rounded-2xl overflow-hidden bg-bg-inset border-2 border-white/10 shadow-card">
+        <div className="relative w-full max-w-[300px] aspect-[3/4] rounded-2xl overflow-hidden bg-bg-inset border-2 border-black/10 shadow-card">
           {cameraError ? (
             <div className="w-full h-full flex flex-col items-center justify-center gap-3">
               <Camera size={32} className="text-text-tertiary" />
@@ -291,7 +291,7 @@ export default function ExpressionKingGame({
           disabled={captureState !== 'ready' || cameraError}
           className={`
             relative w-16 h-16 rounded-full
-            bg-error border-4 border-white/30
+            bg-error border-4 border-black/15
             hover:bg-error/80 hover:scale-105
             active:scale-95
             transition-all duration-150
@@ -301,7 +301,7 @@ export default function ExpressionKingGame({
           `}
           aria-label="Capture expression"
         >
-          <div className="w-12 h-12 rounded-full bg-error/80 border-2 border-white/20" />
+          <div className="w-12 h-12 rounded-full bg-error/80 border-2 border-black/20" />
         </button>
       </div>
     </GameShell>

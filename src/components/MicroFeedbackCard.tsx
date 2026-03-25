@@ -15,7 +15,7 @@ export function MicroFeedbackCard({ verdict, headline, detail, onNext, onRetry, 
   const isPass = verdict === 'pass'
 
   return (
-    <div className="bg-bg-elevated border border-white/10 rounded-2xl p-5 flex flex-col gap-3 animate-slide-up">
+    <div className="bg-bg-elevated border border-black/10 rounded-2xl p-5 flex flex-col gap-3 animate-slide-up">
       {/* Verdict */}
       <div className="flex items-center gap-2">
         {isPass
@@ -27,7 +27,7 @@ export function MicroFeedbackCard({ verdict, headline, detail, onNext, onRetry, 
         </span>
       </div>
 
-      <div className="border-t border-white/6" />
+      <div className="border-t border-black/6" />
 
       <p className="text-base font-semibold text-text-primary">{headline}</p>
       {detail && <p className="text-sm text-text-secondary leading-relaxed">{detail}</p>}
@@ -36,7 +36,7 @@ export function MicroFeedbackCard({ verdict, headline, detail, onNext, onRetry, 
       <div className="flex items-center gap-3 pt-1">
         <button
           onClick={onRetry}
-          className="flex items-center gap-1.5 border border-white/10 text-text-secondary rounded-xl px-4 py-2.5 text-sm hover:border-white/20 hover:bg-bg-overlay transition-all duration-150"
+          className="flex items-center gap-1.5 border border-black/10 text-text-secondary rounded-xl px-4 py-2.5 text-sm hover:border-black/20 hover:bg-bg-overlay transition-all duration-150"
         >
           <RotateCcw size={14} />
           Retry

@@ -149,7 +149,7 @@ export default function AdminCmsTeamPage() {
                 type="text"
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                className="w-full bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ export default function AdminCmsTeamPage() {
                 type="text"
                 value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                className="w-full bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function AdminCmsTeamPage() {
               value={form.bio ?? ''}
               onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
               rows={2}
-              className="w-full bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
+              className="w-full bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
             />
           </div>
           <div>
@@ -179,13 +179,13 @@ export default function AdminCmsTeamPage() {
                 value={form.avatarUrl ?? ''}
                 onChange={e => setForm(f => ({ ...f, avatarUrl: e.target.value }))}
                 placeholder="URL or upload..."
-                className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                className="flex-1 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
               />
               <input ref={fileRef} type="file" accept="image/*" onChange={handleUploadAvatar} className="hidden" />
               <button
                 onClick={() => fileRef.current?.click()}
                 disabled={uploading}
-                className="flex items-center gap-1 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+                className="flex items-center gap-1 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
               >
                 <Upload size={14} />
                 {uploading ? '...' : 'Upload'}
@@ -199,7 +199,7 @@ export default function AdminCmsTeamPage() {
                 type="number"
                 value={form.order}
                 onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))}
-                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                className="w-full bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
               />
             </div>
             <div className="flex items-end">
@@ -243,9 +243,9 @@ export default function AdminCmsTeamPage() {
           members.map((m, idx) => (
             <div
               key={m.id}
-              className="bg-bg-surface border border-white/8 rounded-xl p-4 flex items-center gap-4 hover:border-white/12 transition-colors"
+              className="bg-bg-surface border border-black/8 rounded-xl p-4 flex items-center gap-4 hover:border-black/10 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-bg-elevated border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-bg-elevated border border-black/10 flex items-center justify-center overflow-hidden flex-shrink-0">
                 {m.avatarUrl ? (
                   <img src={m.avatarUrl} alt={m.name} className="w-full h-full object-cover" />
                 ) : (

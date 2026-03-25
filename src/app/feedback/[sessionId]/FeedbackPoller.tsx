@@ -84,7 +84,7 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
           />
         ))}
       </div>
-      <div className="max-w-xs text-center bg-bg-surface border border-white/8 rounded-xl px-5 py-3 transition-all duration-500">
+      <div className="max-w-xs text-center bg-bg-surface border border-black/8 rounded-xl px-5 py-3 transition-all duration-500">
         <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-1">Coaching Tip</p>
         <p className="text-text-secondary text-sm leading-relaxed">{TIPS[tipIndex]}</p>
       </div>

@@ -134,10 +134,10 @@ export default function AdminUsersPage() {
         ))}
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Name</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Email</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Role</th>
@@ -158,7 +158,7 @@ export default function AdminUsersPage() {
               </tr>
             ) : (
               users.map(user => (
-                <tr key={user.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={user.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3">
                     <Link href={`/admin/users/${user.id}`} className="text-text-primary font-medium hover:text-accent-400 transition-colors">
                       {user.name ?? '\u2014'}
@@ -272,7 +272,7 @@ export default function AdminUsersPage() {
                           value={rejectNote}
                           onChange={e => setRejectNote(e.target.value)}
                           placeholder="Rejection reason (optional)"
-                          className="flex-1 bg-bg-inset border border-white/10 rounded-lg px-2 py-1 text-xs text-text-primary placeholder-text-muted focus:outline-none focus:border-red-400/50"
+                          className="flex-1 bg-bg-inset border border-black/10 rounded-lg px-2 py-1 text-xs text-text-primary placeholder-text-muted focus:outline-none focus:border-red-400/50"
                           autoFocus
                         />
                         <button

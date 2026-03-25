@@ -89,7 +89,7 @@ export default function LessonClient({ lesson, existingProgress, isLoggedIn }: P
             {lesson.examples.map((ex) => {
               const src = `https://www.youtube.com/embed/${ex.youtubeId}${ex.startTime ? `?start=${ex.startTime}` : ''}`
               return (
-                <div key={ex.id} className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+                <div key={ex.id} className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
                   <div className="aspect-video w-full">
                     <iframe
                       src={src}
@@ -135,13 +135,13 @@ export default function LessonClient({ lesson, existingProgress, isLoggedIn }: P
               const selected = answers[qi]
               const isSubmitted = submitted
               return (
-                <div key={q.id} className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+                <div key={q.id} className="bg-bg-surface border border-black/8 rounded-2xl p-5">
                   <p className="font-medium text-text-primary mb-4 text-sm">{qi + 1}. {q.question}</p>
                   <div className="space-y-2">
                     {q.options.map((opt, oi) => {
                       const isSelected = selected === oi
                       const isCorrect = oi === q.correctIndex
-                      let btnClass = 'border border-white/10 text-text-secondary hover:border-white/20 hover:text-text-primary'
+                      let btnClass = 'border border-black/10 text-text-secondary hover:border-black/20 hover:text-text-primary'
                       if (isSelected && !isSubmitted) btnClass = 'border border-accent-400/60 text-accent-400 bg-accent-400/10'
                       if (isSubmitted && isCorrect) btnClass = 'border border-emerald-500/60 text-emerald-400 bg-emerald-500/10'
                       if (isSubmitted && isSelected && !isCorrect) btnClass = 'border border-red-500/60 text-red-400 bg-red-500/10'
@@ -159,7 +159,7 @@ export default function LessonClient({ lesson, existingProgress, isLoggedIn }: P
                     })}
                   </div>
                   {isSubmitted && (
-                    <p className="mt-3 text-xs text-text-tertiary border-t border-white/8 pt-3">
+                    <p className="mt-3 text-xs text-text-tertiary border-t border-black/8 pt-3">
                       {q.explanation}
                     </p>
                   )}

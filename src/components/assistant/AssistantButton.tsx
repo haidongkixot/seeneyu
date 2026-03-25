@@ -121,7 +121,7 @@ export function AssistantButton({ context }: AssistantButtonProps) {
           'w-14 h-14 rounded-full flex items-center justify-center',
           'transition-all duration-200',
           open
-            ? 'bg-bg-elevated border border-white/10 text-text-secondary shadow-lg'
+            ? 'bg-bg-elevated border border-black/10 text-text-secondary shadow-lg'
             : 'bg-accent-400 text-text-inverse shadow-glow hover:bg-accent-500 hover:shadow-[0_0_30px_rgba(251,191,36,0.35),0_0_80px_rgba(251,191,36,0.15)] hover:scale-105 active:scale-95'
         )}
         aria-label={open ? 'Close assistant' : 'Open Coach Ney assistant'}

@@ -28,7 +28,7 @@ export default function PoliciesPage() {
             <Link
               key={p.href}
               href={p.href}
-              className="flex items-start gap-4 bg-bg-surface border border-white/8 rounded-2xl p-6 hover:border-accent-400/20 hover:shadow-card-hover transition-all duration-200"
+              className="flex items-start gap-4 bg-bg-surface border border-black/8 rounded-2xl p-6 hover:border-accent-400/20 hover:shadow-card-hover transition-all duration-200"
             >
               <div className="mt-0.5 text-accent-400">
                 <FileText size={20} />

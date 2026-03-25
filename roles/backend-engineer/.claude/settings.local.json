@@ -11,7 +11,8 @@
       "Bash(curl:*)",
       "Bash(npx tsc:*)",
       "Bash(test:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(npx vercel:*)"
     ]
   }
 }

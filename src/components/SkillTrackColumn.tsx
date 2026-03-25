@@ -28,16 +28,16 @@ export function SkillTrackColumn({ track }: SkillTrackColumnProps) {
   const isComplete = track.clipsCompleted >= track.clipsTotal && track.currentLevel === 'advanced'
 
   return (
-    <div className="bg-bg-surface border border-white/8 rounded-2xl p-4 flex flex-col gap-4">
+    <div className="bg-bg-surface border border-black/8 rounded-2xl p-4 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center text-text-secondary">
+        <div className="w-8 h-8 rounded-lg bg-black/5 border border-black/8 flex items-center justify-center text-text-secondary">
           {SKILL_ICONS[track.skillCategory]}
         </div>
         <span className="text-sm font-semibold text-text-primary">{SKILL_LABELS[track.skillCategory]}</span>
       </div>
 
-      <div className="border-t border-white/8" />
+      <div className="border-t border-black/8" />
 
       {/* Level badge */}
       <div>
@@ -53,7 +53,7 @@ export function SkillTrackColumn({ track }: SkillTrackColumnProps) {
         currentLevel={track.currentLevel}
       />
 
-      <div className="border-t border-white/8" />
+      <div className="border-t border-black/8" />
 
       {/* Next up */}
       <div className="flex flex-col gap-2">

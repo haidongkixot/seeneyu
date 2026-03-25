@@ -94,7 +94,7 @@ export default function EditChallengePage() {
             <select
               value={form.type}
               onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             >
               <option value="facial">Facial</option>
               <option value="gesture">Gesture</option>
@@ -105,7 +105,7 @@ export default function EditChallengePage() {
             <select
               value={form.difficulty}
               onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -121,7 +121,7 @@ export default function EditChallengePage() {
             required
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -132,7 +132,7 @@ export default function EditChallengePage() {
             rows={3}
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -143,7 +143,7 @@ export default function EditChallengePage() {
             rows={2}
             value={form.context}
             onChange={e => setForm(f => ({ ...f, context: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -155,9 +155,9 @@ export default function EditChallengePage() {
               placeholder="Image URL or upload below"
               value={form.referenceImageUrl}
               onChange={e => setForm(f => ({ ...f, referenceImageUrl: e.target.value }))}
-              className="flex-1 bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="flex-1 bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             />
-            <label className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border border-white/10 text-sm text-text-secondary cursor-pointer hover:border-white/20 hover:text-text-primary transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <label className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border border-black/10 text-sm text-text-secondary cursor-pointer hover:border-black/20 hover:text-text-primary transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
               <Upload size={14} />
               {uploading ? 'Uploading…' : 'Upload'}
               <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
@@ -176,7 +176,7 @@ export default function EditChallengePage() {
               min={0}
               value={form.xpReward}
               onChange={e => setForm(f => ({ ...f, xpReward: parseInt(e.target.value) || 0 }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             />
           </div>
           <div>
@@ -186,7 +186,7 @@ export default function EditChallengePage() {
               min={1}
               value={form.orderIndex}
               onChange={e => setForm(f => ({ ...f, orderIndex: parseInt(e.target.value) || 1 }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             />
           </div>
         </div>

@@ -45,7 +45,7 @@ export default function UserAnalyticsPage() {
       </Link>
 
       {/* User header */}
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 mb-6">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 mb-6">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-accent-400/20 flex items-center justify-center">
             <User size={20} className="text-accent-400" />
@@ -63,19 +63,19 @@ export default function UserAnalyticsPage() {
 
       {/* Stats row */}
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="bg-bg-surface border border-white/8 rounded-xl p-4 text-center">
+        <div className="bg-bg-surface border border-black/8 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-text-primary">{data.sessions.length}</p>
           <p className="text-xs text-text-secondary mt-1">Practice Sessions</p>
         </div>
-        <div className="bg-bg-surface border border-white/8 rounded-xl p-4 text-center">
+        <div className="bg-bg-surface border border-black/8 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-text-primary">{data.arcadeAttempts.length}</p>
           <p className="text-xs text-text-secondary mt-1">Arcade Attempts</p>
         </div>
-        <div className="bg-bg-surface border border-white/8 rounded-xl p-4 text-center">
+        <div className="bg-bg-surface border border-black/8 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-text-primary">{data.events.length}</p>
           <p className="text-xs text-text-secondary mt-1">Activity Events</p>
         </div>
-        <div className="bg-bg-surface border border-white/8 rounded-xl p-4 text-center">
+        <div className="bg-bg-surface border border-black/8 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-text-primary">
             {data.scoreHistory.length > 0 ? Math.round(data.scoreHistory.reduce((a, b) => a + b.score, 0) / data.scoreHistory.length) : '—'}
           </p>
@@ -85,7 +85,7 @@ export default function UserAnalyticsPage() {
 
       {/* Learning curve */}
       {data.scoreHistory.length > 0 && (
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5 mb-6">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 mb-6">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Learning Curve</h3>
           <div className="flex items-end gap-1 h-32">
             {data.scoreHistory.map((point, i) => (
@@ -102,7 +102,7 @@ export default function UserAnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Activity timeline */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4 flex items-center gap-2">
             <Activity size={14} />
             Activity Timeline
@@ -125,7 +125,7 @@ export default function UserAnalyticsPage() {
         </div>
 
         {/* Arcade attempts */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Arcade Attempts</h3>
           {data.arcadeAttempts.length === 0 ? (
             <p className="text-text-muted text-sm">No arcade attempts yet.</p>

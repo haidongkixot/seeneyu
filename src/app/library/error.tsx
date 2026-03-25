@@ -18,7 +18,7 @@ export default function LibraryError({
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={reset}
-            className="border border-white/10 text-text-primary rounded-xl px-5 py-2.5 text-sm hover:bg-bg-overlay transition-all duration-150"
+            className="border border-black/10 text-text-primary rounded-xl px-5 py-2.5 text-sm hover:bg-bg-overlay transition-all duration-150"
           >
             Retry
           </button>

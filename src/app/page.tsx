@@ -131,7 +131,7 @@ export default function HomePage() {
 
           {/* Right column — floating preview card */}
           <div className="hidden lg:flex justify-center">
-            <div className="float-animation w-80 bg-bg-surface border border-white/10 rounded-2xl shadow-xl p-4">
+            <div className="float-animation w-80 bg-bg-surface border border-black/10 rounded-2xl shadow-xl p-4">
               <div className="aspect-video bg-bg-elevated rounded-xl overflow-hidden flex items-center justify-center">
                 <Film size={48} className="text-text-tertiary" />
               </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
               <div className="bg-bg-elevated rounded-xl p-3 mt-3">
                 <p className="text-xs text-text-tertiary mb-1.5">AI Score</p>
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 bg-white/8 rounded-pill h-2 overflow-hidden">
+                  <div className="flex-1 bg-black/5 rounded-pill h-2 overflow-hidden">
                     <div className="bg-success h-2 rounded-pill" style={{ width: '82%' }} />
                   </div>
                   <span className="text-xl font-black text-success">82</span>
@@ -161,12 +161,12 @@ export default function HomePage() {
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, rgba(180,83,9,0.25) 0%, rgba(13,13,20,1) 40%, rgba(76,29,149,0.20) 100%)',
+            background: 'linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(248,247,244,1) 40%, rgba(139,92,246,0.06) 100%)',
           }}
           aria-hidden="true"
         />
-        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0d0d14] to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0d0d14] to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#f8f7f4] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f8f7f4] to-transparent" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 lg:px-8 text-center">
           <p className="text-xs font-semibold text-accent-400 uppercase tracking-widest mb-4">
@@ -223,7 +223,7 @@ export default function HomePage() {
                 <Link
                   key={skill}
                   href={`/library?skill=${skill}`}
-                  className="bg-bg-surface border border-white/8 rounded-2xl p-6 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200 cursor-pointer group"
+                  className="bg-bg-surface border border-black/8 rounded-2xl p-6 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200 cursor-pointer group"
                 >
                   <div
                     className="inline-flex items-center justify-center w-10 h-10 rounded-full mb-4 transition-transform duration-200 group-hover:scale-110"
@@ -254,7 +254,7 @@ export default function HomePage() {
           {TEAM.map((member) => (
             <div
               key={member.name}
-              className="flex flex-col items-center text-center p-6 bg-bg-surface border border-white/8 rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300"
+              className="flex flex-col items-center text-center p-6 bg-bg-surface border border-black/8 rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300"
             >
               <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${member.accentColor} flex items-center justify-center mb-4 shadow-lg`}>
                 <span className="text-xl font-bold text-white">{member.initials}</span>
@@ -281,7 +281,7 @@ export default function HomePage() {
           {TESTIMONIALS.map((t) => (
             <div
               key={t.name}
-              className="relative p-6 rounded-2xl overflow-hidden bg-[rgba(13,13,20,0.60)] backdrop-blur-xl border border-white/8 shadow-card hover:border-accent-400/15 hover:shadow-card-hover transition-all duration-300"
+              className="relative p-6 rounded-2xl overflow-hidden bg-white border border-black/8 shadow-card hover:border-accent-400/30 hover:shadow-card-hover transition-all duration-300"
             >
               {/* Quote mark decoration */}
               <div className="absolute top-4 right-5 text-6xl font-serif text-accent-400/10 leading-none select-none pointer-events-none">
@@ -302,7 +302,7 @@ export default function HomePage() {
 
               {/* Attribution */}
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-bg-elevated border border-white/10 flex items-center justify-center text-xs font-semibold text-text-secondary">
+                <div className="w-8 h-8 rounded-full bg-bg-elevated border border-black/10 flex items-center justify-center text-xs font-semibold text-text-secondary">
                   {t.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
@@ -316,7 +316,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA banner ───────────────────────────────────────── */}
-      <section className="bg-bg-surface border-t border-white/8 py-20 px-4">
+      <section className="bg-bg-surface border-t border-black/8 py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-text-primary mb-4">
             Ready to transform how you communicate?
@@ -333,7 +333,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/library"
-              className="border border-white/10 text-text-primary rounded-xl px-6 py-4 text-base hover:border-white/20 hover:bg-bg-overlay transition-all duration-150 w-full sm:w-auto text-center"
+              className="border border-black/10 text-text-primary rounded-xl px-6 py-4 text-base hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 w-full sm:w-auto text-center"
             >
               Browse Library &rarr;
             </Link>

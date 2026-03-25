@@ -17,7 +17,7 @@ interface ObservationGuideProps {
 export function ObservationGuide({ characterName, guide, clipId }: ObservationGuideProps) {
   if (!guide || guide.moments.length === 0) {
     return (
-      <div className="bg-bg-elevated border border-white/8 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
+      <div className="bg-bg-elevated border border-black/8 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
         <ClipboardList size={32} className="text-text-tertiary" strokeWidth={1.5} />
         <p className="text-sm font-medium text-text-secondary">
           Observation guide coming soon for this clip.
@@ -45,7 +45,7 @@ export function ObservationGuide({ characterName, guide, clipId }: ObservationGu
       {/* Timeline */}
       <div role="list" aria-label="Technique timeline" className="relative flex flex-col gap-0">
         {/* Vertical guide line */}
-        <div className="absolute left-[31px] top-4 bottom-4 w-px bg-white/8 pointer-events-none" />
+        <div className="absolute left-[31px] top-4 bottom-4 w-px bg-black/5 pointer-events-none" />
 
         {guide.moments.map((moment, index) => (
           <div
@@ -57,7 +57,7 @@ export function ObservationGuide({ characterName, guide, clipId }: ObservationGu
             {/* Timestamp badge */}
             <span
               aria-label={`at ${moment.atSecond} seconds`}
-              className="flex-shrink-0 w-[63px] h-7 rounded-pill bg-bg-elevated border border-white/10 flex items-center justify-center text-xs font-mono text-text-secondary"
+              className="flex-shrink-0 w-[63px] h-7 rounded-pill bg-bg-elevated border border-black/10 flex items-center justify-center text-xs font-mono text-text-secondary"
             >
               {formatTimestamp(moment.atSecond)}
             </span>
@@ -75,7 +75,7 @@ export function ObservationGuide({ characterName, guide, clipId }: ObservationGu
         ))}
       </div>
 
-      <div className="border-t border-white/8" />
+      <div className="border-t border-black/8" />
 
       {/* CTA */}
       <div className="flex items-center justify-between">

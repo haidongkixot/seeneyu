@@ -31,7 +31,7 @@ export function ClipDetailTabs({
   return (
     <div>
       {/* Tab bar */}
-      <div className="flex items-center gap-1 border-b border-white/8 mb-5" role="tablist">
+      <div className="flex items-center gap-1 border-b border-black/8 mb-5" role="tablist">
         {(['watch', 'how-it-works'] as Tab[]).map((tab) => (
           <button
             key={tab}
@@ -66,7 +66,7 @@ export function ClipDetailTabs({
                 <p className="text-xs text-text-tertiary mt-2 leading-relaxed max-w-prose italic">{contextNote}</p>
               )}
             </div>
-            <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 shadow-card">
+            <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 shadow-card">
               <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-4">
                 What to observe
               </p>

@@ -32,7 +32,7 @@ export function StreakFlame({ streak }: StreakFlameProps) {
       />
       {/* Tooltip */}
       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-tooltip">
-        <span className="text-[10px] bg-bg-elevated border border-white/8 rounded px-1.5 py-0.5 text-text-secondary">
+        <span className="text-[10px] bg-bg-elevated border border-black/8 rounded px-1.5 py-0.5 text-text-secondary">
           {streak}-day streak
         </span>
       </div>

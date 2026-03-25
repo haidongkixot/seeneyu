@@ -21,7 +21,7 @@ export function DailyQuestCard({ quest }: DailyQuestCardProps) {
   return (
     <div
       className={cn(
-        'relative bg-bg-surface border border-white/8 rounded-2xl p-4 transition-all duration-200',
+        'relative bg-bg-surface border border-black/8 rounded-2xl p-4 transition-all duration-200',
         quest.completed && 'border-success/20'
       )}
     >

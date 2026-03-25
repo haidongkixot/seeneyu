@@ -7,7 +7,7 @@ import type { CrawlJob } from '@/lib/types'
 
 function StatusChip({ status }: { status: string }) {
   const cfg: Record<string, { label: string; cls: string; animated?: boolean }> = {
-    pending:  { label: '○ PENDING',   cls: 'bg-white/5 text-text-secondary border-white/10' },
+    pending:  { label: '○ PENDING',   cls: 'bg-black/5 text-text-secondary border-black/10' },
     running:  { label: '⟳ RUNNING…',  cls: 'bg-amber-500/10 text-amber-400 border-amber-400/20', animated: true },
     complete: { label: '● COMPLETE',  cls: 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' },
     failed:   { label: '✗ FAILED',    cls: 'bg-red-500/10 text-red-400 border-red-400/20' },
@@ -25,7 +25,7 @@ type JobRow = CrawlJob & { _count: { results: number } }
 function JobListRow({ job, onRun, running }: { job: JobRow; onRun: (id: string) => void; running: boolean }) {
   const keywords = (job.keywords as string[]) ?? []
   return (
-    <div className="bg-bg-surface border border-white/8 rounded-xl p-4 flex items-start justify-between gap-4 hover:border-white/15 transition-colors">
+    <div className="bg-bg-surface border border-black/8 rounded-xl p-4 flex items-start justify-between gap-4 hover:border-black/15 transition-colors">
       <div className="flex flex-col gap-1 min-w-0">
         <p className="text-sm font-semibold text-text-primary truncate">{job.name}</p>
         <p className="text-xs text-text-secondary">
@@ -47,7 +47,7 @@ function JobListRow({ job, onRun, running }: { job: JobRow; onRun: (id: string) 
         {job.status === 'complete' ? (
           <Link
             href={`/admin/crawl-jobs/${job.id}`}
-            className="border border-white/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-white/30 hover:text-text-primary transition-colors whitespace-nowrap"
+            className="border border-black/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-black/15 hover:text-text-primary transition-colors whitespace-nowrap"
           >
             View Results →
           </Link>
@@ -56,11 +56,11 @@ function JobListRow({ job, onRun, running }: { job: JobRow; onRun: (id: string) 
             <button
               onClick={() => onRun(job.id)}
               disabled={running}
-              className="border border-white/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-white/30 hover:text-text-primary transition-colors"
+              className="border border-black/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-black/15 hover:text-text-primary transition-colors"
             >
               Retry
             </button>
-            <Link href={`/admin/crawl-jobs/${job.id}`} className="border border-white/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-white/30 hover:text-text-primary transition-colors">View</Link>
+            <Link href={`/admin/crawl-jobs/${job.id}`} className="border border-black/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-black/15 hover:text-text-primary transition-colors">View</Link>
           </div>
         ) : job.status === 'pending' ? (
           <button
@@ -71,7 +71,7 @@ function JobListRow({ job, onRun, running }: { job: JobRow; onRun: (id: string) 
             {running ? 'Starting…' : '▶ Run Job'}
           </button>
         ) : (
-          <Link href={`/admin/crawl-jobs/${job.id}`} className="border border-white/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-white/30 hover:text-text-primary transition-colors">View</Link>
+          <Link href={`/admin/crawl-jobs/${job.id}`} className="border border-black/15 text-text-secondary text-xs px-3 py-1.5 rounded-lg hover:border-black/15 hover:text-text-primary transition-colors">View</Link>
         )}
       </div>
     </div>

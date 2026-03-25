@@ -26,7 +26,7 @@ export default async function ProgressPage() {
         </div>
 
         {sessions.length === 0 ? (
-          <div className="text-center py-20 bg-bg-surface border border-white/8 rounded-2xl">
+          <div className="text-center py-20 bg-bg-surface border border-black/8 rounded-2xl">
             <TrendingUp size={48} className="text-text-tertiary mx-auto" />
             <h2 className="text-xl font-semibold text-text-primary mt-4">No sessions yet</h2>
             <p className="text-text-secondary text-sm mt-2">Complete a clip to see your progress here</p>
@@ -51,7 +51,7 @@ export default async function ProgressPage() {
                   : null
 
                 return (
-                  <div key={skill} className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+                  <div key={skill} className="bg-bg-surface border border-black/8 rounded-2xl p-5">
                     <SkillBadge skill={skill} size="sm" className="mb-3" />
                     <div className="flex items-end justify-between mt-2">
                       <div>
@@ -64,7 +64,7 @@ export default async function ProgressPage() {
                         </p>
                       </div>
                       {avgScore !== null && (
-                        <div className="w-16 bg-white/8 rounded-pill h-1.5">
+                        <div className="w-16 bg-black/5 rounded-pill h-1.5">
                           <div className="bg-accent-400 h-1.5 rounded-pill" style={{ width: `${avgScore}%` }} />
                         </div>
                       )}
@@ -80,7 +80,7 @@ export default async function ProgressPage() {
               {sessions.map((session) => {
                 const feedback = session.feedback as { overallScore?: number } | null
                 return (
-                  <div key={session.id} className="bg-bg-surface border border-white/8 rounded-xl p-4 flex items-center justify-between gap-4">
+                  <div key={session.id} className="bg-bg-surface border border-black/8 rounded-xl p-4 flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-text-primary font-medium truncate">
                         {session.clip.sceneDescription}

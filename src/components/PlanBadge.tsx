@@ -4,7 +4,7 @@ import { Crown } from 'lucide-react'
 
 export function PlanBadge({ plan }: { plan: string }) {
   const config: Record<string, { label: string; classes: string }> = {
-    basic: { label: 'Free', classes: 'bg-white/5 text-text-tertiary border-white/10' },
+    basic: { label: 'Free', classes: 'bg-black/5 text-text-tertiary border-black/10' },
     standard: { label: 'Standard', classes: 'bg-accent-400/10 text-accent-400 border-accent-400/25' },
     advanced: { label: 'Advanced', classes: 'bg-violet-500/10 text-violet-300 border-violet-500/25' },
   }

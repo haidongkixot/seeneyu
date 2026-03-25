@@ -56,7 +56,7 @@ export default function AnalyticsDashboardPage() {
         </div>
         <Link
           href="/admin/analytics/features"
-          className="px-4 py-2 rounded-xl border border-white/10 text-sm text-text-secondary hover:text-text-primary hover:border-white/20 transition-all"
+          className="px-4 py-2 rounded-xl border border-black/10 text-sm text-text-secondary hover:text-text-primary hover:border-black/20 transition-all"
         >
           Feature Performance →
         </Link>
@@ -73,7 +73,7 @@ export default function AnalyticsDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Signup trend */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">New Signups (30 days)</h3>
           <div className="flex items-end gap-[2px] h-32">
             {data.signupTrend.map((day, i) => (
@@ -92,7 +92,7 @@ export default function AnalyticsDashboardPage() {
         </div>
 
         {/* Skill popularity */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Skill Popularity</h3>
           <div className="flex flex-col gap-3">
             {skillEntries.length === 0 ? (
@@ -104,7 +104,7 @@ export default function AnalyticsDashboardPage() {
                     <span className="text-xs text-text-secondary capitalize">{skill.replace(/-/g, ' ')}</span>
                     <span className="text-xs text-text-tertiary">{count}</span>
                   </div>
-                  <div className="h-2 bg-white/8 rounded-pill overflow-hidden">
+                  <div className="h-2 bg-black/5 rounded-pill overflow-hidden">
                     <div
                       className="h-full bg-accent-400/70 rounded-pill transition-all"
                       style={{ width: `${(count / maxSkillCount) * 100}%` }}
@@ -118,14 +118,14 @@ export default function AnalyticsDashboardPage() {
       </div>
 
       {/* Top practiced clips */}
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-5 mb-8">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 mb-8">
         <h3 className="text-sm font-semibold text-text-primary mb-4">Top Practiced Clips</h3>
         {data.topPracticedClips.length === 0 ? (
           <p className="text-text-muted text-sm">No practice sessions yet.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/8">
+              <tr className="border-b border-black/8">
                 <th className="text-left py-2 text-text-secondary font-medium">Movie</th>
                 <th className="text-left py-2 text-text-secondary font-medium">Skill</th>
                 <th className="text-right py-2 text-text-secondary font-medium">Sessions</th>
@@ -133,7 +133,7 @@ export default function AnalyticsDashboardPage() {
             </thead>
             <tbody>
               {data.topPracticedClips.map(clip => (
-                <tr key={clip.clipId} className="border-b border-white/5">
+                <tr key={clip.clipId} className="border-b border-black/[0.04]">
                   <td className="py-2 text-text-primary">{clip.movieTitle}</td>
                   <td className="py-2 text-text-secondary capitalize">{clip.skillCategory.replace(/-/g, ' ')}</td>
                   <td className="py-2 text-text-primary text-right font-semibold">{clip.count}</td>
@@ -146,7 +146,7 @@ export default function AnalyticsDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent activity */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Recent Activity</h3>
           {data.recentActivity.length === 0 ? (
             <p className="text-text-muted text-sm">No activity yet.</p>
@@ -169,12 +169,12 @@ export default function AnalyticsDashboardPage() {
         </div>
 
         {/* Users table */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Active Users</h3>
           <div className="max-h-80 overflow-y-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/8">
+                <tr className="border-b border-black/8">
                   <th className="text-left py-2 text-text-secondary font-medium">User</th>
                   <th className="text-right py-2 text-text-secondary font-medium">Sessions</th>
                   <th className="text-right py-2 text-text-secondary font-medium">Arcade</th>
@@ -182,7 +182,7 @@ export default function AnalyticsDashboardPage() {
               </thead>
               <tbody>
                 {data.users.map(user => (
-                  <tr key={user.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                  <tr key={user.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                     <td className="py-2">
                       <Link href={`/admin/analytics/users/${user.id}`} className="text-text-primary hover:text-accent-400 transition-colors">
                         {user.name || user.email}
@@ -203,7 +203,7 @@ export default function AnalyticsDashboardPage() {
 
 function StatCard({ icon: Icon, label, value }: { icon: any; label: string; value: number }) {
   return (
-    <div className="bg-bg-surface border border-white/8 rounded-2xl p-4">
+    <div className="bg-bg-surface border border-black/8 rounded-2xl p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={14} className="text-text-tertiary" />
         <span className="text-xs text-text-secondary">{label}</span>

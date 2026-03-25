@@ -75,7 +75,7 @@ function PaymentSuccessContent() {
             </Link>
             <Link
               href="/library"
-              className="px-6 py-3 rounded-pill border border-white/15 text-text-primary font-semibold text-sm hover:border-white/25 transition-all duration-150"
+              className="px-6 py-3 rounded-pill border border-black/15 text-text-primary font-semibold text-sm hover:border-black/15 transition-all duration-150"
             >
               Browse Library
             </Link>
@@ -99,7 +99,7 @@ function PaymentSuccessContent() {
             </Link>
             <Link
               href="/"
-              className="px-6 py-3 rounded-pill border border-white/15 text-text-primary font-semibold text-sm hover:border-white/25 transition-all duration-150"
+              className="px-6 py-3 rounded-pill border border-black/15 text-text-primary font-semibold text-sm hover:border-black/15 transition-all duration-150"
             >
               Go Home
             </Link>

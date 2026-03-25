@@ -73,7 +73,7 @@ export default async function LessonPage({
             {course.lessons.map((_, i) => (
               <div
                 key={i}
-                className={`h-1 w-5 rounded-full transition-colors ${i === currentIdx ? 'bg-accent-400' : i < currentIdx ? 'bg-accent-400/40' : 'bg-white/10'}`}
+                className={`h-1 w-5 rounded-full transition-colors ${i === currentIdx ? 'bg-accent-400' : i < currentIdx ? 'bg-accent-400/40' : 'bg-black/5'}`}
               />
             ))}
           </div>
@@ -116,7 +116,7 @@ export default async function LessonPage({
         />
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/8">
+        <div className="flex items-center justify-between mt-12 pt-8 border-t border-black/8">
           {prevLesson ? (
             <Link
               href={`/foundation/${courseSlug}/${prevLesson.slug}`}

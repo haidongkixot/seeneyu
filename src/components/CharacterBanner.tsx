@@ -20,7 +20,7 @@ export function CharacterBanner({ characterName, actorName, movieTitle, skillCat
   const byline = [actorName, movieTitle].filter(Boolean).join(' · ')
 
   return (
-    <div className="flex items-center gap-4 px-4 py-4 md:px-6 bg-bg-surface border border-white/8 rounded-2xl shadow-card animate-fade-in">
+    <div className="flex items-center gap-4 px-4 py-4 md:px-6 bg-bg-surface border border-black/8 rounded-2xl shadow-card animate-fade-in">
       <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent-400/10 text-accent-400 shrink-0">
         <Icon size={20} />
       </div>

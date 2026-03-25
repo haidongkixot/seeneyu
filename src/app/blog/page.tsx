@@ -46,7 +46,7 @@ export default async function BlogPage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden hover:border-accent-400/20 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group"
+                className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden hover:border-accent-400/20 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group"
               >
                 {post.coverImage && (
                   <div className="aspect-video overflow-hidden">

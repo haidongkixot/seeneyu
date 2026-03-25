@@ -88,7 +88,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
     const allPassed = verdicts.every(v => v === 'pass')
     return (
       <div className="min-h-screen bg-bg-base flex flex-col">
-        <div className="sticky top-0 z-raised bg-bg-surface/90 backdrop-blur-md border-b border-white/8 px-4 py-3 flex items-center gap-4">
+        <div className="sticky top-0 z-raised bg-bg-surface/90 backdrop-blur-md border-b border-black/8 px-4 py-3 flex items-center gap-4">
           <span className="text-sm font-semibold text-text-primary">All Done!</span>
           <SkillBadge skill={skillCategory as SkillCategory} size="sm" />
           <Link href={`/library/${clipId}`} className="ml-auto text-text-tertiary hover:text-text-secondary transition-colors">
@@ -111,7 +111,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
   return (
     <div className="min-h-screen bg-bg-base flex flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-raised bg-bg-surface/90 backdrop-blur-md border-b border-white/8 px-4 py-3 flex items-center gap-4">
+      <div className="sticky top-0 z-raised bg-bg-surface/90 backdrop-blur-md border-b border-black/8 px-4 py-3 flex items-center gap-4">
         <Link href={`/library/${clipId}`} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
           ← Back
         </Link>
@@ -123,7 +123,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 bg-white/8 w-full">
+      <div className="h-1.5 bg-black/5 w-full">
         <div
           className="h-1.5 bg-accent-400 transition-all duration-500 ease-smooth"
           style={{ width: `${progressPct}%` }}
@@ -138,7 +138,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
             className={
               i < currentStep ? 'w-2 h-2 rounded-full bg-accent-400'
               : i === currentStep ? 'w-3 h-3 rounded-full bg-accent-400 ring-2 ring-accent-400/30'
-              : 'w-2 h-2 rounded-full bg-white/20'
+              : 'w-2 h-2 rounded-full bg-black/10'
             }
           />
         ))}

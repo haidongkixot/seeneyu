@@ -79,7 +79,7 @@ export default function SignInForm() {
         <p className="mt-2 text-text-secondary text-sm">Sign in to your account</p>
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {error && (
             <div className="bg-error/10 border border-error/30 rounded-xl px-3 py-2 text-sm text-red-400">
@@ -117,7 +117,7 @@ export default function SignInForm() {
               autoComplete="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+              className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
               placeholder="you@example.com"
             />
           </div>
@@ -130,7 +130,7 @@ export default function SignInForm() {
               autoComplete="current-password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+              className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
               placeholder="••••••••"
             />
           </div>

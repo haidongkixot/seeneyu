@@ -162,7 +162,7 @@ function GameForm({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div className="bg-bg-surface border border-white/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+      <div className="bg-bg-surface border border-black/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">
             {initial ? 'Edit Game' : 'Create Game'}
@@ -179,7 +179,7 @@ function GameForm({
               <select
                 value={type}
                 onChange={e => setType(e.target.value)}
-                className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
               >
                 {GAME_TYPES.map(t => (
                   <option key={t.value} value={t.value}>{t.label}</option>
@@ -195,7 +195,7 @@ function GameForm({
               value={title}
               onChange={e => setTitle(e.target.value)}
               required
-              className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
             />
           </div>
 
@@ -206,7 +206,7 @@ function GameForm({
               onChange={e => setDescription(e.target.value)}
               required
               rows={3}
-              className="w-full bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 resize-none"
+              className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 resize-none"
             />
           </div>
 
@@ -283,7 +283,7 @@ function AddRoundForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-bg-inset border border-white/8 rounded-xl p-4 mt-2 space-y-3">
+    <form onSubmit={handleSubmit} className="bg-bg-inset border border-black/8 rounded-xl p-4 mt-2 space-y-3">
       <div>
         <label className="block text-xs font-medium text-text-secondary mb-1">Prompt</label>
         <input
@@ -292,7 +292,7 @@ function AddRoundForm({
           onChange={e => setPrompt(e.target.value)}
           required
           placeholder="What expression is this person showing?"
-          className="w-full bg-bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+          className="w-full bg-bg-base border border-black/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
@@ -303,7 +303,7 @@ function AddRoundForm({
             value={imageUrl}
             onChange={e => setImageUrl(e.target.value)}
             placeholder="https://..."
-            className="w-full bg-bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-base border border-black/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
           />
         </div>
         <div>
@@ -313,7 +313,7 @@ function AddRoundForm({
             value={correctAnswer}
             onChange={e => setCorrectAnswer(e.target.value)}
             placeholder="happiness"
-            className="w-full bg-bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-base border border-black/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
           />
         </div>
       </div>
@@ -324,7 +324,7 @@ function AddRoundForm({
           value={optionsText}
           onChange={e => setOptionsText(e.target.value)}
           placeholder="happiness, sadness, anger, surprise"
-          className="w-full bg-bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+          className="w-full bg-bg-base border border-black/10 rounded-lg px-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
         />
       </div>
       {error && <p className="text-xs text-red-400">{error}</p>}
@@ -435,7 +435,7 @@ function SubmissionViewer({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div className="bg-bg-surface border border-white/10 rounded-2xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      <div className="bg-bg-surface border border-black/10 rounded-2xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">Submission Detail</h3>
           <button onClick={onClose} className="text-text-muted hover:text-text-secondary">
@@ -660,10 +660,10 @@ export default function AdminMiniGamesPage() {
 
       {/* ── Games Tab ── */}
       {tab === 'games' && (
-        <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/8">
+              <tr className="border-b border-black/8">
                 <th className="text-left px-4 py-3 text-text-secondary font-medium">Game</th>
                 <th className="text-left px-4 py-3 text-text-secondary font-medium">Type</th>
                 <th className="text-center px-4 py-3 text-text-secondary font-medium">Active</th>
@@ -681,7 +681,7 @@ export default function AdminMiniGamesPage() {
               ) : (
                 games.map(game => (
                   <>
-                    <tr key={game.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                    <tr key={game.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                       <td className="px-4 py-3">
                         <p className="text-text-primary font-medium">{game.title}</p>
                         <p className="text-[11px] text-text-muted truncate max-w-[260px]">{game.description}</p>
@@ -781,10 +781,10 @@ export default function AdminMiniGamesPage() {
             </div>
           </div>
 
-          <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/8">
+                <tr className="border-b border-black/8">
                   <th className="text-left px-4 py-3 text-text-secondary font-medium">Game</th>
                   <th className="text-left px-4 py-3 text-text-secondary font-medium">Player</th>
                   <th className="text-center px-4 py-3 text-text-secondary font-medium">Score</th>
@@ -799,7 +799,7 @@ export default function AdminMiniGamesPage() {
                   <tr><td colSpan={5} className="text-center py-12 text-text-muted">No sessions found.</td></tr>
                 ) : (
                   sessions.map(s => (
-                    <tr key={s.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                    <tr key={s.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <TypeBadge type={s.game.type} />
@@ -823,7 +823,7 @@ export default function AdminMiniGamesPage() {
             </table>
 
             {sessionPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+              <div className="flex items-center justify-between px-4 py-3 border-t border-black/[0.04]">
                 <span className="text-xs text-text-muted">{sessionTotal} total</span>
                 <div className="flex items-center gap-1">
                   <button
@@ -870,7 +870,7 @@ export default function AdminMiniGamesPage() {
             </div>
           </div>
 
-          <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
             {submissionsLoading ? (
               <div className="text-center py-12 text-text-muted">Loading...</div>
             ) : submissions.length === 0 ? (
@@ -878,7 +878,7 @@ export default function AdminMiniGamesPage() {
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                 {submissions.map(sub => (
-                  <div key={sub.id} className="bg-bg-overlay border border-white/5 rounded-xl overflow-hidden group">
+                  <div key={sub.id} className="bg-bg-overlay border border-black/[0.04] rounded-xl overflow-hidden group">
                     <div
                       className="aspect-square bg-bg-inset relative cursor-pointer"
                       onClick={() => setViewingSubmission(sub)}
@@ -910,7 +910,7 @@ export default function AdminMiniGamesPage() {
                           {new Date(sub.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1 pt-1 border-t border-white/5">
+                      <div className="flex items-center gap-1 pt-1 border-t border-black/[0.04]">
                         {sub.status === 'pending' && (
                           <>
                             <button
@@ -937,7 +937,7 @@ export default function AdminMiniGamesPage() {
             )}
 
             {submPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+              <div className="flex items-center justify-between px-4 py-3 border-t border-black/[0.04]">
                 <span className="text-xs text-text-muted">{submTotal} total</span>
                 <div className="flex items-center gap-1">
                   <button
@@ -1001,8 +1001,8 @@ export default function AdminMiniGamesPage() {
               </div>
 
               {/* Daily Plays Table */}
-              <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/8">
+              <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
+                <div className="px-4 py-3 border-b border-black/8">
                   <h3 className="text-sm font-semibold text-text-primary">Daily Plays (Last 30 Days)</h3>
                 </div>
                 {analytics.dailyPlays.length === 0 ? (
@@ -1010,14 +1010,14 @@ export default function AdminMiniGamesPage() {
                 ) : (
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-white/5">
+                      <tr className="border-b border-black/[0.04]">
                         <th className="text-left px-4 py-2 text-text-secondary font-medium">Date</th>
                         <th className="text-right px-4 py-2 text-text-secondary font-medium">Plays</th>
                       </tr>
                     </thead>
                     <tbody>
                       {analytics.dailyPlays.map(d => (
-                        <tr key={d.date} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                        <tr key={d.date} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                           <td className="px-4 py-2 text-text-primary">{new Date(d.date).toLocaleDateString()}</td>
                           <td className="px-4 py-2 text-right text-text-secondary">{d.count}</td>
                         </tr>
@@ -1028,8 +1028,8 @@ export default function AdminMiniGamesPage() {
               </div>
 
               {/* Top 10 Players */}
-              <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/8">
+              <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
+                <div className="px-4 py-3 border-b border-black/8">
                   <h3 className="text-sm font-semibold text-text-primary">Top 10 Players</h3>
                 </div>
                 {analytics.topPlayers.length === 0 ? (
@@ -1037,7 +1037,7 @@ export default function AdminMiniGamesPage() {
                 ) : (
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-white/5">
+                      <tr className="border-b border-black/[0.04]">
                         <th className="text-left px-4 py-2 text-text-secondary font-medium">#</th>
                         <th className="text-left px-4 py-2 text-text-secondary font-medium">Player</th>
                         <th className="text-right px-4 py-2 text-text-secondary font-medium">Total Score</th>
@@ -1046,7 +1046,7 @@ export default function AdminMiniGamesPage() {
                     </thead>
                     <tbody>
                       {analytics.topPlayers.map((p, i) => (
-                        <tr key={p.playerName} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                        <tr key={p.playerName} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                           <td className="px-4 py-2 text-text-muted">{i + 1}</td>
                           <td className="px-4 py-2 text-text-primary font-medium">{p.playerName}</td>
                           <td className="px-4 py-2 text-right text-accent-400 font-bold">{p.totalScore}</td>
@@ -1059,8 +1059,8 @@ export default function AdminMiniGamesPage() {
               </div>
 
               {/* Per-Game Breakdown */}
-              <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/8">
+              <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
+                <div className="px-4 py-3 border-b border-black/8">
                   <h3 className="text-sm font-semibold text-text-primary">Per-Game Breakdown</h3>
                 </div>
                 {analytics.avgScoresByGame.length === 0 ? (
@@ -1068,7 +1068,7 @@ export default function AdminMiniGamesPage() {
                 ) : (
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-white/5">
+                      <tr className="border-b border-black/[0.04]">
                         <th className="text-left px-4 py-2 text-text-secondary font-medium">Game</th>
                         <th className="text-left px-4 py-2 text-text-secondary font-medium">Type</th>
                         <th className="text-right px-4 py-2 text-text-secondary font-medium">Avg Score</th>
@@ -1077,7 +1077,7 @@ export default function AdminMiniGamesPage() {
                     </thead>
                     <tbody>
                       {analytics.avgScoresByGame.map(g => (
-                        <tr key={g.gameId} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                        <tr key={g.gameId} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                           <td className="px-4 py-2 text-text-primary font-medium">{g.game?.title ?? 'Unknown'}</td>
                           <td className="px-4 py-2"><TypeBadge type={g.game?.type ?? ''} /></td>
                           <td className="px-4 py-2 text-right">
@@ -1121,7 +1121,7 @@ export default function AdminMiniGamesPage() {
 
 function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
   return (
-    <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+    <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
       <div className="flex items-center gap-2 text-text-muted mb-2">
         {icon}
         <span className="text-xs font-medium">{label}</span>

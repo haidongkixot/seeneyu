@@ -128,7 +128,7 @@ export default function PricingPage() {
         {/* Payment modal */}
         {selectedPlan && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-bg-elevated border border-white/8 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+            <div className="bg-bg-elevated border border-black/8 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
               <h3 className="text-lg font-bold text-text-primary mb-1">
                 Upgrade to {plans.find(p => p.slug === selectedPlan)?.name}
               </h3>
@@ -144,7 +144,7 @@ export default function PricingPage() {
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setSelectedPlan(null)}
-                  className="flex-1 px-4 py-3 rounded-pill border border-white/15 text-sm font-semibold text-text-secondary hover:text-text-primary hover:border-white/25 transition-all duration-150"
+                  className="flex-1 px-4 py-3 rounded-pill border border-black/15 text-sm font-semibold text-text-secondary hover:text-text-primary hover:border-black/15 transition-all duration-150"
                 >
                   Cancel
                 </button>

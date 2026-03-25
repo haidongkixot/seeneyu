@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {stats.map(({ label, value, Icon }) => (
-          <div key={label} className="bg-bg-surface border border-white/8 rounded-2xl p-5 flex items-center gap-4">
+          <div key={label} className="bg-bg-surface border border-black/8 rounded-2xl p-5 flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-accent-400/10 flex items-center justify-center">
               <Icon size={18} className="text-accent-400" />
             </div>
@@ -48,7 +48,7 @@ export default async function AdminDashboard() {
         </Link>
         <Link
           href="/admin/users"
-          className="flex items-center gap-2 bg-bg-surface border border-white/8 text-text-secondary rounded-xl px-4 py-2.5 text-sm font-medium hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
+          className="flex items-center gap-2 bg-bg-surface border border-black/8 text-text-secondary rounded-xl px-4 py-2.5 text-sm font-medium hover:text-text-primary hover:bg-bg-overlay transition-all duration-150"
         >
           <Users size={15} />
           View Users

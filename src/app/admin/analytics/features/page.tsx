@@ -66,7 +66,7 @@ export default function FeaturePerformancePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Crawl results breakdown */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Crawl Results</h3>
           <div className="flex flex-col gap-3">
             <BarRow label="Approved" value={data.crawlResults.approved} max={data.crawlResults.total} color="bg-success/70" />
@@ -76,7 +76,7 @@ export default function FeaturePerformancePage() {
         </div>
 
         {/* Content pipeline */}
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-text-primary mb-4">Content Pipeline</h3>
           <div className="flex flex-col gap-3">
             <BarRow label="From Crawl" value={data.contentPipeline.fromCrawl} max={data.contentPipeline.total} color="bg-accent-400/70" />
@@ -110,7 +110,7 @@ export default function FeaturePerformancePage() {
             {Object.entries(data.scoreDistribution).map(([type, buckets]) => {
               const maxBucket = Math.max(...buckets, 1)
               return (
-                <div key={type} className="bg-bg-surface border border-white/8 rounded-2xl p-5">
+                <div key={type} className="bg-bg-surface border border-black/8 rounded-2xl p-5">
                   <h3 className="text-sm font-semibold text-text-primary mb-3 capitalize">{type.replace(/_/g, ' ')}</h3>
                   <div className="flex items-end gap-1 h-24">
                     {buckets.map((count, i) => (
@@ -140,7 +140,7 @@ export default function FeaturePerformancePage() {
 
 function StatCard({ label, value, color }: { label: string; value: number | string; color?: string }) {
   return (
-    <div className="bg-bg-surface border border-white/8 rounded-2xl p-4">
+    <div className="bg-bg-surface border border-black/8 rounded-2xl p-4">
       <p className="text-xs text-text-secondary mb-1">{label}</p>
       <p className={`text-2xl font-bold tabular-nums ${color || 'text-text-primary'}`}>{value}</p>
     </div>
@@ -154,7 +154,7 @@ function BarRow({ label, value, max, color }: { label: string; value: number; ma
         <span className="text-xs text-text-secondary">{label}</span>
         <span className="text-xs text-text-tertiary">{value}</span>
       </div>
-      <div className="h-2 bg-white/8 rounded-pill overflow-hidden">
+      <div className="h-2 bg-black/5 rounded-pill overflow-hidden">
         <div
           className={`h-full rounded-pill ${color}`}
           style={{ width: `${max > 0 ? (value / max) * 100 : 0}%` }}

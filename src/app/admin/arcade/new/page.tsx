@@ -51,7 +51,7 @@ export default function NewBundlePage() {
             required
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -62,7 +62,7 @@ export default function NewBundlePage() {
             rows={3}
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -74,7 +74,7 @@ export default function NewBundlePage() {
             placeholder="e.g. job-interview, dating, negotiation"
             value={form.theme}
             onChange={e => setForm(f => ({ ...f, theme: e.target.value }))}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -84,7 +84,7 @@ export default function NewBundlePage() {
             <select
               value={form.difficulty}
               onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -98,7 +98,7 @@ export default function NewBundlePage() {
               min={0}
               value={form.xpReward}
               onChange={e => setForm(f => ({ ...f, xpReward: parseInt(e.target.value) || 0 }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             />
           </div>
         </div>

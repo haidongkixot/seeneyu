@@ -94,31 +94,31 @@ export default function BundleDetailPage() {
       </Link>
 
       {/* Bundle header */}
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 mb-6">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 mb-6">
         {editing ? (
           <div className="space-y-4">
             <input
               value={form.title}
               onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-lg font-bold focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-lg font-bold focus:outline-none focus:border-accent-400/50"
             />
             <textarea
               value={form.description}
               onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
               rows={2}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
             />
             <div className="grid grid-cols-3 gap-4">
               <input
                 value={form.theme}
                 onChange={e => setForm(f => ({ ...f, theme: e.target.value }))}
                 placeholder="Theme"
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
               />
               <select
                 value={form.difficulty}
                 onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))}
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -128,7 +128,7 @@ export default function BundleDetailPage() {
                 type="number"
                 value={form.xpReward}
                 onChange={e => setForm(f => ({ ...f, xpReward: parseInt(e.target.value) || 0 }))}
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
               />
             </div>
             <div className="flex gap-2">
@@ -181,13 +181,13 @@ export default function BundleDetailPage() {
       </div>
 
       {bundle.challenges.length === 0 ? (
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-12 text-center text-text-muted">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-12 text-center text-text-muted">
           No challenges yet. Add the first one!
         </div>
       ) : (
         <div className="flex flex-col gap-2">
           {bundle.challenges.map((ch, i) => (
-            <div key={ch.id} className="flex items-center gap-3 bg-bg-surface border border-white/8 rounded-xl p-4 hover:bg-bg-overlay/30 transition-colors">
+            <div key={ch.id} className="flex items-center gap-3 bg-bg-surface border border-black/8 rounded-xl p-4 hover:bg-bg-overlay/30 transition-colors">
               {/* Reorder */}
               <div className="flex flex-col gap-0.5">
                 <button
@@ -207,7 +207,7 @@ export default function BundleDetailPage() {
               </div>
 
               {/* Order number */}
-              <span className="w-6 h-6 rounded-full bg-bg-inset border border-white/10 flex items-center justify-center text-xs text-text-tertiary font-mono">
+              <span className="w-6 h-6 rounded-full bg-bg-inset border border-black/10 flex items-center justify-center text-xs text-text-tertiary font-mono">
                 {ch.orderIndex}
               </span>
 

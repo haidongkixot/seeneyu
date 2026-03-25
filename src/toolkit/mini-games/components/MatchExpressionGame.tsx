@@ -154,7 +154,7 @@ export default function MatchExpressionGame({
     const base = 'relative aspect-square rounded-2xl overflow-hidden bg-bg-surface transition-all duration-200 active:scale-[0.96]'
 
     if (selected === null) {
-      return `${base} border-2 border-white/[0.08] hover:border-white/20 hover:shadow-card-hover`
+      return `${base} border-2 border-black/[0.08] hover:border-black/20 hover:shadow-card-hover`
     }
 
     if (selected === option.id && option.correct) {
@@ -166,7 +166,7 @@ export default function MatchExpressionGame({
     if (option.correct && selected !== option.id) {
       return `${base} border-2 border-success/50`
     }
-    return `${base} border-2 border-white/[0.08] opacity-40`
+    return `${base} border-2 border-black/[0.08] opacity-40`
   }
 
   return (

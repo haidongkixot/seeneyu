@@ -46,7 +46,7 @@ export default async function EditClipPage({ params }: { params: { id: string } 
 
       {/* Observation Guide generation */}
       <div className="max-w-2xl mt-6">
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
           <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-1">
             Observation Guide
           </p>
@@ -61,7 +61,7 @@ export default async function EditClipPage({ params }: { params: { id: string } 
 
       {/* Screenplay Crawl */}
       <div className="max-w-2xl mt-6">
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
           <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-1">
             Screenplay Text
           </p>

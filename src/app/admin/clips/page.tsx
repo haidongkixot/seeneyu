@@ -65,14 +65,14 @@ export default function AdminClipsPage() {
           placeholder="Search by title or skill…"
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(0) }}
-          className="w-full bg-bg-surface border border-white/8 rounded-xl pl-8 pr-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+          className="w-full bg-bg-surface border border-black/8 rounded-xl pl-8 pr-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
         />
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Thumbnail</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Movie / Title</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Skill</th>
@@ -92,7 +92,7 @@ export default function AdminClipsPage() {
               </tr>
             ) : (
               paginated.map(clip => (
-                <tr key={clip.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={clip.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3">
                     <img
                       src={`https://img.youtube.com/vi/${clip.youtubeVideoId}/default.jpg`}
@@ -143,14 +143,14 @@ export default function AdminClipsPage() {
             <button
               onClick={() => setPage(p => p - 1)}
               disabled={page === 0}
-              className="px-3 py-1.5 text-sm bg-bg-surface border border-white/8 rounded-lg text-text-secondary hover:text-text-primary disabled:opacity-40 transition-colors"
+              className="px-3 py-1.5 text-sm bg-bg-surface border border-black/8 rounded-lg text-text-secondary hover:text-text-primary disabled:opacity-40 transition-colors"
             >
               Prev
             </button>
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={page >= totalPages - 1}
-              className="px-3 py-1.5 text-sm bg-bg-surface border border-white/8 rounded-lg text-text-secondary hover:text-text-primary disabled:opacity-40 transition-colors"
+              className="px-3 py-1.5 text-sm bg-bg-surface border border-black/8 rounded-lg text-text-secondary hover:text-text-primary disabled:opacity-40 transition-colors"
             >
               Next
             </button>

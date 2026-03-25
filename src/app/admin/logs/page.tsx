@@ -144,7 +144,7 @@ export default function AdminLogsPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3 mb-4">
         {/* Level tabs */}
-        <div className="flex bg-bg-elevated rounded-lg p-0.5 border border-white/5">
+        <div className="flex bg-bg-elevated rounded-lg p-0.5 border border-black/[0.04]">
           {LEVEL_TABS.map(({ value, label }) => (
             <button
               key={value}
@@ -164,7 +164,7 @@ export default function AdminLogsPage() {
         <select
           value={sourceFilter}
           onChange={(e) => setSourceFilter(e.target.value)}
-          className="bg-bg-elevated border border-white/8 rounded-lg px-3 py-1.5 text-xs text-text-secondary focus:outline-none focus:border-accent-400/40"
+          className="bg-bg-elevated border border-black/8 rounded-lg px-3 py-1.5 text-xs text-text-secondary focus:outline-none focus:border-accent-400/40"
         >
           <option value="all">All sources</option>
           {SOURCES.map((s) => (
@@ -173,7 +173,7 @@ export default function AdminLogsPage() {
         </select>
 
         {/* Resolved toggle */}
-        <div className="flex bg-bg-elevated rounded-lg p-0.5 border border-white/5">
+        <div className="flex bg-bg-elevated rounded-lg p-0.5 border border-black/[0.04]">
           {(['unresolved', 'resolved', 'all'] as ResolvedFilter[]).map((val) => (
             <button
               key={val}
@@ -198,14 +198,14 @@ export default function AdminLogsPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search messages..."
-              className="w-full pl-9 pr-3 py-1.5 bg-bg-elevated border border-white/8 rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-400/40"
+              className="w-full pl-9 pr-3 py-1.5 bg-bg-elevated border border-black/8 rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-400/40"
             />
           </div>
         </form>
       </div>
 
       {/* Table */}
-      <div className="bg-bg-elevated border border-white/8 rounded-xl overflow-hidden">
+      <div className="bg-bg-elevated border border-black/8 rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-text-muted text-sm">Loading...</div>
         ) : logs.length === 0 ? (
@@ -213,7 +213,7 @@ export default function AdminLogsPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/5">
+              <tr className="border-b border-black/[0.04]">
                 <th className="text-left px-4 py-2.5 text-xs font-medium text-text-muted uppercase tracking-wider">Time</th>
                 <th className="text-left px-4 py-2.5 text-xs font-medium text-text-muted uppercase tracking-wider">Level</th>
                 <th className="text-left px-4 py-2.5 text-xs font-medium text-text-muted uppercase tracking-wider">Source</th>
@@ -229,7 +229,7 @@ export default function AdminLogsPage() {
                   <tr
                     key={log.id}
                     onClick={() => setExpandedId(expandedId === log.id ? null : log.id)}
-                    className="border-b border-white/5 hover:bg-bg-overlay/50 cursor-pointer transition-colors"
+                    className="border-b border-black/[0.04] hover:bg-bg-overlay/50 cursor-pointer transition-colors"
                   >
                     <td className="px-4 py-2.5 text-xs text-text-secondary whitespace-nowrap">
                       {formatTime(log.createdAt)}
@@ -275,7 +275,7 @@ export default function AdminLogsPage() {
                     </td>
                   </tr>
                   {expandedId === log.id && (
-                    <tr key={`${log.id}-detail`} className="border-b border-white/5">
+                    <tr key={`${log.id}-detail`} className="border-b border-black/[0.04]">
                       <td colSpan={7} className="px-4 py-4 bg-bg-inset/50">
                         <div className="space-y-3 text-xs">
                           <div>
@@ -315,7 +315,7 @@ export default function AdminLogsPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-black/[0.04]">
             <p className="text-xs text-text-muted">
               Page {page} of {totalPages} ({total} total)
             </p>

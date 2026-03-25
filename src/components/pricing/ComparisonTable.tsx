@@ -25,10 +25,10 @@ export function ComparisonTable() {
       <h2 className="text-2xl font-bold text-text-primary text-center mb-8">
         Compare Plans
       </h2>
-      <div className="rounded-2xl border border-white/8 overflow-hidden overflow-x-auto">
+      <div className="rounded-2xl border border-black/8 overflow-hidden overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-bg-surface border-b border-white/8">
+            <tr className="bg-bg-surface border-b border-black/8">
               <th className="text-left py-4 px-6 text-text-secondary font-medium">Feature</th>
               <th className="text-center py-4 px-4 text-text-primary font-semibold">Basic</th>
               <th className="text-center py-4 px-4 text-text-primary font-semibold bg-accent-400/5 border-x border-accent-400/10">Standard</th>
@@ -37,7 +37,7 @@ export function ComparisonTable() {
           </thead>
           <tbody>
             {comparisonRows.map((row, i) => (
-              <tr key={i} className="border-b border-white/6 last:border-0">
+              <tr key={i} className="border-b border-black/6 last:border-0">
                 <td className="py-3 px-6 text-text-secondary">{row.feature}</td>
                 <td className="py-3 px-4 text-center">{renderValue(row.basic)}</td>
                 <td className="py-3 px-4 text-center bg-accent-400/5 border-x border-accent-400/10">{renderValue(row.standard)}</td>

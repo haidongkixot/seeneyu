@@ -48,7 +48,7 @@ export default function SignUpPage() {
             </Link>
           </div>
 
-          <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 text-center">
+          <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 text-center">
             <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-accent-400/15 flex items-center justify-center">
               <CheckCircle2 size={28} className="text-accent-400" />
             </div>
@@ -87,10 +87,10 @@ export default function SignUpPage() {
           <p className="mt-2 text-text-secondary text-sm">Create your free account</p>
         </div>
 
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {error && (
-              <div className="bg-error/10 border border-error/30 rounded-xl px-3 py-2 text-sm text-red-400">
+              <div className="bg-error/10 border border-error/30 rounded-xl px-3 py-2 text-sm text-error">
                 {error}
               </div>
             )}
@@ -103,7 +103,7 @@ export default function SignUpPage() {
                 autoComplete="name"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
                 placeholder="Your name"
               />
             </div>
@@ -116,7 +116,7 @@ export default function SignUpPage() {
                 autoComplete="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
                 placeholder="you@example.com"
               />
             </div>
@@ -129,7 +129,7 @@ export default function SignUpPage() {
                 autoComplete="new-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
+                className="bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors"
                 placeholder="Min. 8 characters"
               />
             </div>

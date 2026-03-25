@@ -44,7 +44,7 @@ export function CommentForm({
 
   if (!session?.user) {
     return (
-      <div className="bg-bg-inset border border-white/6 rounded-xl p-4 text-center">
+      <div className="bg-bg-inset border border-black/6 rounded-xl p-4 text-center">
         <p className="text-sm text-text-secondary mb-2">
           Sign in to join the discussion
         </p>
@@ -114,7 +114,7 @@ export function CommentForm({
             onChange={handleTextareaChange}
             placeholder={defaultPlaceholder}
             className={cn(
-              'w-full bg-bg-inset border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary',
+              'w-full bg-bg-inset border border-black/10 rounded-xl px-4 py-3 text-sm text-text-primary',
               'placeholder:text-text-tertiary resize-none',
               'focus:outline-none focus:border-accent-400/40 focus:shadow-glow-sm transition-all',
               isReply ? 'min-h-[60px]' : 'min-h-[80px]',

@@ -75,10 +75,10 @@ export default function AdminPlansPage() {
         </button>
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Name</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Slug</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Monthly</th>
@@ -95,7 +95,7 @@ export default function AdminPlansPage() {
               <tr><td colSpan={7} className="text-center py-12 text-text-muted">No plans yet. Create the default plans.</td></tr>
             ) : (
               plans.map(plan => (
-                <tr key={plan.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={plan.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <PlanBadgeInline plan={plan.slug} />
@@ -140,7 +140,7 @@ export default function AdminPlansPage() {
 
 function PlanBadgeInline({ plan }: { plan: string }) {
   const config: Record<string, string> = {
-    basic: 'bg-white/5 text-text-tertiary border-white/10',
+    basic: 'bg-black/5 text-text-tertiary border-black/10',
     standard: 'bg-accent-400/10 text-accent-400 border-accent-400/25',
     advanced: 'bg-violet-500/10 text-violet-300 border-violet-500/25',
   }
@@ -179,8 +179,8 @@ function PlanModal({ plan, onSave, onClose }: {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-bg-elevated border border-white/10 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-5 border-b border-white/8">
+      <div className="bg-bg-elevated border border-black/10 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-5 border-b border-black/8">
           <h2 className="text-lg font-bold text-text-primary">{plan ? 'Edit Plan' : 'New Plan'}</h2>
           <button onClick={onClose} className="p-1 text-text-tertiary hover:text-text-primary"><X size={18} /></button>
         </div>
@@ -189,45 +189,45 @@ function PlanModal({ plan, onSave, onClose }: {
             <div>
               <label className="block text-xs font-medium text-text-secondary mb-1">Name</label>
               <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required
-                className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
             </div>
             <div>
               <label className="block text-xs font-medium text-text-secondary mb-1">Slug</label>
               <input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} required
                 disabled={!!plan}
-                className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 disabled:opacity-50" />
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 disabled:opacity-50" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-medium text-text-secondary mb-1">Tagline</label>
             <input value={form.tagline} onChange={e => setForm(f => ({ ...f, tagline: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-medium text-text-secondary mb-1">Monthly ($)</label>
               <input type="number" step="0.01" min={0} value={form.monthlyPrice}
                 onChange={e => setForm(f => ({ ...f, monthlyPrice: parseFloat(e.target.value) || 0 }))}
-                className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
             </div>
             <div>
               <label className="block text-xs font-medium text-text-secondary mb-1">Annual ($)</label>
               <input type="number" step="0.01" min={0} value={form.annualPrice}
                 onChange={e => setForm(f => ({ ...f, annualPrice: parseFloat(e.target.value) || 0 }))}
-                className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
             </div>
             <div>
               <label className="block text-xs font-medium text-text-secondary mb-1">Video Limit (s)</label>
               <input type="number" min={1} value={form.videoLimitSec}
                 onChange={e => setForm(f => ({ ...f, videoLimitSec: parseInt(e.target.value) || 5 }))}
-                className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-medium text-text-secondary mb-1">Features (one per line)</label>
             <textarea rows={5} value={form.features}
               onChange={e => setForm(f => ({ ...f, features: e.target.value }))}
-              className="w-full bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50" />
           </div>
           <label className="flex items-center gap-2 text-sm text-text-secondary">
             <input type="checkbox" checked={form.isActive}

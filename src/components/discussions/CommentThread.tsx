@@ -141,7 +141,7 @@ export function CommentThread({
   const hasMore = shownCount < totalCount
 
   return (
-    <div className="mt-12 pt-8 border-t border-white/6">
+    <div className="mt-12 pt-8 border-t border-black/6">
       {/* Section header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">

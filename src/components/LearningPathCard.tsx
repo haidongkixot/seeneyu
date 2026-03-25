@@ -12,7 +12,7 @@ export function LearningPathCard({ clip }: LearningPathCardProps) {
   return (
     <Link
       href={`/library/${clip.id}`}
-      className="bg-bg-elevated border border-white/8 rounded-xl overflow-hidden hover:border-accent-400/20 hover:shadow-card-hover transition-all duration-200 group block"
+      className="bg-bg-elevated border border-black/8 rounded-xl overflow-hidden hover:border-accent-400/20 hover:shadow-card-hover transition-all duration-200 group block"
     >
       <div className="aspect-video w-full bg-bg-inset relative overflow-hidden">
         {clip.thumbnailUrl ? (

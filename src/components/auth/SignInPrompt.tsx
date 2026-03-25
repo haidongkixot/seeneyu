@@ -26,7 +26,7 @@ export function SignInPrompt({ context }: { context?: string }) {
         </Link>
         <Link
           href="/auth/signup"
-          className="px-6 py-2.5 rounded-pill border border-white/15 text-text-secondary font-semibold text-sm hover:border-white/25 hover:text-text-primary transition-all duration-150"
+          className="px-6 py-2.5 rounded-pill border border-black/15 text-text-secondary font-semibold text-sm hover:border-black/15 hover:text-text-primary transition-all duration-150"
         >
           Create Account
         </Link>

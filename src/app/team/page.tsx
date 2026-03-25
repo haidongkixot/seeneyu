@@ -38,7 +38,7 @@ export default async function TeamPage() {
             {members.map(member => (
               <div
                 key={member.id}
-                className="flex flex-col items-center text-center p-6 bg-bg-surface border border-white/8 rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300"
+                className="flex flex-col items-center text-center p-6 bg-bg-surface border border-black/8 rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300"
               >
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-600 to-amber-400 flex items-center justify-center mb-4 shadow-lg overflow-hidden">
                   {member.avatarUrl ? (

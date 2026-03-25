@@ -22,7 +22,7 @@ const DIFFICULTY_OPTIONS = [
   { value: 'all', label: 'All' },
 ]
 
-const inputCls = 'w-full bg-bg-inset border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-400/60 focus:ring-1 focus:ring-accent-400/20 transition-colors'
+const inputCls = 'w-full bg-bg-inset border border-black/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-400/60 focus:ring-1 focus:ring-accent-400/20 transition-colors'
 const labelCls = 'text-sm font-semibold text-text-primary mb-1.5 block'
 
 export default function NewCrawlJobPage() {
@@ -159,7 +159,7 @@ export default function NewCrawlJobPage() {
                 className={`px-4 py-2 rounded-full text-xs font-medium border transition-colors cursor-pointer ${
                   form.difficulty === d.value
                     ? 'border-accent-400/60 bg-accent-400/10 text-accent-400'
-                    : 'border-white/10 text-text-secondary hover:border-white/20'
+                    : 'border-black/10 text-text-secondary hover:border-black/20'
                 }`}
               >
                 {d.label}
@@ -175,7 +175,7 @@ export default function NewCrawlJobPage() {
             type="number"
             min={1}
             max={50}
-            className="w-20 bg-bg-inset border border-white/10 rounded-lg px-3 py-2 text-sm text-center text-text-primary focus:border-accent-400/60 outline-none"
+            className="w-20 bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-center text-text-primary focus:border-accent-400/60 outline-none"
             value={form.maxResults}
             onChange={e => set('maxResults', Math.min(50, Math.max(1, parseInt(e.target.value) || 1)))}
           />
@@ -190,7 +190,7 @@ export default function NewCrawlJobPage() {
             type="button"
             onClick={() => submit(false)}
             disabled={submitting}
-            className="border border-white/15 text-text-primary px-5 py-2.5 rounded-full text-sm font-medium hover:border-white/30 transition-colors disabled:opacity-50"
+            className="border border-black/15 text-text-primary px-5 py-2.5 rounded-full text-sm font-medium hover:border-black/15 transition-colors disabled:opacity-50"
           >
             Create Job
           </button>

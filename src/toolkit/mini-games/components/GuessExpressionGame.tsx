@@ -166,7 +166,7 @@ export default function GuessExpressionGame({
       'py-3 px-2 rounded-xl text-sm font-semibold text-center transition-all duration-150 active:scale-[0.96]'
 
     if (feedback === null) {
-      return `${base} bg-bg-surface border border-white/[0.08] text-text-primary hover:bg-bg-overlay hover:border-white/[0.15]`
+      return `${base} bg-bg-surface border border-black/[0.08] text-text-primary hover:bg-bg-overlay hover:border-black/10`
     }
 
     if (selected === emotionId && feedback === 'correct') {
@@ -181,7 +181,7 @@ export default function GuessExpressionGame({
       return `${base} border-success bg-success/10 text-success border`
     }
 
-    return `${base} bg-bg-surface border border-white/[0.08] text-text-primary opacity-40 cursor-not-allowed`
+    return `${base} bg-bg-surface border border-black/[0.08] text-text-primary opacity-40 cursor-not-allowed`
   }
 
   return (
@@ -197,7 +197,7 @@ export default function GuessExpressionGame({
     >
       {/* Expression image */}
       <div className="flex-1 flex items-center justify-center px-4 py-4 relative">
-        <div className="w-full max-w-[280px] aspect-square rounded-2xl overflow-hidden bg-bg-surface border border-white/[0.08] shadow-card">
+        <div className="w-full max-w-[280px] aspect-square rounded-2xl overflow-hidden bg-bg-surface border border-black/[0.08] shadow-card">
           <div className="w-full h-full flex items-center justify-center bg-bg-inset">
             <span className="text-6xl">
               {round.correctEmotion === 'happy' && '😊'}

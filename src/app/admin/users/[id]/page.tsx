@@ -37,7 +37,7 @@ export default async function UserDetailPage({ params }: { params: { id: string 
         <p className="text-xs text-text-muted mt-1">Joined {new Date(user.createdAt).toLocaleDateString()}</p>
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-5 mb-6">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 mb-6">
         <p className="text-sm text-text-secondary mb-1">Total Sessions</p>
         <p className="text-3xl font-bold text-text-primary">{user.userSessions.length}</p>
       </div>
@@ -46,10 +46,10 @@ export default async function UserDetailPage({ params }: { params: { id: string 
       {user.userSessions.length === 0 ? (
         <p className="text-text-muted text-sm">No sessions yet.</p>
       ) : (
-        <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/8">
+              <tr className="border-b border-black/8">
                 <th className="text-left px-4 py-3 text-text-secondary font-medium">Movie</th>
                 <th className="text-left px-4 py-3 text-text-secondary font-medium">Skill</th>
                 <th className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
@@ -62,7 +62,7 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                 const scores = session.scores as any
                 const overall = scores?.overallScore
                 return (
-                  <tr key={session.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                  <tr key={session.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                     <td className="px-4 py-3 text-text-primary">{session.clip.movieTitle}</td>
                     <td className="px-4 py-3 text-text-secondary capitalize">{session.clip.skillCategory.replace(/-/g, ' ')}</td>
                     <td className="px-4 py-3">

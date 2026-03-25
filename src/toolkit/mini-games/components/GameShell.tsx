@@ -106,7 +106,7 @@ export default function GameShell({
   return (
     <div className="w-full h-full min-h-[600px] bg-bg-base flex flex-col overflow-hidden font-sans">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06] bg-bg-surface flex-shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-black/[0.06] bg-bg-surface flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-accent-400/10 flex items-center justify-center">
             <Gamepad2 size={16} className="text-accent-400" />
@@ -119,7 +119,7 @@ export default function GameShell({
       </div>
 
       {/* Timer bar */}
-      <div className="flex-shrink-0 px-4 py-2 bg-bg-surface border-b border-white/[0.06]">
+      <div className="flex-shrink-0 px-4 py-2 bg-bg-surface border-b border-black/[0.06]">
         <div className="flex items-center gap-3">
           <div className="flex-1 h-2 bg-bg-inset rounded-pill overflow-hidden">
             <div
@@ -142,7 +142,7 @@ export default function GameShell({
       </div>
 
       {/* Score + progress dots */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-bg-surface border-t border-white/[0.06] flex-shrink-0">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-bg-surface border-t border-black/[0.06] flex-shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-xs text-text-tertiary">Score</span>
           <span
@@ -168,7 +168,7 @@ export default function GameShell({
                 ${status === 'correct' ? 'bg-success scale-100' : ''}
                 ${status === 'wrong' ? 'bg-error scale-100' : ''}
                 ${status === 'current' ? 'bg-accent-400 scale-110 shadow-glow-sm' : ''}
-                ${status === 'upcoming' ? 'bg-white/10' : ''}
+                ${status === 'upcoming' ? 'bg-black/5' : ''}
               `}
             />
           ))}

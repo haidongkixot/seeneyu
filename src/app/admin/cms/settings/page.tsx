@@ -105,13 +105,13 @@ export default function AdminCmsSettingsPage() {
               type="text"
               value={settings.logo}
               onChange={e => setSettings(s => ({ ...s, logo: e.target.value }))}
-              className="flex-1 bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="flex-1 bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             />
             <input ref={fileRef} type="file" accept="image/*" onChange={handleUploadLogo} className="hidden" />
             <button
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="flex items-center gap-1.5 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+              className="flex items-center gap-1.5 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
             >
               <Upload size={14} />
               {uploading ? 'Uploading...' : 'Upload'}
@@ -128,7 +128,7 @@ export default function AdminCmsSettingsPage() {
             value={settings.footer_text}
             onChange={e => setSettings(s => ({ ...s, footer_text: e.target.value }))}
             rows={3}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
           />
         </div>
 
@@ -138,7 +138,7 @@ export default function AdminCmsSettingsPage() {
             value={settings.social_links}
             onChange={e => setSettings(s => ({ ...s, social_links: e.target.value }))}
             rows={6}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
           />
           <p className="text-xs text-text-muted mt-1">
             Example: {`{"twitter": "https://...", "github": "https://...", "linkedin": "https://..."}`}

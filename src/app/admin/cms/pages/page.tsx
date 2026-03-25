@@ -64,20 +64,20 @@ export default function AdminCmsPagesPage() {
       </div>
 
       {showCreate && (
-        <div className="bg-bg-surface border border-white/8 rounded-2xl p-4 mb-4 flex flex-col sm:flex-row gap-3">
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-4 mb-4 flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             placeholder="slug (e.g. about)"
             value={newSlug}
             onChange={e => setNewSlug(e.target.value)}
-            className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+            className="flex-1 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
           />
           <input
             type="text"
             placeholder="Page title"
             value={newTitle}
             onChange={e => setNewTitle(e.target.value)}
-            className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+            className="flex-1 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
           />
           <div className="flex gap-2">
             <button
@@ -96,10 +96,10 @@ export default function AdminCmsPagesPage() {
         </div>
       )}
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Title</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Slug</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
@@ -114,7 +114,7 @@ export default function AdminCmsPagesPage() {
               <tr><td colSpan={5} className="text-center py-12 text-text-muted">No pages yet.</td></tr>
             ) : (
               pages.map(page => (
-                <tr key={page.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={page.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3 text-text-primary font-medium">{page.title}</td>
                   <td className="px-4 py-3 text-text-secondary font-mono text-xs">{page.slug}</td>
                   <td className="px-4 py-3">

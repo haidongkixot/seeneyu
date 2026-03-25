@@ -276,7 +276,7 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
           <>
             <button
               onClick={stopRecording}
-              className="flex-1 border border-white/10 text-text-primary rounded-xl py-3 text-base hover:border-white/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
+              className="flex-1 border border-black/10 text-text-primary rounded-xl py-3 text-base hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
             >
               <Square size={16} strokeWidth={2} />
               Stop & Save
@@ -294,7 +294,7 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
           <>
             <button
               onClick={discard}
-              className="border border-white/10 text-text-secondary rounded-xl py-3 px-4 text-sm hover:border-white/20 hover:bg-bg-overlay transition-all duration-150"
+              className="border border-black/10 text-text-secondary rounded-xl py-3 px-4 text-sm hover:border-black/20 hover:bg-bg-overlay transition-all duration-150"
             >
               <RotateCcw size={16} />
             </button>

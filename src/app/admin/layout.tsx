@@ -27,8 +27,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen bg-bg-base flex">
       {/* Sidebar */}
-      <aside className="w-56 fixed top-0 left-0 h-full bg-bg-elevated border-r border-white/8 flex flex-col z-40">
-        <div className="h-14 flex items-center px-4 border-b border-white/8">
+      <aside className="w-56 fixed top-0 left-0 h-full bg-bg-elevated border-r border-black/8 flex flex-col z-40">
+        <div className="h-14 flex items-center px-4 border-b border-black/8">
           <Link href="/" className="font-black text-lg tracking-tight text-text-primary hover:text-accent-400 transition-colors">
             seeneyu
           </Link>
@@ -46,7 +46,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           ))}
         </nav>
-        <div className="p-4 border-t border-white/8">
+        <div className="p-4 border-t border-black/8">
           <p className="text-xs text-text-muted truncate">{(session.user as any).email}</p>
           <Link href="/" className="mt-1 text-xs text-text-secondary hover:text-text-primary transition-colors">← Back to app</Link>
         </div>

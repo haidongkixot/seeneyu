@@ -123,7 +123,7 @@ export default function AdminCmsBlogEditor() {
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             />
           </div>
           <div>
@@ -132,7 +132,7 @@ export default function AdminCmsBlogEditor() {
               type="text"
               value={postSlug}
               onChange={e => setPostSlug(e.target.value)}
-              className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50"
             />
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function AdminCmsBlogEditor() {
             value={excerpt}
             onChange={e => setExcerpt(e.target.value)}
             rows={2}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50 resize-y"
           />
         </div>
 
@@ -153,7 +153,7 @@ export default function AdminCmsBlogEditor() {
             value={body}
             onChange={e => setBody(e.target.value)}
             rows={16}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
           />
         </div>
 
@@ -165,13 +165,13 @@ export default function AdminCmsBlogEditor() {
               value={coverImage}
               onChange={e => setCoverImage(e.target.value)}
               placeholder="URL or upload..."
-              className="flex-1 bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="flex-1 bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             />
             <input ref={fileRef} type="file" accept="image/*" onChange={handleUploadCover} className="hidden" />
             <button
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="flex items-center gap-1.5 bg-bg-elevated border border-white/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+              className="flex items-center gap-1.5 bg-bg-elevated border border-black/8 rounded-xl px-3 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
             >
               <Upload size={14} />
               {uploading ? 'Uploading...' : 'Upload'}
@@ -190,7 +190,7 @@ export default function AdminCmsBlogEditor() {
               value={tagsStr}
               onChange={e => setTagsStr(e.target.value)}
               placeholder="body-language, tips, career"
-              className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             />
           </div>
           <div>
@@ -198,7 +198,7 @@ export default function AdminCmsBlogEditor() {
             <select
               value={status}
               onChange={e => setStatus(e.target.value)}
-              className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+              className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>

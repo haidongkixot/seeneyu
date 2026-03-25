@@ -30,7 +30,7 @@ export function PlanCard({
     <div className={`relative flex flex-col p-6 rounded-2xl border transition-all duration-200 ${
       isPopular
         ? 'bg-bg-surface border-accent-400/40 shadow-glow ring-1 ring-accent-400/20'
-        : 'bg-bg-surface border-white/8 shadow-card'
+        : 'bg-bg-surface border-black/8 shadow-card'
     }`}>
       {isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -69,7 +69,7 @@ export function PlanCard({
       </ul>
 
       {isCurrentPlan ? (
-        <div className="px-6 py-3 rounded-pill border border-white/15 text-center text-sm font-semibold text-text-tertiary">
+        <div className="px-6 py-3 rounded-pill border border-black/15 text-center text-sm font-semibold text-text-tertiary">
           Current Plan
         </div>
       ) : (
@@ -78,7 +78,7 @@ export function PlanCard({
           className={`px-6 py-3 rounded-pill font-semibold text-sm text-center transition-all duration-150 ${
             isPopular
               ? 'bg-accent-400 text-text-inverse hover:bg-accent-500 shadow-glow-sm'
-              : 'border border-white/15 text-text-primary hover:border-accent-400/30 hover:bg-bg-overlay'
+              : 'border border-black/15 text-text-primary hover:border-accent-400/30 hover:bg-bg-overlay'
           }`}
         >
           {plan.monthlyPrice === 0 ? 'Get Started' : 'Upgrade'}

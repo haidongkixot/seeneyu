@@ -36,3 +36,25 @@ export function getFeedbackDetail(plan: string): 'short' | 'full' | 'full_plus' 
     default: return 'short'
   }
 }
+
+export interface FeedbackSections {
+  score: boolean
+  summary: boolean
+  dimensions: boolean
+  positives: boolean
+  improvements: boolean
+  steps: boolean
+  tips: boolean
+  advancedTips: boolean
+}
+
+export function getFeedbackSections(plan: string): FeedbackSections {
+  switch (plan) {
+    case 'advanced':
+      return { score: true, summary: true, dimensions: true, positives: true, improvements: true, steps: true, tips: true, advancedTips: true }
+    case 'standard':
+      return { score: true, summary: true, dimensions: true, positives: true, improvements: true, steps: true, tips: true, advancedTips: false }
+    default:
+      return { score: true, summary: true, dimensions: false, positives: false, improvements: false, steps: false, tips: false, advancedTips: false }
+  }
+}

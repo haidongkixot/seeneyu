@@ -190,7 +190,7 @@ export function OnboardingFlow() {
   if (phase === 'processing') {
     return (
       <div className="flex flex-col items-center justify-center gap-6 text-center py-20 px-6">
-        <div className="w-16 h-16 rounded-full border-4 border-white/10 border-t-accent-400 animate-spin" />
+        <div className="w-16 h-16 rounded-full border-4 border-black/10 border-t-accent-400 animate-spin" />
         <h2 className="text-xl font-semibold text-text-primary">Assessing your starting level…</h2>
         <p className="text-sm text-text-secondary max-w-xs leading-relaxed">
           We're personalising your learning path based on your self-assessment.
@@ -211,7 +211,7 @@ export function OnboardingFlow() {
             We've set your starting level for all 5 skills. Start with the clips we've picked for you, or explore the full library.
           </p>
         </div>
-        <div className="w-16 border-t border-white/10" />
+        <div className="w-16 border-t border-black/10" />
         <div className="flex flex-col items-center gap-3 w-full max-w-xs animate-fade-in-up" style={{ animationDelay: '200ms' }}>
           <button
             onClick={() => router.push('/dashboard')}
@@ -233,13 +233,13 @@ export function OnboardingFlow() {
   return (
     <>
       {/* Top bar */}
-      <div className="px-6 py-4 flex items-center justify-between border-b border-white/8">
+      <div className="px-6 py-4 flex items-center justify-between border-b border-black/8">
         <span className="text-lg font-bold text-text-primary">seeneyu</span>
         <span className="text-sm text-text-secondary">{step + 1} of {QUESTIONS.length}</span>
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-white/8 w-full">
+      <div className="h-1 bg-black/5 w-full">
         <div
           className="h-1 bg-accent-400 transition-all duration-500 ease-smooth"
           style={{ width: `${progressPct}%` }}
@@ -248,7 +248,7 @@ export function OnboardingFlow() {
 
       {/* Content */}
       <div className="flex-1 flex items-center justify-center px-4 py-10">
-        <div className="bg-bg-surface border border-white/8 rounded-3xl p-8 flex flex-col items-center gap-6 w-full max-w-md text-center">
+        <div className="bg-bg-surface border border-black/8 rounded-3xl p-8 flex flex-col items-center gap-6 w-full max-w-md text-center">
           {/* Icon */}
           <div className="w-16 h-16 rounded-2xl bg-accent-400/10 border border-accent-400/20 flex items-center justify-center text-accent-400">
             {currentQ.icon}
@@ -257,7 +257,7 @@ export function OnboardingFlow() {
           {/* Skill name */}
           <h2 className="text-2xl font-bold text-text-primary">{currentQ.skillName}</h2>
 
-          <div className="w-full border-t border-white/8" />
+          <div className="w-full border-t border-black/8" />
 
           {/* Description */}
           <p className="text-sm text-text-secondary leading-relaxed max-w-xs">{currentQ.description}</p>
@@ -277,7 +277,7 @@ export function OnboardingFlow() {
                   'py-3 rounded-xl border text-sm font-medium transition-all duration-150',
                   selectedLevel === opt.level
                     ? 'border-accent-400/60 bg-accent-400/10 text-accent-400 shadow-glow-sm'
-                    : 'border-white/10 text-text-secondary hover:border-white/20 hover:bg-bg-overlay'
+                    : 'border-black/10 text-text-secondary hover:border-black/20 hover:bg-bg-overlay'
                 )}
               >
                 {opt.label}

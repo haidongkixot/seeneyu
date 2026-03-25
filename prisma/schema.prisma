@@ -62,6 +62,7 @@ model UserSession {
   clip         Clip      @relation(fields: [clipId], references: [id])
   recordingUrl String?
   recordingKey String?
+  thumbnailUrl String?
   frameUrls    String?   @db.Text   // JSON array of image URLs for GPT-4o Vision
   status       String    @default("recording")
   feedback     Json?

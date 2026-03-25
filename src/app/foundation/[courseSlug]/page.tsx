@@ -62,7 +62,7 @@ export default async function CoursePage({
             <span className="text-accent-400 font-medium">{completedCount}/{totalCount} complete</span>
           </div>
           {/* Progress bar */}
-          <div className="mt-4 h-2 bg-white/8 rounded-full overflow-hidden max-w-xs">
+          <div className="mt-4 h-2 bg-black/5 rounded-full overflow-hidden max-w-xs">
             <div
               className="h-full bg-accent-400 rounded-full transition-all duration-500"
               style={{ width: totalCount > 0 ? `${Math.round((completedCount / totalCount) * 100)}%` : '0%' }}
@@ -78,7 +78,7 @@ export default async function CoursePage({
               <Link
                 key={lesson.id}
                 href={`/foundation/${courseSlug}/${lesson.slug}`}
-                className="flex items-center gap-4 p-4 bg-bg-surface border border-white/8 rounded-xl hover:border-accent-400/30 hover:bg-bg-overlay transition-all duration-150 group"
+                className="flex items-center gap-4 p-4 bg-bg-surface border border-black/8 rounded-xl hover:border-accent-400/30 hover:bg-bg-overlay transition-all duration-150 group"
               >
                 {isDone
                   ? <CheckCircle2 size={20} className="text-accent-400 shrink-0" />

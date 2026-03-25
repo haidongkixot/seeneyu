@@ -236,7 +236,7 @@ export default function BundlePage() {
     return (
       <div className="min-h-screen bg-bg-base flex flex-col">
         {/* Top bar */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-white/6">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-black/6">
           <button onClick={exitChallenge} className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <ArrowLeft size={16} />
             Exit
@@ -256,18 +256,18 @@ export default function BundlePage() {
         {/* Split screen */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-6">
           {/* Left: Reference */}
-          <div className="flex flex-col bg-bg-surface rounded-2xl border border-white/8 overflow-hidden">
-            <div className="px-4 py-3 border-b border-white/6">
+          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden">
+            <div className="px-4 py-3 border-b border-black/6">
               <span className="text-xs font-semibold text-text-tertiary uppercase tracking-widest">Reference</span>
             </div>
             <div className="flex-1 flex flex-col p-5">
-              <div className="aspect-video rounded-xl bg-bg-elevated border border-white/8 flex items-center justify-center mb-4 text-4xl">
+              <div className="aspect-video rounded-xl bg-bg-elevated border border-black/8 flex items-center justify-center mb-4 text-4xl">
                 {activeChallenge.type === 'facial' ? '\uD83D\uDE10' : '\uD83E\uDDCD'}
               </div>
               <h2 className="text-xl font-bold text-text-primary mb-2">{activeChallenge.title}</h2>
               <p className="text-sm text-text-primary leading-relaxed mb-4">{activeChallenge.description}</p>
               {activeChallenge.context && (
-                <div className="p-3 rounded-lg bg-bg-inset border border-white/6">
+                <div className="p-3 rounded-lg bg-bg-inset border border-black/6">
                   <p className="text-xs text-text-tertiary leading-relaxed italic">{activeChallenge.context}</p>
                 </div>
               )}
@@ -275,8 +275,8 @@ export default function BundlePage() {
           </div>
 
           {/* Right: Camera */}
-          <div className="flex flex-col bg-bg-surface rounded-2xl border border-white/8 overflow-hidden">
-            <div className="px-4 py-3 border-b border-white/6 flex items-center justify-between">
+          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden">
+            <div className="px-4 py-3 border-b border-black/6 flex items-center justify-between">
               <span className="text-xs font-semibold text-text-tertiary uppercase tracking-widest">You</span>
               {isRecording && (
                 <div className={`flex items-center gap-1 text-sm font-bold tabular-nums ${timeLeft <= 3 ? 'text-error animate-pulse' : 'text-accent-400'}`}>
@@ -324,7 +324,7 @@ export default function BundlePage() {
               <span className="text-xs text-text-tertiary">{timeLeft.toFixed(1)}s remaining</span>
               <span className="text-xs text-text-tertiary">10s max</span>
             </div>
-            <div className="h-2 bg-white/8 rounded-pill overflow-hidden">
+            <div className="h-2 bg-black/5 rounded-pill overflow-hidden">
               <div
                 className={`h-full rounded-pill transition-all duration-100 ${
                   timeLeft > 5 ? 'bg-accent-400' : timeLeft > 2 ? 'bg-warning' : 'bg-error'
@@ -350,7 +350,7 @@ export default function BundlePage() {
             <>
               <button
                 onClick={stopRecording}
-                className="px-6 py-3 rounded-pill border border-white/20 text-text-secondary hover:text-text-primary hover:border-white/30 text-sm font-medium transition-all duration-150"
+                className="px-6 py-3 rounded-pill border border-black/20 text-text-secondary hover:text-text-primary hover:border-black/15 text-sm font-medium transition-all duration-150"
               >
                 Stop Early
               </button>
@@ -399,7 +399,7 @@ export default function BundlePage() {
 
     return (
       <div className="min-h-screen bg-bg-base flex flex-col">
-        <div className="flex items-center justify-between px-4 py-4 border-b border-white/6">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-black/6">
           <button onClick={exitChallenge} className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <ArrowLeft size={16} />
             Back
@@ -443,7 +443,7 @@ export default function BundlePage() {
           </div>
 
           {/* Breakdown */}
-          <div className="w-full space-y-3 border-t border-white/6 pt-6">
+          <div className="w-full space-y-3 border-t border-black/6 pt-6">
             <BreakdownBar label="Expression Match" value={scoreResult.breakdown.expression_match} />
             <BreakdownBar label="Intensity" value={scoreResult.breakdown.intensity} />
             <BreakdownBar label="Context Fit" value={scoreResult.breakdown.context_fit} />
@@ -451,7 +451,7 @@ export default function BundlePage() {
 
           {/* Feedback */}
           {scoreResult.feedbackLine && (
-            <div className="w-full p-4 rounded-xl bg-bg-elevated border border-white/8 text-sm text-text-secondary leading-relaxed">
+            <div className="w-full p-4 rounded-xl bg-bg-elevated border border-black/8 text-sm text-text-secondary leading-relaxed">
               &ldquo;{scoreResult.feedbackLine}&rdquo;
             </div>
           )}
@@ -460,7 +460,7 @@ export default function BundlePage() {
           <div className="flex items-center justify-center gap-4 pt-2">
             <button
               onClick={retryChallenge}
-              className="flex items-center gap-2 px-6 py-3 rounded-pill border border-white/15 text-text-secondary hover:border-white/25 hover:text-text-primary text-sm font-semibold transition-all duration-150"
+              className="flex items-center gap-2 px-6 py-3 rounded-pill border border-black/15 text-text-secondary hover:border-black/15 hover:text-text-primary text-sm font-semibold transition-all duration-150"
             >
               <RotateCcw size={16} />
               Retry
@@ -509,7 +509,7 @@ export default function BundlePage() {
               {completedCount}/{totalCount} complete
             </span>
           </div>
-          <div className="h-1.5 bg-white/8 rounded-pill overflow-hidden">
+          <div className="h-1.5 bg-black/5 rounded-pill overflow-hidden">
             <div
               className="h-full bg-accent-400 rounded-pill transition-all duration-500"
               style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
@@ -536,14 +536,14 @@ export default function BundlePage() {
                 onClick={() => !isLocked && startChallenge(i)}
                 className={`relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
                   isLocked
-                    ? 'border-white/6 bg-bg-surface/50 opacity-50 cursor-not-allowed'
+                    ? 'border-black/6 bg-bg-surface/50 opacity-50 cursor-not-allowed'
                     : challenge.isComplete
                     ? 'border-success/20 bg-success/5 cursor-pointer'
-                    : 'border-white/8 bg-bg-surface hover:border-accent-400/20 hover:bg-bg-elevated cursor-pointer'
+                    : 'border-black/8 bg-bg-surface hover:border-accent-400/20 hover:bg-bg-elevated cursor-pointer'
                 }`}
               >
                 {/* Status icon */}
-                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border border-white/10">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border border-black/10">
                   {isLocked ? (
                     <Lock size={14} className="text-text-tertiary" />
                   ) : challenge.isComplete ? (
@@ -624,7 +624,7 @@ function BreakdownBar({ label, value }: { label: string; value: number }) {
         <span className="text-xs text-text-secondary">{label}</span>
         <span className="text-xs font-semibold text-text-primary tabular-nums">{value}%</span>
       </div>
-      <div className="h-1.5 bg-white/8 rounded-pill overflow-hidden">
+      <div className="h-1.5 bg-black/5 rounded-pill overflow-hidden">
         <div
           className="h-full bg-accent-400/70 rounded-pill transition-all duration-700"
           style={{ width: `${value}%` }}

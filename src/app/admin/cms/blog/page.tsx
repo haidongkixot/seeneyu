@@ -55,7 +55,7 @@ export default function AdminCmsBlogPage() {
             className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
               statusFilter === s
                 ? 'border-accent-400/50 bg-accent-400/10 text-accent-400'
-                : 'border-white/8 text-text-secondary hover:text-text-primary'
+                : 'border-black/8 text-text-secondary hover:text-text-primary'
             }`}
           >
             {s === '' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -63,10 +63,10 @@ export default function AdminCmsBlogPage() {
         ))}
       </div>
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/8">
+            <tr className="border-b border-black/8">
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Title</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Slug</th>
               <th className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
@@ -81,7 +81,7 @@ export default function AdminCmsBlogPage() {
               <tr><td colSpan={5} className="text-center py-12 text-text-muted">No posts yet.</td></tr>
             ) : (
               posts.map(post => (
-                <tr key={post.id} className="border-b border-white/5 hover:bg-bg-overlay transition-colors">
+                <tr key={post.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3 text-text-primary font-medium">{post.title}</td>
                   <td className="px-4 py-3 text-text-secondary font-mono text-xs">{post.slug}</td>
                   <td className="px-4 py-3">

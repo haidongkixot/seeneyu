@@ -1,9 +1,13 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
+import { LockedFeedbackSection } from '@/components/LockedFeedbackSection'
 import { FeedbackPoller } from './FeedbackPoller'
+import { getFeedbackSections } from '@/lib/access-control'
 import type { FeedbackResult, ActionPlanStep, SkillCategory } from '@/lib/types'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 
@@ -14,14 +18,24 @@ interface PageProps {
 export default async function FeedbackPage({ params }: PageProps) {
   const { sessionId } = await params
 
-  const session = await prisma.userSession.findUnique({
+  const userSession = await prisma.userSession.findUnique({
     where: { id: sessionId },
-    include: { clip: true },
+    include: { clip: true, user: true },
   })
 
-  if (!session) notFound()
+  if (!userSession) notFound()
 
-  const feedback = session.feedback as FeedbackResult | null
+  // Determine user plan for tiered feedback
+  const authSession = await getServerSession(authOptions)
+  let userPlan = 'basic'
+  if (userSession.user) {
+    userPlan = userSession.user.plan ?? 'basic'
+  } else if (authSession?.user?.email) {
+    const authUser = await prisma.user.findUnique({ where: { email: authSession.user.email } })
+    if (authUser) userPlan = authUser.plan ?? 'basic'
+  }
+
+  const feedback = userSession.feedback as FeedbackResult | null
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -29,27 +43,27 @@ export default async function FeedbackPage({ params }: PageProps) {
 
       <main
         className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-8"
-        aria-label={`AI Feedback for ${session.clip.skillCategory}`}
+        aria-label={`AI Feedback for ${userSession.clip.skillCategory}`}
       >
         {/* Nav */}
         <div className="flex items-center justify-between">
           <Link
-            href={`/library/${session.clipId}`}
+            href={`/library/${userSession.clipId}`}
             className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150"
           >
             <ArrowLeft size={15} />
             Back to Clip
           </Link>
-          <SkillBadge skill={session.clip.skillCategory as SkillCategory} size="sm" />
+          <SkillBadge skill={userSession.clip.skillCategory as SkillCategory} size="sm" />
         </div>
 
-        {session.status === 'failed' ? (
+        {userSession.status === 'failed' ? (
           <div className="text-center py-16">
             <p className="text-error font-semibold text-lg">Feedback generation failed</p>
             <p className="text-text-secondary text-sm mt-2">Please try submitting your recording again.</p>
             <Link
-              href={`/library/${session.clipId}/record`}
-              className="mt-6 inline-flex items-center gap-2 border border-white/10 text-text-primary rounded-xl px-6 py-3 text-sm hover:bg-bg-overlay transition-all duration-150"
+              href={`/library/${userSession.clipId}/record`}
+              className="mt-6 inline-flex items-center gap-2 border border-black/10 text-text-primary rounded-xl px-6 py-3 text-sm hover:bg-bg-overlay transition-all duration-150"
             >
               <RotateCcw size={16} />
               Try Again
@@ -60,11 +74,12 @@ export default async function FeedbackPage({ params }: PageProps) {
         ) : (
           <FeedbackDisplay
             feedback={feedback!}
-            clipId={session.clipId}
-            youtubeVideoId={session.clip.youtubeVideoId}
-            startSec={session.clip.startSec}
-            endSec={session.clip.endSec}
-            recordingUrl={session.recordingUrl}
+            clipId={userSession.clipId}
+            youtubeVideoId={userSession.clip.youtubeVideoId}
+            startSec={userSession.clip.startSec}
+            endSec={userSession.clip.endSec}
+            recordingUrl={userSession.recordingUrl}
+            userPlan={userPlan}
           />
         )}
       </main>
@@ -87,7 +102,7 @@ function ActionPlan({ steps, title, subtitle }: { steps: ActionPlanStep[]; title
         {steps.map((step, index) => (
           <li
             key={step.number}
-            className="flex items-start gap-4 bg-bg-surface border border-white/8 rounded-xl pl-0 pr-4 py-4 shadow-card overflow-hidden relative animate-fade-in-up"
+            className="flex items-start gap-4 bg-bg-surface border border-black/8 rounded-xl pl-0 pr-4 py-4 shadow-card overflow-hidden relative animate-fade-in-up"
             style={{ animationDelay: `${index * 80}ms` }}
           >
             <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent-400 rounded-l-xl" />
@@ -112,10 +127,12 @@ interface FeedbackDisplayProps {
   startSec: number
   endSec: number
   recordingUrl: string | null
+  userPlan: string
 }
 
-function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, recordingUrl }: FeedbackDisplayProps) {
+function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, recordingUrl, userPlan }: FeedbackDisplayProps) {
   const score = feedback.overallScore
+  const sections = getFeedbackSections(userPlan)
 
   // Ring color changes by score tier
   const ringStart = score >= 80 ? '#4ade80' : score >= 50 ? '#fbbf24' : '#f87171'
@@ -128,7 +145,7 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Score ring */}
+      {/* Score ring — always visible */}
       <div className="flex flex-col items-center gap-3 py-4">
         <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label={`Score: ${score} out of 100`}>
           <defs>
@@ -137,7 +154,7 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
               <stop offset="100%" stopColor={ringEnd} />
             </linearGradient>
           </defs>
-          <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
+          <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="8" />
           <circle
             cx={cx} cy={cx} r={r} fill="none"
             stroke="url(#scoreGrad)" strokeWidth="8"
@@ -148,73 +165,81 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
             style={{ transition: 'stroke-dashoffset 0.7s ease-out' }}
           />
           <text x="60" y="54" textAnchor="middle" fill={scoreColor} fontSize="26" fontWeight="800" fontFamily="inherit">{score}</text>
-          <text x="60" y="70" textAnchor="middle" fill="#5c5c72" fontSize="11" fontFamily="inherit">/100</text>
+          <text x="60" y="70" textAnchor="middle" fill="#9ca3af" fontSize="11" fontFamily="inherit">/100</text>
         </svg>
         <p className="text-text-secondary text-base text-center max-w-sm">{feedback.summary}</p>
       </div>
 
-      {/* Score breakdown */}
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-6">
-        <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-5">Score Breakdown</p>
-        <div className="flex flex-col gap-4">
-          {feedback.dimensions.map((dim) => (
-            <div key={dim.label} className="flex items-center gap-3">
-              <span className="text-text-secondary text-sm w-36 shrink-0">{dim.label}</span>
-              <div className="flex-1 bg-white/8 rounded-pill h-2 overflow-hidden">
-                <div
-                  className="bg-accent-400 h-2 rounded-pill transition-all duration-700"
-                  style={{ width: `${dim.score * 10}%` }}
-                />
+      {/* Score breakdown — locked for free users */}
+      <LockedFeedbackSection isLocked={!sections.dimensions}>
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
+          <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-5">Score Breakdown</p>
+          <div className="flex flex-col gap-4">
+            {feedback.dimensions.map((dim) => (
+              <div key={dim.label} className="flex items-center gap-3">
+                <span className="text-text-secondary text-sm w-36 shrink-0">{dim.label}</span>
+                <div className="flex-1 bg-black/5 rounded-pill h-2 overflow-hidden">
+                  <div
+                    className="bg-accent-400 h-2 rounded-pill transition-all duration-700"
+                    style={{ width: `${dim.score * 10}%` }}
+                  />
+                </div>
+                <span className="text-text-primary text-sm font-semibold w-10 text-right">{dim.score}/10</span>
               </div>
-              <span className="text-text-primary text-sm font-semibold w-10 text-right">{dim.score}/10</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Positives / Improvements */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-[rgba(34,197,94,0.05)] border border-[rgba(34,197,94,0.2)] rounded-xl p-5">
-          <p className="text-success text-xs font-semibold uppercase tracking-widest mb-3">What you did well</p>
-          <ul className="flex flex-col gap-2">
-            {feedback.positives.map((p, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-text-primary">
-                <span className="text-success mt-0.5">✓</span>
-                {p}
-              </li>
             ))}
-          </ul>
+          </div>
         </div>
-        <div className="bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.2)] rounded-xl p-5">
-          <p className="text-error text-xs font-semibold uppercase tracking-widest mb-3">What to improve</p>
-          <ul className="flex flex-col gap-2">
-            {feedback.improvements.map((p, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-text-primary">
-                <span className="text-error mt-0.5">✗</span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      </LockedFeedbackSection>
 
-      {/* Action Plan */}
+      {/* Positives / Improvements — locked for free users */}
+      <LockedFeedbackSection isLocked={!sections.positives}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-[rgba(34,197,94,0.05)] border border-[rgba(34,197,94,0.2)] rounded-xl p-5">
+            <p className="text-success text-xs font-semibold uppercase tracking-widest mb-3">What you did well</p>
+            <ul className="flex flex-col gap-2">
+              {feedback.positives.map((p, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-text-primary">
+                  <span className="text-success mt-0.5">&#x2713;</span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.2)] rounded-xl p-5">
+            <p className="text-error text-xs font-semibold uppercase tracking-widest mb-3">What to improve</p>
+            <ul className="flex flex-col gap-2">
+              {feedback.improvements.map((p, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-text-primary">
+                  <span className="text-error mt-0.5">&#x2717;</span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </LockedFeedbackSection>
+
+      {/* Action Plan — locked for free users */}
       {feedback.steps && feedback.steps.length > 0 && (
-        <ActionPlan steps={feedback.steps} />
+        <LockedFeedbackSection isLocked={!sections.steps}>
+          <ActionPlan steps={feedback.steps} />
+        </LockedFeedbackSection>
       )}
 
-      {/* AI Tips */}
-      <div>
-        <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-4">AI Tips</p>
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          {feedback.tips.map((tip, i) => (
-            <div key={i} className="w-64 shrink-0 bg-bg-elevated border border-white/8 rounded-2xl p-5">
-              <p className="text-accent-400 text-sm font-semibold mb-2">💡 {tip.title}</p>
-              <p className="text-text-secondary text-sm leading-relaxed">{tip.body}</p>
-            </div>
-          ))}
+      {/* AI Tips — locked for free users */}
+      <LockedFeedbackSection isLocked={!sections.tips}>
+        <div>
+          <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-4">AI Tips</p>
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            {feedback.tips.map((tip, i) => (
+              <div key={i} className="w-64 shrink-0 bg-bg-elevated border border-black/8 rounded-2xl p-5">
+                <p className="text-accent-400 text-sm font-semibold mb-2">&#x1F4A1; {tip.title}</p>
+                <p className="text-text-secondary text-sm leading-relaxed">{tip.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </LockedFeedbackSection>
 
       {/* Video comparison — reference clip + your recording */}
       <div>
@@ -253,7 +278,7 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
       <div className="flex flex-col sm:flex-row gap-4 pt-2">
         <Link
           href={`/library/${clipId}/record`}
-          className="flex-1 border border-white/10 text-text-primary rounded-xl py-3.5 text-base text-center hover:border-white/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
+          className="flex-1 border border-black/10 text-text-primary rounded-xl py-3.5 text-base text-center hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
         >
           <RotateCcw size={16} />
           Try This Clip Again
@@ -263,14 +288,14 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
             href={`/library/${feedback.nextClipId}`}
             className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold text-center hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
           >
-            Next Clip →
+            Next Clip &rarr;
           </Link>
         ) : (
           <Link
             href="/library"
             className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold text-center hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150"
           >
-            Browse More Clips →
+            Browse More Clips &rarr;
           </Link>
         )}
       </div>

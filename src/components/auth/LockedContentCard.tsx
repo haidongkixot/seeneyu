@@ -19,7 +19,7 @@ export function LockedContentCard({
 
       {/* Lock overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg-base/40 backdrop-blur-sm">
-        <div className="w-12 h-12 rounded-full bg-bg-surface border border-white/10 flex items-center justify-center shadow-md">
+        <div className="w-12 h-12 rounded-full bg-bg-surface border border-black/10 flex items-center justify-center shadow-md">
           <Lock size={20} className="text-text-tertiary" />
         </div>
         <p className="text-sm text-text-secondary text-center max-w-[200px]">

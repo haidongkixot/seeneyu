@@ -70,7 +70,7 @@ interface Props {
 }
 
 function inputClass() {
-  return 'bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors w-full'
+  return 'bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm placeholder-text-muted focus:outline-none focus:border-accent-400/50 transition-colors w-full'
 }
 
 function labelClass() {
@@ -139,7 +139,7 @@ export default function ClipForm({ initial, mode }: Props) {
         <div className="mb-4 bg-error/10 border border-error/30 rounded-xl px-3 py-2 text-sm text-red-400">{error}</div>
       )}
 
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 flex flex-col gap-5">
         {/* YouTube */}
         <div className="flex flex-col gap-1.5">
           <label className={labelClass()}>YouTube Video ID *</label>
@@ -154,7 +154,7 @@ export default function ClipForm({ initial, mode }: Props) {
             <img
               src={`https://img.youtube.com/vi/${form.youtubeVideoId}/hqdefault.jpg`}
               alt="Preview"
-              className="mt-1 w-48 h-28 object-cover rounded-lg border border-white/8"
+              className="mt-1 w-48 h-28 object-cover rounded-lg border border-black/8"
             />
           )}
         </div>
@@ -309,7 +309,7 @@ export default function ClipForm({ initial, mode }: Props) {
         <button
           type="button"
           onClick={() => router.push('/admin/clips')}
-          className="px-5 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay border border-white/8 rounded-xl transition-colors"
+          className="px-5 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay border border-black/8 rounded-xl transition-colors"
         >
           Cancel
         </button>

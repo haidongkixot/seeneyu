@@ -28,7 +28,7 @@ function DifficultyDots({ level }: { level: string }) {
   return (
     <div className="flex items-center gap-1">
       {[1, 2, 3].map(i => (
-        <div key={i} className={`w-2 h-2 rounded-full ${i <= filled ? 'bg-accent-400' : 'bg-white/15'}`} />
+        <div key={i} className={`w-2 h-2 rounded-full ${i <= filled ? 'bg-accent-400' : 'bg-black/[0.08]'}`} />
       ))}
       <span className="text-xs text-text-tertiary ml-1 capitalize">{level}</span>
     </div>
@@ -84,7 +84,7 @@ export default function ArcadePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {bundles.map(bundle => (
               <Link key={bundle.id} href={`/arcade/${bundle.id}`}>
-                <div className="group relative flex flex-col p-6 rounded-2xl bg-bg-surface border border-white/8 shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300 cursor-pointer min-h-[200px]">
+                <div className="group relative flex flex-col p-6 rounded-2xl bg-bg-surface border border-black/8 shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300 cursor-pointer min-h-[200px]">
                   <div className="text-4xl mb-4">
                     {THEME_EMOJI[bundle.theme] || '\uD83C\uDFAF'}
                   </div>
@@ -116,7 +116,7 @@ export default function ArcadePage() {
 
 function StatPill({ icon, label }: { icon: string; label: string }) {
   return (
-    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-bg-surface border border-white/10 text-sm font-semibold text-text-primary">
+    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-bg-surface border border-black/10 text-sm font-semibold text-text-primary">
       <span>{icon}</span>
       <span>{label}</span>
     </div>

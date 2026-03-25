@@ -26,7 +26,10 @@
       "Bash(powershell:*)",
       "Bash(powershell.exe:*)",
       "Bash(where claude:*)",
-      "Bash(cmd.exe:*)"
+      "Bash(cmd.exe:*)",
+      "Bash(curl:*)",
+      "Bash(npx tsx:*)",
+      "WebFetch(domain:seeneyu.vercel.app)"
     ]
   }
 }

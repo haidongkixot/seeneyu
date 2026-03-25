@@ -12,7 +12,7 @@ import { ApproveModal } from '@/components/admin/ApproveModal'
 
 function StatusChip({ status }: { status: string }) {
   const cfg: Record<string, { label: string; cls: string; animated?: boolean }> = {
-    pending:  { label: '○ PENDING',   cls: 'bg-white/5 text-text-secondary border-white/10' },
+    pending:  { label: '○ PENDING',   cls: 'bg-black/5 text-text-secondary border-black/10' },
     running:  { label: '⟳ RUNNING…',  cls: 'bg-amber-500/10 text-amber-400 border-amber-400/20', animated: true },
     complete: { label: '● COMPLETE',  cls: 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' },
     failed:   { label: '✗ FAILED',    cls: 'bg-red-500/10 text-red-400 border-red-400/20' },
@@ -57,8 +57,8 @@ function ResultCard({ result, optimisticStatus, onApprove, onReject, onUndo }: R
   const containerCls = status === 'approved'
     ? 'border-emerald-400/25 bg-emerald-500/5'
     : status === 'rejected'
-    ? 'border-white/5 opacity-50'
-    : 'border-white/8'
+    ? 'border-black/[0.04] opacity-50'
+    : 'border-black/8'
 
   const durationStr = result.durationSec
     ? `${Math.floor(result.durationSec / 60)}:${String(result.durationSec % 60).padStart(2, '0')}`
@@ -124,7 +124,7 @@ function ResultCard({ result, optimisticStatus, onApprove, onReject, onUndo }: R
             <button
               aria-label={`Reject: ${result.title}`}
               onClick={() => onReject(result.id)}
-              className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium border border-white/8 text-text-tertiary hover:border-red-400/20 hover:text-red-400 transition-colors"
+              className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium border border-black/8 text-text-tertiary hover:border-red-400/20 hover:text-red-400 transition-colors"
             >
               <XCircle size={12} /> Reject
             </button>
@@ -245,7 +245,7 @@ export default function CrawlJobDetailPage() {
       </Link>
 
       {/* Job header */}
-      <div className="bg-bg-surface border border-white/8 rounded-2xl p-5 flex flex-col gap-3">
+      <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 flex flex-col gap-3">
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-lg font-bold text-text-primary">{job.name}</h1>
           <StatusChip status={job.status} />
@@ -284,7 +284,7 @@ export default function CrawlJobDetailPage() {
 
       {/* Running state */}
       {job.status === 'running' && (
-        <div className="bg-bg-elevated border border-white/8 rounded-2xl p-8 flex flex-col items-center gap-4 text-center">
+        <div className="bg-bg-elevated border border-black/8 rounded-2xl p-8 flex flex-col items-center gap-4 text-center">
           <RefreshCw size={28} className="text-amber-400 animate-spin" />
           <p className="text-sm font-medium text-text-primary">Running job…</p>
           <p className="text-xs text-text-tertiary">Searching YouTube and scoring results with AI. This may take 30–60 seconds.</p>
@@ -319,7 +319,7 @@ export default function CrawlJobDetailPage() {
                   onClick={() => setSort(key)}
                   className={`text-xs px-2.5 py-1 rounded-lg border transition-colors capitalize ${
                     sort === key
-                      ? 'border-white/20 text-text-primary bg-white/5'
+                      ? 'border-black/20 text-text-primary bg-black/5'
                       : 'border-transparent text-text-tertiary hover:text-text-secondary'
                   }`}
                 >

@@ -40,7 +40,7 @@ export function BadgeCard({ badge, earned, earnedAt }: BadgeCardProps) {
         'relative rounded-2xl border p-4 transition-all duration-200',
         earned
           ? categoryAccent[badge.category]
-          : 'border-white/6 bg-bg-surface grayscale'
+          : 'border-black/6 bg-bg-surface grayscale'
       )}
     >
       {/* Icon */}

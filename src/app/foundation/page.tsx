@@ -78,7 +78,7 @@ export default async function FoundationPage() {
                   </span>
                 </div>
                 {/* Progress bar */}
-                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-black/5 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-current opacity-60 rounded-full transition-all duration-500"
                     style={{ width: `${progressPct}%` }}

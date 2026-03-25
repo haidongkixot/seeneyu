@@ -28,7 +28,7 @@ export function ClipCard({ clip }: ClipCardProps) {
   return (
     <Link
       href={`/library/${clip.id}`}
-      className="group relative flex flex-col bg-bg-surface border border-white/8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
+      className="group relative flex flex-col bg-bg-surface border border-black/8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
       role="article"
       aria-label={`${clip.skillCategory} clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
     >
@@ -75,12 +75,12 @@ export function ClipCard({ clip }: ClipCardProps) {
 
 export function ClipCardSkeleton() {
   return (
-    <div className="flex flex-col bg-bg-surface border border-white/8 rounded-2xl overflow-hidden">
+    <div className="flex flex-col bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
       <div className="aspect-video skeleton" />
       <div className="p-4 flex flex-col gap-3">
         <div className="h-4 w-3/4 skeleton rounded-md" />
         <div className="h-3 w-1/2 skeleton rounded-md" />
-        <div className="h-px bg-white/6 mt-1" />
+        <div className="h-px bg-black/[0.04] mt-1" />
         <div className="h-3 w-16 skeleton rounded-md" />
       </div>
     </div>

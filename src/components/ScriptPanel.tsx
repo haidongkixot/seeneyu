@@ -16,7 +16,7 @@ export function ScriptPanel({ type, content, label, tip }: ScriptPanelProps) {
     <div
       role="region"
       aria-label={ariaLabel}
-      className="bg-bg-surface border border-white/8 rounded-2xl p-4 md:p-5 space-y-3"
+      className="bg-bg-surface border border-black/8 rounded-2xl p-4 md:p-5 space-y-3"
     >
       <div className="flex items-center gap-2">
         <Icon size={16} className="w-4 h-4 text-text-tertiary" />
@@ -25,7 +25,7 @@ export function ScriptPanel({ type, content, label, tip }: ScriptPanelProps) {
         </span>
       </div>
 
-      <div className="border-t border-white/6" />
+      <div className="border-t border-black/6" />
 
       {type === 'dialogue' ? (
         <div className="border-l-2 border-accent-400 pl-4">
@@ -51,7 +51,7 @@ export function ScriptPanel({ type, content, label, tip }: ScriptPanelProps) {
 
       {tip && (
         <>
-          <div className="border-t border-white/6" />
+          <div className="border-t border-black/6" />
           <div className="flex items-start gap-2 pt-1">
             <Lightbulb size={16} className="w-4 h-4 text-accent-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-text-secondary italic">{tip}</p>

@@ -269,7 +269,7 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
           <>
             <button
               onClick={stopRecording}
-              className="flex-1 border border-white/10 text-text-primary rounded-xl py-3 text-sm hover:border-white/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
+              className="flex-1 border border-black/10 text-text-primary rounded-xl py-3 text-sm hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
             >
               <Square size={14} strokeWidth={2} />
               Stop & Save

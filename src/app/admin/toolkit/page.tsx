@@ -105,7 +105,7 @@ export default function AdminToolkitPage() {
           <Link
             key={tool.label}
             href={tool.href}
-            className="group block bg-bg-surface border border-white/8 rounded-2xl p-6 transition-all duration-150 hover:border-accent-400/30 hover:bg-bg-overlay"
+            className="group block bg-bg-surface border border-black/8 rounded-2xl p-6 transition-all duration-150 hover:border-accent-400/30 hover:bg-bg-overlay"
           >
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-accent-400/10 text-accent-400 group-hover:bg-accent-400/20 transition-colors">

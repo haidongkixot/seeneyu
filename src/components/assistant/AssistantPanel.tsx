@@ -36,7 +36,7 @@ function TypingIndicator() {
       <div className="w-7 h-7 rounded-full bg-accent-400/15 flex items-center justify-center flex-shrink-0">
         <GraduationCap size={14} className="text-accent-400" />
       </div>
-      <div className="bg-bg-elevated border border-white/6 rounded-2xl rounded-tl-md px-4 py-3">
+      <div className="bg-bg-elevated border border-black/6 rounded-2xl rounded-tl-md px-4 py-3">
         <div className="flex items-center gap-1.5">
           {[0, 1, 2].map((i) => (
             <div
@@ -81,7 +81,7 @@ function MessageBubble({
               Coach Ney
             </p>
           )}
-          <div className="bg-bg-elevated border border-white/6 rounded-2xl rounded-tl-md px-4 py-3">
+          <div className="bg-bg-elevated border border-black/6 rounded-2xl rounded-tl-md px-4 py-3">
             {/* Audio player if available */}
             {message.audioUrl && onPlayAudio && (
               <div className="flex items-center gap-2 mb-2 p-2 bg-bg-inset rounded-lg">
@@ -91,7 +91,7 @@ function MessageBubble({
                 >
                   {isPlaying ? <Pause size={12} /> : <Play size={12} />}
                 </button>
-                <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div className="flex-1 h-1 bg-black/5 rounded-full overflow-hidden">
                   <div className="h-full bg-accent-400 rounded-full w-0 transition-all" />
                 </div>
               </div>
@@ -198,11 +198,11 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
         className={cn(
           // Mobile: full-width bottom sheet
           'fixed inset-x-0 bottom-0 z-modal h-[75vh] max-h-[600px]',
-          'bg-bg-surface border-t border-white/8 rounded-t-3xl shadow-xl',
+          'bg-bg-surface border-t border-black/8 rounded-t-3xl shadow-xl',
           'flex flex-col overflow-hidden',
           // Desktop: side panel
           'lg:inset-x-auto lg:right-6 lg:bottom-24 lg:h-[560px] lg:w-[380px]',
-          'lg:rounded-2xl lg:border lg:border-white/8',
+          'lg:rounded-2xl lg:border lg:border-black/8',
           // Animation
           closing
             ? 'opacity-0 translate-y-full lg:translate-y-4 lg:scale-95'
@@ -211,10 +211,10 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
         style={{ transformOrigin: 'bottom right' }}
       >
         {/* Drag handle (mobile) */}
-        <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mt-3 mb-2 lg:hidden" />
+        <div className="w-12 h-1 bg-black/10 rounded-full mx-auto mt-3 mb-2 lg:hidden" />
 
         {/* Header */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-white/6">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-black/6">
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-400/30 to-accent-600/20 border border-accent-400/30 flex items-center justify-center">
             <GraduationCap size={18} className="text-accent-400" />
           </div>
@@ -246,7 +246,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
                 <p className="text-[10px] font-semibold text-accent-400/70 uppercase tracking-wider mb-1">
                   Coach Ney
                 </p>
-                <div className="bg-bg-elevated border border-white/6 rounded-2xl rounded-tl-md px-4 py-3">
+                <div className="bg-bg-elevated border border-black/6 rounded-2xl rounded-tl-md px-4 py-3">
                   <p className="text-sm text-text-primary leading-relaxed">
                     Hi there! I&apos;m Coach Ney, your personal communication
                     coach.
@@ -271,7 +271,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
                       onClick={() => handleSuggestion(s)}
                       className={cn(
                         'px-3 py-1.5 text-xs font-medium',
-                        'bg-bg-inset border border-white/8 rounded-pill',
+                        'bg-bg-inset border border-black/8 rounded-pill',
                         'text-text-secondary',
                         'hover:text-accent-400 hover:border-accent-400/30 hover:bg-accent-400/5',
                         'active:scale-95 transition-all duration-150 cursor-pointer'
@@ -311,7 +311,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
                     onClick={() => handleSuggestion(s)}
                     className={cn(
                       'px-3 py-1.5 text-xs font-medium',
-                      'bg-bg-inset border border-white/8 rounded-pill',
+                      'bg-bg-inset border border-black/8 rounded-pill',
                       'text-text-secondary',
                       'hover:text-accent-400 hover:border-accent-400/30 hover:bg-accent-400/5',
                       'active:scale-95 transition-all duration-150 cursor-pointer'
@@ -330,7 +330,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
         </div>
 
         {/* Input bar */}
-        <div className="px-4 py-3 border-t border-white/6 bg-bg-surface">
+        <div className="px-4 py-3 border-t border-black/6 bg-bg-surface">
           {isRecording ? (
             <VoiceRecorder
               isRecording={isRecording}
@@ -355,7 +355,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
                 placeholder="Type a message..."
                 rows={1}
                 className={cn(
-                  'flex-1 bg-bg-inset border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary',
+                  'flex-1 bg-bg-inset border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary',
                   'placeholder:text-text-tertiary',
                   'focus:outline-none focus:border-accent-400/40 transition-colors',
                   'min-h-[36px] max-h-[120px] resize-none'

@@ -140,7 +140,7 @@ function IntroScreen({
 
       <div className="flex items-center gap-4 text-xs text-text-tertiary mb-8">
         <span>{config.totalRounds} rounds</span>
-        <span className="w-1 h-1 rounded-full bg-white/20" />
+        <span className="w-1 h-1 rounded-full bg-black/10" />
         <span>{config.timePerRound}s per round</span>
       </div>
 
@@ -227,7 +227,7 @@ function ResultScreen({
       <p className="text-sm text-text-secondary mb-6">Great effort!</p>
 
       {/* Final score */}
-      <div className="bg-bg-surface border border-white/[0.08] rounded-2xl px-8 py-5 shadow-card mb-6 text-center">
+      <div className="bg-bg-surface border border-black/[0.08] rounded-2xl px-8 py-5 shadow-card mb-6 text-center">
         <span className="text-4xl font-bold text-accent-400 font-mono">
           {result.score}
         </span>
@@ -277,8 +277,8 @@ function ResultScreen({
           onClick={handleSignUp}
           className="
             w-full py-3 rounded-pill
-            bg-transparent border border-white/10 text-text-primary font-semibold text-sm
-            hover:border-white/20 hover:bg-bg-overlay
+            bg-transparent border border-black/10 text-text-primary font-semibold text-sm
+            hover:border-black/20 hover:bg-bg-overlay
             transition-all duration-150
           "
         >

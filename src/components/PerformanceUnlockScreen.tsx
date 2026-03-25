@@ -26,7 +26,7 @@ export function PerformanceUnlockScreen({ clipId, completedSteps, allPassed }: P
         </p>
       </div>
 
-      <div className="w-16 border-t border-white/10" />
+      <div className="w-16 border-t border-black/10" />
 
       <div className="flex flex-col items-center gap-3 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
         <Link

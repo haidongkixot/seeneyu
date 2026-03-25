@@ -38,7 +38,7 @@ export function NavBar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-white/8 flex items-center justify-between px-4 lg:px-8">
+      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-4 lg:px-8">
         <Link href="/" className="flex flex-col leading-none gap-0.5">
           <span className="text-lg font-bold text-text-primary tracking-tight">
             seeneyu
@@ -87,8 +87,8 @@ export function NavBar() {
                   {initials}
                 </button>
               {avatarOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-white/8 rounded-xl shadow-xl py-1 z-50">
-                  <div className="px-3 py-2 border-b border-white/8">
+                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-50">
+                  <div className="px-3 py-2 border-b border-black/8">
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
                   </div>
@@ -143,7 +143,7 @@ export function NavBar() {
 
       {/* Mobile drawer */}
       {drawerOpen && (
-        <div className="md:hidden sticky top-14 z-[49] bg-bg-surface/95 backdrop-blur-md border-b border-white/8 px-4 py-3 flex flex-col gap-1">
+        <div className="md:hidden sticky top-14 z-[49] bg-bg-surface/95 backdrop-blur-md border-b border-black/8 px-4 py-3 flex flex-col gap-1">
           {navLinks.map(({ href, label, Icon }) => (
             <Link
               key={href}
@@ -162,7 +162,7 @@ export function NavBar() {
           ))}
 
           {session && (
-            <div className="flex items-center gap-3 px-3 py-2 border-t border-white/6 mt-1">
+            <div className="flex items-center gap-3 px-3 py-2 border-t border-black/6 mt-1">
               <GamificationBar />
             </div>
           )}

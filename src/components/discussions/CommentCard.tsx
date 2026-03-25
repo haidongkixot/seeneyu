@@ -154,7 +154,7 @@ export function CommentCard({
     <div
       className={cn(
         'flex gap-3 items-start py-4',
-        !isReply && 'first:border-t-0 [&:not(:first-child)]:border-t border-white/5',
+        !isReply && 'first:border-t-0 [&:not(:first-child)]:border-t border-black/[0.04]',
         comment.hidden && 'opacity-50'
       )}
     >
@@ -207,7 +207,7 @@ export function CommentCard({
                     className="fixed inset-0 z-20"
                     onClick={() => setShowMenu(false)}
                   />
-                  <div className="absolute right-0 top-6 w-36 bg-bg-elevated border border-white/8 rounded-xl shadow-lg py-1 z-30">
+                  <div className="absolute right-0 top-6 w-36 bg-bg-elevated border border-black/8 rounded-xl shadow-lg py-1 z-30">
                     {showEditOption && (
                       <button
                         onClick={() => {
@@ -287,7 +287,7 @@ export function CommentCard({
                 if (e.target.value.length <= 500) setEditBody(e.target.value)
               }}
               className={cn(
-                'w-full bg-bg-inset border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary',
+                'w-full bg-bg-inset border border-black/10 rounded-xl px-4 py-3 text-sm text-text-primary',
                 'placeholder:text-text-tertiary resize-none min-h-[60px] max-h-[200px]',
                 'focus:outline-none focus:border-accent-400/40 focus:shadow-glow-sm transition-all'
               )}

@@ -90,7 +90,7 @@ export function ApproveModal({ result, jobId, onClose, onApproved }: ApproveModa
     }
   }
 
-  const inputCls = 'w-full bg-bg-inset border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-400/60 focus:ring-1 focus:ring-accent-400/20 transition-colors'
+  const inputCls = 'w-full bg-bg-inset border border-black/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-400/60 focus:ring-1 focus:ring-accent-400/20 transition-colors'
   const labelCls = 'text-sm font-semibold text-text-primary mb-1.5 block'
 
   return (
@@ -101,9 +101,9 @@ export function ApproveModal({ result, jobId, onClose, onApproved }: ApproveModa
       aria-labelledby="modal-title"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-bg-surface border border-white/10 rounded-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-bg-surface border border-black/10 rounded-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/8 flex items-start justify-between">
+        <div className="px-6 py-4 border-b border-black/8 flex items-start justify-between">
           <div>
             <h2 id="modal-title" className="text-base font-semibold text-text-primary">Approve Clip</h2>
             <p className="text-sm text-text-secondary mt-0.5">Fill in clip metadata before adding to library</p>
@@ -111,7 +111,7 @@ export function ApproveModal({ result, jobId, onClose, onApproved }: ApproveModa
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="w-8 h-8 rounded-lg hover:bg-white/8 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+            className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
           >
             <X size={16} />
           </button>
@@ -139,7 +139,7 @@ export function ApproveModal({ result, jobId, onClose, onApproved }: ApproveModa
           </div>
 
           {/* Right: form */}
-          <div className="p-5 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-white/8">
+          <div className="p-5 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-black/8">
             <div>
               <label className={labelCls}>Movie / Show Title</label>
               <input className={inputCls} value={form.movieTitle} onChange={e => set('movieTitle', e.target.value)} placeholder="e.g. The Social Network" />

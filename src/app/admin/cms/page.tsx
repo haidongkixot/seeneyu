@@ -45,7 +45,7 @@ export default function CmsDashboard() {
           <Link
             key={href}
             href={href}
-            className="bg-bg-surface border border-white/8 rounded-2xl p-6 hover:border-accent-400/20 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
+            className="bg-bg-surface border border-black/8 rounded-2xl p-6 hover:border-accent-400/20 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >
             <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl mb-3 ${color}`}>
               <Icon size={20} />

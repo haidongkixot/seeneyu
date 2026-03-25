@@ -134,8 +134,8 @@ export default function CertificateCard({
       <button
         className="
           w-full py-3 rounded-pill mt-2
-          bg-transparent border border-white/10 text-text-primary font-semibold text-sm
-          hover:border-white/20 hover:bg-bg-overlay
+          bg-transparent border border-black/10 text-text-primary font-semibold text-sm
+          hover:border-black/20 hover:bg-bg-overlay
           transition-all duration-150
           flex items-center justify-center gap-2
         "

@@ -84,7 +84,7 @@ export default function AdminCmsPageEditor() {
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -94,7 +94,7 @@ export default function AdminCmsPageEditor() {
             type="text"
             value={pageSlug}
             onChange={e => setPageSlug(e.target.value)}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50"
           />
         </div>
 
@@ -104,7 +104,7 @@ export default function AdminCmsPageEditor() {
             value={contentJson}
             onChange={e => setContentJson(e.target.value)}
             rows={16}
-            className="w-full bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
+            className="w-full bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary font-mono focus:outline-none focus:border-accent-400/50 resize-y"
           />
           <p className="text-xs text-text-muted mt-1">
             Use {`{"html": "<h2>...</h2><p>...</p>"}`} for rich content.
@@ -116,7 +116,7 @@ export default function AdminCmsPageEditor() {
           <select
             value={status}
             onChange={e => setStatus(e.target.value)}
-            className="bg-bg-surface border border-white/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+            className="bg-bg-surface border border-black/8 rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
           >
             <option value="draft">Draft</option>
             <option value="published">Published</option>

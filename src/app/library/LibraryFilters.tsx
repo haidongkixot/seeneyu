@@ -93,7 +93,7 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
   const activeFilterCount = [activeSkill, activeDifficulty, activeFilm, hasScreenplay ? 'yes' : undefined].filter(Boolean).length
 
   return (
-    <div className="sticky top-14 z-raised bg-bg-base/90 backdrop-blur-md border-b border-white/6 pb-4 mb-8 -mx-4 px-4 lg:-mx-8 lg:px-8">
+    <div className="sticky top-14 z-raised bg-bg-base/90 backdrop-blur-md border-b border-black/6 pb-4 mb-8 -mx-4 px-4 lg:-mx-8 lg:px-8">
       <div className="flex flex-col gap-3 pt-4">
 
         {/* Search bar — always visible */}
@@ -103,7 +103,7 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-bg-inset border border-white/10 rounded-xl pl-9 pr-24 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:border-accent-400/60 focus:shadow-glow-sm focus:outline-none transition-all duration-150"
+            className="w-full bg-bg-inset border border-black/10 rounded-xl pl-9 pr-24 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:border-accent-400/60 focus:shadow-glow-sm focus:outline-none transition-all duration-150"
             placeholder="Search clips, films, characters…"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -264,7 +264,7 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
 
                 {/* Mobile: native select */}
                 <select
-                  className="sm:hidden flex-1 bg-bg-inset border border-white/10 rounded-xl px-3 py-2 text-text-primary text-xs"
+                  className="sm:hidden flex-1 bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-xs"
                   value={activeFilm || ''}
                   onChange={(e) => navigate(activeSkill, activeDifficulty, e.target.value || undefined, hasScreenplay)}
                 >
