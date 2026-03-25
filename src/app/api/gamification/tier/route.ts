@@ -11,9 +11,9 @@ const TIER_THRESHOLDS = [
   { name: 'Bronze', minXp: 0, color: '#CD7F32' },
 ] as const
 
-export type TierName = 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond'
+type TierName = 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond'
 
-export function getTierForXp(totalXp: number): { name: TierName; color: string; minXp: number } {
+function getTierForXp(totalXp: number): { name: TierName; color: string; minXp: number } {
   for (const tier of TIER_THRESHOLDS) {
     if (totalXp >= tier.minXp) {
       return { name: tier.name as TierName, color: tier.color, minXp: tier.minXp }
