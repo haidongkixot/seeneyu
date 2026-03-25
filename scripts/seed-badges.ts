@@ -12,7 +12,7 @@ interface BadgeSeed {
   description: string
   iconEmoji: string
   category: string
-  criteria: Record<string, unknown>
+  criteria: Record<string, string | number | boolean>
 }
 
 const badges: BadgeSeed[] = [
@@ -281,13 +281,13 @@ async function main() {
   for (const badge of badges) {
     await prisma.badge.upsert({
       where: { slug: badge.slug },
-      create: badge,
+      create: { ...badge, criteria: badge.criteria as any },
       update: {
         name: badge.name,
         description: badge.description,
         iconEmoji: badge.iconEmoji,
         category: badge.category,
-        criteria: badge.criteria,
+        criteria: badge.criteria as any,
       },
     })
     console.log(`  [OK] ${badge.slug} — ${badge.name}`)
