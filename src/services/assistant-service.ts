@@ -37,121 +37,56 @@ export async function buildSystemPrompt(
   userId: string,
   context: string
 ): Promise<string> {
-  // Fetch user progress summary + full course catalog + gamification
-  const [user, foundationProgress, arcadeAttempts, allCourses, gamification] = await Promise.all([
+  // Fetch minimal data in parallel — keep fast for Vercel 10s limit
+  const [user, progressCount, gamification] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { name: true, plan: true },
     }),
-    prisma.foundationProgress.findMany({
-      where: { userId },
-      select: {
-        quizPassed: true,
-        quizScore: true,
-        lesson: { select: { title: true, slug: true, order: true, course: { select: { title: true, slug: true, order: true } } } },
-      },
-    }),
-    prisma.arcadeAttempt.findMany({
-      where: { userId },
-      select: {
-        score: true,
-        challenge: { select: { title: true, type: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 10,
-    }),
-    prisma.foundationCourse.findMany({
-      orderBy: { order: 'asc' },
-      select: {
-        title: true,
-        slug: true,
-        order: true,
-        lessons: {
-          orderBy: { order: 'asc' },
-          select: { title: true, slug: true, order: true },
-        },
-      },
-    }),
+    prisma.foundationProgress.count({ where: { userId, quizPassed: true } }),
     prisma.userGamification.findUnique({
       where: { userId },
-      select: { totalXp: true, level: true, currentStreak: true, longestStreak: true },
+      select: { totalXp: true, level: true, currentStreak: true },
     }).catch(() => null),
   ])
 
-  // Try to load context-specific content
+  // Load context-specific content (single query, only if on a lesson/challenge page)
   let contextContent = ''
-  if (context.startsWith('lesson:')) {
-    const lessonId = context.replace('lesson:', '')
-    const lesson = await prisma.foundationLesson.findUnique({
-      where: { id: lessonId },
-      select: { title: true, theoryHtml: true, course: { select: { title: true } } },
-    })
-    if (lesson) {
-      // Strip HTML for the system prompt
-      const plainTheory = lesson.theoryHtml.replace(/<[^>]*>/g, '').slice(0, 1500)
-      contextContent = `\nThe learner is currently viewing the lesson "${lesson.title}" in the "${lesson.course.title}" course.\nLesson content summary:\n${plainTheory}`
+  try {
+    if (context.startsWith('lesson:')) {
+      const lessonId = context.replace('lesson:', '')
+      const lesson = await prisma.foundationLesson.findUnique({
+        where: { id: lessonId },
+        select: { title: true, theoryHtml: true, course: { select: { title: true } } },
+      })
+      if (lesson) {
+        const plainTheory = lesson.theoryHtml.replace(/<[^>]*>/g, '').slice(0, 800)
+        contextContent = `\nCurrently viewing: "${lesson.title}" in "${lesson.course.title}"\nContent: ${plainTheory}`
+      }
+    } else if (context.startsWith('arcade:')) {
+      const id = context.replace('arcade:', '')
+      const challenge = await prisma.arcadeChallenge.findUnique({
+        where: { id },
+        select: { title: true, description: true, type: true },
+      }).catch(() => null)
+      if (challenge) {
+        contextContent = `\nCurrently viewing arcade: "${challenge.title}" (${challenge.type})\n${challenge.description}`
+      }
     }
-  } else if (context.startsWith('challenge:')) {
-    const challengeId = context.replace('challenge:', '')
-    const challenge = await prisma.arcadeChallenge.findUnique({
-      where: { id: challengeId },
-      select: { title: true, description: true, type: true, context: true, difficulty: true },
-    })
-    if (challenge) {
-      contextContent = `\nThe learner is currently viewing the challenge "${challenge.title}" (${challenge.type}, ${challenge.difficulty}).\nChallenge description: ${challenge.description}\nContext: ${challenge.context}`
-    }
-  }
+  } catch { /* context loading is optional */ }
 
-  // Build progress summary
-  const completedLessons = foundationProgress.filter(p => p.quizPassed).length
-  const totalLessonsAttempted = foundationProgress.length
-  const recentScores = arcadeAttempts.map(a => `${a.challenge.title}: ${a.score}/100`).join(', ')
-
-  // Build course catalog with progress
-  const completedSlugs = new Set(
-    foundationProgress.filter(p => p.quizPassed).map(p => `${p.lesson.course.slug}/${p.lesson.slug}`)
-  )
-  const courseMap = allCourses.map(c => {
-    const lessonStatus = c.lessons.map(l => {
-      const done = completedSlugs.has(`${c.slug}/${l.slug}`)
-      return `  ${done ? '✅' : '⬜'} ${l.title}`
-    }).join('\n')
-    const completed = c.lessons.filter(l => completedSlugs.has(`${c.slug}/${l.slug}`)).length
-    return `${c.title} (${completed}/${c.lessons.length} done):\n${lessonStatus}`
-  }).join('\n\n')
-
-  // Gamification summary
   const gamStr = gamification
-    ? `- Level: ${gamification.level} | XP: ${gamification.totalXp} | Streak: ${gamification.currentStreak} days (best: ${gamification.longestStreak})`
-    : '- No gamification data yet (new user)'
+    ? `Level ${gamification.level}, ${gamification.totalXp} XP, ${gamification.currentStreak}-day streak`
+    : 'new user'
 
-  return `You are Coach Ney, a friendly and encouraging body language & communication coach for the Seeneyu learning platform.
+  return `You are Coach Ney, a friendly body language & communication coach on Seeneyu.
 
-Your personality:
-- Warm, supportive, and specific in your advice
-- You reference concrete body language techniques (eye contact triangles, power poses, vocal pacing, micro-expressions)
-- You celebrate progress and frame weaknesses as growth opportunities
-- Keep responses concise (2-4 sentences for simple questions, up to a paragraph for detailed explanations)
-- Use natural, conversational language — not overly formal
+Be warm, specific, concise (2-3 sentences). Reference techniques like eye contact triangles, power poses, vocal pacing.
 
-About the learner:
-- Name: ${user?.name || 'Learner'}
-- Plan: ${user?.plan || 'basic'}
-- Foundation lessons completed: ${completedLessons} (out of ${totalLessonsAttempted} attempted)
-${gamStr}
-${recentScores ? `- Recent arcade scores: ${recentScores}` : '- No arcade attempts yet'}
-
-Available courses & learner progress:
-${courseMap || '(No courses in the system yet)'}
+Learner: ${user?.name || 'Learner'} (${user?.plan || 'basic'} plan, ${progressCount} lessons completed, ${gamStr})
 ${contextContent}
 
-Guidelines:
-- Always relate advice back to body language and communication skills
-- If asked about non-relevant topics, gently redirect to communication coaching
-- Suggest specific exercises or techniques when giving advice
-- Reference the current lesson/challenge content when relevant
-- When asked about learning path, use the course catalog above to recommend what to do next
-- Never make up information about the platform or its features`
+Guidelines: relate advice to body language skills, suggest specific exercises, don't make up platform features.`
 }
 
 // ── OpenAI Integrations ──────────────────────────────────────────────
@@ -168,11 +103,11 @@ export async function generateResponse(
   const openai = await getOpenAI()
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
-    max_tokens: 500,
+    model: 'gpt-4o-mini',
+    max_tokens: 300,
     messages: [
       { role: 'system', content: systemPrompt },
-      ...messages,
+      ...messages.slice(-8),
     ],
   })
 

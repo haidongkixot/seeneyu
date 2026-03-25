@@ -44,6 +44,8 @@ export function useAssistant({ context }: UseAssistantOptions) {
       setIsSending(true)
 
       try {
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 15000)
         const res = await fetch('/api/assistant/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -52,7 +54,9 @@ export function useAssistant({ context }: UseAssistantOptions) {
             context,
             conversationId,
           }),
+          signal: controller.signal,
         })
+        clearTimeout(timeout)
 
         const data = await res.json()
 
@@ -71,12 +75,15 @@ export function useAssistant({ context }: UseAssistantOptions) {
         }
         setMessages((prev) => [...prev, assistantMsg])
       } catch (err: any) {
+        const isTimeout = err?.name === 'AbortError'
         const errorMsg: ChatMessage = {
           id: generateId(),
           role: 'assistant',
           content: err?.message === 'Daily message limit reached'
             ? "You've reached your daily message limit. Upgrade your plan for more!"
-            : `Sorry, I couldn't process that: ${err?.message || 'Unknown error'}. Please try again.`,
+            : isTimeout
+            ? "Sorry, the response took too long. Please try a shorter question."
+            : `Sorry, something went wrong. Please try again.`,
           timestamp: new Date(),
         }
         setMessages((prev) => [...prev, errorMsg])
