@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import { ArrowLeft } from 'lucide-react'
 
 interface CmsPage {
@@ -29,7 +28,6 @@ export default async function PrivacyPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <div className="max-w-3xl mx-auto px-4 lg:px-8 py-16">
         <Link
           href="/policies"

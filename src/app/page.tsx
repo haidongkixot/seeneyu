@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { PracticeShowcase } from '@/components/cms/PracticeShowcase'
 import { HeroVideo } from '@/components/cms/HeroVideo'
@@ -66,8 +65,6 @@ const TEAM = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
-
       {/* ── Hero with animated gradient ────────────────────── */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Animated gradient layer */}

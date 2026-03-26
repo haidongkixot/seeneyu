@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import { Zap, ArrowRight } from 'lucide-react'
 
 interface BundleData {
@@ -50,7 +49,6 @@ export default function ArcadePage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
         <div className="flex items-start justify-between mb-8">

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
 import { ClipViewerClient } from './ClipViewerClient'
@@ -36,8 +35,6 @@ export default async function ClipViewerPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
-
       <main className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
         {/* Back */}
         <Link

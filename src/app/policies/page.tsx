@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import { FileText } from 'lucide-react'
 
 const policyPages = [
@@ -18,7 +17,6 @@ const policyPages = [
 export default function PoliciesPage() {
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <div className="max-w-3xl mx-auto px-4 lg:px-8 py-16">
         <h1 className="text-4xl font-bold text-text-primary mb-2">Policies</h1>
         <p className="text-text-secondary mb-12">Legal and policy documents for seeneyu.</p>

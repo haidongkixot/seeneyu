@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { LockedFeedbackSection } from '@/components/LockedFeedbackSection'
 import { FeedbackPoller } from './FeedbackPoller'
@@ -39,8 +38,6 @@ export default async function FeedbackPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
-
       <main
         className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-8"
         aria-label={`AI Feedback for ${userSession.clip.skillCategory}`}

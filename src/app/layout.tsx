@@ -4,6 +4,7 @@ import { Providers } from '@/components/Providers'
 import { Footer } from '@/components/Footer'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { BottomTabBarWrapper } from '@/components/BottomTabBarWrapper'
+import { NavBarWrapper } from '@/components/NavBarWrapper'
 import './globals.css'
 
 const sans = Plus_Jakarta_Sans({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans bg-bg-base text-text-primary antialiased min-h-screen flex flex-col">
         <Providers>
           <ErrorBoundary>
+            <NavBarWrapper />
             <div className="flex-1 pb-20 md:pb-0 page-fade-in">{children}</div>
             <Footer />
             <BottomTabBarWrapper />

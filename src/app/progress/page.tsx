@@ -1,4 +1,3 @@
-import { NavBar } from '@/components/NavBar'
 import { prisma } from '@/lib/prisma'
 import { SkillBadge } from '@/components/SkillBadge'
 import type { SkillCategory } from '@/lib/types'
@@ -18,7 +17,6 @@ export default async function ProgressPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-4xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         <div className="flex items-center gap-3 mb-8">
           <TrendingUp size={28} className="text-accent-400" />

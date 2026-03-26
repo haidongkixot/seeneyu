@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 
 interface BlogPost {
   id: string
@@ -31,7 +30,6 @@ export default async function BlogPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <div className="max-w-6xl mx-auto px-4 lg:px-8 py-16">
         <h1 className="text-4xl font-bold text-text-primary mb-2">Blog</h1>
         <p className="text-text-secondary mb-12">Insights on body language, communication, and self-improvement.</p>

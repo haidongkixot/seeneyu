@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { NavBar } from '@/components/NavBar'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
 import { CharacterBanner } from '@/components/CharacterBanner'
@@ -32,8 +31,6 @@ export default async function RecordPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-bg-base flex flex-col">
-      <NavBar />
-
       {/* Compact top bar */}
       <div className="sticky top-14 z-raised h-12 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-4 lg:px-8">
         <Link

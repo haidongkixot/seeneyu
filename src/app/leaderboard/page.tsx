@@ -1,6 +1,5 @@
 'use client'
 
-import { NavBar } from '@/components/NavBar'
 import { LeaderboardTable } from '@/components/gamification/LeaderboardTable'
 import { ActivityFeed } from '@/components/gamification/ActivityFeed'
 import { Trophy, Activity } from 'lucide-react'
@@ -8,7 +7,6 @@ import { Trophy, Activity } from 'lucide-react'
 export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
         <div className="mb-8">

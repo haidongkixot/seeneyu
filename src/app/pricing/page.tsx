@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { NavBar } from '@/components/NavBar'
 import { BillingToggle } from '@/components/pricing/BillingToggle'
 import { PlanCard } from '@/components/pricing/PlanCard'
 import { ComparisonTable } from '@/components/pricing/ComparisonTable'
@@ -86,7 +85,6 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-6xl mx-auto px-4 lg:px-8 pt-12 pb-20">
         {/* Header */}
         <div className="text-center mb-10">

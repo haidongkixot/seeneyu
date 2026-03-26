@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { NavBar } from '@/components/NavBar'
 import { SubmissionCard } from '@/components/SubmissionCard'
 import { Loader2, Video } from 'lucide-react'
 import Link from 'next/link'
@@ -41,7 +40,6 @@ export default function SubmissionsPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>

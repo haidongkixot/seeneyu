@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { NavBar } from '@/components/NavBar'
 import { ClipCard, ClipCardSkeleton } from '@/components/ClipCard'
 import { LibraryFilters } from './LibraryFilters'
 import { prisma } from '@/lib/prisma'
@@ -106,8 +105,6 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
-
       <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
         <div className="flex items-baseline justify-between mb-6">

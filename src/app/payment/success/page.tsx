@@ -3,7 +3,6 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import { CheckCircle, Loader2, XCircle } from 'lucide-react'
 
 function PaymentSuccessContent() {
@@ -113,7 +112,6 @@ function PaymentSuccessContent() {
 export default function PaymentSuccessPage() {
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <Suspense fallback={
         <main className="max-w-lg mx-auto px-4 pt-20 pb-20 text-center">
           <div className="flex flex-col items-center gap-4">

@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { NavBar } from '@/components/NavBar'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
 import { AssistantButton } from '@/components/assistant'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
@@ -86,7 +85,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-10">
         <div className="space-y-1 mb-8">
           <h1 className="text-2xl font-bold text-text-primary">

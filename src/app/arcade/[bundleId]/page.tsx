@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { NavBar } from '@/components/NavBar'
 import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
@@ -209,7 +208,6 @@ export default function BundlePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-base">
-        <NavBar />
         <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10">
           <div className="h-8 w-48 skeleton rounded-lg mb-4" />
           <div className="h-4 w-64 skeleton rounded-lg mb-8" />
@@ -222,7 +220,6 @@ export default function BundlePage() {
   if (!bundle) {
     return (
       <div className="min-h-screen bg-bg-base">
-        <NavBar />
         <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 text-center py-20">
           <p className="text-text-tertiary">Bundle not found.</p>
           <Link href="/arcade" className="text-accent-400 text-sm mt-4 inline-block">Back to Arcade</Link>
@@ -492,7 +489,6 @@ export default function BundlePage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-3xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
         <div className="mb-8">

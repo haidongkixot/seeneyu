@@ -1,4 +1,3 @@
-import { NavBar } from '@/components/NavBar'
 import { prisma } from '@/lib/prisma'
 
 async function getTeamMembers() {
@@ -17,7 +16,6 @@ export default async function TeamPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <div className="max-w-5xl mx-auto px-4 lg:px-8 py-16">
         <div className="text-center mb-12">
           <p className="text-xs font-semibold text-accent-400 uppercase tracking-widest mb-3">

@@ -1,4 +1,3 @@
-import { NavBar } from '@/components/NavBar'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -43,7 +42,6 @@ export default async function FoundationPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-5xl mx-auto px-4 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-12">

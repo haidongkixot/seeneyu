@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import { NavBar } from '@/components/NavBar'
 
 interface CmsPage {
   title: string
@@ -27,7 +26,6 @@ export default async function AboutPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <div className="max-w-3xl mx-auto px-4 lg:px-8 py-16">
         <h1 className="text-4xl lg:text-5xl font-bold text-text-primary mb-8 leading-tight">
           {page.title}

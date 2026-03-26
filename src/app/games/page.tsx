@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { NavBar } from '@/components/NavBar'
 import {
   Gamepad2, Play, Trophy, Copy, Check, Eye, Shuffle, Crown,
   ChevronRight, Clock, Search,
@@ -108,7 +107,6 @@ export default function GamesPage() {
 
   return (
     <div className="min-h-screen bg-bg-base">
-      <NavBar />
       <main className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         {/* Header */}
         <div className="mb-10">
