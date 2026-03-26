@@ -38,7 +38,7 @@ export function NavBar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-3 lg:px-8 overflow-x-hidden max-w-full">
+      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-3 lg:px-8">
         <Link href="/" className="flex flex-col leading-none gap-0.5">
           <span className="text-lg font-bold text-text-primary tracking-tight">
             seeneyu
@@ -88,7 +88,7 @@ export function NavBar() {
                   {initials}
                 </button>
               {avatarOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-50">
+                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
                   <div className="px-3 py-2 border-b border-black/8">
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
@@ -145,7 +145,7 @@ export function NavBar() {
                 {initials}
               </button>
               {avatarOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-50">
+                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
                   <div className="px-3 py-2 border-b border-black/8">
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
