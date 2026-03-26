@@ -53,12 +53,20 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="arcade"
-            options={{ headerShown: false, animation: 'slide_from_right' }}
+            name="arcade/[bundleId]/index"
+            options={{ animation: 'slide_from_right' }}
           />
           <Stack.Screen
-            name="games"
-            options={{ headerShown: false, animation: 'slide_from_right' }}
+            name="arcade/[bundleId]/challenge/[challengeId]"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="games/[gameType]"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="games/leaderboard"
+            options={{ animation: 'slide_from_right' }}
           />
           <Stack.Screen
             name="lesson/[courseSlug]/index"

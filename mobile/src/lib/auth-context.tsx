@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     // Call the NextAuth credentials endpoint
     const res = await apiPost<{ token: string; user: User }>(
-      '/api/auth/mobile-login',
+      '/api/mobile/login',
       { email, password }
     );
 
