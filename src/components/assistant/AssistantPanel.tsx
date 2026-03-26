@@ -228,7 +228,7 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
           </div>
           <button
             onClick={handleClose}
-            className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-bg-overlay rounded-lg transition-colors hidden lg:flex"
+            className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-bg-overlay rounded-lg transition-colors"
           >
             <X size={16} />
           </button>
