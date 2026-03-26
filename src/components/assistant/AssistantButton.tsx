@@ -88,7 +88,7 @@ export function AssistantButton({ context }: AssistantButtonProps) {
         <div
           onClick={handleNudgeClick}
           className={cn(
-            'fixed bottom-24 right-6 z-toast md:bottom-28 md:right-8 w-72 md:w-80',
+            'fixed bottom-40 right-4 z-toast md:bottom-28 md:right-8 w-72 md:w-80',
             'bg-bg-elevated/95 backdrop-blur-sm border border-accent-400/20 rounded-2xl',
             'px-4 py-3 shadow-glow-sm cursor-pointer',
             'hover:border-accent-400/40 hover:shadow-glow transition-all duration-200',
@@ -121,7 +121,7 @@ export function AssistantButton({ context }: AssistantButtonProps) {
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          'fixed bottom-6 right-6 z-toast md:bottom-8 md:right-8',
+          'fixed bottom-[5.5rem] right-4 z-toast md:bottom-8 md:right-8',
           'w-14 h-14 rounded-full flex items-center justify-center',
           'transition-all duration-200',
           open

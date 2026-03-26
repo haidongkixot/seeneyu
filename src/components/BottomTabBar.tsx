@@ -3,13 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Home, BookOpen, Play, Zap, User } from 'lucide-react'
+import { Home, BookOpen, Play, Gamepad2, Zap, User } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 const tabs = [
   { href: '/', label: 'Home', Icon: Home },
   { href: '/foundation', label: 'Learn', Icon: BookOpen },
   { href: '/library', label: 'Practice', Icon: Play },
+  { href: '/games', label: 'Games', Icon: Gamepad2 },
   { href: '/arcade', label: 'Arcade', Icon: Zap },
   { href: '/dashboard', label: 'Profile', Icon: User },
 ] as const
@@ -44,15 +45,16 @@ export function BottomTabBar() {
               )}
             >
               <Icon
-                size={22}
+                size={20}
                 strokeWidth={active ? 2 : 1.5}
                 fill={active ? 'currentColor' : 'none'}
               />
-              {active && (
-                <span className="text-[10px] font-semibold leading-none">
-                  {label}
-                </span>
-              )}
+              <span className={cn(
+                'text-[9px] leading-none',
+                active ? 'font-semibold' : 'font-medium'
+              )}>
+                {label}
+              </span>
             </Link>
           )
         })}
