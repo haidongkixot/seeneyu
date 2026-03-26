@@ -196,12 +196,12 @@ export function AssistantPanel({ context, open, onClose }: AssistantPanelProps) 
       {/* Panel */}
       <div
         className={cn(
-          // Mobile: full-width bottom sheet
-          'fixed inset-x-0 bottom-0 z-modal h-[75vh] max-h-[600px]',
+          // Mobile: full-width bottom sheet, above bottom tab bar (h-16 = 4rem)
+          'fixed inset-x-0 bottom-16 z-modal h-[65vh] max-h-[540px]',
           'bg-bg-surface border-t border-black/8 rounded-t-3xl shadow-xl',
           'flex flex-col overflow-hidden',
           // Desktop: side panel
-          'lg:inset-x-auto lg:right-6 lg:bottom-24 lg:h-[560px] lg:w-[380px]',
+          'lg:inset-x-auto lg:right-6 lg:bottom-24 lg:h-[560px] lg:w-[380px] lg:max-h-[560px]',
           'lg:rounded-2xl lg:border lg:border-black/8',
           // Animation
           closing
