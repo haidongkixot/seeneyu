@@ -49,6 +49,58 @@ export default function RootLayout() {
             name="(auth)"
             options={{ animation: 'fade' }}
           />
+          <Stack.Screen
+            name="gamification"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="arcade"
+            options={{ headerShown: false, animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="games"
+            options={{ headerShown: false, animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="lesson/[courseSlug]/index"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="lesson/[courseSlug]/[lessonSlug]"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="clip/[clipId]/index"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="clip/[clipId]/record"
+            options={{ animation: 'slide_from_bottom' }}
+          />
+          {/* Gamification group (has its own _layout.tsx) */}
+          {/* Profile routes */}
+          <Stack.Screen
+            name="profile/edit"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="profile/submissions/index"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="profile/submissions/[id]"
+            options={{ animation: 'slide_from_right' }}
+          />
+          {/* Pricing */}
+          <Stack.Screen
+            name="pricing/index"
+            options={{ animation: 'slide_from_right' }}
+          />
+          {/* Settings */}
+          <Stack.Screen
+            name="settings/index"
+            options={{ animation: 'slide_from_right' }}
+          />
         </Stack>
       </AuthProvider>
     </SafeAreaProvider>

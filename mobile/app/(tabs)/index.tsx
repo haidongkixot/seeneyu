@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,53 +6,72 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   RefreshControl,
-  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { BookOpen, Gamepad2, Video } from 'lucide-react-native';
+import {
+  BookOpen,
+  Gamepad2,
+  Video,
+  Award,
+  Trophy,
+  ChevronRight,
+} from 'lucide-react-native';
 import { useAuth } from '@/lib/auth-context';
 import { apiGet } from '@/lib/api';
 import { Card } from '@/components/Card';
 import { GamificationHeader } from '@/components/GamificationHeader';
 import { CoachNeyFAB } from '@/components/CoachNeyFAB';
+import { CoachNeyChat } from '@/components/CoachNeyChat';
+import { StreakDisplay } from '@/components/StreakDisplay';
+import { XpProgressBar } from '@/components/XpProgressBar';
+import { QuestCard, Quest } from '@/components/QuestCard';
 import { colors } from '@/lib/theme';
 
 type GamificationProfile = {
   xp?: number;
+  xpForNextLevel?: number;
   level?: number;
   streak?: number;
   hearts?: number;
+  tier?: string;
 };
 
 export default function HomeScreen() {
   const { user, token } = useAuth();
   const [stats, setStats] = useState<GamificationProfile>({});
+  const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [chatVisible, setChatVisible] = useState(false);
 
-  async function fetchStats() {
+  const fetchData = useCallback(async () => {
     try {
-      const data = await apiGet<GamificationProfile>(
-        '/api/gamification/profile',
-        token
-      );
-      setStats(data);
+      const [profileData, questsData] = await Promise.all([
+        apiGet<GamificationProfile>('/api/gamification/profile', token).catch(
+          () => ({} as GamificationProfile)
+        ),
+        apiGet<Quest[]>('/api/gamification/quests', token).catch(
+          () => [] as Quest[]
+        ),
+      ]);
+      setStats(profileData);
+      setQuests(questsData);
     } catch {
-      // Silently fail — stats are non-critical
+      // silent
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
-    fetchStats();
-  }, [token]);
+    fetchData();
+  }, [fetchData]);
 
   function onRefresh() {
     setRefreshing(true);
-    fetchStats();
+    fetchData();
   }
 
   const quickActions = [
@@ -75,6 +94,9 @@ export default function HomeScreen() {
       route: '/(tabs)/practice' as const,
     },
   ];
+
+  // Show first 2 quests as preview
+  const questPreview = quests.slice(0, 2);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
@@ -117,83 +139,227 @@ export default function HomeScreen() {
           Ready to improve your body language?
         </Text>
 
-        {/* Stats Summary */}
+        {/* Stats + XP Progress */}
         {loading ? (
           <ActivityIndicator
             color={colors.accent[400]}
             style={{ marginVertical: 24 }}
           />
         ) : (
-          <Card style={{ marginBottom: 24 }}>
+          <>
+            {/* Stats row */}
+            <Card style={{ marginBottom: 16 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}
+              >
+                <StreakDisplay streak={stats.streak ?? 0} />
+
+                <View
+                  style={{
+                    width: 1,
+                    height: 40,
+                    backgroundColor: colors.border.default,
+                  }}
+                />
+
+                <View style={{ alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: 'PlusJakartaSans_700Bold',
+                      color: '#ef4444',
+                    }}
+                  >
+                    {stats.hearts ?? 5}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontFamily: 'PlusJakartaSans_500Medium',
+                      color: colors.text.secondary,
+                    }}
+                  >
+                    hearts
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    width: 1,
+                    height: 40,
+                    backgroundColor: colors.border.default,
+                  }}
+                />
+
+                <View style={{ alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: 'PlusJakartaSans_700Bold',
+                      color: colors.accent[500],
+                    }}
+                  >
+                    {stats.xp ?? 0}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontFamily: 'PlusJakartaSans_500Medium',
+                      color: colors.text.secondary,
+                    }}
+                  >
+                    total XP
+                  </Text>
+                </View>
+
+                {stats.tier && (
+                  <>
+                    <View
+                      style={{
+                        width: 1,
+                        height: 40,
+                        backgroundColor: colors.border.default,
+                      }}
+                    />
+                    <View
+                      style={{
+                        backgroundColor: colors.accent[400],
+                        borderRadius: 12,
+                        paddingHorizontal: 10,
+                        paddingVertical: 4,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontFamily: 'PlusJakartaSans_700Bold',
+                          color: '#1a1a2e',
+                        }}
+                      >
+                        {stats.tier}
+                      </Text>
+                    </View>
+                  </>
+                )}
+              </View>
+            </Card>
+
+            {/* XP Progress */}
+            <Card style={{ marginBottom: 24 }}>
+              <XpProgressBar
+                currentXp={stats.xp ?? 0}
+                xpForNextLevel={stats.xpForNextLevel ?? 100}
+                level={stats.level ?? 1}
+              />
+            </Card>
+          </>
+        )}
+
+        {/* Daily Quests Preview */}
+        {questPreview.length > 0 && (
+          <View style={{ marginBottom: 24 }}>
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-around',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 12,
               }}
             >
-              <View style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: 'PlusJakartaSans_600SemiBold',
+                  color: colors.text.primary,
+                }}
+              >
+                Daily Quests
+              </Text>
+              <TouchableOpacity
+                onPress={() => router.push('/gamification/quests')}
+                activeOpacity={0.7}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}
+              >
                 <Text
                   style={{
-                    fontSize: 24,
-                    fontFamily: 'PlusJakartaSans_700Bold',
+                    fontSize: 13,
+                    fontFamily: 'PlusJakartaSans_600SemiBold',
                     color: colors.accent[500],
                   }}
                 >
-                  {stats.xp ?? 0}
+                  View All
                 </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: 'PlusJakartaSans_400Regular',
-                    color: colors.text.secondary,
-                  }}
-                >
-                  Total XP
-                </Text>
-              </View>
-              <View style={{ alignItems: 'center' }}>
-                <Text
-                  style={{
-                    fontSize: 24,
-                    fontFamily: 'PlusJakartaSans_700Bold',
-                    color: '#f97316',
-                  }}
-                >
-                  {stats.streak ?? 0}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: 'PlusJakartaSans_400Regular',
-                    color: colors.text.secondary,
-                  }}
-                >
-                  Day Streak
-                </Text>
-              </View>
-              <View style={{ alignItems: 'center' }}>
-                <Text
-                  style={{
-                    fontSize: 24,
-                    fontFamily: 'PlusJakartaSans_700Bold',
-                    color: colors.text.primary,
-                  }}
-                >
-                  {stats.level ?? 1}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: 'PlusJakartaSans_400Regular',
-                    color: colors.text.secondary,
-                  }}
-                >
-                  Level
-                </Text>
-              </View>
+                <ChevronRight size={16} color={colors.accent[500]} />
+              </TouchableOpacity>
             </View>
-          </Card>
+            {questPreview.map((quest) => (
+              <QuestCard key={quest.id} quest={quest} />
+            ))}
+          </View>
         )}
+
+        {/* Gamification Links */}
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => router.push('/gamification/badges')}
+            activeOpacity={0.7}
+            style={{ flex: 1 }}
+          >
+            <Card
+              style={{
+                alignItems: 'center',
+                gap: 8,
+                paddingVertical: 20,
+              }}
+            >
+              <Award size={28} color={colors.accent[500]} />
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: 'PlusJakartaSans_600SemiBold',
+                  color: colors.text.primary,
+                }}
+              >
+                Badges
+              </Text>
+            </Card>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/gamification/leaderboard')}
+            activeOpacity={0.7}
+            style={{ flex: 1 }}
+          >
+            <Card
+              style={{
+                alignItems: 'center',
+                gap: 8,
+                paddingVertical: 20,
+              }}
+            >
+              <Trophy size={28} color={colors.accent[500]} />
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: 'PlusJakartaSans_600SemiBold',
+                  color: colors.text.primary,
+                }}
+              >
+                Leaderboard
+              </Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
 
         {/* Quick Actions */}
         <Text
@@ -213,7 +379,14 @@ export default function HomeScreen() {
             onPress={() => router.push(action.route)}
             activeOpacity={0.7}
           >
-            <Card style={{ marginBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+            <Card
+              style={{
+                marginBottom: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 16,
+              }}
+            >
               <View
                 style={{
                   width: 48,
@@ -251,7 +424,13 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      <CoachNeyFAB onPress={() => Alert.alert('Coach Ney', 'Chat coming soon!')} />
+      {/* Coach Ney */}
+      <CoachNeyFAB onPress={() => setChatVisible(true)} />
+      <CoachNeyChat
+        visible={chatVisible}
+        onClose={() => setChatVisible(false)}
+        context="home"
+      />
     </SafeAreaView>
   );
 }
