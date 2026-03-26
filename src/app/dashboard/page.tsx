@@ -34,12 +34,12 @@ export default async function DashboardPage() {
     select: { onboardingComplete: true, name: true },
   })
 
-  if (!user?.onboardingComplete) redirect('/onboarding')
+  if (!user) redirect('/auth/signin')
 
   const [baselines, completedSessions] = await Promise.all([
     db.skillBaseline.findMany({ where: { userId } }),
     prisma.userSession.findMany({
-      where: { userId, status: 'complete', feedback: { not: undefined } },
+      where: { userId, status: 'complete', feedback: { not: null } },
       include: { clip: { select: { skillCategory: true, difficulty: true } } },
       orderBy: { completedAt: 'asc' },
     }),
