@@ -99,7 +99,7 @@ export default function GamesPage() {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://seeneyu.com'
 
   function copyEmbed() {
-    const code = `<iframe src="${origin}/games/guess-expression" width="100%" height="600" frameborder="0" allow="camera; microphone" allowfullscreen></iframe>`
+    const code = `<iframe src="${origin}/embed/games/guess-expression" width="100%" height="600" frameborder="0" allow="camera; microphone" allowfullscreen></iframe>`
     navigator.clipboard.writeText(code)
     setCopiedEmbed(true)
     setTimeout(() => setCopiedEmbed(false), 2000)
@@ -262,7 +262,7 @@ export default function GamesPage() {
             <div className="relative">
               <pre className="bg-bg-inset border border-black/10 rounded-xl p-4 text-xs text-text-muted overflow-x-auto">
 {`<iframe
-  src="${origin}/games/guess-expression"
+  src="${origin}/embed/games/guess-expression"
   width="100%" height="600"
   frameborder="0"
   allow="camera; microphone"
