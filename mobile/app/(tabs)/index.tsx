@@ -55,8 +55,12 @@ export default function HomeScreen() {
           () => [] as Quest[]
         ),
       ]);
-      setStats(profileData);
-      setQuests(questsData);
+      setStats(profileData ?? {} as GamificationProfile);
+      // API may return { quests: [...] } or flat array
+      const resolvedQuests = Array.isArray(questsData)
+        ? questsData
+        : (questsData as any)?.quests ?? [];
+      setQuests(resolvedQuests);
     } catch {
       // silent
     } finally {
@@ -96,7 +100,7 @@ export default function HomeScreen() {
   ];
 
   // Show first 2 quests as preview
-  const questPreview = quests.slice(0, 2);
+  const questPreview = (quests ?? []).slice(0, 2);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
