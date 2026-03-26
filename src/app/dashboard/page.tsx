@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
 import { AssistantButton } from '@/components/assistant'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
@@ -39,7 +40,7 @@ export default async function DashboardPage() {
   const [baselines, completedSessions] = await Promise.all([
     db.skillBaseline.findMany({ where: { userId } }),
     prisma.userSession.findMany({
-      where: { userId, status: 'complete', feedback: { not: null } },
+      where: { userId, status: 'complete', feedback: { not: Prisma.JsonNull } },
       include: { clip: { select: { skillCategory: true, difficulty: true } } },
       orderBy: { completedAt: 'asc' },
     }),
