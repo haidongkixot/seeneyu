@@ -49,19 +49,21 @@ export function GamificationBar() {
     : 0
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 md:gap-3">
       <StreakFlame streak={profile.streak} />
       <HeartCounter hearts={profile.hearts} unlimited={profile.unlimited} />
 
-      {/* XP mini display */}
-      <div className="flex items-center gap-1 text-xs text-accent-400 font-semibold">
+      {/* XP mini display — hidden on mobile to save space */}
+      <div className="hidden md:flex items-center gap-1 text-xs text-accent-400 font-semibold">
         <Zap size={12} fill="currentColor" />
         <span>{profile.currentXp}</span>
       </div>
 
       <LevelBadge level={profile.level} progress={progress} />
       {profile.totalXp !== undefined && (
-        <TierBadge tier={getTierForXp(profile.totalXp)} />
+        <span className="hidden md:inline-flex">
+          <TierBadge tier={getTierForXp(profile.totalXp)} />
+        </span>
       )}
     </div>
   )

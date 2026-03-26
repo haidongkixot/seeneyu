@@ -38,7 +38,7 @@ export function NavBar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-4 lg:px-8">
+      <nav className="sticky top-0 z-[50] h-14 bg-bg-surface/80 backdrop-blur-md border-b border-black/8 flex items-center justify-between px-3 lg:px-8 overflow-x-hidden max-w-full">
         <Link href="/" className="flex flex-col leading-none gap-0.5">
           <span className="text-lg font-bold text-text-primary tracking-tight">
             seeneyu
@@ -133,7 +133,7 @@ export function NavBar() {
         </div>
 
         {/* Mobile: gamification bar + avatar only (nav links in BottomTabBar) */}
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
           {session && <GamificationBar />}
           {session ? (
             <div className="relative">
