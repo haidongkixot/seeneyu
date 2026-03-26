@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard, UserCircle } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { GamificationBar } from '@/components/gamification/GamificationBar'
 
@@ -93,6 +93,22 @@ export function NavBar() {
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
                   </div>
+                  <Link
+                    href="/profile"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <UserCircle size={14} />
+                    My Profile
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <CreditCard size={14} />
+                    Pricing
+                  </Link>
                   {userRole === 'admin' && (
                     <Link
                       href="/admin"
@@ -150,6 +166,22 @@ export function NavBar() {
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
                   </div>
+                  <Link
+                    href="/profile"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <UserCircle size={14} />
+                    My Profile
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <CreditCard size={14} />
+                    Pricing
+                  </Link>
                   {userRole === 'admin' && (
                     <Link
                       href="/admin"

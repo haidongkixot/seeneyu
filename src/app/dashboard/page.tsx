@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
+import Link from 'next/link'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
 import { AssistantButton } from '@/components/assistant'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
@@ -88,9 +89,17 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-bg-base">
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-10">
         <div className="space-y-1 mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">
-            {user.name ? `${user.name}'s Learning Path` : 'Your Learning Path'}
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-text-primary">
+              {user.name ? `${user.name}'s Learning Path` : 'Your Learning Path'}
+            </h1>
+            <Link
+              href="/profile"
+              className="text-sm text-accent-400 hover:text-accent-500 font-medium transition-colors"
+            >
+              Edit Profile &rarr;
+            </Link>
+          </div>
           <p className="text-sm text-text-secondary">
             Track your progress across all 5 communication skills.
           </p>

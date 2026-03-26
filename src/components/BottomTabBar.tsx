@@ -12,7 +12,7 @@ const tabs = [
   { href: '/library', label: 'Practice', Icon: Play },
   { href: '/games', label: 'Games', Icon: Gamepad2 },
   { href: '/arcade', label: 'Arcade', Icon: Zap },
-  { href: '/dashboard', label: 'Profile', Icon: User },
+  { href: '/profile', label: 'Profile', Icon: User },
 ] as const
 
 export function BottomTabBar() {
