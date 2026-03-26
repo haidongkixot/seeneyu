@@ -54,7 +54,8 @@
         {
           "microphonePermission": "seeneyu needs microphone access for audio recording."
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "extra": {
       "router": {
