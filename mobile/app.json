@@ -31,7 +31,10 @@
       "package": "com.seeneyu.app",
       "permissions": [
         "CAMERA",
-        "RECORD_AUDIO"
+        "RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
       ]
     },
     "web": {
@@ -52,6 +55,15 @@
           "microphonePermission": "seeneyu needs microphone access for audio recording."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "98a41dbd-6bc8-4a60-a5a5-ced1a2a27734"
+      }
+    },
+    "owner": "haidongkixot"
   }
 }
