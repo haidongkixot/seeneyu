@@ -12,10 +12,18 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { ArrowLeft, RotateCcw, Send } from 'lucide-react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { useAuth } from '@/lib/auth-context';
-import { apiPost } from '@/lib/api';
+import { apiGet, apiPost } from '@/lib/api';
 import { Button } from '@/components/Button';
 import { colors, spacing } from '@/lib/theme';
-import { MOCK_CLIPS } from '@/lib/mock-data';
+
+type ClipInfo = {
+  id: string;
+  movieTitle: string;
+  sceneDescription: string;
+  characterName?: string;
+  startSec?: number;
+  endSec?: number;
+};
 
 export default function RecordScreen() {
   const { clipId } = useLocalSearchParams<{ clipId: string }>();
@@ -29,8 +37,15 @@ export default function RecordScreen() {
   const [timer, setTimer] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [clip, setClip] = useState<ClipInfo | null>(null);
 
-  const clip = MOCK_CLIPS.find((c) => c.id === clipId);
+  useEffect(() => {
+    if (clipId) {
+      apiGet<ClipInfo>(`/api/clips/${clipId}`, token)
+        .then(setClip)
+        .catch(() => {});
+    }
+  }, [clipId, token]);
 
   useEffect(() => {
     if (isRecording) {
@@ -61,8 +76,16 @@ export default function RecordScreen() {
       if (video?.uri) {
         setRecordedUri(video.uri);
       }
-    } catch (err) {
-      console.warn('Recording error:', err);
+    } catch (err: any) {
+      console.warn('Recording error:', err?.message);
+      // Expo Go may not support video recording — show a helpful message
+      if (err?.message?.includes('not supported') || err?.message?.includes('recordAsync')) {
+        Alert.alert(
+          'Recording Not Available',
+          'Video recording requires a development build. In Expo Go, you can take a photo instead.',
+          [{ text: 'OK' }]
+        );
+      }
     } finally {
       setIsRecording(false);
     }
