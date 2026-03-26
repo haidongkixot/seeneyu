@@ -12,7 +12,6 @@ import {
 } from '@expo-google-fonts/plus-jakarta-sans';
 import { AuthProvider } from '@/lib/auth-context';
 
-import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
 
