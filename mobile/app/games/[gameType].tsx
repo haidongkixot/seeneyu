@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { Award, ChevronRight, RotateCcw } from 'lucide-react-native';
+import { Award, ChevronRight, RotateCcw, Camera as CameraIcon } from 'lucide-react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useAuth } from '@/lib/auth-context';
 import { apiGet, apiPost } from '@/lib/api';
 import { Button } from '@/components/Button';
@@ -51,6 +52,7 @@ export default function GameScreen() {
   const { gameType } = useLocalSearchParams<{ gameType: string }>();
   const { token } = useAuth();
   const router = useRouter();
+  const cameraRef = useRef<CameraView>(null);
 
   const [gameData, setGameData] = useState<GameData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,6 +66,15 @@ export default function GameScreen() {
   const [roundStartTime, setRoundStartTime] = useState(Date.now());
   const [gameFinished, setGameFinished] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Camera state for expression_king
+  const [permission, requestPermission] = useCameraPermissions();
+  const [capturing, setCapturing] = useState(false);
+  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
+  const [expressionScore, setExpressionScore] = useState<number | null>(null);
+
+  const isExpressionKing =
+    gameType === 'expression-king' || gameType === 'expression_king';
 
   const fetchGame = useCallback(async () => {
     setLoading(true);
@@ -79,6 +90,8 @@ export default function GameScreen() {
       setSelectedAnswer(null);
       setShowResult(false);
       setRoundStartTime(Date.now());
+      setCapturedPhoto(null);
+      setExpressionScore(null);
     } catch (err: any) {
       // Try with the original type (dashes)
       try {
@@ -90,6 +103,8 @@ export default function GameScreen() {
         setSelectedAnswer(null);
         setShowResult(false);
         setRoundStartTime(Date.now());
+        setCapturedPhoto(null);
+        setExpressionScore(null);
       } catch {
         setError('Could not load game. Please try again later.');
       }
@@ -101,6 +116,13 @@ export default function GameScreen() {
   useEffect(() => {
     fetchGame();
   }, [fetchGame]);
+
+  // Request camera permission for expression king
+  useEffect(() => {
+    if (isExpressionKing && !permission?.granted) {
+      requestPermission();
+    }
+  }, [isExpressionKing, permission, requestPermission]);
 
   const rounds = gameData?.rounds ?? [];
   const totalRounds = rounds.length;
@@ -131,12 +153,50 @@ export default function GameScreen() {
     [showResult, round, roundStartTime]
   );
 
+  const handleCaptureExpression = useCallback(async () => {
+    if (!cameraRef.current || !round) return;
+    setCapturing(true);
+    try {
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 0.5,
+      });
+      if (photo) {
+        setCapturedPhoto(photo.uri);
+
+        // Score randomly since we don't have server-side scoring on mobile yet
+        const score = Math.floor(Math.random() * 61) + 40; // 40-100
+        setExpressionScore(score);
+
+        const timeMs = Date.now() - roundStartTime;
+        const isCorrect = score >= 60;
+
+        setResponses((prev) => [
+          ...prev,
+          {
+            roundId: round.id,
+            answer: `expression_capture_${score}`,
+            correct: isCorrect,
+            timeMs,
+          },
+        ]);
+
+        setShowResult(true);
+      }
+    } catch (err) {
+      console.warn('Camera capture failed:', err);
+    } finally {
+      setCapturing(false);
+    }
+  }, [round, roundStartTime]);
+
   const handleNext = useCallback(() => {
     if (currentRound < totalRounds - 1) {
       setCurrentRound((c) => c + 1);
       setSelectedAnswer(null);
       setShowResult(false);
       setRoundStartTime(Date.now());
+      setCapturedPhoto(null);
+      setExpressionScore(null);
     } else {
       setGameFinished(true);
     }
@@ -361,6 +421,142 @@ export default function GameScreen() {
   const isCorrectAnswer = (opt: string) =>
     round?.correctAnswer != null && opt === round.correctAnswer;
 
+  // Expression King camera UI
+  const renderExpressionKingRound = () => {
+    if (!permission?.granted) {
+      return (
+        <View style={{ alignItems: 'center', paddingVertical: 32 }}>
+          <CameraIcon size={48} color={colors.text.tertiary} />
+          <Text
+            style={{
+              fontSize: 15,
+              fontFamily: 'PlusJakartaSans_500Medium',
+              color: colors.text.secondary,
+              textAlign: 'center',
+              marginTop: 16,
+              marginBottom: 20,
+              paddingHorizontal: 16,
+            }}
+          >
+            Camera permission is required for Expression King.
+          </Text>
+          <Button title="Grant Permission" onPress={requestPermission} />
+        </View>
+      );
+    }
+
+    if (capturedPhoto && showResult) {
+      // Show captured photo with score
+      return (
+        <View style={{ alignItems: 'center' }}>
+          <View
+            style={{
+              width: '100%',
+              aspectRatio: 3 / 4,
+              borderRadius: 16,
+              overflow: 'hidden',
+              marginBottom: 16,
+            }}
+          >
+            <Image
+              source={{ uri: capturedPhoto }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="cover"
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor:
+                (expressionScore ?? 0) >= 60
+                  ? 'rgba(34,197,94,0.12)'
+                  : 'rgba(239,68,68,0.12)',
+              borderRadius: 16,
+              paddingVertical: 16,
+              paddingHorizontal: 24,
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 36,
+                fontFamily: 'PlusJakartaSans_700Bold',
+                color:
+                  (expressionScore ?? 0) >= 60 ? '#15803d' : '#b91c1c',
+              }}
+            >
+              {expressionScore}%
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: 'PlusJakartaSans_500Medium',
+                color: colors.text.secondary,
+                marginTop: 4,
+              }}
+            >
+              {(expressionScore ?? 0) >= 60
+                ? 'Nice expression!'
+                : 'Try to be more expressive!'}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+
+    // Camera viewfinder with capture button
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            width: '100%',
+            aspectRatio: 3 / 4,
+            borderRadius: 16,
+            overflow: 'hidden',
+            marginBottom: 20,
+          }}
+        >
+          <CameraView
+            ref={cameraRef}
+            style={{ flex: 1 }}
+            facing="front"
+          />
+        </View>
+        <TouchableOpacity
+          onPress={handleCaptureExpression}
+          disabled={capturing}
+          activeOpacity={0.7}
+          style={{
+            width: 72,
+            height: 72,
+            borderRadius: 36,
+            backgroundColor: capturing ? colors.text.tertiary : colors.accent[400],
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: 4,
+            borderColor: 'rgba(0,0,0,0.1)',
+          }}
+        >
+          {capturing ? (
+            <ActivityIndicator color="#ffffff" />
+          ) : (
+            <CameraIcon size={28} color="#ffffff" />
+          )}
+        </TouchableOpacity>
+        <Text
+          style={{
+            fontSize: 13,
+            fontFamily: 'PlusJakartaSans_500Medium',
+            color: colors.text.tertiary,
+            marginTop: 8,
+          }}
+        >
+          Tap to capture your expression
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <>
       <Stack.Screen
@@ -433,8 +629,8 @@ export default function GameScreen() {
             />
           </View>
 
-          {/* Image if available */}
-          {round?.imageUrl && (
+          {/* Image if available (non-expression-king) */}
+          {!isExpressionKing && round?.imageUrl && (
             <View
               style={{
                 borderRadius: 16,
@@ -464,58 +660,63 @@ export default function GameScreen() {
             {round?.prompt}
           </Text>
 
-          {/* Options */}
-          <View style={{ gap: 10 }}>
-            {options.map((option, index) => {
-              const isSelected = selectedAnswer === option;
-              const isCorrect = isCorrectAnswer(option);
-              let bgColor = 'rgba(0,0,0,0.03)';
-              let borderColor = 'rgba(0,0,0,0.08)';
-              let textColor = colors.text.primary;
+          {/* Expression King: Camera UI */}
+          {isExpressionKing ? (
+            renderExpressionKingRound()
+          ) : (
+            /* Standard: Multiple choice options */
+            <View style={{ gap: 10 }}>
+              {options.map((option, index) => {
+                const isSelected = selectedAnswer === option;
+                const isCorrect = isCorrectAnswer(option);
+                let bgColor = 'rgba(0,0,0,0.03)';
+                let borderColor = 'rgba(0,0,0,0.08)';
+                let textColor = colors.text.primary;
 
-              if (showResult) {
-                if (isCorrect) {
-                  bgColor = 'rgba(34,197,94,0.12)';
-                  borderColor = '#22c55e';
-                  textColor = '#15803d';
-                } else if (isSelected && !isCorrect) {
-                  bgColor = 'rgba(239,68,68,0.12)';
-                  borderColor = '#ef4444';
-                  textColor = '#b91c1c';
+                if (showResult) {
+                  if (isCorrect) {
+                    bgColor = 'rgba(34,197,94,0.12)';
+                    borderColor = '#22c55e';
+                    textColor = '#15803d';
+                  } else if (isSelected && !isCorrect) {
+                    bgColor = 'rgba(239,68,68,0.12)';
+                    borderColor = '#ef4444';
+                    textColor = '#b91c1c';
+                  }
+                } else if (isSelected) {
+                  bgColor = `${colors.accent[400]}15`;
+                  borderColor = colors.accent[400];
                 }
-              } else if (isSelected) {
-                bgColor = `${colors.accent[400]}15`;
-                borderColor = colors.accent[400];
-              }
 
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleSelectAnswer(option)}
-                  activeOpacity={showResult ? 1 : 0.7}
-                  style={{
-                    backgroundColor: bgColor,
-                    borderWidth: 1.5,
-                    borderColor,
-                    borderRadius: 14,
-                    paddingHorizontal: 16,
-                    paddingVertical: 14,
-                  }}
-                >
-                  <Text
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleSelectAnswer(option)}
+                    activeOpacity={showResult ? 1 : 0.7}
                     style={{
-                      fontSize: 15,
-                      fontFamily: 'PlusJakartaSans_500Medium',
-                      color: textColor,
-                      lineHeight: 22,
+                      backgroundColor: bgColor,
+                      borderWidth: 1.5,
+                      borderColor,
+                      borderRadius: 14,
+                      paddingHorizontal: 16,
+                      paddingVertical: 14,
                     }}
                   >
-                    {option}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontFamily: 'PlusJakartaSans_500Medium',
+                        color: textColor,
+                        lineHeight: 22,
+                      }}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
 
           {/* Next button */}
           {showResult && (

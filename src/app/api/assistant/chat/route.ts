@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { getUserFromRequest } from '@/lib/mobile-auth'
 
 export const maxDuration = 30
 import { prisma } from '@/lib/prisma'
@@ -19,14 +18,14 @@ import {
  * Body: { conversationId?, context, message?, audio? (base64 string) }
  * Returns: { conversationId, reply, audioUrl?, suggestions[] }
  */
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
+    const authUser = await getUserFromRequest(req)
+    if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    const userId = (session.user as any).id as string
-    const plan = (session.user as any).plan as string | undefined
+    const userId = authUser.id
+    const plan = authUser.plan
 
     // Check plan limits
     const userRecord = await prisma.user.findUnique({

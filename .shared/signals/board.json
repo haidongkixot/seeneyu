@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-25T12:11:39.596Z",
-    "open_count": 55
+    "last_updated": "2026-03-26T11:03:34.077Z",
+    "open_count": 56
   },
   "signals": [
     {
@@ -228,6 +228,17 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_reporter_pm_1774523014075",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "Reporter session complete. Delivered: activity-log-2026-03-26.md (61 commits documented across Mar 25-26), shared-knowledge.md updated (full rewrite with current state), milestone-status-2026-03-26.md (all 46 milestones tracked), architecture-2026-03-26.md (system overview, 68 pages, 100+ API endpoints, 45 Prisma models, mobile app structure). Key findings: 36 milestones code-complete but untested (massive tester backlog), BUG-006 still open (production DB not seeded), mobile app scaffolded with 28 screens on Mar 26.",
+      "timestamp": "2026-03-26T11:03:34.075Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_data-engineer_1774440699595",
