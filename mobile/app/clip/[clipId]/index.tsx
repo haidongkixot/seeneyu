@@ -12,12 +12,13 @@ import { ChevronDown, ChevronUp, Film } from 'lucide-react-native';
 import { useAuth } from '@/lib/auth-context';
 import { apiGet } from '@/lib/api';
 import { YouTubeThumbnail } from '@/components/YouTubeThumbnail';
+import { YouTubePlayer } from '@/components/YouTubePlayer';
 import { SkillBadge } from '@/components/SkillBadge';
 import { DifficultyPill } from '@/components/DifficultyPill';
 import { Button } from '@/components/Button';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { colors, spacing } from '@/lib/theme';
-import { MOCK_CLIPS, type ClipItem } from '@/lib/mock-data';
+import { type ClipItem } from '@/lib/mock-data';
 
 type AccordionProps = {
   title: string;
@@ -54,14 +55,16 @@ export default function ClipDetailScreen() {
   const router = useRouter();
   const [clip, setClip] = useState<ClipItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const data = await apiGet<ClipItem>(`/api/library/${clipId}`, token);
+        const data = await apiGet<ClipItem>(`/api/clips/${clipId}`, token);
         setClip(data);
-      } catch {
-        setClip(MOCK_CLIPS.find((c) => c.id === clipId) ?? null);
+      } catch (err) {
+        console.warn('Failed to fetch clip detail:', err);
+        setClip(null);
       } finally {
         setLoading(false);
       }
@@ -162,13 +165,22 @@ export default function ClipDetailScreen() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Video thumbnail */}
-          <YouTubeThumbnail
-            videoId={clip.youtubeVideoId}
-            startTime={clip.startSec}
-            height={220}
-            style={styles.thumbnail}
-          />
+          {/* Video player / thumbnail */}
+          {playing ? (
+            <YouTubePlayer
+              videoId={clip.youtubeVideoId}
+              startSec={clip.startSec}
+              endSec={clip.endSec}
+              style={styles.thumbnail}
+            />
+          ) : (
+            <YouTubeThumbnail
+              videoId={clip.youtubeVideoId}
+              height={220}
+              style={styles.thumbnail}
+              onPress={() => setPlaying(true)}
+            />
+          )}
 
           {/* Badges */}
           <View style={styles.badgeRow}>

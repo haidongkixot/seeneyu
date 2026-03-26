@@ -16,7 +16,36 @@ import { QuizCard } from '@/components/QuizCard';
 import { CourseSkeletonList } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/Button';
 import { colors, spacing } from '@/lib/theme';
-import { MOCK_LESSONS, type FoundationLesson } from '@/lib/mock-data';
+
+type LessonExample = {
+  id: string;
+  youtubeId: string;
+  title: string;
+  description: string;
+  startTime?: number;
+};
+
+type QuizQuestion = {
+  id: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+  order: number;
+};
+
+type FoundationLesson = {
+  id: string;
+  slug: string;
+  courseId: string;
+  title: string;
+  theoryHtml: string;
+  order: number;
+  completed: boolean;
+  quizPassed: boolean;
+  examples: LessonExample[];
+  questions: QuizQuestion[];
+};
 
 function parseTheoryHtml(html: string): string[] {
   return html
@@ -55,8 +84,7 @@ export default function LessonViewerScreen() {
         );
         setLesson(data);
       } catch {
-        const lessons = MOCK_LESSONS[courseSlug ?? ''] ?? [];
-        setLesson(lessons.find((l) => l.slug === lessonSlug) ?? null);
+        setLesson(null);
       } finally {
         setLoading(false);
       }

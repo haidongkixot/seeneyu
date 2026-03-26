@@ -20,7 +20,7 @@ import { SkillBadge } from '@/components/SkillBadge';
 import { DifficultyPill } from '@/components/DifficultyPill';
 import { ClipSkeletonGrid } from '@/components/LoadingSkeleton';
 import { colors, spacing } from '@/lib/theme';
-import { MOCK_CLIPS, SKILL_CATEGORIES, type ClipItem } from '@/lib/mock-data';
+import { SKILL_CATEGORIES, type ClipItem } from '@/lib/mock-data';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const CARD_GAP = 12;
@@ -111,14 +111,15 @@ export default function PracticeScreen() {
 
   const fetchClips = useCallback(async () => {
     try {
-      const data = await apiGet<ClipItem[] | { clips: ClipItem[] }>(
-        '/api/library',
+      const data = await apiGet<{ clips: ClipItem[] }>(
+        '/api/clips',
         token
       );
-      const list = Array.isArray(data) ? data : (data as any).clips ?? [];
+      const list = data.clips ?? [];
       setClips(list);
-    } catch {
-      setClips(MOCK_CLIPS);
+    } catch (err) {
+      console.warn('Failed to fetch clips:', err);
+      setClips([]);
     } finally {
       setLoading(false);
       setRefreshing(false);

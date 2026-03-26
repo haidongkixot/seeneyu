@@ -32,9 +32,37 @@ type GameDef = {
   icon: React.ComponentType<{ size: number; color: string }>;
   color: string;
   bgColor: string;
+  roundCount?: number;
+  totalPlays?: number;
 };
 
-const GAME_DEFS: GameDef[] = [
+const ICON_FOR_TYPE: Record<string, React.ComponentType<any>> = {
+  'guess-expression': Eye,
+  'guess_expression': Eye,
+  'match-expression': Shuffle,
+  'match_expression': Shuffle,
+  'expression-king': Crown,
+  'expression_king': Crown,
+  'emotion-timeline': Clock,
+  'emotion_timeline': Clock,
+  'spot-the-signal': Search,
+  'spot_the_signal': Search,
+};
+
+const COLOR_FOR_TYPE: Record<string, { color: string; bgColor: string }> = {
+  'guess-expression': { color: '#8b5cf6', bgColor: 'rgba(139,92,246,0.12)' },
+  'guess_expression': { color: '#8b5cf6', bgColor: 'rgba(139,92,246,0.12)' },
+  'match-expression': { color: '#06b6d4', bgColor: 'rgba(6,182,212,0.12)' },
+  'match_expression': { color: '#06b6d4', bgColor: 'rgba(6,182,212,0.12)' },
+  'expression-king': { color: '#f59e0b', bgColor: 'rgba(245,158,11,0.12)' },
+  'expression_king': { color: '#f59e0b', bgColor: 'rgba(245,158,11,0.12)' },
+  'emotion-timeline': { color: '#ec4899', bgColor: 'rgba(236,72,153,0.12)' },
+  'emotion_timeline': { color: '#ec4899', bgColor: 'rgba(236,72,153,0.12)' },
+  'spot-the-signal': { color: '#22c55e', bgColor: 'rgba(34,197,94,0.12)' },
+  'spot_the_signal': { color: '#22c55e', bgColor: 'rgba(34,197,94,0.12)' },
+};
+
+const DEFAULT_GAMES: GameDef[] = [
   {
     type: 'guess-expression',
     title: 'Guess Expression',
@@ -84,10 +112,6 @@ type LeaderboardEntry = {
   rank: number;
 };
 
-type GameStats = {
-  type: string;
-  playCount?: number;
-};
 
 function GameCard({
   game,
@@ -166,33 +190,59 @@ function GameCard({
   );
 }
 
+type ApiGame = {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  config?: any;
+  roundCount?: number;
+  totalPlays?: number;
+};
+
+function apiGameToGameDef(g: ApiGame): GameDef {
+  const typeKey = g.type.replace(/_/g, '-');
+  const colors = COLOR_FOR_TYPE[g.type] || COLOR_FOR_TYPE[typeKey] || { color: '#8b5cf6', bgColor: 'rgba(139,92,246,0.12)' };
+  const icon = ICON_FOR_TYPE[g.type] || ICON_FOR_TYPE[typeKey] || Eye;
+  return {
+    type: typeKey,
+    title: g.title,
+    description: g.description,
+    icon,
+    color: colors.color,
+    bgColor: colors.bgColor,
+    roundCount: g.roundCount,
+    totalPlays: g.totalPlays,
+  };
+}
+
 export default function GamesScreen() {
   const { token } = useAuth();
   const router = useRouter();
-  const [stats, setStats] = useState<Record<string, number>>({});
+  const [games, setGames] = useState<GameDef[]>([]);
   const [topPlayers, setTopPlayers] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      const [statsData, leaderData] = await Promise.allSettled([
-        apiGet<GameStats[] | { games: GameStats[] }>('/api/public/games', token),
+      const [gamesData, leaderData] = await Promise.allSettled([
+        apiGet<ApiGame[]>('/api/public/games', token),
         apiGet<LeaderboardEntry[] | { entries: LeaderboardEntry[] }>(
           '/api/public/games/leaderboard',
           token
         ),
       ]);
 
-      if (statsData.status === 'fulfilled' && statsData.value) {
-        const arr = Array.isArray(statsData.value)
-          ? statsData.value
-          : (statsData.value as any).games ?? [];
-        const map: Record<string, number> = {};
-        arr.forEach((g: GameStats) => {
-          if (g.playCount) map[g.type] = g.playCount;
-        });
-        setStats(map);
+      if (gamesData.status === 'fulfilled' && gamesData.value) {
+        const arr = Array.isArray(gamesData.value) ? gamesData.value : [];
+        if (arr.length > 0) {
+          setGames(arr.map(apiGameToGameDef));
+        } else {
+          setGames(DEFAULT_GAMES);
+        }
+      } else {
+        setGames(DEFAULT_GAMES);
       }
 
       if (leaderData.status === 'fulfilled' && leaderData.value) {
@@ -202,7 +252,7 @@ export default function GamesScreen() {
         setTopPlayers(arr.slice(0, 5));
       }
     } catch {
-      // APIs may not exist yet
+      setGames(DEFAULT_GAMES);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -217,11 +267,11 @@ export default function GamesScreen() {
     ({ item }: { item: GameDef }) => (
       <GameCard
         game={item}
-        playCount={stats[item.type]}
+        playCount={item.totalPlays}
         onPress={() => router.push(`/games/${item.type}`)}
       />
     ),
-    [stats, router]
+    [router]
   );
 
   const keyExtractor = useCallback((item: GameDef) => item.type, []);
@@ -272,7 +322,7 @@ export default function GamesScreen() {
         />
       ) : (
         <FlatList
-          data={GAME_DEFS}
+          data={games}
           renderItem={renderGame}
           keyExtractor={keyExtractor}
           contentContainerStyle={{ padding: 16, paddingTop: 4 }}

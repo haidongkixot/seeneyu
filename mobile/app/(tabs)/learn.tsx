@@ -21,7 +21,18 @@ import { useAuth } from '@/lib/auth-context';
 import { apiGet } from '@/lib/api';
 import { CourseSkeletonList } from '@/components/LoadingSkeleton';
 import { colors, spacing } from '@/lib/theme';
-import { MOCK_COURSES, type FoundationCourse } from '@/lib/mock-data';
+
+type FoundationCourse = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+  lessonsCount: number;
+  completedCount: number;
+};
 
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
   eye: Eye,
@@ -100,8 +111,8 @@ export default function LearnScreen() {
       const data = await apiGet<FoundationCourse[]>('/api/foundation', token);
       setCourses(Array.isArray(data) ? data : []);
     } catch {
-      // API not available — use mock data
-      setCourses(MOCK_COURSES);
+      // API not available
+      setCourses([]);
     } finally {
       setLoading(false);
       setRefreshing(false);

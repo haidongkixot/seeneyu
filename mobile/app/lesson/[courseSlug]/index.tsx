@@ -13,12 +13,31 @@ import { useAuth } from '@/lib/auth-context';
 import { apiGet } from '@/lib/api';
 import { CourseSkeletonList } from '@/components/LoadingSkeleton';
 import { colors, spacing } from '@/lib/theme';
-import {
-  MOCK_COURSES,
-  MOCK_LESSONS,
-  type FoundationCourse,
-  type FoundationLesson,
-} from '@/lib/mock-data';
+
+type FoundationCourse = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+  lessonsCount: number;
+  completedCount: number;
+};
+
+type FoundationLesson = {
+  id: string;
+  slug: string;
+  courseId: string;
+  title: string;
+  theoryHtml: string;
+  order: number;
+  completed: boolean;
+  quizPassed: boolean;
+  examples: any[];
+  questions: any[];
+};
 
 type LessonItemProps = {
   item: FoundationLesson;
@@ -100,11 +119,8 @@ export default function CourseDetailScreen() {
         setCourse(data.course);
         setLessons(data.lessons);
       } catch {
-        const mockCourse =
-          MOCK_COURSES.find((c) => c.slug === courseSlug) ?? null;
-        const mockLessons = MOCK_LESSONS[courseSlug ?? ''] ?? [];
-        setCourse(mockCourse);
-        setLessons(mockLessons);
+        setCourse(null);
+        setLessons([]);
       } finally {
         setLoading(false);
       }
