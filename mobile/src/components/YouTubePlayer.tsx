@@ -59,7 +59,7 @@ function YouTubePlayerInner({ videoId, startSec, endSec, style }: YouTubePlayerP
   return (
     <View style={[styles.container, style]}>
       <WebView
-        source={{ html }}
+        source={{ html, baseUrl: 'https://seeneyu.vercel.app' }}
         style={styles.webview}
         originWhitelist={['*']}
         allowsInlineMediaPlayback={true}
