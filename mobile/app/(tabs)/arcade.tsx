@@ -197,8 +197,8 @@ export default function ArcadeScreen() {
       setBundles(
         Array.isArray(data) ? data : (data as any).bundles ?? []
       );
-    } catch {
-      // API may not exist yet
+    } catch (err: any) {
+      console.error('[Arcade] Fetch error:', err?.message);
     } finally {
       setLoading(false);
       setRefreshing(false);
