@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+// Using native img instead of next/image to avoid hydration issues
 import { Play } from 'lucide-react'
 import { SkillBadge } from './SkillBadge'
 import { DifficultyPill } from './DifficultyPill'
@@ -43,12 +43,10 @@ export function ClipCard({ clip }: ClipCardProps) {
       {/* Thumbnail */}
       <div className={`relative ${isAiImage ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-bg-inset`}>
         {thumbnailUrl ? (
-          <Image
+          <img
             src={thumbnailUrl}
             alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
-            fill
-            sizes="(max-width: 375px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             onError={(e) => { if (fallbackUrl) (e.target as HTMLImageElement).src = fallbackUrl }}
             loading="lazy"
           />
