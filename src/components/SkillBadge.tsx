@@ -18,8 +18,9 @@ export function SkillBadge({
   onClick,
   className,
 }: SkillBadgeProps) {
-  const colors = SKILL_COLORS[skill]
-  const label = SKILL_LABELS[skill]
+  const fallbackColors = { text: '#9ca3af', bg: '#1f2937', border: '#4b5563' }
+  const colors = SKILL_COLORS[skill] ?? fallbackColors
+  const label = SKILL_LABELS[skill] ?? skill.replace(/-/g, ' ').replace(/_/g, ' ')
 
   const baseStyle: React.CSSProperties = selected
     ? { backgroundColor: colors.border, color: '#ffffff', borderColor: colors.border }
