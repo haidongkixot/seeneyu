@@ -46,7 +46,10 @@ async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill
       mediaType: true,
       mediaUrl: true,
     },
-  }).catch(() => [] as never[])
+  }).catch((err) => {
+    console.error('Library query error:', err?.message)
+    return [] as never[]
+  })
 
   if (clips.length === 0) {
     return (
