@@ -28,10 +28,10 @@ export function ClipCard({ clip }: ClipCardProps) {
     ? clip.mediaUrl
     : hasYoutubeId
     ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
-    : '/placeholder-clip.png'
+    : null
   const fallbackUrl = hasYoutubeId
     ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
-    : '/placeholder-clip.png'
+    : null
 
   return (
     <Link
@@ -42,15 +42,21 @@ export function ClipCard({ clip }: ClipCardProps) {
     >
       {/* Thumbnail */}
       <div className={`relative ${isAiImage ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-bg-inset`}>
-        <Image
-          src={thumbnailUrl}
-          alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
-          fill
-          sizes="(max-width: 375px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          onError={(e) => { if (!isAiImage) (e.target as HTMLImageElement).src = fallbackUrl }}
-          loading="lazy"
-        />
+        {thumbnailUrl ? (
+          <Image
+            src={thumbnailUrl}
+            alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
+            fill
+            sizes="(max-width: 375px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            onError={(e) => { if (fallbackUrl) (e.target as HTMLImageElement).src = fallbackUrl }}
+            loading="lazy"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-text-tertiary text-xs">
+            No thumbnail
+          </div>
+        )}
         {isAiImage && (
           <div className="absolute top-2 left-2">
             <span className="text-[9px] font-medium text-purple-300 bg-purple-500/30 backdrop-blur-sm border border-purple-400/20 rounded-full px-1.5 py-0.5">
