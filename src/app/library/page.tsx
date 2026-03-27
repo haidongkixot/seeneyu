@@ -7,7 +7,7 @@ import { SearchX } from 'lucide-react'
 import Link from 'next/link'
 
 interface LibraryPageProps {
-  searchParams: Promise<{ skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }>
+  searchParams: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }
 }
 
 function buildWhere(skill?: string, difficulty?: string, film?: string, screenplay?: string, search?: string) {
@@ -82,7 +82,7 @@ function ClipGridSkeleton() {
 }
 
 export default async function LibraryPage({ searchParams }: LibraryPageProps) {
-  const params = await searchParams
+  const params = searchParams
   const skill = params.skill as SkillCategory | undefined
   const difficulty = params.difficulty as Difficulty | undefined
   const film = params.film
