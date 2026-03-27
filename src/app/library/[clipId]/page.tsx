@@ -45,18 +45,42 @@ export default async function ClipViewerPage({ params }: PageProps) {
           Back to Library
         </Link>
 
-        {/* Video player */}
-        <ClipViewerClient
-          youtubeVideoId={clip.youtubeVideoId}
-          startSec={clip.startSec}
-          endSec={clip.endSec}
-          annotations={clip.annotations.map(a => ({
-            id: a.id,
-            atSecond: a.atSecond,
-            note: a.note,
-            type: a.type as 'eye_contact' | 'posture' | 'gesture' | 'voice' | 'expression',
-          }))}
-        />
+        {/* Video/Image player */}
+        {(clip as any).mediaType === 'ai_image' && (clip as any).mediaUrl ? (
+          <div className="w-full rounded-2xl overflow-hidden bg-bg-elevated border border-black/8">
+            <img
+              src={(clip as any).mediaUrl}
+              alt={clip.sceneDescription}
+              className="w-full h-auto max-h-[500px] object-contain"
+            />
+          </div>
+        ) : (clip as any).mediaType === 'ai_video' && (clip as any).mediaUrl ? (
+          <div className="w-full rounded-2xl overflow-hidden bg-black">
+            <video
+              src={(clip as any).mediaUrl}
+              controls
+              autoPlay
+              loop
+              className="w-full h-auto max-h-[500px]"
+            />
+          </div>
+        ) : clip.youtubeVideoId ? (
+          <ClipViewerClient
+            youtubeVideoId={clip.youtubeVideoId}
+            startSec={clip.startSec}
+            endSec={clip.endSec}
+            annotations={clip.annotations.map(a => ({
+              id: a.id,
+              atSecond: a.atSecond,
+              note: a.note,
+              type: a.type as 'eye_contact' | 'posture' | 'gesture' | 'voice' | 'expression',
+            }))}
+          />
+        ) : (
+          <div className="w-full aspect-video rounded-2xl bg-bg-elevated border border-black/8 flex items-center justify-center">
+            <p className="text-text-tertiary">No media available</p>
+          </div>
+        )}
 
         {/* Clip info header */}
         <div className="flex items-start justify-between flex-wrap gap-4 mt-6">
