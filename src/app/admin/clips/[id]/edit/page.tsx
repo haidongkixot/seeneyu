@@ -34,6 +34,8 @@ export default async function EditClipPage({ params }: { params: { id: string } 
     script: (clip as any).script ?? '',
     startSec: clip.startSec.toString(),
     endSec: clip.endSec.toString(),
+    mediaType: (clip as any).mediaType ?? '',
+    mediaUrl: (clip as any).mediaUrl ?? '',
     isActive: clip.isActive,
   }
 

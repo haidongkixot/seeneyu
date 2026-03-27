@@ -18,6 +18,8 @@ interface ChallengeData {
   description: string
   context: string
   referenceImageUrl: string | null
+  mediaUrl: string | null
+  mediaType: string | null
   difficulty: string
   xpReward: number
   orderIndex: number
@@ -258,8 +260,16 @@ export default function BundlePage() {
               <span className="text-xs font-semibold text-text-tertiary uppercase tracking-widest">Reference</span>
             </div>
             <div className="flex-1 flex flex-col p-5">
-              <div className="aspect-video rounded-xl bg-bg-elevated border border-black/8 flex items-center justify-center mb-4 text-4xl">
-                {activeChallenge.type === 'facial' ? '\uD83D\uDE10' : '\uD83E\uDDCD'}
+              <div className="aspect-video rounded-xl bg-bg-elevated border border-black/8 flex items-center justify-center mb-4 text-4xl overflow-hidden">
+                {(activeChallenge.mediaUrl || activeChallenge.referenceImageUrl) ? (
+                  activeChallenge.mediaType === 'ai_video' ? (
+                    <video src={activeChallenge.mediaUrl!} controls className="w-full h-full object-cover" />
+                  ) : (
+                    <img src={activeChallenge.mediaUrl || activeChallenge.referenceImageUrl!} alt={activeChallenge.title} className="w-full h-full object-cover" />
+                  )
+                ) : (
+                  activeChallenge.type === 'facial' ? '\uD83D\uDE10' : '\uD83E\uDDCD'
+                )}
               </div>
               <h2 className="text-xl font-bold text-text-primary mb-2">{activeChallenge.title}</h2>
               <p className="text-sm text-text-primary leading-relaxed mb-4">{activeChallenge.description}</p>

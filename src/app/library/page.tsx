@@ -43,6 +43,8 @@ async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill
       startSec: true,
       endSec: true,
       screenplaySource: true,
+      mediaType: true,
+      mediaUrl: true,
     },
   }).catch(() => [] as never[])
 

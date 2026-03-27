@@ -12,6 +12,8 @@ interface Clip {
   difficulty: string
   isActive: boolean
   createdAt: string
+  mediaType?: string | null
+  mediaUrl?: string | null
 }
 
 const PAGE_SIZE = 20
@@ -94,11 +96,18 @@ export default function AdminClipsPage() {
               paginated.map(clip => (
                 <tr key={clip.id} className="border-b border-black/[0.04] hover:bg-bg-overlay transition-colors">
                   <td className="px-4 py-3">
-                    <img
-                      src={`https://img.youtube.com/vi/${clip.youtubeVideoId}/default.jpg`}
-                      alt=""
-                      className="w-16 h-10 object-cover rounded-lg"
-                    />
+                    {clip.mediaType === 'ai_image' && clip.mediaUrl ? (
+                      <div className="relative">
+                        <img src={clip.mediaUrl} alt="" className="w-16 h-10 object-cover rounded-lg" />
+                        <span className="absolute -top-1 -right-1 text-[8px] font-medium text-purple-300 bg-purple-500/30 border border-purple-400/20 rounded-full px-1">AI</span>
+                      </div>
+                    ) : (
+                      <img
+                        src={`https://img.youtube.com/vi/${clip.youtubeVideoId}/default.jpg`}
+                        alt=""
+                        className="w-16 h-10 object-cover rounded-lg"
+                      />
+                    )}
                   </td>
                   <td className="px-4 py-3 text-text-primary font-medium">{clip.movieTitle}</td>
                   <td className="px-4 py-3 text-text-secondary capitalize">{clip.skillCategory.replace(/-/g, ' ')}</td>

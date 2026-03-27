@@ -38,6 +38,8 @@ interface ClipFormData {
   screenplaySource: string
   startSec: string
   endSec: string
+  mediaType: string
+  mediaUrl: string
   isActive: boolean
 }
 
@@ -61,6 +63,8 @@ const EMPTY: ClipFormData = {
   screenplaySource: '',
   startSec: '0',
   endSec: '30',
+  mediaType: '',
+  mediaUrl: '',
   isActive: true,
 }
 
@@ -112,6 +116,8 @@ export default function ClipForm({ initial, mode }: Props) {
       screenplaySource: form.screenplaySource || null,
       startSec: Number(form.startSec),
       endSec: Number(form.endSec),
+      mediaType: form.mediaType || null,
+      mediaUrl: form.mediaUrl || null,
       isActive: form.isActive,
     }
 
@@ -284,6 +290,38 @@ export default function ClipForm({ initial, mode }: Props) {
             onChange={e => set('screenplaySource', e.target.value)}
           />
         </div>
+
+        {/* Media Type */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className={labelClass()}>Media Type</label>
+            <select value={form.mediaType} onChange={e => set('mediaType', e.target.value)} className={inputClass()}>
+              <option value="">YouTube (default)</option>
+              <option value="youtube">YouTube</option>
+              <option value="ai_image">AI Image</option>
+              <option value="ai_video">AI Video</option>
+            </select>
+          </div>
+          {(form.mediaType === 'ai_image' || form.mediaType === 'ai_video') && (
+            <div className="flex flex-col gap-1.5">
+              <label className={labelClass()}>Media URL</label>
+              <input
+                type="url"
+                value={form.mediaUrl}
+                onChange={e => set('mediaUrl', e.target.value)}
+                className={inputClass()}
+                placeholder="https://example.com/image.png"
+              />
+            </div>
+          )}
+        </div>
+        {form.mediaType === 'ai_image' && form.mediaUrl && (
+          <img
+            src={form.mediaUrl}
+            alt="AI media preview"
+            className="w-48 h-48 object-cover rounded-lg border border-black/8"
+          />
+        )}
 
         {/* Active toggle */}
         <label className="flex items-center gap-3 cursor-pointer">

@@ -20,6 +20,8 @@ export default function EditChallengePage() {
     description: '',
     context: '',
     referenceImageUrl: '',
+    mediaUrl: '',
+    mediaType: '',
     difficulty: 'beginner',
     xpReward: 20,
     orderIndex: 1,
@@ -35,6 +37,8 @@ export default function EditChallengePage() {
           description: data.description,
           context: data.context,
           referenceImageUrl: data.referenceImageUrl || '',
+          mediaUrl: data.mediaUrl || '',
+          mediaType: data.mediaType || '',
           difficulty: data.difficulty,
           xpReward: data.xpReward,
           orderIndex: data.orderIndex,
@@ -167,6 +171,36 @@ export default function EditChallengePage() {
             <img src={form.referenceImageUrl} alt="Preview" className="mt-2 h-24 rounded-lg object-cover" />
           )}
         </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1.5">Media Type</label>
+            <select
+              value={form.mediaType}
+              onChange={e => setForm(f => ({ ...f, mediaType: e.target.value }))}
+              className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+            >
+              <option value="">None</option>
+              <option value="ai_image">AI Image</option>
+              <option value="ai_video">AI Video</option>
+            </select>
+          </div>
+          {(form.mediaType === 'ai_image' || form.mediaType === 'ai_video') && (
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-1.5">Media URL</label>
+              <input
+                type="url"
+                value={form.mediaUrl}
+                onChange={e => setForm(f => ({ ...f, mediaUrl: e.target.value }))}
+                placeholder="https://example.com/image.png"
+                className="w-full bg-bg-inset border border-black/10 rounded-xl px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent-400/50"
+              />
+            </div>
+          )}
+        </div>
+        {form.mediaType === 'ai_image' && form.mediaUrl && (
+          <img src={form.mediaUrl} alt="AI media preview" className="h-24 rounded-lg object-cover" />
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <div>

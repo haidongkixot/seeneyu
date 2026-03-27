@@ -42,6 +42,8 @@ export async function PUT(
         description: body.description,
         context: body.context,
         referenceImageUrl: body.referenceImageUrl,
+        mediaUrl: body.mediaUrl || null,
+        mediaType: body.mediaType || null,
         sourceClipId: body.sourceClipId || null,
         sourceTimestamp: body.sourceTimestamp ?? null,
         difficulty: body.difficulty,

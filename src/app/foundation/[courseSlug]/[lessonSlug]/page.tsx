@@ -90,6 +90,8 @@ export default async function LessonPage({
               title: e.title,
               description: e.description,
               startTime: e.startTime,
+              mediaUrl: (e as any).mediaUrl ?? null,
+              mediaType: (e as any).mediaType ?? null,
             })),
             questions: lesson.questions.map(q => ({
               id: q.id,

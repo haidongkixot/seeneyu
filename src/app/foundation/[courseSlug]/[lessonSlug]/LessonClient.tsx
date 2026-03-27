@@ -9,6 +9,8 @@ interface Example {
   title: string
   description: string
   startTime?: number | null
+  mediaUrl?: string | null
+  mediaType?: string | null
 }
 
 interface Question {
@@ -87,17 +89,25 @@ export default function LessonClient({ lesson, existingProgress, isLoggedIn }: P
           </h2>
           <div className="space-y-6">
             {lesson.examples.map((ex) => {
+              const isAiImage = ex.mediaUrl && ex.mediaType === 'ai_image'
+              const isAiVideo = ex.mediaUrl && ex.mediaType === 'ai_video'
               const src = `https://www.youtube.com/embed/${ex.youtubeId}${ex.startTime ? `?start=${ex.startTime}` : ''}`
               return (
                 <div key={ex.id} className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
-                  <div className="aspect-video w-full">
-                    <iframe
-                      src={src}
-                      title={ex.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    />
+                  <div className={`${isAiImage ? 'aspect-square' : 'aspect-video'} w-full`}>
+                    {isAiImage ? (
+                      <img src={ex.mediaUrl!} alt={ex.title} className="w-full h-full object-cover" />
+                    ) : isAiVideo ? (
+                      <video src={ex.mediaUrl!} controls className="w-full h-full object-cover" />
+                    ) : (
+                      <iframe
+                        src={src}
+                        title={ex.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    )}
                   </div>
                   <div className="p-4">
                     <p className="font-medium text-text-primary text-sm mb-1">{ex.title}</p>
