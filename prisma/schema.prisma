@@ -231,6 +231,8 @@ model LessonExample {
   title       String
   description String           @db.Text
   startTime   Int?
+  mediaUrl    String?
+  mediaType   String?
 
   @@index([lessonId])
 }
@@ -327,6 +329,8 @@ model ArcadeChallenge {
   description       String          @db.Text
   context           String          @db.Text
   referenceImageUrl String?
+  mediaUrl          String?
+  mediaType         String?
   sourceClipId      String?
   sourceTimestamp    Int?
   difficulty        String

@@ -6,9 +6,13 @@ import type { DescriptionOutput } from '../types'
 
 const EXPRESSION_TO_SKILL: Record<string, string> = {
   happiness: 'facial-expressions',
+  happy: 'facial-expressions',
   sadness: 'facial-expressions',
+  sad: 'facial-expressions',
   anger: 'facial-expressions',
+  angry: 'facial-expressions',
   surprise: 'facial-expressions',
+  surprised: 'facial-expressions',
   fear: 'facial-expressions',
   disgust: 'facial-expressions',
   contempt: 'micro-expressions',
@@ -16,20 +20,36 @@ const EXPRESSION_TO_SKILL: Record<string, string> = {
   confusion: 'facial-expressions',
   interest: 'active-listening',
   boredom: 'micro-expressions',
-  pride: 'posture',
+  pride: 'open-posture',
   shame: 'facial-expressions',
   embarrassment: 'facial-expressions',
 }
 
+const BODY_LANGUAGE_TO_SKILL: Record<string, string> = {
+  open_posture: 'open-posture',
+  closed_posture: 'open-posture',
+  confident_stance: 'open-posture',
+  submissive_gesture: 'open-posture',
+  defensive_arms: 'open-posture',
+  relaxed_lean: 'open-posture',
+  power_pose: 'open-posture',
+  nervous_fidget: 'active-listening',
+  eye_contact: 'eye-contact',
+  vocal_pacing: 'vocal-pacing',
+}
+
+type PublishTarget = 'library' | 'foundation' | 'arcade' | 'all'
+
 /**
- * Convert a completed AiContentRequest (with ready assets) into a Clip record.
- *
- * - Maps expressionType to skillCategory
- * - Auto-populates sceneDescription, annotation, difficulty, mediaUrl, mediaType
- * - Sets isActive=false (admin must review and activate)
- * - Generates observationGuide via GPT-4o-mini
+ * Convert a completed AiContentRequest into content across the platform:
+ * - Clip in the Practice Library
+ * - LessonExample in Foundation (auto-matched or new lesson)
+ * - ArcadeChallenge in Arcade (creates or adds to matching bundle)
  */
-export async function convertToClip(requestId: string): Promise<{ clipId: string }> {
+export async function convertToClip(
+  requestId: string,
+  targets: PublishTarget = 'all'
+): Promise<{ clipId: string; lessonExampleId?: string; challengeId?: string }> {
   const request = await prisma.aiContentRequest.findUnique({
     where: { id: requestId },
     include: {
@@ -42,7 +62,6 @@ export async function convertToClip(requestId: string): Promise<{ clipId: string
 
   if (!request) throw new Error(`AiContentRequest not found: ${requestId}`)
 
-  // Pick the best ready asset (prefer image, then video)
   const imageAsset = request.assets.find((a) => a.type === 'image')
   const videoAsset = request.assets.find((a) => a.type === 'video')
   const primaryAsset = imageAsset || videoAsset
@@ -51,66 +70,173 @@ export async function convertToClip(requestId: string): Promise<{ clipId: string
     throw new Error('No ready asset with blob URL found')
   }
 
-  // Parse the generated description if available
   const desc = request.generatedDescription as DescriptionOutput | null
-
-  // Determine media type
   const mediaType = primaryAsset.type === 'video' ? 'ai_video' : 'ai_image'
+  const skillCategory =
+    EXPRESSION_TO_SKILL[request.expressionType] ||
+    BODY_LANGUAGE_TO_SKILL[request.bodyLanguageType] ||
+    'eye-contact'
 
-  // Map expression to skill category, fallback to bodyLanguageType
-  const skillCategory = EXPRESSION_TO_SKILL[request.expressionType] || request.bodyLanguageType
-
-  // Build scene description from generated description or fallback
   const sceneDescription = desc?.sceneDescription
     ? `${desc.sceneDescription} ${desc.characterDescription || ''} ${desc.expressionDetails || ''}`.trim()
-    : `AI-generated reference for ${request.expressionType} expression with ${request.bodyLanguageType.replace(/-/g, ' ')} body language.`
+    : `AI-generated reference for ${request.expressionType} expression with ${request.bodyLanguageType.replace(/_/g, ' ')} body language.`
 
-  // Build annotation
   const annotation = desc?.expressionDetails
     ? `${desc.expressionDetails}\n\n${desc.practiceInstructions || ''}`
     : request.imagePrompt || `${request.expressionType} / ${request.bodyLanguageType}`
 
-  // Generate observation guide via GPT-4o-mini
   const observationGuide = await generateObservationGuide(
     request.expressionType,
     request.bodyLanguageType,
     desc,
   )
 
-  // Create the Clip
-  const clip = await prisma.clip.create({
-    data: {
-      youtubeVideoId: '',
-      startSec: 0,
-      endSec: 0,
-      movieTitle: `AI Generated — ${request.expressionType}`,
-      sceneDescription,
-      skillCategory,
-      difficulty: 'beginner',
-      difficultyScore: 2,
-      signalClarity: 9,
-      noiseLevel: 1,
-      contextDependency: 1,
-      replicationDifficulty: 3,
-      annotation,
-      mediaType,
-      mediaUrl: primaryAsset.blobUrl,
-      aiContentRequestId: requestId,
-      observationGuide: observationGuide as any ?? undefined,
-      isActive: false, // Admin must activate
-    },
-  })
+  const result: { clipId: string; lessonExampleId?: string; challengeId?: string } = {
+    clipId: '',
+  }
 
-  // Update the request with published clip ID
+  // ── 1. Create Clip in Practice Library ────────────────────────────
+  if (targets === 'library' || targets === 'all') {
+    const clip = await prisma.clip.create({
+      data: {
+        youtubeVideoId: '',
+        startSec: 0,
+        endSec: 0,
+        movieTitle: `AI Generated — ${request.expressionType}`,
+        sceneDescription,
+        skillCategory,
+        difficulty: 'beginner',
+        difficultyScore: 2,
+        signalClarity: 9,
+        noiseLevel: 1,
+        contextDependency: 1,
+        replicationDifficulty: 3,
+        annotation,
+        mediaType,
+        mediaUrl: primaryAsset.blobUrl,
+        aiContentRequestId: requestId,
+        observationGuide: observationGuide as any ?? undefined,
+        isActive: true,
+      },
+    })
+    result.clipId = clip.id
+  }
+
+  // ── 2. Create Foundation LessonExample ────────────────────────────
+  if (targets === 'foundation' || targets === 'all') {
+    try {
+      // Find a matching course by skill category
+      const course = await (prisma as any).foundationCourse.findFirst({
+        where: {
+          OR: [
+            { skillCategory },
+            { title: { contains: request.expressionType, mode: 'insensitive' } },
+            { title: { contains: request.bodyLanguageType.replace(/_/g, ' '), mode: 'insensitive' } },
+          ],
+        },
+        include: { lessons: { orderBy: { order: 'desc' }, take: 1 } },
+      })
+
+      if (course && course.lessons.length > 0) {
+        // Add as example to the latest lesson in matching course
+        const lesson = course.lessons[0]
+        const example = await (prisma as any).lessonExample.create({
+          data: {
+            lessonId: lesson.id,
+            youtubeId: '',
+            title: `${request.expressionType} — ${request.bodyLanguageType.replace(/_/g, ' ')}`,
+            description: desc?.expressionDetails || sceneDescription,
+            startTime: 0,
+            mediaUrl: primaryAsset.blobUrl,
+            mediaType,
+          },
+        })
+        result.lessonExampleId = example.id
+      } else {
+        // No matching course — create example in the first available lesson
+        const anyLesson = await (prisma as any).foundationLesson.findFirst({
+          orderBy: { order: 'asc' },
+        })
+        if (anyLesson) {
+          const example = await (prisma as any).lessonExample.create({
+            data: {
+              lessonId: anyLesson.id,
+              youtubeId: '',
+              title: `${request.expressionType} — ${request.bodyLanguageType.replace(/_/g, ' ')}`,
+              description: desc?.expressionDetails || sceneDescription,
+              startTime: 0,
+              mediaUrl: primaryAsset.blobUrl,
+              mediaType,
+            },
+          })
+          result.lessonExampleId = example.id
+        }
+      }
+    } catch (err) {
+      console.error('Failed to create Foundation example:', err)
+    }
+  }
+
+  // ── 3. Create Arcade Challenge ────────────────────────────────────
+  if (targets === 'arcade' || targets === 'all') {
+    try {
+      // Find or create a bundle for AI-generated content
+      let bundle = await (prisma as any).arcadeBundle.findFirst({
+        where: { title: 'AI Expression Challenges' },
+        include: { _count: { select: { challenges: true } } },
+      })
+
+      if (!bundle) {
+        bundle = await (prisma as any).arcadeBundle.create({
+          data: {
+            title: 'AI Expression Challenges',
+            description: 'Practice facial expressions and body language with AI-generated reference images. Master the art of non-verbal communication.',
+            theme: 'AI Generated',
+            difficulty: 'beginner',
+            xpReward: 50,
+          },
+        })
+        bundle._count = { challenges: 0 }
+      }
+
+      const challengeType = request.expressionType.includes('vocal') || request.bodyLanguageType.includes('vocal')
+        ? 'vocal'
+        : 'facial'
+
+      const challenge = await (prisma as any).arcadeChallenge.create({
+        data: {
+          bundleId: bundle.id,
+          type: challengeType,
+          title: `${capitalize(request.expressionType)} — ${capitalize(request.bodyLanguageType.replace(/_/g, ' '))}`,
+          description: desc?.practiceInstructions || `Replicate the ${request.expressionType} expression with ${request.bodyLanguageType.replace(/_/g, ' ')}.`,
+          context: desc?.sceneDescription || sceneDescription,
+          difficulty: 'beginner',
+          xpReward: 20,
+          orderIndex: (bundle._count?.challenges ?? 0) + 1,
+          mediaUrl: primaryAsset.blobUrl,
+          mediaType,
+        },
+      })
+      result.challengeId = challenge.id
+    } catch (err) {
+      console.error('Failed to create Arcade challenge:', err)
+    }
+  }
+
+  // ── Update request status ─────────────────────────────────────────
   await prisma.aiContentRequest.update({
     where: { id: requestId },
     data: {
       status: 'published',
-      publishedClipId: clip.id,
+      publishedClipId: result.clipId || null,
     },
   })
 
-  return { clipId: clip.id }
+  return result
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 // ── Observation Guide Generator ─────────────────────────────────────
@@ -121,13 +247,12 @@ async function generateObservationGuide(
   description: DescriptionOutput | null,
 ): Promise<Record<string, unknown> | null> {
   if (!process.env.OPENAI_API_KEY) {
-    // Return a basic guide without AI
     return {
       focusAreas: [
         { area: 'Facial Expression', description: `Observe the ${expressionType} expression` },
-        { area: 'Body Language', description: `Notice the ${bodyLanguageType.replace(/-/g, ' ')}` },
+        { area: 'Body Language', description: `Notice the ${bodyLanguageType.replace(/_/g, ' ')}` },
       ],
-      keySignals: [`${expressionType} emotion`, bodyLanguageType.replace(/-/g, ' ')],
+      keySignals: [`${expressionType} emotion`, bodyLanguageType.replace(/_/g, ' ')],
       commonMistakes: ['Overexaggerating the expression', 'Forgetting body posture'],
     }
   }
@@ -138,33 +263,33 @@ async function generateObservationGuide(
     ? `Expression details: ${description.expressionDetails}\nPractice instructions: ${description.practiceInstructions}`
     : ''
 
-  const prompt = `Create an observation guide for a body language training exercise.
-
-Expression: ${expressionType}
-Body Language: ${bodyLanguageType.replace(/-/g, ' ')}
-${context}
-
-Return a JSON object:
-{
-  "focusAreas": [{ "area": "string", "description": "string", "timingHint": "string" }],
-  "keySignals": ["string array of specific signals to look for"],
-  "commonMistakes": ["string array of what learners often do wrong"],
-  "progressionTips": "string with 1-2 sentences on how to improve"
-}
-
-Return ONLY valid JSON.`
-
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{
+        role: 'user',
+        content: `Create an observation guide for a body language training exercise.
+
+Expression: ${expressionType}
+Body Language: ${bodyLanguageType.replace(/_/g, ' ')}
+${context}
+
+Return JSON:
+{
+  "focusAreas": [{ "area": "string", "description": "string", "timingHint": "string" }],
+  "keySignals": ["specific signals to look for"],
+  "commonMistakes": ["what learners often do wrong"],
+  "progressionTips": "how to improve"
+}
+
+Return ONLY valid JSON.`,
+      }],
       response_format: { type: 'json_object' },
       max_tokens: 600,
       temperature: 0.5,
     })
 
-    const content = response.choices[0]?.message?.content ?? '{}'
-    return JSON.parse(content)
+    return JSON.parse(response.choices[0]?.message?.content ?? '{}')
   } catch (err) {
     console.error('Failed to generate observation guide:', err)
     return null
