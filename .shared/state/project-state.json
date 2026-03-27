@@ -2,7 +2,7 @@
   "project": "seeneyu",
   "description": "Body language & communication coaching app using Hollywood movie clips",
   "phase": "36-cms-logging-rebrand",
-  "phase_note": "M36-M45 planned: Error logging, CMS, Light mode rebrand, Homepage media, App download, Sticky practice, Submission review, Tiered feedback, User management v2, Game data pipeline",
+  "phase_note": "M36-M45 planned: Error logging, CMS, Light mode rebrand, Homepage media, App download, Sticky practice, Submission review, Tiered feedback, User management v2, Game data pipeline. M46 AI Content Generator added — free AI image generation toolkit (Pollinations.ai primary, HF secondary, DALL-E fallback).",
   "active_tasks": [
     {
       "id": "task_m11_designer",
@@ -571,8 +571,8 @@
     "M9"
   ],
   "deployed_url": "https://seeneyu.vercel.app",
-  "milestones_planning": ["M26", "M27", "M28", "M29", "M30", "M31", "M32", "M33", "M34", "M35", "M36", "M37", "M38", "M39", "M40", "M41", "M42", "M43", "M44", "M45"],
-  "last_updated": "2026-03-25T18:00:00Z",
+  "milestones_planning": ["M26", "M27", "M28", "M29", "M30", "M31", "M32", "M33", "M34", "M35", "M36", "M37", "M38", "M39", "M40", "M41", "M42", "M43", "M44", "M45", "M46"],
+  "last_updated": "2026-03-26T10:00:00Z",
   "deployments": [
     {
       "version": "M14+M15",

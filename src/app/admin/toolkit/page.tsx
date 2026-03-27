@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target } from 'lucide-react'
+import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target, Sparkles, Eye } from 'lucide-react'
 
 interface ToolkitStats {
   contentSources: { total: number; raw: number; curated: number; published: number }
@@ -15,18 +15,26 @@ interface MiniGameStats {
   totalGames: number
 }
 
+interface AiGeneratorStats {
+  total: number
+  byStatus: { draft: number; generating: number; review: number; published: number; failed: number }
+  totalAssets: number
+}
+
 export default function AdminToolkitPage() {
   const [stats, setStats] = useState<ToolkitStats | null>(null)
   const [gameStats, setGameStats] = useState<MiniGameStats | null>(null)
+  const [aiStats, setAiStats] = useState<AiGeneratorStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [sourcesRes, expressionsRes, analyticsRes] = await Promise.all([
+        const [sourcesRes, expressionsRes, analyticsRes, aiRes] = await Promise.all([
           fetch('/api/admin/toolkit/crawler/jobs?page=1'),
           fetch('/api/admin/toolkit/crawler/expressions?page=1'),
           fetch('/api/admin/toolkit/mini-games/analytics').catch(() => null),
+          fetch('/api/admin/toolkit/ai-generator/stats').catch(() => null),
         ])
         const sourcesData = await sourcesRes.json()
         const expressionsData = await expressionsRes.json()
@@ -56,6 +64,10 @@ export default function AdminToolkitPage() {
             completionRate: analyticsData.completionRate ?? 0,
             totalGames: analyticsData.avgScoresByGame?.length ?? 0,
           })
+        }
+
+        if (aiRes && aiRes.ok) {
+          setAiStats(await aiRes.json())
         }
       } catch {
         setStats(null)
@@ -89,6 +101,17 @@ export default function AdminToolkitPage() {
         { label: 'Completion', value: `${Math.round(gameStats.completionRate * 100)}%`, Icon: CheckCircle2 },
       ] : [],
     },
+    {
+      href: '/admin/toolkit/ai-generator',
+      label: 'AI Content Generator',
+      description: 'Generate expression and body language reference images using AI models.',
+      Icon: Sparkles,
+      stats: aiStats ? [
+        { label: 'Requests', value: aiStats.total, Icon: Sparkles },
+        { label: 'In review', value: aiStats.byStatus.review, Icon: Eye },
+        { label: 'Published', value: aiStats.byStatus.published, Icon: CheckCircle2 },
+      ] : [],
+    },
   ]
 
   return (
@@ -100,7 +123,7 @@ export default function AdminToolkitPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tools.map((tool) => (
           <Link
             key={tool.label}

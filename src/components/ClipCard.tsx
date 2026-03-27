@@ -11,7 +11,7 @@ interface ClipCardProps {
   clip: Pick<Clip,
     'id' | 'youtubeVideoId' | 'movieTitle' | 'year' | 'characterName' |
     'sceneDescription' | 'skillCategory' | 'difficulty' | 'startSec' | 'endSec'
-  > & { screenplaySource?: string | null }
+  > & { screenplaySource?: string | null; mediaType?: string | null; mediaUrl?: string | null }
 }
 
 function formatDuration(seconds: number): string {
@@ -22,8 +22,11 @@ function formatDuration(seconds: number): string {
 
 export function ClipCard({ clip }: ClipCardProps) {
   const duration = clip.endSec - clip.startSec
-  const thumbnailUrl = `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
-  const fallbackUrl  = `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
+  const isAiImage = clip.mediaType === 'ai_image'
+  const thumbnailUrl = isAiImage && clip.mediaUrl
+    ? clip.mediaUrl
+    : `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
+  const fallbackUrl = `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
 
   return (
     <Link
@@ -33,22 +36,31 @@ export function ClipCard({ clip }: ClipCardProps) {
       aria-label={`${clip.skillCategory} clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
     >
       {/* Thumbnail */}
-      <div className="relative aspect-video overflow-hidden bg-bg-inset">
+      <div className={`relative ${isAiImage ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-bg-inset`}>
         <Image
           src={thumbnailUrl}
           alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
           fill
           sizes="(max-width: 375px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl }}
+          onError={(e) => { if (!isAiImage) (e.target as HTMLImageElement).src = fallbackUrl }}
           loading="lazy"
         />
-        {/* Play button overlay */}
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          <div className="w-10 h-10 rounded-full bg-accent-400/90 flex items-center justify-center">
-            <Play size={18} fill="currentColor" className="text-text-inverse ml-0.5" />
+        {isAiImage && (
+          <div className="absolute top-2 left-2">
+            <span className="text-[9px] font-medium text-purple-300 bg-purple-500/30 backdrop-blur-sm border border-purple-400/20 rounded-full px-1.5 py-0.5">
+              AI Generated
+            </span>
           </div>
-        </div>
+        )}
+        {/* Play button overlay (only for video clips) */}
+        {!isAiImage && (
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            <div className="w-10 h-10 rounded-full bg-accent-400/90 flex items-center justify-center">
+              <Play size={18} fill="currentColor" className="text-text-inverse ml-0.5" />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Body — compact */}

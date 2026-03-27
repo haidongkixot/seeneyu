@@ -116,6 +116,19 @@
       ],
       "decided_by": "pm",
       "timestamp": "2026-03-25T18:00:00Z"
+    },
+    {
+      "id": "dec_013",
+      "decision": "M46 AI Content Generator approved. Free model strategy: Pollinations.ai (no API key, primary) -> Hugging Face free tier (HF_TOKEN, secondary) -> DALL-E 3 (existing OPENAI_API_KEY, fallback). Video generation optional — pipeline works with images only.",
+      "rationale": "Enable AI-generated practice content without relying on YouTube. Pollinations.ai requires no API key and is free. HF free tier provides backup. DALL-E uses existing OpenAI key as last resort. New models AiContentRequest + AiGeneratedAsset. Clip model extended with mediaUrl/mediaType for non-YouTube content. Admin review gate before publishing.",
+      "alternatives_considered": [
+        "DALL-E only — rejected, $0.04/image cost adds up",
+        "Stable Diffusion self-hosted — rejected, no GPU infrastructure",
+        "Stock photo APIs — rejected, not customizable to specific expressions/poses",
+        "Midjourney — rejected, no programmatic API"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-26T10:00:00Z"
     }
   ]
 }

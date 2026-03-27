@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-26T11:03:34.077Z",
-    "open_count": 56
+    "last_updated": "2026-03-27T04:54:31.240Z",
+    "open_count": 59
   },
   "signals": [
     {
@@ -228,6 +228,39 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_designer_1774587271231",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M46 AI Content Generator — design specs needed. (1) New request form: expression type dropdown, body language dropdown, scene context textarea, 2-step flow (generate description then generate images). (2) Image gallery in request detail: 2-3 generated images with selection, regenerate button, prompt editing. (3) Library integration: how AI-generated clips display vs YouTube clips. Write to .shared/outputs/designer/m46-ai-generator-spec.md.",
+      "timestamp": "2026-03-27T04:54:31.231Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774587268361",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M46 AI Content Generator — build API routes + admin UI. API: 9 routes under /api/admin/toolkit/ai-generator/ (requests CRUD, generate trigger, publish, stats). Admin pages: /admin/toolkit/ai-generator/ (dashboard, new request form, request detail with image gallery). Update toolkit dashboard page to add AI Generator card. Update Library ClipCard + ClipViewer to handle mediaType=ai_image/ai_video (show blob image/video instead of YouTube). See milestones.json.",
+      "timestamp": "2026-03-27T04:54:28.361Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1774587263502",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M46 AI Content Generator assigned. You own the core pipeline. (1) Add AiContentRequest + AiGeneratedAsset models to schema + mediaUrl/mediaType to Clip model. (2) Build src/toolkit/ai-content-generator/ with 5 services: description-generator (GPT-4o-mini), provider-registry, image-generator (Pollinations.ai GET URL, HF inference, DALL-E fallback), video-generator (HF SVD, optional), content-converter (asset to Clip). (3) Pollinations.ai is primary — no API key, GET https://image.pollinations.ai/prompt/{prompt}?width=768&height=768&model=flux. See milestones.json.",
+      "timestamp": "2026-03-27T04:54:23.503Z",
+      "status": "unread"
     },
     {
       "id": "sig_reporter_pm_1774523014075",

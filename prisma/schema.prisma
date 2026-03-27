@@ -31,6 +31,9 @@ model Clip {
   screenplaySource      String?
   screenplayText        String?  @db.Text
   observationGuide      Json?
+  mediaType             String?  // 'youtube' (default/null) | 'ai_image' | 'ai_video'
+  mediaUrl              String?  // direct URL for ai_image/ai_video
+  aiContentRequestId    String?
   isActive              Boolean  @default(true)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
@@ -770,4 +773,46 @@ model PushSubscription {
   keys         Json
   createdAt    DateTime @default(now())
   @@index([userId])
+}
+
+// ── AI Content Generator models ──────────────────────────────────────
+
+model AiContentRequest {
+  id                   String   @id @default(cuid())
+  expressionType       String
+  bodyLanguageType     String
+  scenePrompt          String?  @db.Text
+  generatedDescription Json?
+  imagePrompt          String?  @db.Text
+  videoPrompt          String?  @db.Text
+  provider             String   @default("pollinations")
+  model                String?
+  status               String   @default("draft")
+  createdBy            String
+  publishedClipId      String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  assets               AiGeneratedAsset[]
+  @@index([status])
+  @@index([expressionType])
+}
+
+model AiGeneratedAsset {
+  id           String   @id @default(cuid())
+  requestId    String
+  request      AiContentRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  type         String
+  provider     String
+  model        String?
+  prompt       String   @db.Text
+  blobUrl      String?
+  width        Int?
+  height       Int?
+  durationMs   Int?
+  metadata     Json?
+  status       String   @default("generating")
+  errorMessage String?  @db.Text
+  createdAt    DateTime @default(now())
+  @@index([requestId])
+  @@index([status])
 }

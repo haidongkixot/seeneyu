@@ -902,6 +902,31 @@
       "src/app/admin/data-export/page.tsx — admin export page",
       "prisma/seed.ts — seed expression taxonomy"
     ]
+  },
+  {
+    "id": "M46",
+    "name": "AI Content Generator",
+    "phase": "46-ai-content",
+    "status": "planning",
+    "owner": "data-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "depends_on": [],
+    "description": "3-step toolkit: (1) GPT-4o-mini generates scene descriptions + prompts, (2) Free AI models (Pollinations.ai primary, HF secondary, DALL-E fallback) generate images/videos, (3) Convert to Clip-compatible practice content. New models: AiContentRequest, AiGeneratedAsset. Clip model extended with mediaUrl/mediaType. Admin review before publishing.",
+    "assigned": ["data-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) Admin can create content requests with expression type + body language + scene context. (2) GPT-4o-mini generates scene descriptions and image prompts. (3) Pollinations.ai generates images without API key. (4) HF and DALL-E fallbacks work when configured. (5) Admin can review, select, and publish generated images as Clips. (6) Library displays AI-generated clips with mediaType=ai_image correctly. (7) Video generation is optional and gracefully skipped if unavailable.",
+    "deliverables": [
+      "prisma/schema.prisma — AiContentRequest + AiGeneratedAsset models, Clip mediaUrl/mediaType fields",
+      "src/toolkit/ai-content-generator/description-generator.ts — GPT-4o-mini scene + prompt generation",
+      "src/toolkit/ai-content-generator/provider-registry.ts — provider management + fallback chain",
+      "src/toolkit/ai-content-generator/image-generator.ts — Pollinations.ai, HF inference, DALL-E",
+      "src/toolkit/ai-content-generator/video-generator.ts — HF Stable Video Diffusion (optional)",
+      "src/toolkit/ai-content-generator/content-converter.ts — asset to Clip conversion",
+      "src/app/api/admin/toolkit/ai-generator/ — 9 API routes (CRUD, generate, publish, stats)",
+      "src/app/admin/toolkit/ai-generator/ — 3 admin pages (dashboard, new request, request detail)",
+      "src/components/ClipCard.tsx — updated for mediaType=ai_image/ai_video",
+      "src/app/library/[clipId]/ClipViewerClient.tsx — updated for AI-generated media display"
+    ]
   }
   ]
 }
