@@ -23,10 +23,15 @@ function formatDuration(seconds: number): string {
 export function ClipCard({ clip }: ClipCardProps) {
   const duration = clip.endSec - clip.startSec
   const isAiImage = clip.mediaType === 'ai_image'
+  const hasYoutubeId = !!clip.youtubeVideoId
   const thumbnailUrl = isAiImage && clip.mediaUrl
     ? clip.mediaUrl
-    : `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
-  const fallbackUrl = `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
+    : hasYoutubeId
+    ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
+    : '/placeholder-clip.png'
+  const fallbackUrl = hasYoutubeId
+    ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
+    : '/placeholder-clip.png'
 
   return (
     <Link
