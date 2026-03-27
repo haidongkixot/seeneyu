@@ -146,11 +146,30 @@ export default function ClipForm({ initial, mode }: Props) {
       )}
 
       <div className="bg-bg-surface border border-black/8 rounded-2xl p-6 flex flex-col gap-5">
-        {/* YouTube */}
+        {/* Media Source Type */}
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass()}>Content Source</label>
+          <select
+            value={form.mediaType || 'youtube'}
+            onChange={e => {
+              const v = e.target.value
+              set('mediaType', v === 'youtube' ? '' : v)
+              if (v !== 'youtube') set('youtubeVideoId', '')
+            }}
+            className={inputClass()}
+          >
+            <option value="youtube">YouTube Video</option>
+            <option value="ai_image">AI Generated Image</option>
+            <option value="ai_video">AI Generated Video</option>
+          </select>
+        </div>
+
+        {/* YouTube ID — only for YouTube clips */}
+        {(!form.mediaType || form.mediaType === 'youtube') && (
         <div className="flex flex-col gap-1.5">
           <label className={labelClass()}>YouTube Video ID *</label>
           <input
-            required
+            required={!form.mediaType}
             value={form.youtubeVideoId}
             onChange={e => set('youtubeVideoId', e.target.value)}
             className={inputClass()}
@@ -164,6 +183,35 @@ export default function ClipForm({ initial, mode }: Props) {
             />
           )}
         </div>
+        )}
+
+        {/* AI Media URL — only for AI-generated clips */}
+        {(form.mediaType === 'ai_image' || form.mediaType === 'ai_video') && (
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass()}>Media URL *</label>
+          <input
+            required
+            value={form.mediaUrl}
+            onChange={e => set('mediaUrl', e.target.value)}
+            className={inputClass()}
+            placeholder="https://..."
+          />
+          {form.mediaUrl && form.mediaType === 'ai_image' && (
+            <img
+              src={form.mediaUrl}
+              alt="AI Preview"
+              className="mt-1 w-48 h-48 object-cover rounded-lg border border-black/8"
+            />
+          )}
+          {form.mediaUrl && form.mediaType === 'ai_video' && (
+            <video
+              src={form.mediaUrl}
+              controls
+              className="mt-1 w-48 rounded-lg border border-black/8"
+            />
+          )}
+        </div>
+        )}
 
         {/* Movie info */}
         <div className="grid grid-cols-2 gap-4">
