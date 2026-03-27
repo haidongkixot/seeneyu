@@ -1,8 +1,13 @@
 import { useEffect } from 'react';
+import { View, Text, LogBox } from 'react-native';
 import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import { ErrorBoundary } from 'expo-router';
+
+// Suppress known non-critical warnings
+LogBox.ignoreLogs(['[Layout children]', 'Require cycle']);
 import {
   useFonts,
   PlusJakartaSans_400Regular,
@@ -12,6 +17,8 @@ import {
 } from '@expo-google-fonts/plus-jakarta-sans';
 import { AuthProvider } from '@/lib/auth-context';
 
+// Catch rendering errors and show fallback
+export { ErrorBoundary } from 'expo-router';
 
 SplashScreen.preventAutoHideAsync();
 
