@@ -31,9 +31,19 @@ async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill
   const clips = await prisma.clip.findMany({
     where: buildWhere(skill, difficulty, film, screenplay, search),
     orderBy: [{ skillCategory: 'asc' }, { difficultyScore: 'asc' }],
-  }).catch((err) => {
-    console.error('Library query error:', err?.message)
-    return [] as any[]
+    select: {
+      id: true,
+      youtubeVideoId: true,
+      movieTitle: true,
+      year: true,
+      characterName: true,
+      sceneDescription: true,
+      skillCategory: true,
+      difficulty: true,
+      startSec: true,
+      endSec: true,
+      screenplaySource: true,
+    },
   })
 
   if (clips.length === 0) {
