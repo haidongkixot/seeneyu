@@ -26,7 +26,19 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   try {
     await requireAdmin()
     const body = await req.json()
-    const clip = await prisma.clip.update({ where: { id: params.id }, data: body })
+    // Only pass known Clip fields to Prisma
+    const data: any = {}
+    const ALLOWED = [
+      'youtubeVideoId', 'movieTitle', 'characterName', 'actorName', 'year',
+      'sceneDescription', 'skillCategory', 'difficulty', 'difficultyScore',
+      'signalClarity', 'noiseLevel', 'contextDependency', 'replicationDifficulty',
+      'annotation', 'contextNote', 'script', 'screenplaySource', 'screenplayText',
+      'startSec', 'endSec', 'mediaType', 'mediaUrl', 'isActive',
+    ]
+    for (const key of ALLOWED) {
+      if (key in body) data[key] = body[key]
+    }
+    const clip = await prisma.clip.update({ where: { id: params.id }, data })
     return NextResponse.json(clip)
   } catch (err: any) {
     if (err.message === 'Unauthorized') {
