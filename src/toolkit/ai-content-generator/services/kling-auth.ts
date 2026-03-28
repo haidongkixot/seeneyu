@@ -3,12 +3,12 @@ import jwt from 'jsonwebtoken'
 /**
  * Generate a JWT token for Kling AI API authentication.
  *
- * Kling requires:
- * - KLING_ACCESS_KEY (ak)
- * - KLING_SECRET_KEY (sk)
+ * Based on official Kling API docs:
+ * - Header: {"alg": "HS256", "typ": "JWT"}
+ * - Payload: {"iss": access_key, "exp": now+1800, "nbf": now-5}
+ * - Signed with secret_key using HS256
  *
- * The JWT is signed with the secret key using HS256.
- * Token expires after 30 minutes.
+ * Env vars: KLING_ACCESS_KEY, KLING_SECRET_KEY
  */
 export function getKlingToken(): string {
   const accessKey = process.env.KLING_ACCESS_KEY
@@ -20,18 +20,12 @@ export function getKlingToken(): string {
 
   const now = Math.floor(Date.now() / 1000)
 
+  // Exact payload format from Kling docs — no iat field
   const payload = {
     iss: accessKey,
-    exp: now + 1800, // 30 minutes
-    nbf: now - 5,    // Allow 5s clock skew
-    iat: now,
+    exp: now + 1800,
+    nbf: now - 5,
   }
 
-  return jwt.sign(payload, secretKey, {
-    algorithm: 'HS256',
-    header: {
-      alg: 'HS256',
-      typ: 'JWT',
-    },
-  })
+  return jwt.sign(payload, secretKey, { algorithm: 'HS256' })
 }
