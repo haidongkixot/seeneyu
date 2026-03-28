@@ -23,6 +23,8 @@ export async function generateVideo(
       return generateWithHFVideo(input, model)
     case 'pollinations-video':
       return generateWithPollinationsVideo(input, model)
+    case 'openai-video':
+      return generateWithOpenAIVideo(input, model)
     case 'runway':
       return generateWithRunway(input, model)
     case 'luma':
@@ -45,6 +47,7 @@ function detectBestVideoProvider(): string {
   if (process.env.REPLICATE_API_TOKEN) return 'replicate'
   if (process.env.RUNWAY_API_KEY) return 'runway'
   if (process.env.LUMA_API_KEY) return 'luma'
+  if (process.env.OPENAI_API_KEY) return 'openai-video'
   if (process.env.HF_TOKEN) return 'huggingface-video'
   return 'pollinations-video'
 }
@@ -104,6 +107,155 @@ async function addTTSAudio(
   } catch (err) {
     console.warn('TTS audio generation failed, returning silent video:', err)
     return video
+  }
+}
+
+// ── OpenAI Video (DALL-E image + TTS narration) ────────────────────
+
+/**
+ * Generate a "video" experience using OpenAI:
+ * 1. Generate a high-quality DALL-E image depicting the expression/technique
+ * 2. Generate TTS narration describing how to perform the technique
+ * 3. Store both as separate assets — the frontend renders them together
+ *    (image displayed while audio plays, creating a video-like experience)
+ */
+async function generateWithOpenAIVideo(
+  input: { prompt?: string; imageUrl?: string },
+  model?: string,
+): Promise<GenerationResult | null> {
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) return null
+
+  const resolvedModel = model || 'gpt-image-1'
+  const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
+
+  try {
+    const OpenAI = (await import('openai')).default
+    const openai = new OpenAI({ apiKey })
+
+    // Step 1: Generate the illustration image
+    const imagePrompt = `Professional photography of a person demonstrating body language technique: ${prompt}. Clean background, well-lit, clear facial expression and body posture visible. Educational coaching reference image.`
+
+    let imageBuffer: Buffer
+
+    if (resolvedModel === 'gpt-image-1') {
+      // Use gpt-image-1 (newer model with better quality)
+      const imageRes = await openai.images.generate({
+        model: 'gpt-image-1',
+        prompt: imagePrompt,
+        n: 1,
+        size: '1024x1024',
+      })
+
+      const firstImage = imageRes.data?.[0]
+      const imageUrl = firstImage?.url || firstImage?.b64_json
+      if (!imageUrl) throw new Error('OpenAI returned no image')
+
+      if (firstImage?.b64_json) {
+        imageBuffer = Buffer.from(firstImage.b64_json, 'base64')
+      } else {
+        const fetchRes = await fetch(imageUrl)
+        imageBuffer = Buffer.from(await fetchRes.arrayBuffer())
+      }
+    } else {
+      // dall-e-3-sequence: generate multiple frames for a sequence effect
+      const frames: Buffer[] = []
+      const framePrompts = [
+        `${imagePrompt} Starting position, neutral expression.`,
+        `${imagePrompt} Mid-transition, beginning the expression.`,
+        `${imagePrompt} Full expression achieved, confident posture.`,
+      ]
+
+      for (const fp of framePrompts) {
+        const imageRes = await openai.images.generate({
+          model: 'dall-e-3',
+          prompt: fp,
+          n: 1,
+          size: '1024x1024',
+          quality: 'standard',
+        })
+
+        const url = imageRes.data?.[0]?.url
+        if (!url) continue
+
+        const fetchRes = await fetch(url)
+        frames.push(Buffer.from(await fetchRes.arrayBuffer()))
+      }
+
+      if (frames.length === 0) throw new Error('No frames generated')
+      // Use the final frame as the primary image
+      imageBuffer = frames[frames.length - 1]
+
+      // Store all frames in metadata for the frontend to animate
+      const imageAssets = frames.map((f) => f.toString('base64'))
+
+      // Step 2: Generate TTS narration
+      const narration = `Here is a demonstration of ${prompt}. Notice the facial expression and body posture. Pay attention to the subtle changes in positioning.`
+      const audioRes = await openai.audio.speech.create({
+        model: 'tts-1',
+        voice: 'nova',
+        input: narration.slice(0, 400),
+        response_format: 'mp3',
+      })
+
+      const audioBuffer = Buffer.from(await audioRes.arrayBuffer())
+
+      return {
+        buffer: imageBuffer,
+        mimeType: 'image/png',
+        metadata: {
+          model: 'dall-e-3-sequence',
+          provider: 'openai-video',
+          hasAudio: true,
+          isComposite: true,
+          frameCount: frames.length,
+          frames: imageAssets,
+          audioBuffer: audioBuffer.toString('base64'),
+          narration,
+        },
+      }
+    }
+
+    // Step 2: Generate TTS coaching narration
+    const narration = `This demonstrates: ${prompt}. Watch how the facial muscles engage and the body maintains an open, confident posture. Try to mirror this expression, focusing on the eyes and mouth alignment.`
+    const audioRes = await openai.audio.speech.create({
+      model: 'tts-1',
+      voice: 'nova',
+      input: narration.slice(0, 400),
+      response_format: 'mp3',
+    })
+
+    const audioBuffer = Buffer.from(await audioRes.arrayBuffer())
+
+    // Step 3: Upload image to Vercel Blob
+    const imageBlob = await put(
+      `ai-content/openai-video/${Date.now()}.png`,
+      imageBuffer,
+      { access: 'public', contentType: 'image/png' },
+    )
+
+    const audioBlob = await put(
+      `ai-content/openai-video/${Date.now()}.mp3`,
+      audioBuffer,
+      { access: 'public', contentType: 'audio/mpeg' },
+    )
+
+    return {
+      buffer: imageBuffer,
+      mimeType: 'image/png',
+      metadata: {
+        model: resolvedModel,
+        provider: 'openai-video',
+        hasAudio: true,
+        isComposite: true,
+        imageUrl: imageBlob.url,
+        audioUrl: audioBlob.url,
+        narration,
+      },
+    }
+  } catch (err) {
+    console.error('OpenAI video generation failed:', err)
+    return null
   }
 }
 

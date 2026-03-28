@@ -21,21 +21,44 @@ function buildMicroPrompt(
     ? `\nLearner's speech transcript: "${transcript}"`
     : ''
 
-  return `You are a body language and communication coach giving instant feedback on a 30-second practice recording.
+  return `You are an expert body language coach analyzing a student's practice attempt.
 
-The learner was focusing ONLY on: ${skillFocus}
-Their task was: ${instruction}${transcriptLine}
+The student was practicing: ${skillFocus}
+Target technique: ${instruction}${transcriptLine}
 
-Evaluate ONLY this one skill element. Ignore everything else.
+Analyze their performance with SPECIFIC, ACTIONABLE feedback. You MUST be precise about what you observe — never give generic praise like "great job" without naming exactly what was done well.
 
 Return a JSON object with EXACTLY this structure:
 {
   "verdict": "pass" or "needs-work",
-  "headline": "<10 words max — direct verdict with encouragement, e.g. 'Good pace — you matched the reference well'>",
-  "detail": "<1-2 sentences — specific observation about what they did right or what to improve>"
+  "headline": "<10 words max — specific verdict, e.g. 'Strong eye contact but jaw tension needs work'>",
+  "detail": "<2-3 sentences — describe exactly what you observed in their expression, posture, and movement>",
+  "scores": [
+    { "label": "Facial expression accuracy", "score": <0-100> },
+    { "label": "Body posture alignment", "score": <0-100> },
+    { "label": "Timing and naturalness", "score": <0-100> },
+    { "label": "Eye contact quality", "score": <0-100> }
+  ],
+  "positives": [
+    "<specific observation about what matched the target — name exact body parts/movements>",
+    "<another specific positive — e.g. 'Your eyebrow raise was well-timed at the peak moment'>"
+  ],
+  "improvements": [
+    "<specific correction — name the exact muscle group or body part and what should change>",
+    "<another correction — e.g. 'Try widening your eyes more while keeping your jaw relaxed'>"
+  ],
+  "actionableTip": "<one concrete exercise to try right now — e.g. 'Practice raising only your eyebrows without moving your mouth for 5 seconds'>",
+  "nextStep": "<what to practice next to build on this skill>"
 }
 
-A "pass" verdict means score ≥ 7/10 on this specific element. Be direct and actionable.`
+Scoring guide:
+- A "pass" verdict requires average score >= 70
+- Score 80-100: Excellent technique, minor polish needed
+- Score 60-79: Good foundation, specific adjustments needed
+- Score 40-59: Developing, focus on fundamentals
+- Score below 40: Needs significant practice on basics
+
+Be encouraging but HONEST. Reference specific facial muscles (orbicularis oculi, zygomaticus, frontalis), body positions (shoulder rotation, spine alignment, weight distribution), and timing. Never use filler phrases like "keep practicing" or "you're doing great" without concrete specifics.`
 }
 
 export async function POST(req: NextRequest) {
@@ -100,6 +123,11 @@ export async function POST(req: NextRequest) {
             verdict: result.verdict,
             headline: result.headline,
             detail: result.detail,
+            scores: result.scores,
+            positives: result.positives,
+            improvements: result.improvements,
+            actionableTip: result.actionableTip,
+            nextStep: result.nextStep,
           }
           await prisma.microSession.update({
             where: { id: microSession.id },
@@ -159,7 +187,7 @@ export async function POST(req: NextRequest) {
 
     const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o',
-      max_tokens: 200,
+      max_tokens: 600,
       messages: [{ role: 'user', content: messageContent }],
     })
 

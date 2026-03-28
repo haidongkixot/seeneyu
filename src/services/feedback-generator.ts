@@ -48,34 +48,51 @@ async function generateWithAI(
     ? `mimicking ${ctx.characterName}${ctx.actorName ? ` (${ctx.actorName})` : ''} from ${ctx.movieTitle}`
     : `practicing a scene from ${ctx.movieTitle}`
 
-  const prompt = `You are a body language coach. A learner just finished ${characterLine}.
+  const prompt = `You are an expert body language coach analyzing a student's practice attempt.
+
+The student was practicing: ${ctx.skillCategory.replace('-', ' ')}
+${characterLine}
 Scene: ${ctx.sceneDescription}
-Skill focus: ${ctx.skillCategory.replace('-', ' ')}
 ${ctx.script ? `Script: "${ctx.script}"` : ''}
 
 Their MediaPipe analysis scores: Overall ${metrics.overallScore}/100, ${dimText}
 
+Analyze their performance with SPECIFIC, ACTIONABLE feedback:
+
+1. TECHNIQUE SCORES were measured as: ${dimText}
+
+2. WHAT THEY DID WELL — be specific about exact movements/expressions observed. Name body parts, facial muscles (orbicularis oculi, zygomaticus, frontalis), and timing.
+
+3. AREAS TO IMPROVE — give specific corrections, not generic advice:
+   - Name the exact muscle group or body part
+   - Describe what should change (direction, intensity, timing)
+   - Give a "try this" exercise they can do immediately
+
+4. COMPARISON TO REFERENCE — what matched and what differed from the target expression in the scene
+
+5. NEXT STEP — what to practice next to build on this skill, with progressive difficulty
+
 Generate coaching feedback as JSON:
 {
-  "summary": "<one encouraging sentence about their performance>",
-  "positives": ["<specific thing they did well 1>", "<specific thing 2>"],
-  "improvements": ["<specific improvement 1>", "<specific improvement 2>"],
+  "summary": "<2 sentences — specific observations about their technique, referencing what matched the reference and what needs adjustment. NEVER say generic things like 'great job' without specifics.>",
+  "positives": ["<specific observation naming exact body part/movement — e.g. 'Your eyebrow raise using the frontalis muscle was well-timed'>", "<another specific positive referencing the scene context>"],
+  "improvements": ["<specific correction — e.g. 'Your orbicularis oculi (eye muscles) didn't fully engage — try squinting slightly while maintaining the brow raise'>", "<another specific correction with a concrete exercise>"],
   "steps": [
-    {"number": 1, "action": "<physical action, imperative>", "why": "<1 sentence>"},
-    {"number": 2, "action": "<physical action>", "why": "<1 sentence>"},
-    {"number": 3, "action": "<physical action>", "why": "<1 sentence>"}
+    {"number": 1, "action": "<specific physical action targeting their weakest dimension — name exact body part>", "why": "<why this matters for the skill, reference the scene>"},
+    {"number": 2, "action": "<progressive exercise building on step 1>", "why": "<1 sentence connecting to the reference performance>"},
+    {"number": 3, "action": "<integration exercise combining multiple elements>", "why": "<1 sentence about naturalness and timing>"}
   ],
   "tips": [
-    {"title": "<short title>", "body": "<2-3 sentence actionable tip>"},
-    {"title": "<short title>", "body": "<2-3 sentence actionable tip>"}
+    {"title": "<technique name>", "body": "<2-3 sentences with a specific exercise. Include muscle names, hold durations, and repetitions. Reference how the character in the scene uses this technique.>"},
+    {"title": "<technique name>", "body": "<2-3 sentences targeting their second-weakest dimension. Include a mirror exercise or recording exercise they can try.>"}
   ]
 }
 
-Be specific, encouraging, and actionable. Reference the skill and scene context.`
+Be encouraging but HONEST. A score of 70+ means they're doing well but can still improve specific elements. Never give generic feedback — every sentence must reference a specific body part, movement, timing, or comparison to the reference scene.`
 
   const response = await openai.chat.completions.create({
     model: 'gpt-4o',
-    max_tokens: 600,
+    max_tokens: 1000,
     messages: [{ role: 'user', content: prompt }],
   })
 

@@ -3,10 +3,21 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-27T04:54:31.240Z",
-    "open_count": 59
+    "last_updated": "2026-03-28T16:13:33.647Z",
+    "open_count": 49
   },
   "signals": [
+    {
+      "id": "sig_reporter_pm_1774714413646",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "reporter-session-2026-03-28",
+      "priority": "high",
+      "message": "Reporter session 2026-03-28 complete. Processed 11 signals. Updates: (1) Activity log: added entries for 2026-03-23 (M14-M16 code-complete), 2026-03-24 (M17-M20 + MediaPipe deployed), 2026-03-25 (M21-M25 deployed, M26 backend, signal fix, M26-M28 approved). (2) Decisions summary: added DEC-006 through DEC-013. (3) Onboarding doc: fully rewritten to reflect current state (phase 36, 45+ models, MediaPipe, mobile app, M10-M25 tester backlog). GAP ALERT: 16 milestones (M10-M25) code-complete and deployed but NO tester sign-off. Tester has not started any reviews. This is the #1 project risk — cannot mark any milestone complete.",
+      "timestamp": "2026-03-28T16:13:33.646Z",
+      "status": "unread"
+    },
     {
       "id": "sig_designer_backend-engineer_1774411655944",
       "from": "designer",
@@ -384,17 +395,6 @@
       "status": "unread"
     },
     {
-      "id": "sig_pm_reporter_1774411126425",
-      "from": "pm",
-      "to": "reporter",
-      "type": "fyi",
-      "task": null,
-      "priority": "medium",
-      "message": "NEW MILESTONES M26-M28 APPROVED. Please document: 1) Decision: M26-M28 feature plan approved 2026-03-25. M26 Registration Approval, M27 Discussions, M28 AI Voice Assistant (Coach Ney). 2) Architecture decisions: OpenAI for voice (no new vendor), flat comment threading, plan-based assistant limits. 3) Dependency: M26 blocks M27+M28, then M27 and M28 parallel. Update shared-knowledge.md and activity logs.",
-      "timestamp": "2026-03-25T03:58:46.425Z",
-      "status": "unread"
-    },
-    {
       "id": "sig_pm_tester_1774411113647",
       "from": "pm",
       "to": "tester",
@@ -472,50 +472,6 @@
       "status": "unread"
     },
     {
-      "id": "sig_pm_reporter_1774400726211",
-      "from": "pm",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "signal-system-fix",
-      "priority": "normal",
-      "message": "Signal system updated with file locking to prevent race conditions. State file ownership rule enforced: only PM edits milestones.json, project-state.json, decisions.json. All other roles must signal PM with updates.",
-      "timestamp": "2026-03-25T01:05:26.211Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_builder_reporter_1774400268748",
-      "from": "builder",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "log-mediapipe-deploy",
-      "priority": "medium",
-      "message": "MediaPipe integration deployed to https://seeneyu.vercel.app. Commit b56564b. Replaced GPT-4o Vision with client-side Google MediaPipe ML. 0 TS errors, 31 pages generated. All health checks pass.",
-      "timestamp": "2026-03-25T00:57:48.748Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_backend-engineer_reporter_1774371665524",
-      "from": "backend-engineer",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "mediapipe-integration",
-      "priority": "medium",
-      "message": "MediaPipe integration complete. Replaced GPT-4o Vision dependency with client-side Google MediaPipe ML. New files: mediapipe-types.ts, mediapipe-init.ts, useMediaPipe.ts, analysis-helpers.ts, expression-scorer.ts, feedback-generator.ts. Modified 8 existing files across all 3 recording flows.",
-      "timestamp": "2026-03-24T17:01:05.524Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_backend-engineer_reporter_1774368233349",
-      "from": "backend-engineer",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "log-m17-m20",
-      "priority": "medium",
-      "message": "FYI: Backend Engineer completed M17, M18, M19, M20 this session.\n\nM17: Library search + collapsible filters + 4-col grid\nM18: PeeTeeAI brand (NavBar, Footer, homepage redesign)\nM19: Arcade Zone (3 models, GPT-4o scorer, bundle/challenge pages)\nM20: Screenplay crawler, crawl-jobs fix, ZIP import\n\nPlease log when Tester approves.",
-      "timestamp": "2026-03-24T16:03:53.349Z",
-      "status": "unread"
-    },
-    {
       "id": "sig_data-engineer_pm_1774363841153",
       "from": "data-engineer",
       "to": "pm",
@@ -525,17 +481,6 @@
       "message": "M19 + M20 data delivered this session.\\n\\n## M19 — Arcade Challenge Seed Data\\nFile: .shared/outputs/data/arcade-challenges-seed.json\\n- 3 bundles × 10 challenges = 30 challenges total\\n- Bundle 0: Confidence & Authority (intermediate) — Gladiator, Wall Street, Social Network, Any Given Sunday, A Few Good Men, Network, Margin Call, Catch Me If You Can, Coach Carter, King's Speech\\n- Bundle 1: Empathy & Warmth (beginner) — Jerry Maguire, Good Will Hunting, Dead Poets Society, Pursuit of Happyness, Before Sunrise, Forrest Gump, When Harry Met Sally, Rain Man, Good Will Hunting\\n- Bundle 2: Tension & Conflict (advanced) — Whiplash, Silence of the Lambs, Inglourious Basterds, No Country for Old Men, 12 Angry Men, Glengarry Glen Ross, Dark Knight, Shawshank, A Few Good Men, Lincoln\\n- Mix: 15 facial + 15 gesture challenges\\n- referenceImageUrl = null (MVP description-only scoring per spec)\\n- All descriptions drawn from library films\\n\\n## M20 — Screenplay Source Audit\\nFile: .shared/outputs/data/m20-screenplay-audit.json\\n- 65 clips audited\\n- 53 have screenplay sources (all imsdb.com)\\n- 12 have null sources (Iron Man 2, The Intern, There Will Be Blood, Marriage Story, Frost/Nixon + partial clips whose film is covered by other clips)\\n- Primary selector: td.scrtext pre\\n- CRITICAL FINDINGS for Backend Engineer:\\n  - 2 URL encoding issues: King's Speech (raw apostrophe vs %27) and Schindler's List (needs %27)\\n  - 12 Angry Men uses 'Twelve-Angry-Men.html' slug (not '12-Angry-Men')\\n  - Caching by film = 32 unique HTTP requests max (not 53)\\n  - Recommended: 500ms delay between requests, cheerio for parsing\\n\\nReady for Backend Engineer to implement screenplay-crawler.ts.",
       "timestamp": "2026-03-24T14:50:41.153Z",
       "status": "read"
-    },
-    {
-      "id": "sig_designer_reporter_1774363825702",
-      "from": "designer",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "log-m17-m18-m19-specs",
-      "priority": "medium",
-      "message": "FYI: Designer delivered 3 specs this session:\n- m17-spec.md: Library UX improvements (search, collapsible filters, 4-col grid)\n- m18-spec.md: PeeTeeAI brand refresh (NavBar, Footer, homepage sections)\n- m19-spec.md: Arcade Zone UI (bundle browser, challenge flow, score screen)\n\nPlease log in activity-log.md when milestones are tester-approved.",
-      "timestamp": "2026-03-24T14:50:25.702Z",
-      "status": "unread"
     },
     {
       "id": "sig_pm_ts_m17_m20_preview_001",
@@ -584,17 +529,6 @@
       "status": "unread"
     },
     {
-      "id": "sig_builder_reporter_m14m15_001",
-      "from": "builder",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "log-m14-m15-deployment",
-      "priority": "medium",
-      "message": "M14 + M15 successfully deployed to https://seeneyu.vercel.app.\n\nM14 — Library Expansion:\n- 45 new clips added (total 65 in DB) with screenplay sources\n- New library filters: Film, Screenplay\n- Screenplay badge + link on clip cards/detail pages\n- schema: screenplaySource String? on Clip model\n\nM15 — Performing Foundation:\n- New section at /foundation\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 30 lessons total (10 per course), each with theory + YouTube examples + 4-question quiz\n- Progress tracking per user per lesson\n- schema: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress\n\nPlease log in activity-log.md.",
-      "timestamp": "2026-03-23T10:30:00Z",
-      "status": "unread"
-    },
-    {
       "id": "sig_pm_tester_m16_preview_001",
       "from": "pm",
       "to": "tester",
@@ -614,51 +548,6 @@
       "priority": "medium",
       "message": "UPCOMING REVIEW: M14 â€” Content Expansion (100+ Screenplay Clips).\n\nThis will land in your queue after builder confirms DB seed is complete.\n\n## What to check\n1. Library page has 100+ clips loaded\n2. Filter by Film dropdown works and lists real movie titles\n3. \"Has Screenplay\" filter shows only clips with screenplaySource\n4. Screenplay badge visible on ClipCard for applicable clips\n5. Clip detail page shows \"Read Screenplay\" link for appropriate clips\n6. DB seed ran without errors â€” verify clip count (must be 100+)\n7. Each verified clip has: script, observation_guide, practice_steps fields populated\n\nStatus: pending (waiting for builder to complete seeding).",
       "context": ".shared/state/milestones.json (M14)",
-      "timestamp": "2026-03-23T07:00:00Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_pm_reporter_session_end_001",
-      "from": "pm",
-      "to": "reporter",
-      "type": "task-assign",
-      "priority": "normal",
-      "message": "SESSION END 2026-03-23. Next session tasks: (1) Log M10–M13 completions in activity-log.md AFTER Tester signs off on each (wait for PM approval signals). (2) Update shared-knowledge.md: current phase is 10-personalization, routes added: /practice /onboarding /dashboard. (3) Log the 5-point user product feedback session as a product decision in decisions.json. (4) Write milestone reports for M10, M11, M12, M13 once tester_approved=true.",
-      "timestamp": "2026-03-23T06:00:00Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_designer_reporter_1774411646016",
-      "from": "designer",
-      "to": "reporter",
-      "type": "fyi",
-      "task": "m26-m28-design-specs-log",
-      "priority": "low",
-      "message": "Designer completed M26/M27/M28 design specs. Files: .shared/outputs/designer/m26-registration-approval-spec.md, m27-discussions-spec.md, m28-ai-assistant-spec.md. Key design decisions: pending approval page uses Clock icon with amber glow circle, signin shows contextual error banners (warning for pending, error for rejected/suspended), admin users table adds filter tabs and status pills, discussions use flat threading with avatar color hashing, Coach Ney uses GraduationCap icon with amber identity, floating button has ambient glow-pulse animation, mobile gets slide-up sheet while desktop gets fixed side panel.",
-      "timestamp": "2026-03-25T04:07:26.016Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_pm_rp_m16_001",
-      "from": "pm",
-      "to": "reporter",
-      "type": "task-assign",
-      "task": "document-m16",
-      "priority": "low",
-      "message": "NEW MILESTONE TO DOCUMENT: M16 — Learning Materials Builder.\n\nWhen approved by Tester, log in activity-log.md:\n\n## What to document\n- New admin-only section at /admin/crawl-jobs\n- What a crawl job is: admin defines skill/technique + keywords → system searches YouTube → AI scores each result for relevance → admin approves/rejects\n- New Prisma models: CrawlJob, CrawlResult\n- New services: youtube-crawler.ts (YouTube Data API v3), clip-relevance-scorer.ts (GPT-4o relevance scoring)\n- Approve flow: creates Clip + auto-generates ObservationGuide + PracticeSteps\n- Special tactics system: 40+ named communication techniques beyond 5 standard categories (from communication-tactics.json)\n- New env var required: YOUTUBE_API_KEY\n\n## Strategic significance\nThis milestone shifts seeneyu from manual content curation to semi-automated content discovery. Admin can now target highly specific communication skills (Power Pause, Triangle Gaze, Proxemic Management, etc.) not covered in standard clip categories.\n\nStatus: PENDING — wait for Tester approval before documenting.",
-      "context": ".shared/outputs/reports/activity-log.md",
-      "timestamp": "2026-03-23T09:30:00Z",
-      "status": "unread"
-    },
-    {
-      "id": "sig_pm_rp_m14m15_001",
-      "from": "pm",
-      "to": "reporter",
-      "type": "task-assign",
-      "task": "document-m14-m15",
-      "priority": "low",
-      "message": "NEW MILESTONES TO DOCUMENT: M14 and M15.\n\n## M14: Content Expansion — 100+ Lessons from Screenplay Films\nWhen approved by Tester, log in activity-log.md:\n- Library expanded from 15 to 100+ clips\n- New screenplaySource field on Clip model\n- New \"Filter by Film\" + \"Has Screenplay\" filters in Library\n- Screenplay badge on ClipCard\n- Films covered (list the major ones from clips-100-seed.json)\n\n## M15: Performing Foundation Section  \nWhen approved by Tester, log in activity-log.md:\n- New /foundation route — course catalog\n- 3 courses: Voice Mastery, Verbal Communication, Body Language Fundamentals\n- 10+ lessons per course with theory, YouTube examples, quiz\n- New Prisma models: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress\n- Foundation link added to NavBar\n\nStatus: pending. Wait for Tester approvals before documenting.",
-      "context": ".shared/outputs/reporter/activity-log.md",
       "timestamp": "2026-03-23T07:00:00Z",
       "status": "unread"
     }

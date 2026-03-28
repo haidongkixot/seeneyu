@@ -387,6 +387,11 @@ export interface MicroScoreResult {
   headline: string
   detail: string
   score: number
+  scores?: { label: string; score: number }[]
+  positives?: string[]
+  improvements?: string[]
+  actionableTip?: string
+  nextStep?: string
 }
 
 // Skill → relevant blendshapes for scoring
@@ -452,12 +457,103 @@ export function scoreMicroPracticeFromAnalysis(
   score = Math.round(clamp(score, 0, 100))
   const verdict: 'pass' | 'needs-work' = score >= 70 ? 'pass' : 'needs-work'
 
+  // Compute individual technique scores for detailed feedback
+  const facialScore = facialSnapshots.length > 0
+    ? Math.round(clamp(avgOverallEngagement(facialSnapshots) * 150 + 30, 0, 100))
+    : 0
+  const poseScore = poseSnapshots.length > 0
+    ? Math.round(clamp(avg(poseSnapshots.map(s => shoulderOpenness(s.poseLandmarks!))), 0, 100))
+    : 0
+  // Timing: higher score if consistent engagement across frames
+  const engagementValues = facialSnapshots.map(s => {
+    const vals = Object.entries(s.blendshapes).filter(([k]) => k !== '_neutral').map(([, v]) => v)
+    return avg(vals)
+  })
+  const engagementStdDev = engagementValues.length > 1
+    ? Math.sqrt(avg(engagementValues.map(v => Math.pow(v - avg(engagementValues), 2))))
+    : 0
+  const timingScore = Math.round(clamp(100 - engagementStdDev * 500, 0, 100))
+  // Eye contact: based on eye-specific blendshapes
+  const eyeBlendshapes = ['eyeLookUpLeft', 'eyeLookUpRight', 'eyeLookDownLeft', 'eyeLookDownRight', 'eyeBlinkLeft', 'eyeBlinkRight']
+  const eyeScore = facialSnapshots.length > 0
+    ? Math.round(clamp(avgBlendshapeActivation(facialSnapshots, eyeBlendshapes) * 200 + 40, 0, 100))
+    : 0
+
+  const scores = [
+    { label: 'Facial expression accuracy', score: facialScore },
+    { label: 'Body posture alignment', score: poseScore },
+    { label: 'Timing and naturalness', score: timingScore },
+    { label: 'Eye contact quality', score: eyeScore },
+  ]
+
+  const detailedFeedback = generateDetailedMicroFeedback(skillCategory, skillFocus, scores, facialSnapshots.length, poseSnapshots.length)
+
   return {
     verdict,
     headline: generateMicroHeadline(skillFocus, score, verdict),
     detail: generateMicroDetail(skillCategory, score, facialSnapshots.length, poseSnapshots.length),
     score,
+    scores,
+    ...detailedFeedback,
   }
+}
+
+function generateDetailedMicroFeedback(
+  skillCategory: string,
+  skillFocus: string,
+  scores: { label: string; score: number }[],
+  faceCount: number,
+  poseCount: number,
+): { positives: string[]; improvements: string[]; actionableTip: string; nextStep: string } {
+  const positives: string[] = []
+  const improvements: string[] = []
+
+  const facialScore = scores.find(s => s.label.includes('Facial'))?.score ?? 0
+  const postureScore = scores.find(s => s.label.includes('Posture'))?.score ?? 0
+  const timingScore = scores.find(s => s.label.includes('Timing'))?.score ?? 0
+  const eyeScore = scores.find(s => s.label.includes('Eye'))?.score ?? 0
+
+  const skillName = skillCategory.replace(/-/g, ' ')
+
+  // Generate specific positives based on scores
+  if (facialScore >= 70) positives.push(`Your facial muscles showed good activation for ${skillName} — the key expression muscles (orbicularis oculi, zygomaticus) engaged at appropriate intensity`)
+  else if (facialScore >= 50) positives.push(`Your facial expression showed emerging engagement — some of the target muscles are activating`)
+
+  if (postureScore >= 70) positives.push(`Your body posture was well-aligned with open shoulders and stable stance`)
+  else if (postureScore >= 50 && poseCount > 0) positives.push(`Your posture showed reasonable openness during the practice`)
+
+  if (timingScore >= 70) positives.push(`Your expression timing was consistent and natural throughout the recording`)
+
+  if (eyeScore >= 70) positives.push(`Your eye engagement was strong — good gaze stability and natural blink rate`)
+
+  if (faceCount > 0 && positives.length === 0) positives.push(`Your face was detected throughout the practice, showing commitment to the exercise`)
+
+  // Generate specific improvements
+  if (facialScore < 70) improvements.push(`Increase facial muscle engagement — try exaggerating the ${skillName} expression by 30% more than feels natural, then dial back`)
+  if (postureScore < 70 && poseCount > 0) improvements.push(`Open your posture more — roll shoulders back, lift your sternum slightly, and keep your weight evenly distributed`)
+  else if (poseCount === 0) improvements.push(`Move further back from the camera so your upper body is visible for posture analysis`)
+  if (timingScore < 70) improvements.push(`Work on expression consistency — practice holding the target expression steady for 5 seconds before releasing`)
+  if (eyeScore < 70) improvements.push(`Improve eye engagement — practice the triangle technique (left eye → right eye → mouth) with 3-second holds at each point`)
+
+  // Actionable tip based on weakest area
+  const weakest = scores.reduce((min, s) => s.score < min.score ? s : min)
+  const tipMap: Record<string, string> = {
+    'Facial expression accuracy': `Mirror exercise: Stand in front of a mirror and practice the ${skillName} expression. Hold for 5 seconds, relax for 3, repeat 5 times. Focus on engaging your frontalis (forehead) and zygomaticus (cheek) muscles together.`,
+    'Body posture alignment': 'Wall check: Stand with your back against a wall — heels, glutes, shoulder blades, and head should all touch. Step forward and maintain that posture during your next practice attempt.',
+    'Timing and naturalness': `Metronome practice: Use a 60 BPM beat and transition into the ${skillName} expression on beat 1, hold through beats 2-3, and release on beat 4. This builds consistent timing.`,
+    'Eye contact quality': 'Dot focus drill: Place a small dot on your screen at eye level. Practice looking at it for 3 seconds, breaking gaze down-left for 1 second, then returning. Repeat 10 times.',
+  }
+  const actionableTip = tipMap[weakest.label] || `Practice the ${skillName} technique in front of a mirror for 2 minutes, focusing on the weakest element.`
+
+  // Next step based on overall performance
+  const avgScore = avg(scores.map(s => s.score))
+  const nextStep = avgScore >= 80
+    ? `Try combining ${skillName} with vocal pacing — add speech while maintaining your expression`
+    : avgScore >= 60
+    ? `Repeat this exercise focusing specifically on ${weakest.label.toLowerCase()}, aiming for 75+ score`
+    : `Practice the ${skillName} basics: start with just the facial expression in a mirror before recording`
+
+  return { positives, improvements, actionableTip, nextStep }
 }
 
 // ─── Full Performance Scoring ──────────────────────────────────────────────

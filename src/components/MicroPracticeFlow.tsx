@@ -59,7 +59,16 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
       if (!res.ok) throw new Error('Analysis failed')
 
       const data = await res.json()
-      setFeedback({ verdict: data.verdict, headline: data.headline, detail: data.detail })
+      setFeedback({
+        verdict: data.verdict,
+        headline: data.headline,
+        detail: data.detail,
+        scores: data.scores,
+        positives: data.positives,
+        improvements: data.improvements,
+        actionableTip: data.actionableTip,
+        nextStep: data.nextStep,
+      })
       setVerdicts(prev => [...prev, data.verdict])
       setPhase('feedback')
     } catch {
@@ -177,6 +186,11 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
                   verdict={feedback.verdict}
                   headline={feedback.headline}
                   detail={feedback.detail}
+                  scores={feedback.scores}
+                  positives={feedback.positives}
+                  improvements={feedback.improvements}
+                  actionableTip={feedback.actionableTip}
+                  nextStep={feedback.nextStep}
                   onNext={handleNext}
                   onRetry={handleRetry}
                   isLastStep={currentStep + 1 >= totalSteps}

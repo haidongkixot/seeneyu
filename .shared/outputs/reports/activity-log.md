@@ -290,4 +290,199 @@
 - M13 learning path algorithm uses self-report only (40% weight) — AI video assessment component (60%) is scaffolded but needs real sessions data before meaningful scores.
 - Admin password `changeme123` is default — user should update immediately.
 
+### [designer] M14 Library Expansion UI Spec — COMPLETE
+- Film filter dropdown, screenplay badge on ClipCard, screenplay link on clip detail
+- Output: .shared/outputs/design/m14-spec.md
+
+### [data-engineer] M14 Content Expansion — COMPLETE (code)
+- Delivered 65 clips from 38 films with full metadata (script, observation_guide, practice_steps, screenplaySource)
+- YouTube API quota exhausted at 65 (target was 100+). PM accepted 65 as sprint delivery (DEC-006)
+- Output: .shared/outputs/data/clips-100-seed.json
+
+### [backend-engineer] M14 Screenplay Library Expansion — COMPLETE (code)
+- Schema: screenplaySource String? on Clip model
+- Admin ClipForm updated with screenplay URL field
+- Library page: Film filter + "Has Screenplay" filter
+- ClipCard: screenplay badge. Clip detail: screenplay link
+- Status: code-complete, awaiting tester sign-off
+
+### [builder] M14 + M15 Deployment — DEPLOYED
+- M14 + M15 deployed to https://seeneyu.vercel.app
+- M14: 45 new clips added (total 65 in DB) with screenplay sources, Film/Screenplay filters
+- M15: /foundation section live — 3 courses, 30 lessons, 60 examples, 120 quiz questions
+- DB push + seed completed successfully
+
+### [designer] M15 Performing Foundation UI Spec — COMPLETE
+- Course catalog, course detail, lesson page (theory + examples + quiz)
+- Output: .shared/outputs/design/m15-spec.md
+
+### [data-engineer] M15 Foundation Curriculum — COMPLETE (code)
+- 3 courses × 10 lessons = 30 lessons, 60 YouTube examples, 120 quiz questions
+- Courses: Voice Mastery, Verbal Communication, Body Language Fundamentals
+- Output: .shared/outputs/data/foundation-curriculum.json
+
+### [backend-engineer] M15 Performing Foundation Section — COMPLETE (code)
+- 5 new Prisma models: FoundationCourse, FoundationLesson, LessonExample, QuizQuestion, FoundationProgress
+- /foundation pages: catalog, course detail, lesson page with quiz
+- Progress API, NavBar link added
+- Status: code-complete, awaiting tester sign-off
+
+### [designer] M16 Learning Materials Builder UI Spec — COMPLETE
+- Admin crawl job creation, results review, approve/reject flow
+- Output: .shared/outputs/design/m16-spec.md
+
+### [data-engineer] M16 Communication Tactics Taxonomy — COMPLETE
+- 50 named communication tactics across 5 domains (vocal, verbal, body, presence, rapport)
+- Each tactic includes YouTube search keywords + AI scoring hints
+- Output: .shared/outputs/data/communication-tactics.json
+
+### [backend-engineer] M16 Learning Materials Builder — COMPLETE (code)
+- New models: CrawlJob, CrawlResult
+- New services: youtube-crawler.ts (YouTube Data API v3), clip-relevance-scorer.ts (GPT-4o)
+- Admin /admin/crawl-jobs: create jobs, run, review results, approve/reject
+- Approve flow: creates Clip + auto-generates ObservationGuide + PracticeSteps
+- Env: YOUTUBE_API_KEY required. Commit: 6bd9218
+- Strategic: shifts seeneyu from manual curation to semi-automated content discovery
+- Status: code-complete, awaiting tester sign-off
+
+---
+
+## 2026-03-24
+
+### [designer] M17 + M18 + M19 Design Specs — DELIVERED
+- m17-spec.md: Library UX improvements (search bar, collapsible filter panel, 4-col grid, compact ClipCard)
+- m18-spec.md: PeeTeeAI brand refresh (NavBar sub-label, Footer, animated hero, Mission/Team/Testimonials)
+- m19-spec.md: Arcade Zone UI (bundle browser, challenge flow, score screen)
+- Output: .shared/outputs/design/
+
+### [data-engineer] M19 Arcade Seed Data — COMPLETE
+- 3 bundles × 10 challenges = 30 total arcade challenges
+- Output: .shared/outputs/data/arcade-challenges-seed.json
+
+### [data-engineer] M20 Screenplay Audit — COMPLETE
+- 65 clips audited, 53 have screenplay sources (imsdb.com)
+- URL encoding findings documented
+- Output: .shared/outputs/data/m20-screenplay-audit.json
+
+### [backend-engineer] M17 Library UX — COMPLETE (code)
+- Search API with text search across clip fields
+- Collapsible filter panel with search input
+- 4-col thumbnail grid layout
+- Status: code-complete, awaiting tester sign-off
+
+### [backend-engineer] M18 PeeTeeAI Brand + Homepage — COMPLETE (code)
+- NavBar "by PeeTeeAI" sub-label
+- Footer component
+- Hero section with gradient animation
+- Mission, Team, Testimonials sections on homepage
+- Status: code-complete, awaiting tester sign-off
+
+### [backend-engineer] M19 Arcade Zone — COMPLETE (code)
+- 3 new models: ArcadeBundle, ArcadeChallenge, ArcadeAttempt
+- GPT-4o Vision scorer for 10s arcade recordings
+- ArcadeRecorder component with 10s timer
+- Full /arcade pages: bundle browser, challenge flow, score screen
+- Status: code-complete, awaiting tester sign-off
+
+### [backend-engineer] M20 Learning Improvements — COMPLETE (code)
+- Screenplay crawl-to-DB integration
+- Crawl jobs YOUTUBE_API_KEY fix
+- Admin ZIP import for bulk content
+- Status: code-complete, awaiting tester sign-off
+
+### [backend-engineer] MediaPipe Integration — COMPLETE (code)
+- Replaced GPT-4o Vision dependency with client-side Google MediaPipe ML for recording scoring
+- New files: mediapipe-types.ts, mediapipe-init.ts, useMediaPipe.ts, analysis-helpers.ts, expression-scorer.ts, feedback-generator.ts
+- Modified 8 existing files across all 3 recording flows (full performance, micro-practice, arcade)
+- Zero API cost for scoring — all runs in browser
+- GPT-4o Vision retained as optional fallback for full performance rich feedback
+
+### [builder] M17-M20 + MediaPipe Deployment — DEPLOYED
+- MediaPipe integration deployed to https://seeneyu.vercel.app
+- Commit b56564b — 0 TS errors, 31 pages generated, all health checks pass
+- M17-M20 features all live
+
+---
+
+## 2026-03-25
+
+### [pm] Signal System Fix — COMPLETE
+- File locking added to signal-send.js and signal-done.js (O_EXCL + stale lock detection)
+- Atomic writes via temp file + rename to prevent race conditions
+- State file ownership rule enforced: only PM edits milestones.json, project-state.json, decisions.json
+- All other roles must signal PM with updates (DEC-009)
+
+### [backend-engineer] M21 Arcade Content Management — COMPLETE (code)
+- Admin CRUD for ArcadeBundle + ArcadeChallenge
+- Reference image capture from YouTube frames or web
+- Image upload to Vercel Blob, edit/delete, reorder
+- Commit: 38d204a. Status: awaiting tester sign-off
+
+### [backend-engineer] M22 User Activity Dashboard — COMPLETE (code)
+- New model: ActivityEvent for tracking user actions
+- Admin analytics dashboard: DAU/WAU/MAU charts, signup trends, learning curves, per-user detail
+- Commit: 38d204a. Status: awaiting tester sign-off
+
+### [backend-engineer] M23 Feature Performance Dashboard — COMPLETE (code)
+- New model: AnalysisMetric
+- Admin feature dashboard: crawl job stats, MediaPipe performance metrics, content pipeline stats
+- Commit: 38d204a. Status: awaiting tester sign-off
+
+### [backend-engineer] M24 Access Control — COMPLETE (code)
+- Auth gating: first 3 arcade challenges per type free without login
+- Practice/record require auth. Locked content blurred with lock icon
+- Centralized access-control.ts utility
+- Commit: 38d204a. Status: awaiting tester sign-off
+
+### [backend-engineer] M25 Subscription & Payment — COMPLETE (code)
+- New models: Plan, Subscription, Payment
+- 3 tiers: Basic (free, 5s recording), Standard (30s), Advanced (3min, VIP, coach access)
+- PayPal + VNPay checkout flow (sandbox mode)
+- Admin plan management at /admin/plans
+- Pricing page at /pricing
+- Commit: 38d204a. Status: awaiting tester sign-off
+
+### [builder] M21-M25 Deployment — DEPLOYED
+- All 5 milestones deployed to https://seeneyu.vercel.app
+- Known issues: BUG-005 (pricing uses admin-only API), BUG-006 (Plan + ArcadeBundle tables not seeded in prod)
+
+### [backend-engineer] BUG-005 Fixed
+- Created /api/public/plans (unauthenticated endpoint)
+- Updated pricing page to use public endpoint instead of admin-only /api/admin/plans
+
+### [backend-engineer] M26 Registration Approval — Backend COMPLETE (code)
+- Schema: added status/statusNote/approvedAt/approvedBy to User + @@index([status])
+- Signup API returns {success: true, status: 'pending'}
+- Auth checks user status before login — pending/rejected/suspended users blocked
+- Admin PATCH /api/admin/users/[id] for approve/reject with statusNote
+- GET /api/admin/users?status=pending filter
+- Migration script: scripts/migrate-user-status.ts
+- Needs: prisma db push + migration script on production
+- Frontend pages (auth/pending, admin UI) still needed from Builder/Designer
+
+### [designer] M26 + M27 + M28 Design Specs — DELIVERED
+- m26-registration-approval-spec.md: pending page (Clock + amber glow), signin error banners, admin approval table with filter tabs, rejection modal
+- m27-discussions-spec.md: CommentThread/CommentCard/CommentForm, flat threading, avatar color via hash(userId)%5, admin moderation page
+- m28-ai-assistant-spec.md: floating button with glow-pulse animation, slide-up panel (mobile) / side panel (desktop), Coach Ney persona (GraduationCap icon), voice states, suggestion chips, plan limits, idle nudge
+- All specs use existing design tokens from design-system.md
+
+### [pm] M26-M28 Feature Plan Approved (DEC-010)
+- M26 Registration Approval → M27 Discussions + M28 AI Assistant (parallel after M26)
+- Voice platform: OpenAI (Whisper + GPT-4o + TTS) — no new vendor
+- Comment threading: flat (1 level)
+- Assistant persona: Coach Ney
+
+### [pm] M29-M35 Plan Approved (DEC-011)
+- Toolkit (data crawler + embeddable mini-games), Duolingo-style gamification (XP, streaks, hearts, quests, badges, leagues), UI/UX overhaul
+- 14 new DB models, 21 new API endpoints
+
+### [pm] M36-M45 Plan Approved (DEC-012)
+- Error logging, CMS, light mode rebrand, homepage media, app download, sticky practice, submission review, tiered feedback, user management v2, game data pipeline
+- CMS (M37) is critical path — M38/M39/M40 depend on it
+
+### [pm] Tester Backlog Warning
+- M10-M25 all code-complete and deployed — 16 milestones awaiting tester sign-off
+- Smoke test request sent to Tester for M21-M25
+- M10-M20 backlog still uncleared
+
 ---

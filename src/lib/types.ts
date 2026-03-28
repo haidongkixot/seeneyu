@@ -94,10 +94,25 @@ export interface PracticeStep {
   targetDurationSec: number
 }
 
+export interface MicroFeedbackScore {
+  label: string
+  score: number  // 0–100
+}
+
 export interface MicroFeedback {
   verdict: 'pass' | 'needs-work'
   headline: string
   detail: string
+  /** Detailed technique scores (0-100 each) */
+  scores?: MicroFeedbackScore[]
+  /** Specific things the user did well */
+  positives?: string[]
+  /** Specific areas to improve with concrete corrections */
+  improvements?: string[]
+  /** Actionable tip for immediate improvement */
+  actionableTip?: string
+  /** What to practice next to build on this skill */
+  nextStep?: string
 }
 
 export type SkillLevel = 'beginner' | 'intermediate' | 'advanced'

@@ -145,6 +145,16 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
   },
 
   {
+    id: 'openai-video',
+    name: 'OpenAI (Video)',
+    type: 'video',
+    endpoint: 'https://api.openai.com/v1',
+    requiresKey: true,
+    envVar: 'OPENAI_API_KEY',
+    models: ['gpt-image-1', 'dall-e-3-sequence'],
+  },
+
+  {
     id: 'pollinations-video',
     name: 'Pollinations (Video)',
     type: 'video',
