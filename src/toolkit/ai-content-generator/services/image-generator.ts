@@ -269,14 +269,14 @@ export async function generateWithKling(
   width: number,
   height: number,
 ): Promise<GenerationResult> {
-  const apiKey = process.env.KLING_API_KEY
-  if (!apiKey) throw new Error('KLING_API_KEY is not set')
+  const { getKlingToken } = await import('./kling-auth')
+  const token = getKlingToken()
 
   const createRes = await fetch('https://api.klingai.com/v1/images/generations', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify({
       model_name: model.replace('kling-', '').replace('-image', ''),
@@ -299,7 +299,7 @@ export async function generateWithKling(
   for (let i = 0; i < 30; i++) {
     await new Promise(r => setTimeout(r, 2000))
     const pollRes = await fetch(`https://api.klingai.com/v1/images/generations/${taskId}`, {
-      headers: { 'Authorization': `Bearer ${apiKey}` },
+      headers: { 'Authorization': `Bearer ${token}` },
     })
     if (!pollRes.ok) continue
     const pollData = await pollRes.json()

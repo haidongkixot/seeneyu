@@ -79,7 +79,7 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     type: 'image',
     endpoint: 'https://api.klingai.com/v1',
     requiresKey: true,
-    envVar: 'KLING_API_KEY',
+    envVar: 'KLING_ACCESS_KEY',
     models: [
       'kling-v1-image',
       'kling-v1.5-image',
@@ -94,7 +94,7 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     type: 'video',
     endpoint: 'https://api.klingai.com/v1',
     requiresKey: true,
-    envVar: 'KLING_API_KEY',
+    envVar: 'KLING_ACCESS_KEY',
     models: [
       'kling-v1-standard-t2v',
       'kling-v1-pro-t2v',

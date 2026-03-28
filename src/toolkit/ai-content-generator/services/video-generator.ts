@@ -113,8 +113,10 @@ async function generateWithKling(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
 ): Promise<GenerationResult | null> {
-  const apiKey = process.env.KLING_API_KEY
-  if (!apiKey) return null
+  if (!process.env.KLING_ACCESS_KEY || !process.env.KLING_SECRET_KEY) return null
+
+  const { getKlingToken } = await import('./kling-auth')
+  const apiKey = getKlingToken()
 
   const resolvedModel = model || 'kling-v1.6-standard-t2v'
 
