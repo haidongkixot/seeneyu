@@ -72,7 +72,53 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     models: ['black-forest-labs/FLUX.1-schnell-Free'],
   },
 
-  // ── Hugging Face video ─────────────────────────────────────────
+  // ── Video Providers ────────────────────────────────────────────
+
+  {
+    id: 'replicate',
+    name: 'Replicate',
+    type: 'video',
+    endpoint: 'https://api.replicate.com/v1/predictions',
+    requiresKey: true,
+    envVar: 'REPLICATE_API_TOKEN',
+    models: [
+      'minimax/video-01',
+      'minimax/video-01-live',
+      'luma/ray',
+      'tencent/hunyuan-video',
+      'wavespeedai/wan-2.1-t2v-480p',
+    ],
+  },
+
+  {
+    id: 'runway',
+    name: 'Runway',
+    type: 'video',
+    endpoint: 'https://api.dev.runwayml.com/v1',
+    requiresKey: true,
+    envVar: 'RUNWAY_API_KEY',
+    models: ['gen3a_turbo', 'gen4_turbo'],
+  },
+
+  {
+    id: 'luma',
+    name: 'Luma Dream Machine',
+    type: 'video',
+    endpoint: 'https://api.lumalabs.ai/dream-machine/v1',
+    requiresKey: true,
+    envVar: 'LUMA_API_KEY',
+    models: ['ray2', 'ray2-flash'],
+  },
+
+  {
+    id: 'pollinations-video',
+    name: 'Pollinations (Video)',
+    type: 'video',
+    endpoint: 'https://video.pollinations.ai',
+    requiresKey: false,
+    models: ['fast-svd'],
+  },
+
   {
     id: 'huggingface-video',
     name: 'Hugging Face (Video)',
