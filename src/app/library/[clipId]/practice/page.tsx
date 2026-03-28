@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { MicroPracticeFlow } from '@/components/MicroPracticeFlow'
+import { AiImagePractice } from '@/components/AiImagePractice'
 import type { PracticeStep } from '@/lib/types'
 
 interface PageProps {
@@ -25,7 +26,23 @@ export default async function PracticePage({ params }: PageProps) {
 
   if (!clip) notFound()
 
-  // Use seeded practiceSteps if available, otherwise derive from annotations
+  const clipAny = clip as any
+
+  // AI-generated image → Expression King style practice
+  if (clipAny.mediaType === 'ai_image' && clipAny.mediaUrl) {
+    return (
+      <AiImagePractice
+        clipId={clip.id}
+        imageUrl={clipAny.mediaUrl}
+        title={clip.sceneDescription}
+        skillCategory={clip.skillCategory}
+        annotation={clip.annotation}
+      />
+    )
+  }
+
+  // AI-generated video → same as YouTube flow but with different player
+  // YouTube / video → standard micro-practice flow
   const steps: PracticeStep[] = clip.practiceSteps.length > 0
     ? clip.practiceSteps.map(s => ({
         id: s.id,
@@ -36,7 +53,8 @@ export default async function PracticePage({ params }: PageProps) {
         tip: s.tip,
         targetDurationSec: s.targetDurationSec,
       }))
-    : clip.annotations.slice(0, 5).map((a, i) => ({
+    : clip.annotations.length > 0
+    ? clip.annotations.slice(0, 5).map((a, i) => ({
         id: `ann-${a.id}`,
         clipId: clip.id,
         stepNumber: i + 1,
@@ -45,8 +63,15 @@ export default async function PracticePage({ params }: PageProps) {
         tip: null,
         targetDurationSec: 20,
       }))
-
-  if (steps.length === 0) notFound()
+    : [{
+        id: 'default-1',
+        clipId: clip.id,
+        stepNumber: 1,
+        skillFocus: clip.skillCategory.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        instruction: clip.annotation || `Practice the ${clip.skillCategory.replace(/-/g, ' ')} technique shown in this clip.`,
+        tip: 'Watch carefully, then try to replicate the body language.',
+        targetDurationSec: 30,
+      }]
 
   return (
     <MicroPracticeFlow
