@@ -66,9 +66,26 @@ export async function generateWithPollinations(
 ): Promise<GenerationResult> {
   const seed = Math.floor(Math.random() * 999999)
   const encoded = encodeURIComponent(prompt)
-  const url = `https://image.pollinations.ai/prompt/${encoded}?width=${width}&height=${height}&model=${model}&nologo=true&seed=${seed}`
+  // Try multiple Pollinations URL formats (API changed in 2026)
+  const urls = [
+    `https://image.pollinations.ai/prompt/${encoded}?width=${width}&height=${height}&model=${model}&nologo=true&seed=${seed}`,
+    `https://pollinations.ai/p/${encoded}?width=${width}&height=${height}&model=${model}&nologo=true&seed=${seed}`,
+  ]
 
-  const res = await fetch(url)
+  let res: Response | null = null
+  for (const url of urls) {
+    try {
+      const r = await fetch(url, { redirect: 'follow' })
+      if (r.ok && (r.headers.get('content-type') || '').includes('image')) {
+        res = r
+        break
+      }
+    } catch { /* try next */ }
+  }
+
+  if (!res || !res.ok) {
+    throw new Error('Pollinations API unavailable (401). Try HuggingFace or OpenAI instead.')
+  }
   if (!res.ok) {
     throw new Error(`Pollinations failed: ${res.status} ${res.statusText}`)
   }

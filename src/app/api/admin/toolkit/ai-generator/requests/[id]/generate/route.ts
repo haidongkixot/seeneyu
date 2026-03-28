@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { generateImage, uploadToBlob } from '@/toolkit/ai-content-generator'
+import { generateVideo, uploadVideoToBlob } from '@/toolkit/ai-content-generator/services/video-generator'
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions)
@@ -23,6 +24,7 @@ export async function POST(
     const count = Math.min(body.count ?? 3, 5)
     const provider = body.provider
     const model = body.model
+    const assetType: 'image' | 'video' = body.type === 'video' ? 'video' : 'image'
 
     const request = await prisma.aiContentRequest.findUnique({ where: { id } })
     if (!request) {
@@ -52,7 +54,7 @@ export async function POST(
         prisma.aiGeneratedAsset.create({
           data: {
             requestId: id,
-            type: 'image',
+            type: assetType,
             provider: resolvedProvider,
             model: resolvedModel,
             prompt: request.imagePrompt!,
@@ -63,11 +65,16 @@ export async function POST(
     )
 
     // Kick off generation asynchronously (non-blocking)
-    generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
-      .catch(console.error)
+    if (assetType === 'video') {
+      generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+        .catch(console.error)
+    } else {
+      generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+        .catch(console.error)
+    }
 
     return NextResponse.json({
-      message: `Generating ${count} images`,
+      message: `Generating ${count} ${assetType}(s)`,
       assetIds: assets.map((a) => a.id),
     })
   } catch (err: any) {
@@ -130,4 +137,66 @@ async function generateAsync(
     where: { id: requestId },
     data: { status: anyReady ? 'review' : 'failed' },
   })
+}
+
+/**
+ * Async video generation — generates videos via the video generator service,
+ * uploads to Vercel Blob, and updates asset records.
+ */
+async function generateVideoAsync(
+  assetIds: string[],
+  prompt: string,
+  provider: string,
+  model: string | null,
+  requestId: string,
+) {
+  for (const assetId of assetIds) {
+    try {
+      const result = await generateVideo(
+        { prompt },
+        provider,
+        model || undefined,
+      )
+
+      if (!result) {
+        throw new Error(`Video generation returned null for provider: ${provider}`)
+      }
+
+      const blobUrl = await uploadVideoToBlob(result.buffer, requestId, assetId)
+
+      await prisma.aiGeneratedAsset.update({
+        where: { id: assetId },
+        data: {
+          status: 'ready',
+          blobUrl,
+          durationMs: result.durationMs,
+          metadata: {
+            provider,
+            model,
+            mimeType: result.mimeType,
+            hasAudio: (result.metadata as any)?.hasAudio ?? false,
+            ...(result.metadata || {}),
+          },
+        },
+      })
+    } catch (err) {
+      await prisma.aiGeneratedAsset.update({
+        where: { id: assetId },
+        data: {
+          status: 'failed',
+          errorMessage: err instanceof Error ? err.message : 'Unknown error',
+        },
+      }).catch(() => {})
+    }
+  }
+
+  // Update request status
+  const allAssets = await prisma.aiGeneratedAsset.findMany({ where: { requestId } })
+  const anyReady = allAssets.some((a) => a.status === 'ready')
+  if (anyReady) {
+    await prisma.aiContentRequest.update({
+      where: { id: requestId },
+      data: { status: 'review' },
+    })
+  }
 }
