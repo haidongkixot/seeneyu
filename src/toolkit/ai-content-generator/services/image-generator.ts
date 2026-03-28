@@ -32,6 +32,8 @@ export async function generateImage(
       return generateWithStability(prompt, resolvedModel)
     case 'together':
       return generateWithTogether(prompt, resolvedModel)
+    case 'kling':
+      return generateWithKling(prompt, resolvedModel, options?.width ?? 768, options?.height ?? 768)
     default:
       throw new Error(`No generation handler for provider: ${provider}`)
   }
@@ -257,4 +259,66 @@ export async function generateWithTogether(
     height: 1024,
     metadata: { model },
   }
+}
+
+// ── Kling AI ───────────────────────────────────────────────────────
+
+export async function generateWithKling(
+  prompt: string,
+  model: string,
+  width: number,
+  height: number,
+): Promise<GenerationResult> {
+  const apiKey = process.env.KLING_API_KEY
+  if (!apiKey) throw new Error('KLING_API_KEY is not set')
+
+  const createRes = await fetch('https://api.klingai.com/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model_name: model.replace('kling-', '').replace('-image', ''),
+      prompt,
+      image_count: 1,
+      aspect_ratio: width === height ? '1:1' : '16:9',
+    }),
+  })
+
+  if (!createRes.ok) {
+    const text = await createRes.text().catch(() => '')
+    throw new Error(`Kling image failed (${createRes.status}): ${text.slice(0, 200)}`)
+  }
+
+  const createData = await createRes.json()
+  const taskId = createData.data?.task_id
+  if (!taskId) throw new Error('Kling returned no task_id')
+
+  // Poll for completion
+  for (let i = 0; i < 30; i++) {
+    await new Promise(r => setTimeout(r, 2000))
+    const pollRes = await fetch(`https://api.klingai.com/v1/images/generations/${taskId}`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+    })
+    if (!pollRes.ok) continue
+    const pollData = await pollRes.json()
+    const status = pollData.data?.task_status
+
+    if (status === 'succeed') {
+      const imageUrl = pollData.data?.task_result?.images?.[0]?.url
+      if (!imageUrl) throw new Error('Kling returned no image URL')
+      const imageRes = await fetch(imageUrl)
+      return {
+        buffer: Buffer.from(await imageRes.arrayBuffer()),
+        mimeType: 'image/png',
+        width, height,
+        metadata: { model, taskId },
+      }
+    }
+    if (status === 'failed') {
+      throw new Error(`Kling failed: ${pollData.data?.task_status_msg || 'unknown'}`)
+    }
+  }
+  throw new Error('Kling image generation timed out')
 }

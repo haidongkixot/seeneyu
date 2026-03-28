@@ -72,7 +72,41 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     models: ['black-forest-labs/FLUX.1-schnell-Free'],
   },
 
+  // ── Kling AI (image + video) ────────────────────────────────────
+  {
+    id: 'kling',
+    name: 'Kling AI',
+    type: 'image',
+    endpoint: 'https://api.klingai.com/v1',
+    requiresKey: true,
+    envVar: 'KLING_API_KEY',
+    models: [
+      'kling-v1-image',
+      'kling-v1.5-image',
+    ],
+  },
+
   // ── Video Providers ────────────────────────────────────────────
+
+  {
+    id: 'kling-video',
+    name: 'Kling AI (Video)',
+    type: 'video',
+    endpoint: 'https://api.klingai.com/v1',
+    requiresKey: true,
+    envVar: 'KLING_API_KEY',
+    models: [
+      'kling-v1-standard-t2v',
+      'kling-v1-pro-t2v',
+      'kling-v1.6-standard-t2v',
+      'kling-v1.6-pro-t2v',
+      'kling-v2-master-t2v',
+      'kling-v1-standard-i2v',
+      'kling-v1-pro-i2v',
+      'kling-v1.6-standard-i2v',
+      'kling-v2-master-i2v',
+    ],
+  },
 
   {
     id: 'replicate',

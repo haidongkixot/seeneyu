@@ -15,6 +15,8 @@ export async function generateVideo(
   const resolvedProvider = provider || detectBestVideoProvider()
 
   switch (resolvedProvider) {
+    case 'kling-video':
+      return generateWithKling(input, model)
     case 'replicate':
       return generateWithReplicate(input, model)
     case 'huggingface-video':
@@ -39,11 +41,12 @@ export async function generateVideo(
  * Detect best available video provider based on env vars.
  */
 function detectBestVideoProvider(): string {
+  if (process.env.KLING_API_KEY) return 'kling-video'
   if (process.env.REPLICATE_API_TOKEN) return 'replicate'
   if (process.env.RUNWAY_API_KEY) return 'runway'
   if (process.env.LUMA_API_KEY) return 'luma'
   if (process.env.HF_TOKEN) return 'huggingface-video'
-  return 'pollinations-video' // Free fallback
+  return 'pollinations-video'
 }
 
 /**
@@ -101,6 +104,108 @@ async function addTTSAudio(
   } catch (err) {
     console.warn('TTS audio generation failed, returning silent video:', err)
     return video
+  }
+}
+
+// ── Kling AI Video ──────────────────────────────────────────────────
+
+async function generateWithKling(
+  input: { prompt?: string; imageUrl?: string },
+  model?: string,
+): Promise<GenerationResult | null> {
+  const apiKey = process.env.KLING_API_KEY
+  if (!apiKey) return null
+
+  const resolvedModel = model || 'kling-v1.6-standard-t2v'
+
+  // Determine if text-to-video or image-to-video
+  const isI2V = input.imageUrl && resolvedModel.includes('i2v')
+  const endpoint = isI2V
+    ? 'https://api.klingai.com/v1/videos/image2video'
+    : 'https://api.klingai.com/v1/videos/text2video'
+
+  // Map model name to API model_name
+  const modelName = resolvedModel
+    .replace('kling-', '')
+    .replace('-t2v', '')
+    .replace('-i2v', '')
+
+  try {
+    const body: any = {
+      model_name: modelName,
+      prompt: input.prompt || 'A person demonstrating a facial expression naturally',
+      duration: '5',
+      mode: modelName.includes('pro') ? 'pro' : 'std',
+    }
+
+    if (isI2V && input.imageUrl) {
+      body.image = input.imageUrl
+    }
+
+    const createRes = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!createRes.ok) {
+      const text = await createRes.text().catch(() => '')
+      throw new Error(`Kling video create failed (${createRes.status}): ${text.slice(0, 200)}`)
+    }
+
+    const createData = await createRes.json()
+    const taskId = createData.data?.task_id
+    if (!taskId) throw new Error('Kling returned no task_id')
+
+    // Poll for completion (max 180s — video generation takes longer)
+    for (let i = 0; i < 90; i++) {
+      await new Promise(r => setTimeout(r, 2000))
+
+      const pollEndpoint = isI2V
+        ? `https://api.klingai.com/v1/videos/image2video/${taskId}`
+        : `https://api.klingai.com/v1/videos/text2video/${taskId}`
+
+      const pollRes = await fetch(pollEndpoint, {
+        headers: { 'Authorization': `Bearer ${apiKey}` },
+      })
+
+      if (!pollRes.ok) continue
+
+      const pollData = await pollRes.json()
+      const status = pollData.data?.task_status
+
+      if (status === 'succeed') {
+        const videoUrl = pollData.data?.task_result?.videos?.[0]?.url
+        if (!videoUrl) throw new Error('Kling returned no video URL')
+
+        const videoRes = await fetch(videoUrl)
+        const buffer = Buffer.from(await videoRes.arrayBuffer())
+
+        return {
+          buffer,
+          mimeType: 'video/mp4',
+          durationMs: 5000,
+          metadata: {
+            model: resolvedModel,
+            provider: 'kling-video',
+            hasAudio: true,
+            taskId,
+          },
+        }
+      }
+
+      if (status === 'failed') {
+        throw new Error(`Kling video failed: ${pollData.data?.task_status_msg || 'unknown'}`)
+      }
+    }
+
+    throw new Error('Kling video generation timed out')
+  } catch (err) {
+    console.error('Kling video generation failed:', err)
+    return null
   }
 }
 
