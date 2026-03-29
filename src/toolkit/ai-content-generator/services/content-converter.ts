@@ -64,14 +64,19 @@ export async function convertToClip(
 
   const imageAsset = request.assets.find((a) => a.type === 'image')
   const videoAsset = request.assets.find((a) => a.type === 'video')
-  const primaryAsset = imageAsset || videoAsset
+  const primaryAsset = videoAsset || imageAsset
 
   if (!primaryAsset || !primaryAsset.blobUrl) {
     throw new Error('No ready asset with blob URL found')
   }
 
   const desc = request.generatedDescription as DescriptionOutput | null
-  const mediaType = primaryAsset.type === 'video' ? 'ai_video' : 'ai_image'
+  const assetMeta = (primaryAsset.metadata as any) ?? {}
+
+  // Composite assets (image + audio) from OpenAI should be treated as ai_image
+  // since the blobUrl points to an image, not a playable video file
+  const isComposite = assetMeta.isComposite === true
+  const mediaType = (primaryAsset.type === 'video' && !isComposite) ? 'ai_video' : 'ai_image'
   const skillCategory =
     EXPRESSION_TO_SKILL[request.expressionType] ||
     BODY_LANGUAGE_TO_SKILL[request.bodyLanguageType] ||

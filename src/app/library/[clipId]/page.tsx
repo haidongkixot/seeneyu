@@ -7,6 +7,7 @@ import { ClipViewerClient } from './ClipViewerClient'
 import { ClipDetailTabs } from './ClipDetailTabs'
 import type { SkillCategory, Difficulty, ObservationGuide } from '@/lib/types'
 import { ArrowLeft, FileText } from 'lucide-react'
+import { AiMediaPlayer } from '@/components/AiMediaPlayer'
 
 interface PageProps {
   params: Promise<{ clipId: string }>
@@ -46,24 +47,12 @@ export default async function ClipViewerPage({ params }: PageProps) {
         </Link>
 
         {/* Video/Image player */}
-        {(clip as any).mediaType === 'ai_image' && (clip as any).mediaUrl ? (
-          <div className="w-full rounded-2xl overflow-hidden bg-bg-elevated border border-black/8">
-            <img
-              src={(clip as any).mediaUrl}
-              alt={clip.sceneDescription}
-              className="w-full h-auto max-h-[500px] object-contain"
-            />
-          </div>
-        ) : (clip as any).mediaType === 'ai_video' && (clip as any).mediaUrl ? (
-          <div className="w-full rounded-2xl overflow-hidden bg-black">
-            <video
-              src={(clip as any).mediaUrl}
-              controls
-              autoPlay
-              loop
-              className="w-full h-auto max-h-[500px]"
-            />
-          </div>
+        {((clip as any).mediaType === 'ai_image' || (clip as any).mediaType === 'ai_video') && (clip as any).mediaUrl ? (
+          <AiMediaPlayer
+            mediaUrl={(clip as any).mediaUrl}
+            mediaType={(clip as any).mediaType}
+            title={clip.sceneDescription}
+          />
         ) : clip.youtubeVideoId ? (
           <ClipViewerClient
             youtubeVideoId={clip.youtubeVideoId}
