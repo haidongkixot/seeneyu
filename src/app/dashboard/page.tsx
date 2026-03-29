@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
 import { AssistantButton } from '@/components/assistant'
 import { ProactiveSuggestionBanner } from '@/components/ProactiveSuggestionBanner'
+import { PushPermissionPrompt } from '@/components/PushPermissionPrompt'
 import { LearningPlanCard } from '@/components/LearningPlanCard'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
 
@@ -123,6 +124,11 @@ export default async function DashboardPage() {
           ))}
         </div>
       </main>
+
+      {/* Push notification opt-in prompt */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pb-6">
+        <PushPermissionPrompt />
+      </div>
 
       {/* AI Assistant */}
       <AssistantButton context="general" />

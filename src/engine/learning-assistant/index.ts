@@ -37,12 +37,37 @@ export { selectMotivation } from './planners/motivation-planner'
 // Channels
 export { BaseNotificationChannel } from './channels/channel-interface'
 export { InAppChannel } from './channels/in-app-channel'
+export { PushChannel } from './channels/push-channel'
 
 // Templates
 export { renderTemplate, resolveVariables } from './templates/template-engine'
 
 // Scheduler
 export { processQueue, scheduleNotification } from './scheduler/scheduler'
+
+// ── Singleton ─────────────────────────────────────────────────────────
+
+// ── Auto-register channels ───────────────────────────────────────────
+
+import { getRegistry } from './core/registry'
+import { InAppChannel } from './channels/in-app-channel'
+import { PushChannel } from './channels/push-channel'
+
+function initChannels() {
+  const registry = getRegistry()
+  // Always register in-app channel
+  if (!registry.getChannel('in_app')) {
+    registry.registerChannel(new InAppChannel())
+  }
+  // Register push channel if VAPID keys are configured
+  if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+    if (!registry.getChannel('push')) {
+      registry.registerChannel(new PushChannel())
+    }
+  }
+}
+
+initChannels()
 
 // ── Singleton ─────────────────────────────────────────────────────────
 
