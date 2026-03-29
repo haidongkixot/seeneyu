@@ -114,6 +114,7 @@ model User {
   comments           Comment[]
   assistantConversations AssistantConversation[]
   gamification       UserGamification?
+  learnerProfile     LearnerProfile?
 
   @@index([status])
 }
@@ -819,4 +820,96 @@ model AiGeneratedAsset {
   createdAt    DateTime @default(now())
   @@index([requestId])
   @@index([status])
+}
+
+// ── Learning Assistant Engine models ──────────────────────────────────
+
+model LearnerProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timezone              String   @default("UTC")
+  preferredChannels     Json     @default("[]")
+  optOutChannels        Json     @default("[]")
+  optimalPracticeTime   String?
+  practiceTimeConfidence Float   @default(0)
+  avgSessionsPerWeek    Float    @default(0)
+  engagementScore       Float    @default(50)
+  lastEngagementCalc    DateTime?
+  weakSkills            Json     @default("[]")
+  strongSkills          Json     @default("[]")
+  skillGapUpdatedAt     DateTime?
+  notificationFrequency String   @default("normal")
+  whatsappPhone         String?
+  whatsappOptIn         Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  @@index([engagementScore])
+}
+
+model LearningPlan {
+  id             String   @id @default(cuid())
+  userId         String
+  type           String
+  date           String
+  activities     Json
+  status         String   @default("active")
+  completedCount Int      @default(0)
+  totalCount     Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@unique([userId, type, date])
+  @@index([userId, status])
+}
+
+model ScheduledNotification {
+  id            String    @id @default(cuid())
+  userId        String
+  triggerType   String
+  channel       String
+  scheduledFor  DateTime
+  payload       Json
+  priority      String    @default("normal")
+  status        String    @default("pending")
+  attempts      Int       @default(0)
+  lastAttemptAt DateTime?
+  errorMessage  String?   @db.Text
+  createdAt     DateTime  @default(now())
+  @@index([status, scheduledFor])
+  @@index([userId, triggerType])
+}
+
+model NotificationLog {
+  id              String    @id @default(cuid())
+  userId          String
+  notificationId  String?
+  triggerType     String
+  channel         String
+  title           String
+  body            String    @db.Text
+  deepLink        String?
+  deliveryStatus  String
+  deliveredAt     DateTime?
+  openedAt        DateTime?
+  clickedAt       DateTime?
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  @@index([userId, createdAt])
+  @@index([triggerType])
+}
+
+model NotificationTemplate {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  triggerType String
+  channel     String
+  subject     String?
+  title       String
+  body        String   @db.Text
+  variables   Json     @default("[]")
+  locale      String   @default("en")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([triggerType, channel, locale])
 }

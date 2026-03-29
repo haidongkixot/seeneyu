@@ -927,6 +927,92 @@
       "src/components/ClipCard.tsx — updated for mediaType=ai_image/ai_video",
       "src/app/library/[clipId]/ClipViewerClient.tsx — updated for AI-generated media display"
     ]
+  },
+  {
+    "id": "M47",
+    "name": "Learning Assistant Engine Core + In-App Channel",
+    "phase": "47-learning-assistant",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M48", "M49", "M50"],
+    "depends_on": [],
+    "description": "Abstract, SaaS-ready Learning Assistant Engine. Core engine class with ILearner/IContentProvider/INotificationChannel interfaces. 3 analyzers (progress, engagement, skill-gap), 3 planners (activity, reminder, motivation), in-app channel, template system, scheduler, cron routes. 6 new DB models. Hook into processActivity(). Proactive suggestion banner on dashboard.",
+    "assigned": ["backend-engineer", "designer", "data-engineer", "tester"],
+    "tester_condition": "(1) Engine core initializes with ILearner/IContentProvider/INotificationChannel interfaces. (2) 3 analyzers produce correct analysis (progress, engagement, skill-gap). (3) 3 planners generate appropriate plans (activity, reminder, motivation). (4) In-app notification channel delivers messages. (5) Template system renders dynamic content. (6) Scheduler triggers via cron routes. (7) 6 new DB models persist correctly. (8) processActivity() hook triggers engine. (9) Proactive suggestion banner visible on dashboard.",
+    "deliverables": [
+      "src/engine/learning-assistant/ — core engine class, interfaces (ILearner, IContentProvider, INotificationChannel)",
+      "src/engine/learning-assistant/analyzers/ — progress, engagement, skill-gap analyzers",
+      "src/engine/learning-assistant/planners/ — activity, reminder, motivation planners",
+      "src/engine/learning-assistant/channels/in-app.ts — in-app notification channel",
+      "src/engine/learning-assistant/templates/ — template system",
+      "src/engine/learning-assistant/scheduler.ts — scheduler service",
+      "prisma/schema.prisma — 6 new models for learning assistant",
+      "src/app/api/cron/learning-assistant/route.ts — cron route",
+      "src/components/SuggestionBanner.tsx — proactive suggestion banner on dashboard"
+    ]
+  },
+  {
+    "id": "M48",
+    "name": "Push Notifications Channel",
+    "phase": "47-learning-assistant",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "depends_on": ["M47"],
+    "description": "Web Push via web-push npm. Service worker, PushPermissionPrompt component, push subscription API, notification click tracking, deep links. VAPID key setup.",
+    "assigned": ["backend-engineer", "designer", "builder", "tester"],
+    "tester_condition": "(1) PushPermissionPrompt component requests browser permission. (2) Service worker registers and handles push events. (3) Push subscription saved via API. (4) Notifications delivered via web-push. (5) Click tracking records user interaction. (6) Deep links navigate to correct page on click. (7) VAPID keys configured correctly.",
+    "deliverables": [
+      "public/sw.js — service worker for push notifications",
+      "src/components/PushPermissionPrompt.tsx — permission request UI",
+      "src/app/api/push/subscribe/route.ts — push subscription API",
+      "src/app/api/push/track/route.ts — notification click tracking",
+      "src/engine/learning-assistant/channels/push.ts — push notification channel",
+      "src/lib/vapid.ts — VAPID key management"
+    ]
+  },
+  {
+    "id": "M49",
+    "name": "Email Channel + Weekly Reports",
+    "phase": "47-learning-assistant",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M50"],
+    "depends_on": ["M47"],
+    "description": "Email via Resend (free tier 3000/month). React Email templates for weekly report, streak celebration, comeback, level-up. Weekly report cron job. User email preferences.",
+    "assigned": ["backend-engineer", "designer", "builder", "tester"],
+    "tester_condition": "(1) Email channel sends via Resend API. (2) React Email templates render correctly (weekly report, streak celebration, comeback, level-up). (3) Weekly report cron job triggers and sends reports. (4) User can set email preferences (opt-in/out per type). (5) Free tier limit (3000/month) respected. (6) Unsubscribe link works.",
+    "deliverables": [
+      "src/engine/learning-assistant/channels/email.ts — email notification channel",
+      "src/emails/ — React Email templates (weekly-report, streak-celebration, comeback, level-up)",
+      "src/app/api/cron/weekly-report/route.ts — weekly report cron job",
+      "src/app/api/user/email-preferences/route.ts — user email preferences API",
+      "src/app/settings/notifications/page.tsx — email preference UI"
+    ]
+  },
+  {
+    "id": "M50",
+    "name": "WhatsApp Channel + Engagement Analytics",
+    "phase": "47-learning-assistant",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "depends_on": ["M47", "M49"],
+    "description": "WhatsApp via Twilio. Opt-in flow, quick-reply buttons, webhook handler. Full engagement analytics admin dashboard with notification performance metrics.",
+    "assigned": ["backend-engineer", "designer", "builder", "tester"],
+    "tester_condition": "(1) WhatsApp opt-in flow captures user phone number. (2) Messages sent via Twilio WhatsApp API. (3) Quick-reply buttons work in WhatsApp. (4) Webhook handler processes incoming replies. (5) Engagement analytics dashboard shows notification performance metrics. (6) Admin can view delivery rates, open rates, click-through by channel. (7) Opt-out flow works.",
+    "deliverables": [
+      "src/engine/learning-assistant/channels/whatsapp.ts — WhatsApp notification channel",
+      "src/app/api/webhooks/whatsapp/route.ts — Twilio webhook handler",
+      "src/app/api/user/whatsapp/opt-in/route.ts — WhatsApp opt-in API",
+      "src/components/WhatsAppOptIn.tsx — opt-in flow UI",
+      "src/app/admin/analytics/engagement/page.tsx — engagement analytics dashboard",
+      "src/app/api/admin/analytics/engagement/route.ts — engagement metrics API"
+    ]
   }
   ]
 }

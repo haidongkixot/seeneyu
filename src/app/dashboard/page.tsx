@@ -6,6 +6,8 @@ import { Prisma } from '@prisma/client'
 import Link from 'next/link'
 import { SkillTrackColumn } from '@/components/SkillTrackColumn'
 import { AssistantButton } from '@/components/assistant'
+import { ProactiveSuggestionBanner } from '@/components/ProactiveSuggestionBanner'
+import { LearningPlanCard } from '@/components/LearningPlanCard'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
 
 const SKILLS: SkillCategory[] = [
@@ -88,6 +90,16 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-bg-base">
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-10">
+        {/* Proactive suggestion from Coach Ney */}
+        <div className="mb-6">
+          <ProactiveSuggestionBanner />
+        </div>
+
+        {/* Today's personalized learning plan */}
+        <div className="mb-8">
+          <LearningPlanCard />
+        </div>
+
         <div className="space-y-1 mb-8">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-text-primary">

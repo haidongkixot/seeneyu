@@ -69,7 +69,7 @@ export async function processActivity(
   // 4. Evaluate badges
   const badgesEarned = await evaluateBadges(userId)
 
-  return {
+  const result = {
     xpGained: xpAmount,
     leveledUp: xpResult.leveledUp,
     newLevel: xpResult.level,
@@ -78,4 +78,13 @@ export async function processActivity(
     questsCompleted,
     badgesEarned,
   }
+
+  // Hook: notify Learning Assistant Engine (fire-and-forget)
+  try {
+    const { getEngine } = await import('@/engine/learning-assistant')
+    const engine = getEngine()
+    engine.onActivity(userId, result).catch(() => {})
+  } catch {}
+
+  return result
 }

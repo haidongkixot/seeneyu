@@ -129,6 +129,18 @@
       ],
       "decided_by": "pm",
       "timestamp": "2026-03-26T10:00:00Z"
+    },
+    {
+      "id": "dec_014",
+      "decision": "M47-M50 Learning Assistant Engine approved. Architecture: abstract SaaS-ready engine at src/engine/learning-assistant/ with pluggable channels, analyzers, planners. Scheduler: Vercel Cron + DB queue. Channels: in-app (M47), push (M48), email/Resend (M49), WhatsApp/Twilio (M50). Engine designed as portable package for any learning domain.",
+      "rationale": "Proactive engagement drives retention. Abstract engine allows reuse across learning domains. Channel progression (in-app → push → email → WhatsApp) allows incremental rollout. Free/low-cost providers chosen (Resend free tier, Twilio pay-per-message).",
+      "alternatives_considered": [
+        "Monolithic notification service — rejected, not reusable",
+        "Third-party engagement platform (Customer.io, OneSignal) — rejected, vendor lock-in",
+        "All channels in single milestone — rejected, too large, incremental delivery preferred"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-29T10:00:00Z"
     }
   ]
 }
