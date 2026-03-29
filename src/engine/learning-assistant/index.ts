@@ -38,6 +38,7 @@ export { selectMotivation } from './planners/motivation-planner'
 export { BaseNotificationChannel } from './channels/channel-interface'
 export { InAppChannel } from './channels/in-app-channel'
 export { PushChannel } from './channels/push-channel'
+export { EmailChannel } from './channels/email-channel'
 
 // Templates
 export { renderTemplate, resolveVariables } from './templates/template-engine'
@@ -52,6 +53,7 @@ export { processQueue, scheduleNotification } from './scheduler/scheduler'
 import { getRegistry } from './core/registry'
 import { InAppChannel } from './channels/in-app-channel'
 import { PushChannel } from './channels/push-channel'
+import { EmailChannel } from './channels/email-channel'
 
 function initChannels() {
   const registry = getRegistry()
@@ -63,6 +65,12 @@ function initChannels() {
   if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
     if (!registry.getChannel('push')) {
       registry.registerChannel(new PushChannel())
+    }
+  }
+  // Register email channel if Resend API key is configured
+  if (process.env.RESEND_API_KEY) {
+    if (!registry.getChannel('email')) {
+      registry.registerChannel(new EmailChannel())
     }
   }
 }

@@ -15,6 +15,7 @@ import { generateDailyPlan } from '../planners/activity-planner'
 import { scheduleReminders } from '../planners/reminder-planner'
 import { selectMotivation } from '../planners/motivation-planner'
 import { processQueue, scheduleNotification } from '../scheduler/scheduler'
+import { weeklyReportHtml } from '../templates/email-templates'
 
 /**
  * LearningAssistantEngine orchestrates analysis, planning, and notification
@@ -154,41 +155,140 @@ export class LearningAssistantEngine {
 
   /**
    * Weekly report: generate and schedule weekly summary notifications.
+   * Sends both in-app and email (if configured) with rich HTML template.
    */
   async runWeeklyReport(): Promise<{ reports: number }> {
-    // Get all active users with profiles
-    const profiles = await prisma.learnerProfile.findMany({
-      where: { engagementScore: { gt: 0 } },
-      select: { userId: true },
-      take: 500,
-    })
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://seeneyu.vercel.app'
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
+    // Get all active users in batches of 50
+    let cursor: string | undefined
     let reports = 0
 
-    for (const { userId } of profiles) {
-      try {
-        const progress = await analyzeProgress(userId)
-        const engagement = await analyzeEngagement(userId)
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const profiles = await prisma.learnerProfile.findMany({
+        where: { engagementScore: { gt: 0 } },
+        select: { userId: true },
+        take: 50,
+        ...(cursor
+          ? { skip: 1, cursor: { userId: cursor } }
+          : {}),
+        orderBy: { userId: 'asc' },
+      })
 
-        await scheduleNotification(
-          userId,
-          'weekly_report',
-          'in_app',
-          new Date(),
-          {
-            priority: 'normal',
-            context: {
-              lessonsThisWeek: progress.lessonsThisWeek,
-              xpVelocity: progress.xpVelocity,
-              avgQuizScore: progress.avgQuizScore,
-              arcadeCount: progress.arcadeScores.count,
-              engagementTrend: engagement.isDropping ? 'dropping' : 'stable',
-            },
+      if (profiles.length === 0) break
+      cursor = profiles[profiles.length - 1].userId
+
+      for (const { userId } of profiles) {
+        try {
+          const progress = await analyzeProgress(userId)
+          const engagement = await analyzeEngagement(userId)
+
+          // Gather extra data for the email template
+          const [user, gamification, badgesThisWeek, questsThisWeek, xpThisWeek, skillGaps] = await Promise.all([
+            prisma.user.findUnique({
+              where: { id: userId },
+              select: { name: true },
+            }),
+            prisma.userGamification.findUnique({
+              where: { userId },
+              select: { currentStreak: true, level: true },
+            }),
+            prisma.userBadge.count({
+              where: { userId, earnedAt: { gte: sevenDaysAgo } },
+            }),
+            prisma.dailyQuest.count({
+              where: { userId, completed: true, createdAt: { gte: sevenDaysAgo } },
+            }),
+            prisma.xpTransaction.aggregate({
+              where: { userId, createdAt: { gte: sevenDaysAgo } },
+              _sum: { amount: true },
+            }),
+            analyzeSkillGaps(userId),
+          ])
+
+          const xpEarned = xpThisWeek._sum.amount ?? 0
+          const userName = user?.name?.split(' ')[0] || 'Learner'
+          const unsubscribeUrl = `${baseUrl}/settings/notifications?unsubscribe=email`
+          const dashboardUrl = `${baseUrl}/dashboard`
+
+          // Build skill breakdown for email
+          const allSkills = [
+            ...skillGaps.strongSkills.map((s) => ({ skill: s.replace(/_/g, ' '), score: 80 })),
+            ...skillGaps.weakSkills.map((s) => ({ skill: s.replace(/_/g, ' '), score: 30 })),
+          ]
+
+          // Determine top achievement
+          let topAchievement: string | null = null
+          if (badgesThisWeek > 0) {
+            topAchievement = `Earned ${badgesThisWeek} new badge${badgesThisWeek !== 1 ? 's' : ''} this week!`
+          } else if (progress.lessonsThisWeek >= 5) {
+            topAchievement = `Completed ${progress.lessonsThisWeek} lessons - impressive dedication!`
           }
-        )
-        reports++
-      } catch {
-        // Continue
+
+          // AI-lite recommendation for next week focus
+          const nextWeekFocus = skillGaps.weakSkills.length > 0
+            ? `Focus on improving your ${skillGaps.weakSkills[0].replace(/_/g, ' ')} skills. Even short daily practice sessions build lasting habits.`
+            : 'Keep up your well-rounded practice. Try challenging yourself with harder arcade scenarios this week.'
+
+          // Schedule in-app notification
+          await scheduleNotification(
+            userId,
+            'weekly_report',
+            'in_app',
+            new Date(),
+            {
+              priority: 'normal',
+              title: 'Your Weekly Report is Ready',
+              body: `You earned ${xpEarned} XP and completed ${progress.lessonsThisWeek} lessons this week.`,
+              deepLink: '/dashboard',
+              context: {
+                lessonsThisWeek: progress.lessonsThisWeek,
+                xpVelocity: progress.xpVelocity,
+                avgQuizScore: progress.avgQuizScore,
+                arcadeCount: progress.arcadeScores.count,
+                engagementTrend: engagement.isDropping ? 'dropping' : 'stable',
+              },
+            }
+          )
+
+          // Schedule email notification with rich HTML template
+          const html = weeklyReportHtml({
+            userName,
+            xpEarned,
+            lessonsCompleted: progress.lessonsThisWeek,
+            streakDays: gamification?.currentStreak ?? 0,
+            badgesEarned: badgesThisWeek,
+            questsCompleted: questsThisWeek,
+            avgQuizScore: progress.avgQuizScore,
+            arcadeCount: progress.arcadeScores.count,
+            skillBreakdown: allSkills,
+            topAchievement,
+            nextWeekFocus,
+            dashboardUrl,
+            unsubscribeUrl,
+          })
+
+          await scheduleNotification(
+            userId,
+            'weekly_report',
+            'email',
+            new Date(),
+            {
+              priority: 'normal',
+              title: `Your Week in Review - ${xpEarned} XP earned`,
+              body: `You completed ${progress.lessonsThisWeek} lessons and earned ${xpEarned} XP this week.`,
+              deepLink: '/dashboard',
+              metadata: { html },
+            }
+          )
+
+          reports++
+        } catch {
+          // Continue with next user
+        }
       }
     }
 
