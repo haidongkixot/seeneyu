@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import Link from 'next/link'
-import { LayoutDashboard, Film, Users, Search, Upload, Gamepad2, BarChart3, CreditCard, Wrench, AlertTriangle, FileText, Database } from 'lucide-react'
+import { LayoutDashboard, Film, Users, Search, Upload, Gamepad2, BarChart3, CreditCard, Wrench, AlertTriangle, FileText, Database, Zap } from 'lucide-react'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)
@@ -22,6 +22,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: '/admin/toolkit', label: 'Toolkit', Icon: Wrench },
     { href: '/admin/data', label: 'Data', Icon: Database },
     { href: '/admin/cms', label: 'CMS', Icon: FileText },
+    { href: '/admin/engine', label: 'Engine', Icon: Zap },
     { href: '/admin/logs', label: 'Logs', Icon: AlertTriangle },
   ]
 

@@ -39,6 +39,7 @@ export { BaseNotificationChannel } from './channels/channel-interface'
 export { InAppChannel } from './channels/in-app-channel'
 export { PushChannel } from './channels/push-channel'
 export { EmailChannel } from './channels/email-channel'
+export { WhatsAppChannel } from './channels/whatsapp-channel'
 
 // Templates
 export { renderTemplate, resolveVariables } from './templates/template-engine'
@@ -54,6 +55,7 @@ import { getRegistry } from './core/registry'
 import { InAppChannel } from './channels/in-app-channel'
 import { PushChannel } from './channels/push-channel'
 import { EmailChannel } from './channels/email-channel'
+import { WhatsAppChannel } from './channels/whatsapp-channel'
 
 function initChannels() {
   const registry = getRegistry()
@@ -71,6 +73,12 @@ function initChannels() {
   if (process.env.RESEND_API_KEY) {
     if (!registry.getChannel('email')) {
       registry.registerChannel(new EmailChannel())
+    }
+  }
+  // Register WhatsApp channel if Twilio is configured
+  if (process.env.TWILIO_ACCOUNT_SID) {
+    if (!registry.getChannel('whatsapp')) {
+      registry.registerChannel(new WhatsAppChannel())
     }
   }
 }

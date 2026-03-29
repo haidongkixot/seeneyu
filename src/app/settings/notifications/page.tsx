@@ -16,6 +16,7 @@ import {
   Clock,
   Globe,
 } from 'lucide-react'
+import WhatsAppOptIn from '@/components/WhatsAppOptIn'
 
 interface NotificationPreferences {
   inApp: boolean
@@ -25,6 +26,8 @@ interface NotificationPreferences {
   frequency: 'quiet' | 'normal' | 'engaged'
   timezone: string
   optimalPracticeTime: string | null
+  whatsappPhone?: string | null
+  whatsappOptIn?: boolean
 }
 
 const frequencyOptions = [
@@ -184,6 +187,12 @@ export default function NotificationPreferencesPage() {
             ))}
           </div>
         </div>
+
+        {/* WhatsApp Opt-In */}
+        <WhatsAppOptIn
+          initialPhone={prefs.whatsappPhone}
+          initialOptIn={prefs.whatsappOptIn}
+        />
 
         {/* Frequency */}
         <div className="bg-bg-surface border border-black/8 rounded-2xl p-6">
