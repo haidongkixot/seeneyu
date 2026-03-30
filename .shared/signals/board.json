@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-28T16:13:33.647Z",
-    "open_count": 49
+    "last_updated": "2026-03-30T01:11:50.058Z",
+    "open_count": 55
   },
   "signals": [
     {
@@ -239,6 +239,72 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_tester_1774833110057",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M51-M54 — Test plan: (1) Verify auto-approval works on signup. (2) Test lesson gating — lessons 1-2 accessible, 3+ locked for free. (3) Test library gating — beginner clips visible, intermediate/advanced locked. (4) Test upgrade modal appears at each friction point. (5) Test that Standard/Advanced users see ALL content without locks.",
+      "timestamp": "2026-03-30T01:11:50.057Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1774833108435",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M52-M53 — Tasks: (1) Seed VIP lesson content into Foundation courses (Advanced-only flag). (2) Create Coupon/Promotion schema + seed EARLYBIRD code. (3) Build analytics: track which limits free users hit most, conversion funnel from limit→upgrade prompt→checkout.",
+      "timestamp": "2026-03-30T01:11:48.435Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_marketer_1774833106731",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M52 — Prepare content: (1) Write 12 VIP masterclass lesson descriptions for Advanced tier. Topics: CEO Stance, Negotiation Body Language, First Impression Science, Power Handshake, etc. (2) Write pricing page copy — outcomes-focused ('Get 10x more feedback detail'). (3) Write upgrade prompt messages for each friction point (5 variants). (4) Write FAQ answers for pricing page (billing, cancellation, trial).",
+      "timestamp": "2026-03-30T01:11:46.731Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1774833101168",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M51-M52 — Design specs needed. (1) Lock icon overlay for gated lessons + clips — blur effect, lock badge, 'Upgrade to unlock' text. (2) UpgradePromptModal — Coach Ney avatar, speech bubble with contextual message, trial button, dismiss link. (3) Pricing page redesign — outcomes-focused, social proof, FAQ accordion. (4) 'Choose Your Path' homepage section with 3 plan cards.",
+      "timestamp": "2026-03-30T01:11:41.168Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1774833098416",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "URGENT M51 — Sprint 1. Tasks: (1) Add lock icons + upgrade overlay on gated Foundation lessons (lessons 3+). (2) Add blurred thumbnails + lock on gated Library clips (intermediate/advanced for free users). (3) Create UpgradePromptModal component — Coach Ney avatar + speech bubble + '7-day free trial' button + 'Stay on Free' link. (4) Show UpgradePromptModal when: recording limit hit, Coach Ney limit hit, hearts depleted, locked lesson clicked, locked clip clicked.",
+      "timestamp": "2026-03-30T01:11:38.416Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1774833095438",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "URGENT M51 — Sprint 1 starts NOW. Tasks: (1) Remove admin approval — change signup to auto-approve learners (status='approved' on create, keep approval for admin role only). (2) Update access-control.ts — gate Foundation lessons (free=first 2 per course), gate Library (free=beginner only), reduce Coach Ney to 3 msgs/day for basic, reduce hearts to 3/day, reduce arcade to 1 per type. (3) Create upgrade-prompt API endpoint that returns contextual upgrade message based on what limit user hit.",
+      "timestamp": "2026-03-30T01:11:35.438Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_designer_1774587271231",

@@ -9,6 +9,7 @@ import { AssistantButton } from '@/components/assistant'
 import { ProactiveSuggestionBanner } from '@/components/ProactiveSuggestionBanner'
 import { PushPermissionPrompt } from '@/components/PushPermissionPrompt'
 import { LearningPlanCard } from '@/components/LearningPlanCard'
+import { UpgradeBanner } from '@/components/UpgradeBanner'
 import type { SkillCategory, SkillLevel, SkillTrack } from '@/lib/types'
 
 const SKILLS: SkillCategory[] = [
@@ -91,6 +92,11 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-bg-base">
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-10">
+        {/* Upgrade banner for free users */}
+        <div className="mb-6">
+          <UpgradeBanner />
+        </div>
+
         {/* Proactive suggestion from Coach Ney */}
         <div className="mb-6">
           <ProactiveSuggestionBanner />

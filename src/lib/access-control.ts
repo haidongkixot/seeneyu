@@ -1,42 +1,22 @@
-const FREE_CHALLENGES_PER_TYPE = 3
-
-export function canAccessChallenge(
-  challengeIndex: number,
-  challengeType: string,
-  allChallenges: { type: string }[],
-  isAuthenticated: boolean
-): boolean {
-  if (isAuthenticated) return true
-  const sameTypeBefore = allChallenges
-    .slice(0, challengeIndex)
-    .filter(c => c.type === challengeType).length
-  return sameTypeBefore < FREE_CHALLENGES_PER_TYPE
-}
-
-export function canAccessPractice(isAuthenticated: boolean): boolean {
-  return isAuthenticated
-}
-
-export function canAccessRecord(isAuthenticated: boolean): boolean {
-  return isAuthenticated
-}
-
+// ── Video recording limits ──────────────────────────────────────────
 export function getVideoLimitSec(plan: string): number {
   switch (plan) {
-    case 'standard': return 30
-    case 'advanced': return 180
-    default: return 5
+    case 'advanced': return 180  // 3 minutes
+    case 'standard': return 60   // 1 minute
+    default: return 15           // 15 seconds (was 5)
   }
 }
 
-export function getFeedbackDetail(plan: string): 'short' | 'full' | 'full_plus' {
+// ── Feedback detail level ───────────────────────────────────────────
+export function getFeedbackDetail(plan: string): 'score_only' | 'full' | 'full_plus' {
   switch (plan) {
-    case 'standard': return 'full'
     case 'advanced': return 'full_plus'
-    default: return 'short'
+    case 'standard': return 'full'
+    default: return 'score_only'  // was 'short'
   }
 }
 
+// ── Feedback sections (granular UI control) ─────────────────────────
 export interface FeedbackSections {
   score: boolean
   summary: boolean
@@ -57,4 +37,94 @@ export function getFeedbackSections(plan: string): FeedbackSections {
     default:
       return { score: true, summary: true, dimensions: false, positives: false, improvements: false, steps: false, tips: false, advancedTips: false }
   }
+}
+
+// ── Foundation lesson access ────────────────────────────────────────
+export function getFoundationLessonLimit(plan: string): number {
+  switch (plan) {
+    case 'advanced': return 999  // unlimited + VIP
+    case 'standard': return 999  // unlimited
+    default: return 2            // first 2 per course only
+  }
+}
+
+// ── Library difficulty access ───────────────────────────────────────
+export function getAllowedDifficulties(plan: string): string[] {
+  switch (plan) {
+    case 'advanced': return ['beginner', 'intermediate', 'advanced']
+    case 'standard': return ['beginner', 'intermediate']
+    default: return ['beginner']  // free = beginner only
+  }
+}
+
+// ── Arcade challenges per type ──────────────────────────────────────
+export function getArcadeChallengesPerType(plan: string): number {
+  switch (plan) {
+    case 'advanced': return 999
+    case 'standard': return 999
+    default: return 1  // was 3
+  }
+}
+
+export function canAccessChallenge(
+  challengeIndex: number,
+  challengeType: string,
+  allChallenges: { type: string }[],
+  isAuthenticated: boolean,
+  plan?: string
+): boolean {
+  if (plan === 'standard' || plan === 'advanced') return true
+  if (!isAuthenticated) {
+    const limit = getArcadeChallengesPerType('basic')
+    const sameTypeBefore = allChallenges
+      .slice(0, challengeIndex)
+      .filter(c => c.type === challengeType).length
+    return sameTypeBefore < limit
+  }
+  const userPlan = plan || 'basic'
+  const limit = getArcadeChallengesPerType(userPlan)
+  const sameTypeBefore = allChallenges
+    .slice(0, challengeIndex)
+    .filter(c => c.type === challengeType).length
+  return sameTypeBefore < limit
+}
+
+export function canAccessPractice(isAuthenticated: boolean): boolean {
+  return isAuthenticated
+}
+
+export function canAccessRecord(isAuthenticated: boolean): boolean {
+  return isAuthenticated
+}
+
+// ── Coach Ney limits ────────────────────────────────────────────────
+export function getAssistantLimits(plan: string) {
+  switch (plan) {
+    case 'advanced': return { maxMessagesPerDay: -1, voiceEnabled: true }
+    case 'standard': return { maxMessagesPerDay: 20, voiceEnabled: true }
+    default: return { maxMessagesPerDay: 3, voiceEnabled: false }  // was 5
+  }
+}
+
+// ── Hearts per day ──────────────────────────────────────────────────
+export function getHeartsConfig(plan: string) {
+  switch (plan) {
+    case 'advanced': return { maxHearts: 999, refillHours: 0, freezesPerWeek: 999 }
+    case 'standard': return { maxHearts: 10, refillHours: 4, freezesPerWeek: 1 }
+    default: return { maxHearts: 3, refillHours: 4, freezesPerWeek: 0 }  // was 5
+  }
+}
+
+// ── Mini-games access ───────────────────────────────────────────────
+export function getAllowedGames(plan: string): string[] {
+  switch (plan) {
+    case 'advanced': return ['guess-expression', 'match-expression', 'expression-king', 'emotion-timeline', 'spot-the-signal']
+    case 'standard': return ['guess-expression', 'match-expression', 'expression-king', 'emotion-timeline', 'spot-the-signal']
+    default: return ['guess-expression', 'match-expression']  // free = 2 games only
+  }
+}
+
+// ── Discussions access ──────────────────────────────────────────────
+export function canPostComments(plan: string): boolean {
+  return plan === 'standard' || plan === 'advanced'
 }

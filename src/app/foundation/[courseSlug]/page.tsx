@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CheckCircle2, Circle, ChevronRight } from 'lucide-react'
+import { getFoundationLessonLimit } from '@/lib/access-control'
+import { LockedLessonList } from './LockedLessonList'
 
 export default async function CoursePage({
   params,
@@ -25,9 +27,18 @@ export default async function CoursePage({
 
   if (!course) notFound()
 
+  // Get user plan
+  const userId = (session?.user as any)?.id as string | undefined
+  let userPlan = 'basic'
+  if (userId) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }).catch(() => null)
+    if (dbUser) userPlan = dbUser.plan || 'basic'
+  }
+
+  const lessonLimit = getFoundationLessonLimit(userPlan)
+
   // Get completed lessons
   let completedIds = new Set<string>()
-  const userId = (session?.user as any)?.id as string | undefined
   if (userId) {
     const progress = await prisma.foundationProgress.findMany({
       where: { userId, lessonId: { in: course.lessons.map(l => l.id) }, quizPassed: true },
@@ -38,6 +49,10 @@ export default async function CoursePage({
 
   const completedCount = completedIds.size
   const totalCount = course.lessons.length
+
+  // Separate free and locked lessons
+  const freeLessons = course.lessons.filter(l => l.order <= lessonLimit)
+  const lockedLessons = course.lessons.filter(l => l.order > lessonLimit)
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -68,9 +83,9 @@ export default async function CoursePage({
           </div>
         </div>
 
-        {/* Lesson list */}
+        {/* Free lesson list */}
         <div className="space-y-2">
-          {course.lessons.map((lesson, i) => {
+          {freeLessons.map((lesson, i) => {
             const isDone = completedIds.has(lesson.id)
             return (
               <Link
@@ -83,7 +98,7 @@ export default async function CoursePage({
                   : <Circle size={20} className="text-text-muted shrink-0" />
                 }
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs text-text-tertiary">Lesson {i + 1}</span>
+                  <span className="text-xs text-text-tertiary">Lesson {lesson.order}</span>
                   <p className="text-text-primary font-medium group-hover:text-accent-400 transition-colors">{lesson.title}</p>
                 </div>
                 <ChevronRight size={16} className="text-text-muted group-hover:text-accent-400 transition-colors shrink-0" />
@@ -91,6 +106,14 @@ export default async function CoursePage({
             )
           })}
         </div>
+
+        {/* Upgrade banner + locked lessons */}
+        {lockedLessons.length > 0 && (
+          <LockedLessonList
+            lessons={lockedLessons.map(l => ({ id: l.id, title: l.title, order: l.order }))}
+            completedIds={Array.from(completedIds)}
+          />
+        )}
       </main>
     </div>
   )

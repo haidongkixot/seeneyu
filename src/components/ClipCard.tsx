@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 // Using native img instead of next/image to avoid hydration issues
-import { Play } from 'lucide-react'
+import { Play, Lock } from 'lucide-react'
 import { SkillBadge } from './SkillBadge'
 import { DifficultyPill } from './DifficultyPill'
+import { UpgradePromptModal } from './UpgradePromptModal'
 import type { Clip } from '@/lib/types'
 
 interface ClipCardProps {
@@ -12,6 +14,7 @@ interface ClipCardProps {
     'id' | 'youtubeVideoId' | 'movieTitle' | 'year' | 'characterName' |
     'sceneDescription' | 'skillCategory' | 'difficulty' | 'startSec' | 'endSec'
   > & { screenplaySource?: string | null; mediaType?: string | null; mediaUrl?: string | null }
+  locked?: boolean
 }
 
 function formatDuration(seconds: number): string {
@@ -20,7 +23,8 @@ function formatDuration(seconds: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
-export function ClipCard({ clip }: ClipCardProps) {
+export function ClipCard({ clip, locked = false }: ClipCardProps) {
+  const [showUpgrade, setShowUpgrade] = useState(false)
   const duration = clip.endSec - clip.startSec
   const isAiImage = clip.mediaType === 'ai_image'
   const hasYoutubeId = !!clip.youtubeVideoId
@@ -33,20 +37,15 @@ export function ClipCard({ clip }: ClipCardProps) {
     ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
     : null
 
-  return (
-    <Link
-      href={`/library/${clip.id}`}
-      className="group relative flex flex-col bg-bg-surface border border-black/8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
-      role="article"
-      aria-label={`${clip.skillCategory} clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
-    >
+  const cardContent = (
+    <>
       {/* Thumbnail */}
       <div className={`relative ${isAiImage ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-bg-inset`}>
         {thumbnailUrl ? (
           <img
             src={thumbnailUrl}
             alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03] ${locked ? 'blur-[6px] scale-105' : ''}`}
             onError={(e) => { if (fallbackUrl) (e.target as HTMLImageElement).src = fallbackUrl }}
             loading="lazy"
           />
@@ -55,15 +54,23 @@ export function ClipCard({ clip }: ClipCardProps) {
             No thumbnail
           </div>
         )}
-        {isAiImage && (
+        {isAiImage && !locked && (
           <div className="absolute top-2 left-2">
             <span className="text-[9px] font-medium text-purple-300 bg-purple-500/30 backdrop-blur-sm border border-purple-400/20 rounded-full px-1.5 py-0.5">
               AI Generated
             </span>
           </div>
         )}
-        {/* Play button overlay (only for video clips) */}
-        {!isAiImage && (
+        {/* Lock overlay for locked clips */}
+        {locked && (
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
+              <Lock size={18} className="text-white/80" />
+            </div>
+          </div>
+        )}
+        {/* Play button overlay (only for video clips, not locked) */}
+        {!isAiImage && !locked && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
             <div className="w-10 h-10 rounded-full bg-accent-400/90 flex items-center justify-center">
               <Play size={18} fill="currentColor" className="text-text-inverse ml-0.5" />
@@ -77,19 +84,55 @@ export function ClipCard({ clip }: ClipCardProps) {
         <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
           <SkillBadge skill={clip.skillCategory} size="sm" />
           <DifficultyPill difficulty={clip.difficulty} size="sm" />
-          {clip.screenplaySource && (
+          {clip.screenplaySource && !locked && (
             <span className="text-[10px] font-medium text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full px-1.5 py-0.5">
               📄
             </span>
           )}
+          {locked && (
+            <span className="text-[10px] font-medium text-text-tertiary bg-black/5 border border-black/8 rounded-full px-1.5 py-0.5">
+              Locked
+            </span>
+          )}
         </div>
-        <h3 className="text-sm font-semibold text-text-primary line-clamp-2 leading-snug mb-1">
+        <h3 className={`text-sm font-semibold line-clamp-2 leading-snug mb-1 ${locked ? 'text-text-tertiary' : 'text-text-primary'}`}>
           {clip.sceneDescription}
         </h3>
         <p className="text-xs text-text-tertiary mt-auto">
           {clip.movieTitle} · {formatDuration(duration)}
         </p>
       </div>
+    </>
+  )
+
+  if (locked) {
+    return (
+      <>
+        <button
+          onClick={() => setShowUpgrade(true)}
+          className="group relative flex flex-col bg-bg-surface border border-black/8 rounded-xl shadow-card hover:shadow-card-hover transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60 text-left cursor-pointer"
+          role="article"
+          aria-label={`Locked clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
+        >
+          {cardContent}
+        </button>
+        <UpgradePromptModal
+          open={showUpgrade}
+          onClose={() => setShowUpgrade(false)}
+          reason="locked_clip"
+        />
+      </>
+    )
+  }
+
+  return (
+    <Link
+      href={`/library/${clip.id}`}
+      className="group relative flex flex-col bg-bg-surface border border-black/8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-accent-400/20 transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60"
+      role="article"
+      aria-label={`${clip.skillCategory} clip: ${clip.sceneDescription} from ${clip.movieTitle}`}
+    >
+      {cardContent}
     </Link>
   )
 }

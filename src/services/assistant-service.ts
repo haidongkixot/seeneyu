@@ -12,9 +12,9 @@ export function getAssistantLimits(plan: string): AssistantLimits {
     case 'advanced':
       return { maxMessagesPerDay: -1, voiceEnabled: true }
     case 'standard':
-      return { maxMessagesPerDay: 50, voiceEnabled: true }
+      return { maxMessagesPerDay: 20, voiceEnabled: true }
     default: // basic
-      return { maxMessagesPerDay: 5, voiceEnabled: false }
+      return { maxMessagesPerDay: 3, voiceEnabled: false }
   }
 }
 

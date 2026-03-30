@@ -2,8 +2,11 @@ import { Suspense } from 'react'
 import { ClipCard, ClipCardSkeleton } from '@/components/ClipCard'
 import { LibraryFilters } from './LibraryFilters'
 import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { getAllowedDifficulties } from '@/lib/access-control'
 import type { SkillCategory, Difficulty } from '@/lib/types'
-import { SearchX } from 'lucide-react'
+import { SearchX, Lock } from 'lucide-react'
 import Link from 'next/link'
 
 interface LibraryPageProps {
@@ -27,7 +30,7 @@ function buildWhere(skill?: string, difficulty?: string, film?: string, screenpl
   return where
 }
 
-async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }) {
+async function ClipGrid({ skill, difficulty, film, screenplay, search, allowedDifficulties }: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string; allowedDifficulties: string[] }) {
   const clips = await prisma.clip.findMany({
     where: buildWhere(skill, difficulty, film, screenplay, search),
     orderBy: [{ skillCategory: 'asc' }, { difficultyScore: 'asc' }],
@@ -62,12 +65,37 @@ async function ClipGrid({ skill, difficulty, film, screenplay, search }: { skill
     )
   }
 
+  const unlockedCount = clips.filter(c => allowedDifficulties.includes(c.difficulty)).length
+  const lockedCount = clips.length - unlockedCount
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {clips.map((clip) => (
-        <ClipCard key={clip.id} clip={{ ...clip, skillCategory: clip.skillCategory as SkillCategory, difficulty: clip.difficulty as Difficulty }} />
-      ))}
-    </div>
+    <>
+      {lockedCount > 0 && (
+        <div className="flex items-center gap-2 mb-4 bg-gradient-to-r from-accent-400/10 to-transparent border border-accent-400/15 rounded-xl px-4 py-3">
+          <Lock size={14} className="text-accent-400 shrink-0" />
+          <p className="text-sm text-text-secondary">
+            Showing <span className="font-semibold text-text-primary">{unlockedCount}</span> of{' '}
+            <span className="font-semibold text-text-primary">{clips.length}</span> clips{' '}
+            <span className="text-text-tertiary">—</span>{' '}
+            <Link href="/pricing" className="text-accent-400 hover:text-accent-300 font-medium transition-colors">
+              Upgrade to see more
+            </Link>
+          </p>
+        </div>
+      )}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {clips.map((clip) => {
+          const isLocked = !allowedDifficulties.includes(clip.difficulty)
+          return (
+            <ClipCard
+              key={clip.id}
+              clip={{ ...clip, skillCategory: clip.skillCategory as SkillCategory, difficulty: clip.difficulty as Difficulty }}
+              locked={isLocked}
+            />
+          )
+        })}
+      </div>
+    </>
   )
 }
 
@@ -88,6 +116,16 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const film = params.film
   const screenplay = params.screenplay
   const search = params.search
+
+  // Get user plan for content gating
+  const session = await getServerSession(authOptions)
+  let userPlan = 'basic'
+  const userId = (session?.user as any)?.id as string | undefined
+  if (userId) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }).catch(() => null)
+    if (dbUser) userPlan = dbUser.plan || 'basic'
+  }
+  const allowedDifficulties = getAllowedDifficulties(userPlan)
 
   const totalCount = await prisma.clip.count({ where: { isActive: true } }).catch(() => 0)
   const filteredCount = await prisma.clip.count({
@@ -127,7 +165,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
         {/* Grid */}
         <div className="mt-8">
           <Suspense fallback={<ClipGridSkeleton />}>
-            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} search={search} />
+            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} search={search} allowedDifficulties={allowedDifficulties} />
           </Suspense>
         </div>
       </main>

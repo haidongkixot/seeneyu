@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/prisma'
-
-const MAX_HEARTS = 5
-const REFILL_HOURS = 4
+import { getHeartsConfig } from '@/lib/access-control'
 
 /**
  * Get the user's current heart count and refill time.
@@ -15,6 +13,8 @@ export async function getHearts(
     select: { plan: true },
   })
 
+  const config = getHeartsConfig(user?.plan || 'basic')
+
   // Standard and Advanced plans have unlimited hearts
   if (user?.plan === 'standard' || user?.plan === 'advanced') {
     return { hearts: 999, refillAt: null }
@@ -22,21 +22,21 @@ export async function getHearts(
 
   const gamification = await prisma.userGamification.upsert({
     where: { userId },
-    create: { userId },
+    create: { userId, hearts: config.maxHearts },
     update: {},
   })
 
   // Check if auto-refill is due
   if (
-    gamification.hearts < MAX_HEARTS &&
+    gamification.hearts < config.maxHearts &&
     gamification.heartsRefillAt &&
     new Date() >= gamification.heartsRefillAt
   ) {
     await prisma.userGamification.update({
       where: { userId },
-      data: { hearts: MAX_HEARTS, heartsRefillAt: null },
+      data: { hearts: config.maxHearts, heartsRefillAt: null },
     })
-    return { hearts: MAX_HEARTS, refillAt: null }
+    return { hearts: config.maxHearts, refillAt: null }
   }
 
   return {
@@ -62,9 +62,11 @@ export async function deductHeart(
     return { hearts: 999, outOfHearts: false }
   }
 
+  const config = getHeartsConfig(user?.plan || 'basic')
+
   const gamification = await prisma.userGamification.upsert({
     where: { userId },
-    create: { userId },
+    create: { userId, hearts: config.maxHearts },
     update: {},
   })
 
@@ -75,7 +77,7 @@ export async function deductHeart(
   const newHearts = gamification.hearts - 1
   const refillAt =
     gamification.heartsRefillAt ??
-    new Date(Date.now() + REFILL_HOURS * 60 * 60 * 1000)
+    new Date(Date.now() + config.refillHours * 60 * 60 * 1000)
 
   await prisma.userGamification.update({
     where: { userId },
@@ -92,9 +94,16 @@ export async function deductHeart(
  * Refill hearts to max (e.g., after waiting or via purchase).
  */
 export async function refillHearts(userId: string): Promise<void> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { plan: true },
+  })
+
+  const config = getHeartsConfig(user?.plan || 'basic')
+
   await prisma.userGamification.upsert({
     where: { userId },
-    create: { userId, hearts: MAX_HEARTS },
-    update: { hearts: MAX_HEARTS, heartsRefillAt: null },
+    create: { userId, hearts: config.maxHearts },
+    update: { hearts: config.maxHearts, heartsRefillAt: null },
   })
 }

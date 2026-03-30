@@ -1013,6 +1013,87 @@
       "src/app/admin/analytics/engagement/page.tsx — engagement analytics dashboard",
       "src/app/api/admin/analytics/engagement/route.ts — engagement metrics API"
     ]
+  },
+  {
+    "id": "M51",
+    "name": "Conversion Killers Fix",
+    "phase": "51-commercialization",
+    "status": "in-progress",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M52"],
+    "blockedBy": [],
+    "description": "P0 fixes: (1) Remove admin approval — auto-approve learners on signup. (2) Gate Foundation lessons — free gets lessons 1-2 per course only, lock icon on rest. (3) Gate Library by difficulty — free=beginner only, standard=beginner+intermediate, advanced=all. (4) Upgrade prompts at friction points — Coach Ney avatar + speech bubble when hitting limits (recording, messages, hearts, locked content). Reduce free tier: Coach Ney 3 msgs/day, hearts 3/day, arcade 1 per type.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) New signup auto-approved (no admin approval needed). (2) Free users see only lessons 1-2 per course, rest locked. (3) Free users see only beginner library clips, rest locked. (4) Standard users see beginner+intermediate clips. (5) Advanced users see all clips. (6) Upgrade modal appears at each friction point (recording, Coach Ney, hearts, locked content). (7) Coach Ney limited to 3 msgs/day for free. (8) Hearts limited to 3/day for free. (9) Arcade limited to 1 per type for free.",
+    "deliverables": [
+      "src/lib/access-control.ts — updated gating rules for lessons, library, Coach Ney, hearts, arcade",
+      "src/app/api/auth/signup/route.ts — auto-approve learners",
+      "src/components/UpgradePromptModal.tsx — Coach Ney avatar + speech bubble upgrade modal",
+      "src/app/api/upgrade-prompt/route.ts — contextual upgrade message endpoint"
+    ]
+  },
+  {
+    "id": "M52",
+    "name": "Value Perception",
+    "phase": "51-commercialization",
+    "status": "planning",
+    "owner": "builder",
+    "tester_approved": false,
+    "blocks": ["M53"],
+    "blockedBy": ["M51"],
+    "description": "P1 fixes: (1) Redesign pricing page — outcomes-focused copy, social proof, FAQ, 7-day trial offer, money-back badge. (2) Upgrade onboarding — goal question, plan recommendation after assessment, trial offer. (3) Homepage upgrade section — 'Choose Your Path' plan comparison. (4) Create 12 VIP masterclass lessons for Advanced tier only. (5) Locked content UI — blur+lock overlays, preview mode.",
+    "assigned": ["builder", "designer", "marketer", "data-engineer", "tester"],
+    "tester_condition": "(1) Pricing page shows outcomes-focused copy, social proof, FAQ, 7-day trial, money-back badge. (2) Onboarding asks goal question and recommends plan. (3) Homepage shows 'Choose Your Path' section with 3 plan cards. (4) 12 VIP masterclass lessons visible to Advanced users only. (5) Locked content shows blur+lock overlay with upgrade CTA. (6) Preview mode shows bullet points of what locked content teaches.",
+    "deliverables": [
+      "src/app/pricing/page.tsx — redesigned pricing page",
+      "src/app/onboarding/page.tsx — upgraded onboarding with goal question + plan recommendation",
+      "src/components/homepage/ChooseYourPath.tsx — plan comparison section",
+      "src/components/LockedContentOverlay.tsx — blur+lock overlay for gated content",
+      "prisma/seed.ts — 12 VIP masterclass lessons (Advanced-only)"
+    ]
+  },
+  {
+    "id": "M53",
+    "name": "Monetization Infrastructure",
+    "phase": "51-commercialization",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": ["M54"],
+    "blockedBy": ["M52"],
+    "description": "P2: (1) 7-day free trial system with auto-conversion. (2) Intelligent upgrade prompts — track which limits users hit, personalize messaging, A/B test copy. (3) Coupon/Promotion system — Coupon model, EARLYBIRD 50% off, referral codes. (4) Cancellation flow with exit survey, pause option, win-back email sequence.",
+    "assigned": ["backend-engineer", "builder", "designer", "tester"],
+    "tester_condition": "(1) 7-day free trial starts with credit card, auto-converts after 7 days, 1-click cancel during trial. (2) Upgrade prompts personalized based on which limits user hit most. (3) EARLYBIRD coupon gives 50% off first 3 months. (4) Cancellation flow shows exit survey, offers pause option. (5) Win-back emails sent at Day 1, 3, 7 after cancellation.",
+    "deliverables": [
+      "prisma/schema.prisma — Coupon model, trial fields on Subscription",
+      "src/app/api/trial/route.ts — free trial start/cancel/convert API",
+      "src/app/api/coupons/route.ts — coupon validation + redemption API",
+      "src/app/cancel/page.tsx — cancellation flow with exit survey + pause option",
+      "src/services/upgrade-prompt-intelligence.ts — limit tracking + personalization",
+      "src/services/win-back-emails.ts — win-back email sequence"
+    ]
+  },
+  {
+    "id": "M54",
+    "name": "Growth Mechanics",
+    "phase": "51-commercialization",
+    "status": "planning",
+    "owner": "backend-engineer",
+    "tester_approved": false,
+    "blocks": [],
+    "blockedBy": ["M53"],
+    "description": "P3: (1) Referral system — unique links, give $5 get $5, referrer leaderboard. (2) Embeddable mini-games for viral acquisition — branded iframes with sign-up CTA. (3) B2B Team plans — $8/user/month, admin dashboard, team progress reports. (4) Mobile: fetch plans from API, deep link from checkout, upgrade prompts.",
+    "assigned": ["backend-engineer", "builder", "designer", "marketer", "tester"],
+    "tester_condition": "(1) User gets unique referral link, referred user gets 7-day trial, referrer gets 1 month free on conversion. (2) Mini-games embeddable via iframe with seeneyu branding + sign-up CTA. (3) B2B team plan at $8/user/month with admin dashboard + team progress reports. (4) Mobile app fetches plans from API, deep links from checkout, shows upgrade prompts.",
+    "deliverables": [
+      "prisma/schema.prisma — Referral model, TeamPlan model",
+      "src/app/api/referral/route.ts — referral link generation + tracking API",
+      "src/components/ReferralLeaderboard.tsx — top referrers leaderboard",
+      "src/app/embed/[gameId]/page.tsx — embeddable mini-game with branding + CTA",
+      "src/app/api/teams/route.ts — B2B team management API",
+      "src/app/admin/teams/page.tsx — team admin dashboard"
+    ]
   }
   ]
 }

@@ -27,7 +27,7 @@ const STATUS_ERRORS: Record<string, { message: string; icon: React.ReactNode; co
 export default function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/library'
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   const errorParam = searchParams.get('error')
 
   const [email, setEmail] = useState('')

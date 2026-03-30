@@ -141,6 +141,18 @@
       ],
       "decided_by": "pm",
       "timestamp": "2026-03-29T10:00:00Z"
+    },
+    {
+      "id": "dec_015",
+      "decision": "Commercialization directive received from BDD. Free tier reduced: lessons gated (2 free per course), library gated by difficulty, Coach Ney 3 msgs/day, hearts 3/day, arcade 1 per type. New tier structure: Explorer (free) / Standard ($12/mo) / Advanced ($24/mo). Priority: remove sign-up approval, gate content, add upgrade prompts.",
+      "rationale": "Product audit scored 5/10 commercialization readiness. 85% of value given away for free with zero incentive to upgrade. Strategic friction needed to drive conversions. 4-sprint execution: P0 conversion killers, P1 value perception, P2 monetization infrastructure, P3 growth mechanics.",
+      "alternatives_considered": [
+        "Keep generous free tier and focus on volume — rejected, unsustainable",
+        "Hard paywall everything — rejected, kills acquisition funnel",
+        "2-tier only (free/paid) — rejected, missing upsell path to Advanced"
+      ],
+      "decided_by": "pm",
+      "timestamp": "2026-03-29T14:00:00Z"
     }
   ]
 }
