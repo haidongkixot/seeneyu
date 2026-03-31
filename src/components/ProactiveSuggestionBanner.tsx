@@ -23,8 +23,16 @@ export function ProactiveSuggestionBanner() {
         if (!r.ok) throw new Error('No suggestion')
         return r.json()
       })
-      .then((data: Suggestion) => {
-        setSuggestion(data)
+      .then((data: any) => {
+        // API returns { suggestion: "text" } — normalise to Suggestion shape
+        const text = data.text ?? data.suggestion
+        if (!text) return
+        setSuggestion({
+          id: data.id ?? 'proactive',
+          text,
+          linkUrl: data.linkUrl ?? '/dashboard',
+          linkLabel: data.linkLabel,
+        })
         // Trigger slide-in after a brief delay for mount
         requestAnimationFrame(() => setVisible(true))
       })

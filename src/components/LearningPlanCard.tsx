@@ -55,7 +55,23 @@ export function LearningPlanCard() {
       const r = await fetch('/api/learning-plan')
       if (!r.ok) throw new Error('Failed to fetch plan')
       const data = await r.json()
-      setPlan(data)
+      // Normalise: API returns { plan, activities: PlannedActivity[], date }
+      // PlannedActivity uses deepLink/contentId; we need linkUrl/id
+      const rawActivities: any[] = data.activities ?? []
+      const activities: PlanActivity[] = rawActivities.map((a: any) => ({
+        id: a.id ?? a.contentId ?? String(Math.random()),
+        type: (a.type === 'mini_game' ? 'game' : a.type === 'review' ? 'clip' : a.type) as PlanActivity['type'],
+        title: a.title ?? '',
+        reason: a.reason ?? '',
+        linkUrl: a.linkUrl ?? a.deepLink ?? '/dashboard',
+        completed: a.completed ?? false,
+      }))
+      setPlan({
+        date: data.date ?? data.plan?.date ?? new Date().toLocaleDateString(),
+        activities,
+        completedCount: data.plan?.completedCount ?? data.completedCount ?? 0,
+        totalCount: data.plan?.totalCount ?? data.totalCount ?? activities.length,
+      })
     } catch {
       // Not authenticated or endpoint missing
     } finally {
