@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create session record
-    const session = await prisma.userSession.create({
+    const userSession = await prisma.userSession.create({
       data: {
         userId,
         clipId,
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Return sessionId immediately — FeedbackPoller will trigger the feedback call client-side
-    return NextResponse.json({ sessionId: session.id })
+    return NextResponse.json({ sessionId: userSession.id })
   } catch (error) {
     console.error('Session creation error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
