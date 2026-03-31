@@ -1,12 +1,13 @@
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import LessonClient from './LessonClient'
 import { CommentThread } from '@/components/discussions'
 import { AssistantButton } from '@/components/assistant'
+import { getFoundationLessonLimit } from '@/lib/access-control'
 
 export default async function LessonPage({
   params,
@@ -38,9 +39,20 @@ export default async function LessonPage({
 
   if (!lesson) notFound()
 
+  // Enforce paywall: redirect locked lessons to course page with upgrade prompt
+  const userId = (session?.user as any)?.id as string | undefined
+  let userPlan = 'basic'
+  if (userId) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }).catch(() => null)
+    if (dbUser?.plan) userPlan = dbUser.plan
+  }
+  const lessonLimit = getFoundationLessonLimit(userPlan)
+  if (lesson.order > lessonLimit) {
+    redirect(`/foundation/${courseSlug}?upgrade=1`)
+  }
+
   // Get existing progress
   let existingProgress = null
-  const userId = (session?.user as any)?.id as string | undefined
   if (userId) {
     existingProgress = await prisma.foundationProgress.findUnique({
       where: { userId_lessonId: { userId, lessonId: lesson.id } },

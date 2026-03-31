@@ -1,6 +1,9 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getAllowedDifficulties } from '@/lib/access-control'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
 import { ClipViewerClient } from './ClipViewerClient'
@@ -28,6 +31,19 @@ export default async function ClipViewerPage({ params }: PageProps) {
   })
 
   if (!clip) notFound()
+
+  // Enforce difficulty-based paywall
+  const session = await getServerSession(authOptions)
+  const userId = (session?.user as any)?.id as string | undefined
+  let userPlan = 'basic'
+  if (userId) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }).catch(() => null)
+    if (dbUser?.plan) userPlan = dbUser.plan
+  }
+  const allowed = getAllowedDifficulties(userPlan)
+  if (!allowed.includes(clip.difficulty.toLowerCase())) {
+    redirect('/library?upgrade=1')
+  }
 
   const duration = clip.endSec - clip.startSec
   const observationGuide = ((clip as any).observationGuide ?? null) as ObservationGuide | null

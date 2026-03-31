@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { scoreArcadeAttemptFromAnalysis } from '@/services/expression-scorer'
+import { getArcadeChallengesPerType } from '@/lib/access-control'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 export async function POST(req: Request) {
@@ -26,10 +27,32 @@ export async function POST(req: Request) {
   // Fetch challenge info
   const challenge = await (prisma as any).arcadeChallenge.findUnique({
     where: { id: challengeId },
+    include: { bundle: { select: { challenges: { select: { id: true, type: true }, orderBy: { orderIndex: 'asc' } } } } },
   })
 
   if (!challenge) {
     return NextResponse.json({ error: 'Challenge not found' }, { status: 404 })
+  }
+
+  // Enforce per-type challenge limit server-side
+  const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } })
+  const userPlan = dbUser?.plan || 'basic'
+  const perTypeLimit = getArcadeChallengesPerType(userPlan)
+
+  if (perTypeLimit < 999) {
+    const bundleChallenges: { id: string; type: string }[] = challenge.bundle?.challenges ?? []
+    const challengeIndex = bundleChallenges.findIndex((c: { id: string }) => c.id === challengeId)
+    if (challengeIndex >= 0) {
+      const sameTypeBefore = bundleChallenges
+        .slice(0, challengeIndex)
+        .filter((c: { type: string }) => c.type === challenge.type).length
+      if (sameTypeBefore >= perTypeLimit) {
+        return NextResponse.json(
+          { error: 'Upgrade your plan to access more challenges of this type', upgradeRequired: true },
+          { status: 403 }
+        )
+      }
+    }
   }
 
   // Score with MediaPipe analysis data (no AI API dependency)

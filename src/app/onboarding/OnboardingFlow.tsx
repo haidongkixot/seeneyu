@@ -2,11 +2,45 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, Move, Ear, Mic, ShieldCheck, Sparkles } from 'lucide-react'
+import { Eye, Move, Ear, Mic, ShieldCheck, Sparkles, Briefcase, Users, Heart, Crown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { SkillCategory, SkillLevel } from '@/lib/types'
 
-type Phase = 'assessing' | 'processing' | 'complete'
+type Phase = 'goal' | 'assessing' | 'processing' | 'recommendation' | 'complete'
+
+interface GoalOption {
+  id: string
+  label: string
+  description: string
+  icon: React.ReactNode
+}
+
+const GOALS: GoalOption[] = [
+  {
+    id: 'job-interview',
+    label: 'Job Interview',
+    description: 'Nail your next interview and land the role',
+    icon: <Briefcase size={24} />,
+  },
+  {
+    id: 'public-speaking',
+    label: 'Public Speaking',
+    description: 'Present with authority and command rooms',
+    icon: <Mic size={24} />,
+  },
+  {
+    id: 'dating-social',
+    label: 'Dating & Social',
+    description: 'Build magnetic presence and connection',
+    icon: <Heart size={24} />,
+  },
+  {
+    id: 'leadership',
+    label: 'Leadership',
+    description: 'Lead teams with confidence and clarity',
+    icon: <Crown size={24} />,
+  },
+]
 
 interface SkillQuestion {
   skill: SkillCategory
@@ -139,16 +173,45 @@ const QUESTIONS: SkillQuestion[] = [
   },
 ]
 
+function scoreToPlan(ratings: (SkillLevel | null)[]): { plan: string; planName: string; rationale: string } {
+  const levelScore = { beginner: 0, intermediate: 1, advanced: 2 }
+  const total = ratings.reduce((sum, r) => sum + (r ? levelScore[r] : 0), 0)
+  const max = ratings.length * 2
+
+  if (total <= max * 0.35) {
+    return {
+      plan: 'basic',
+      planName: 'Basic (Free)',
+      rationale: 'Your assessment shows you are building your foundations. Start free, learn at your own pace.',
+    }
+  } else if (total <= max * 0.70) {
+    return {
+      plan: 'standard',
+      planName: 'Standard — $12/mo',
+      rationale: 'You have a foundation but have significant room to grow. Standard gives you AI coaching, longer recordings, and the full curriculum.',
+    }
+  } else {
+    return {
+      plan: 'advanced',
+      planName: 'Advanced — $29/mo',
+      rationale: 'Your skills are already solid. Advanced unlocks VIP Masterclass content, elite techniques, and unlimited coaching to reach the top 1%.',
+    }
+  }
+}
+
 export function OnboardingFlow() {
   const router = useRouter()
-  const [phase, setPhase] = useState<Phase>('assessing')
+  const [phase, setPhase] = useState<Phase>('goal')
+  const [selectedGoal, setSelectedGoal] = useState<string | null>(null)
   const [step, setStep] = useState(0) // 0–4
   const [ratings, setRatings] = useState<(SkillLevel | null)[]>([null, null, null, null, null])
   const [error, setError] = useState('')
+  const [recommendation, setRecommendation] = useState<ReturnType<typeof scoreToPlan> | null>(null)
 
   const currentQ = QUESTIONS[step]
   const selectedLevel = ratings[step]
-  const progressPct = ((step) / QUESTIONS.length) * 100
+  // step 0 = goal (not counted in skill progress)
+  const skillProgressPct = (step / QUESTIONS.length) * 100
 
   async function handleContinue() {
     if (!selectedLevel) return
@@ -167,12 +230,13 @@ export function OnboardingFlow() {
             skillCategory: q.skill,
             level: ratings[i] ?? 'beginner',
           })),
+          goal: selectedGoal,
         }),
       })
       if (!res.ok) throw new Error('Failed to save')
-      // Brief processing pause, then show complete
-      await new Promise(r => setTimeout(r, 1800))
-      setPhase('complete')
+      await new Promise(r => setTimeout(r, 1500))
+      setRecommendation(scoreToPlan(ratings))
+      setPhase('recommendation')
     } catch {
       setError('Something went wrong — please try again.')
       setPhase('assessing')
@@ -187,6 +251,59 @@ export function OnboardingFlow() {
     })
   }
 
+  // ── Goal phase ──────────────────────────────────────────────────────────
+  if (phase === 'goal') {
+    return (
+      <>
+        <div className="px-6 py-4 flex items-center justify-between border-b border-black/8">
+          <span className="text-lg font-bold text-text-primary">seeneyu</span>
+          <span className="text-sm text-text-secondary">Step 1 of 2</span>
+        </div>
+        <div className="h-1 bg-black/5 w-full">
+          <div className="h-1 bg-accent-400 transition-all duration-500" style={{ width: '0%' }} />
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-md">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-text-primary mb-2">What's your main goal?</h2>
+              <p className="text-sm text-text-secondary">We'll personalise your learning path around it.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              {GOALS.map(goal => (
+                <button
+                  key={goal.id}
+                  onClick={() => setSelectedGoal(goal.id)}
+                  className={cn(
+                    'flex flex-col items-center gap-3 p-5 rounded-2xl border text-center transition-all duration-150',
+                    selectedGoal === goal.id
+                      ? 'border-accent-400/60 bg-accent-400/10 text-accent-400 shadow-glow-sm'
+                      : 'border-black/10 text-text-secondary hover:border-black/20 hover:bg-bg-surface'
+                  )}
+                >
+                  <div className={selectedGoal === goal.id ? 'text-accent-400' : 'text-text-tertiary'}>
+                    {goal.icon}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-text-primary">{goal.label}</p>
+                    <p className="text-xs text-text-tertiary mt-0.5 leading-tight">{goal.description}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => { if (selectedGoal) setPhase('assessing') }}
+              disabled={!selectedGoal}
+              className="w-full bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Continue →
+            </button>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // ── Processing phase ────────────────────────────────────────────────────
   if (phase === 'processing') {
     return (
       <div className="flex flex-col items-center justify-center gap-6 text-center py-20 px-6">
@@ -199,6 +316,47 @@ export function OnboardingFlow() {
     )
   }
 
+  // ── Recommendation phase ────────────────────────────────────────────────
+  if (phase === 'recommendation' && recommendation) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6 text-center py-20 px-6">
+        <div className="w-16 h-16 rounded-2xl bg-accent-400/10 border border-accent-400/20 flex items-center justify-center">
+          <Sparkles size={32} className="text-accent-400" />
+        </div>
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Your Recommended Plan</h2>
+          <p className="text-sm text-text-secondary max-w-xs leading-relaxed mt-2">
+            Based on your assessment, we suggest:
+          </p>
+        </div>
+        <div className="bg-bg-surface border border-accent-400/30 rounded-2xl px-6 py-5 max-w-sm w-full text-left">
+          <p className="text-lg font-bold text-accent-400 mb-1">{recommendation.planName}</p>
+          <p className="text-sm text-text-secondary leading-relaxed">{recommendation.rationale}</p>
+        </div>
+        <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+          {recommendation.plan !== 'basic' ? (
+            <button
+              onClick={async () => {
+                await fetch('/api/trial', { method: 'POST' })
+                setPhase('complete')
+              }}
+              className="w-full bg-accent-400 text-text-inverse rounded-pill py-4 text-base font-semibold hover:bg-accent-500 hover:shadow-glow transition-all duration-150"
+            >
+              Start with {recommendation.planName.split(' — ')[0]} — 7 days free
+            </button>
+          ) : null}
+          <button
+            onClick={() => setPhase('complete')}
+            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+          >
+            {recommendation.plan === 'basic' ? 'Start for free →' : 'Continue without trial →'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Complete phase ──────────────────────────────────────────────────────
   if (phase === 'complete') {
     return (
       <div className="flex flex-col items-center justify-center gap-6 text-center py-20 px-6">
@@ -230,6 +388,7 @@ export function OnboardingFlow() {
     )
   }
 
+  // ── Assessing phase ─────────────────────────────────────────────────────
   return (
     <>
       {/* Top bar */}
@@ -242,7 +401,7 @@ export function OnboardingFlow() {
       <div className="h-1 bg-black/5 w-full">
         <div
           className="h-1 bg-accent-400 transition-all duration-500 ease-smooth"
-          style={{ width: `${progressPct}%` }}
+          style={{ width: `${skillProgressPct}%` }}
         />
       </div>
 
@@ -300,7 +459,7 @@ export function OnboardingFlow() {
             disabled={!selectedLevel}
             className="w-full bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {step < QUESTIONS.length - 1 ? 'Continue →' : 'See My Learning Path →'}
+            {step < QUESTIONS.length - 1 ? 'Continue →' : 'See My Recommendation →'}
           </button>
         </div>
       </div>

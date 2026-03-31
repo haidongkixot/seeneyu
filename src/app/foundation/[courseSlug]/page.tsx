@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { CheckCircle2, Circle, ChevronRight } from 'lucide-react'
 import { getFoundationLessonLimit } from '@/lib/access-control'
 import { LockedLessonList } from './LockedLessonList'
@@ -15,7 +15,11 @@ export default async function CoursePage({
   const { courseSlug } = await params
   const session = await getServerSession(authOptions)
 
-  const course = await prisma.foundationCourse.findUnique({
+  interface CourseLesson { id: string; slug: string; title: string; order: number }
+  interface CourseWithVip { id: string; title: string; description: string; icon: string; isVip: boolean; lessons: CourseLesson[] }
+
+  const db = prisma as any
+  const course = await db.foundationCourse.findUnique({
     where: { slug: courseSlug },
     include: {
       lessons: {
@@ -23,7 +27,7 @@ export default async function CoursePage({
         select: { id: true, slug: true, title: true, order: true },
       },
     },
-  }).catch(() => null)
+  }).catch(() => null) as CourseWithVip | null
 
   if (!course) notFound()
 
@@ -33,6 +37,11 @@ export default async function CoursePage({
   if (userId) {
     const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }).catch(() => null)
     if (dbUser) userPlan = dbUser.plan || 'basic'
+  }
+
+  // VIP access gate
+  if (course.isVip && userPlan !== 'advanced') {
+    redirect('/pricing?upgrade=vip')
   }
 
   const lessonLimit = getFoundationLessonLimit(userPlan)

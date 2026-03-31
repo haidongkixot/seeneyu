@@ -1,22 +1,7 @@
 import { prisma } from '@/lib/prisma'
+import { getAssistantLimits } from '@/lib/access-control'
 
-// ── Plan Limits ──────────────────────────────────────────────────────
-
-interface AssistantLimits {
-  maxMessagesPerDay: number // -1 = unlimited
-  voiceEnabled: boolean
-}
-
-export function getAssistantLimits(plan: string): AssistantLimits {
-  switch (plan) {
-    case 'advanced':
-      return { maxMessagesPerDay: -1, voiceEnabled: true }
-    case 'standard':
-      return { maxMessagesPerDay: 20, voiceEnabled: true }
-    default: // basic
-      return { maxMessagesPerDay: 3, voiceEnabled: false }
-  }
-}
+export { getAssistantLimits }
 
 export async function countMessagesToday(userId: string): Promise<number> {
   const startOfDay = new Date()

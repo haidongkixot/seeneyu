@@ -303,6 +303,58 @@ async function main() {
   } else {
     console.log('⚠ arcade-challenges-seed.json not found — skipping Arcade seed');
   }
+
+  // VIP Masterclass course seeding
+  const vipCourse = await (prisma as any).foundationCourse.upsert({
+    where: { slug: 'vip-masterclass' },
+    update: {
+      title: 'VIP Masterclass',
+      description: 'Advanced techniques for elite communicators. Advanced plan only.',
+      icon: '👑',
+      color: '#f59e0b',
+      order: 99,
+      isVip: true,
+    },
+    create: {
+      slug: 'vip-masterclass',
+      title: 'VIP Masterclass',
+      description: 'Advanced techniques for elite communicators. Advanced plan only.',
+      icon: '👑',
+      color: '#f59e0b',
+      order: 99,
+      isVip: true,
+    },
+  });
+
+  const vipLessons = [
+    { slug: 'power-gaze', title: 'The Power Gaze: Eye Contact That Commands Authority', order: 1 },
+    { slug: 'strategic-silence', title: 'Strategic Silence: The Pause That Changes Everything', order: 2 },
+    { slug: 'status-anchoring', title: 'Status Anchoring: Own Every Room You Enter', order: 3 },
+    { slug: 'vocal-resonance', title: 'Vocal Resonance: The Deep Voice Advantage', order: 4 },
+    { slug: 'mirror-mastery', title: 'Mirror Mastery: Advanced Rapport Techniques', order: 5 },
+    { slug: 'controlled-tension', title: 'Controlled Tension: Using Discomfort as a Tool', order: 6 },
+    { slug: 'leadership-posture', title: 'Leadership Posture: The CEO Body Blueprint', order: 7 },
+    { slug: 'narrative-gestures', title: 'Narrative Gestures: Tell Stories With Your Hands', order: 8 },
+    { slug: 'dominance-deference', title: 'Dominance & Deference: Reading the Social Hierarchy', order: 9 },
+    { slug: 'charisma-mechanics', title: 'Charisma Mechanics: What Elite Speakers Actually Do', order: 10 },
+    { slug: 'negotiation-signals', title: 'Negotiation Signals: Close the Deal Without Words', order: 11 },
+    { slug: 'presence-under-pressure', title: 'Presence Under Pressure: Stay Grounded in Any Storm', order: 12 },
+  ];
+
+  for (const lesson of vipLessons) {
+    await (prisma as any).foundationLesson.upsert({
+      where: { courseId_slug: { courseId: vipCourse.id, slug: lesson.slug } },
+      update: { title: lesson.title, order: lesson.order },
+      create: {
+        courseId: vipCourse.id,
+        slug: lesson.slug,
+        title: lesson.title,
+        theoryHtml: `<p>This is the VIP Masterclass lesson: <strong>${lesson.title}</strong>. Full content available to Advanced plan members.</p>`,
+        order: lesson.order,
+      },
+    });
+  }
+  console.log('✓ VIP Masterclass course seeded (12 lessons)');
 }
 
 main()

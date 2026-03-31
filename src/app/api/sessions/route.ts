@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { put } from '@vercel/blob'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(req: NextRequest) {
   try {
+    // Auth required — prevent unauthenticated blob abuse
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return NextResponse.json({ error: 'Sign in to submit a recording' }, { status: 401 })
+    }
+    const userId = (session.user as any).id as string
+
     const formData = await req.formData()
     const recording = formData.get('recording') as File | null
     const clipId = formData.get('clipId') as string | null
@@ -41,6 +50,7 @@ export async function POST(req: NextRequest) {
     // Create session record
     const session = await prisma.userSession.create({
       data: {
+        userId,
         clipId,
         recordingUrl: blob.url,
         recordingKey: blob.pathname,

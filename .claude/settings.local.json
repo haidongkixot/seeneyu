@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vercel:*)",
+      "Bash(tasklist:*)",
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(node:*)"
+    ]
+  }
+}

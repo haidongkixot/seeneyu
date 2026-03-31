@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { sanitizeCommentBody } from '@/lib/sanitize'
 import { checkRateLimit } from '@/lib/rate-limit'
+import { canPostComments } from '@/lib/access-control'
 
 const COMMENT_SELECT = {
   id: true,
@@ -79,6 +80,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     const userId = (session.user as any).id as string
+
+    // Plan check — only standard/advanced can post
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } })
+    const userPlan = dbUser?.plan || 'basic'
+    if (!canPostComments(userPlan)) {
+      return NextResponse.json(
+        { error: 'Upgrade to Standard or Advanced plan to post comments', upgradeRequired: true },
+        { status: 403 }
+      )
+    }
 
     // Rate limit check
     const rl = checkRateLimit(userId)

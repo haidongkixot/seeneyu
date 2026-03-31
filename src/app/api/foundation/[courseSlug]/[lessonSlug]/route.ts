@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getFoundationLessonLimit } from '@/lib/access-control'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,11 +16,20 @@ export async function OPTIONS() {
 
 // GET /api/foundation/[courseSlug]/[lessonSlug] — Get single lesson with full data
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ courseSlug: string; lessonSlug: string }> }
 ) {
   try {
     const { courseSlug, lessonSlug } = await params
+
+    // Resolve user plan for paywall enforcement
+    const session = await getServerSession(authOptions)
+    const userId = (session?.user as any)?.id as string | undefined
+    let userPlan = 'basic'
+    if (userId) {
+      const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { plan: true } })
+      if (dbUser?.plan) userPlan = dbUser.plan
+    }
 
     // First find the course to get the courseId
     const course = await prisma.foundationCourse.findUnique({
@@ -49,6 +61,15 @@ export async function GET(
       return NextResponse.json(
         { error: 'Lesson not found' },
         { status: 404, headers: corsHeaders }
+      )
+    }
+
+    // Enforce paywall: check lesson order against plan limit
+    const lessonLimit = getFoundationLessonLimit(userPlan)
+    if (lesson.order > lessonLimit) {
+      return NextResponse.json(
+        { error: 'Upgrade your plan to access this lesson', upgradeRequired: true },
+        { status: 403, headers: corsHeaders }
       )
     }
 

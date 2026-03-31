@@ -115,6 +115,12 @@ model User {
   assistantConversations AssistantConversation[]
   gamification       UserGamification?
   learnerProfile     LearnerProfile?
+  coupons            CouponRedemption[]
+  referralsGiven     Referral[]      @relation("ReferralsGiven")
+  referralsReceived  Referral[]      @relation("ReferralsReceived")
+  teamPlanId         String?
+  teamPlan           TeamPlan?       @relation(fields: [teamPlanId], references: [id])
+  managedTeams       TeamPlan[]      @relation("TeamAdmin")
 
   @@index([status])
 }
@@ -203,6 +209,7 @@ model FoundationCourse {
   icon        String
   color       String
   order       Int
+  isVip       Boolean            @default(false)
   lessons     FoundationLesson[]
   createdAt   DateTime           @default(now())
 }
@@ -408,19 +415,21 @@ model Plan {
 }
 
 model Subscription {
-  id           String    @id @default(cuid())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  planId       String
-  plan         Plan      @relation(fields: [planId], references: [id])
-  status       String    @default("active")
-  period       String    @default("monthly")
-  startDate    DateTime  @default(now())
-  endDate      DateTime?
-  cancelledAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  payments     Payment[]
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId           String
+  plan             Plan      @relation(fields: [planId], references: [id])
+  status           String    @default("active")
+  period           String    @default("monthly")
+  startDate        DateTime  @default(now())
+  endDate          DateTime?
+  cancelledAt      DateTime?
+  trialStartedAt   DateTime?
+  trialEndsAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  payments         Payment[]
 
   @@index([userId])
   @@index([status])
@@ -912,4 +921,58 @@ model NotificationTemplate {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@unique([triggerType, channel, locale])
+}
+
+// ── Coupon & Trial models ────────────────────────────────────────────
+
+model Coupon {
+  id           String             @id @default(cuid())
+  code         String             @unique
+  discountPct  Int                // 0-100
+  maxUses      Int                @default(100)
+  usedCount    Int                @default(0)
+  expiresAt    DateTime?
+  createdAt    DateTime           @default(now())
+  redemptions  CouponRedemption[]
+}
+
+model CouponRedemption {
+  id        String   @id @default(cuid())
+  couponId  String
+  userId    String
+  createdAt DateTime @default(now())
+  coupon    Coupon   @relation(fields: [couponId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  @@unique([couponId, userId])
+}
+
+// ── Growth: Referral & Teams models ─────────────────────────────────
+
+model Referral {
+  id           String   @id @default(cuid())
+  referrerId   String
+  referredId   String?
+  code         String   @unique
+  status       String   @default("pending") // pending | converted
+  createdAt    DateTime @default(now())
+  convertedAt  DateTime?
+  referrer     User     @relation("ReferralsGiven", fields: [referrerId], references: [id])
+  referred     User?    @relation("ReferralsReceived", fields: [referredId], references: [id])
+
+  @@index([referrerId])
+  @@index([code])
+}
+
+model TeamPlan {
+  id           String   @id @default(cuid())
+  name         String
+  adminId      String
+  seats        Int      @default(5)
+  pricePerSeat Float    @default(8.0)
+  status       String   @default("active")
+  createdAt    DateTime @default(now())
+  admin        User     @relation("TeamAdmin", fields: [adminId], references: [id])
+  members      User[]
+
+  @@index([adminId])
 }
