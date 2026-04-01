@@ -158,9 +158,7 @@ async function generateVideoAsync(
         model || undefined,
       )
 
-      if (!result) {
-        throw new Error(`Video generation returned null for provider: ${provider}`)
-      }
+      if (!result) throw new Error(`${provider} returned no result (missing API key or unsupported input)`)
 
       // Async providers (e.g. Sora) return a pending sentinel with no buffer.
       // Store the provider job ID and leave status as 'generating' for the poll cron.

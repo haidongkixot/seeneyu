@@ -321,9 +321,8 @@ async function generateWithKling(
     if (!taskId) throw new Error('Kling returned no task_id')
 
     return pendingResult('kling-video', resolvedModel, taskId, { isI2V: !!isI2V })
-  } catch (err) {
-    console.error('Kling video submit failed:', err)
-    return null
+  } catch (err: any) {
+    throw new Error(`Kling submit failed: ${err.message}`)
   }
 }
 
@@ -360,9 +359,8 @@ async function generateWithReplicate(
     const pollUrl = prediction.urls?.get || `https://api.replicate.com/v1/predictions/${prediction.id}`
 
     return pendingResult('replicate', resolvedModel, prediction.id, { pollUrl })
-  } catch (err) {
-    console.error('Replicate video submit failed:', err)
-    return null
+  } catch (err: any) {
+    throw new Error(`Replicate submit failed: ${err.message}`)
   }
 }
 
@@ -433,9 +431,8 @@ async function generateWithRunway(
     }
     const { id } = await createRes.json()
     return pendingResult('runway', resolvedModel, id)
-  } catch (err) {
-    console.error('Runway video submit failed:', err)
-    return null
+  } catch (err: any) {
+    throw new Error(`Runway submit failed: ${err.message}`)
   }
 }
 
@@ -470,9 +467,8 @@ async function generateWithLuma(
     }
     const generation = await createRes.json()
     return pendingResult('luma', resolvedModel, generation.id)
-  } catch (err) {
-    console.error('Luma video submit failed:', err)
-    return null
+  } catch (err: any) {
+    throw new Error(`Luma submit failed: ${err.message}`)
   }
 }
 
@@ -487,27 +483,10 @@ async function generateWithSoraVideo(
   model?: string,
 ): Promise<GenerationResult | null> {
   if (!process.env.OPENAI_API_KEY) return null
-  try {
-    const { submitSoraJob } = await import('./sora-generator')
-    const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-    const jobId = await submitSoraJob(prompt, model)
-    // Return a sentinel buffer — the real video is fetched by the poll cron
-    return {
-      buffer: Buffer.alloc(0),
-      mimeType: 'video/mp4',
-      durationMs: 0,
-      metadata: {
-        model: model || 'sora-2',
-        provider: 'openai-sora',
-        hasAudio: true,
-        providerTaskId: jobId,
-        pending: true,
-      },
-    }
-  } catch (err) {
-    console.error('Sora job submission failed:', err)
-    return null
-  }
+  const { submitSoraJob } = await import('./sora-generator')
+  const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
+  const jobId = await submitSoraJob(prompt, model) // throws with real API error if it fails
+  return pendingResult('openai-sora', model || 'sora-2', jobId)
 }
 
 // ── Higgsfield ──────────────────────────────────────────────────────
@@ -522,9 +501,8 @@ async function generateWithHiggsfieldVideo(
     const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
     const taskId = await submitHiggsfieldJob(prompt, model)
     return pendingResult('higgsfield', model || 'diffuse-xl', taskId)
-  } catch (err) {
-    console.error('Higgsfield video submit failed:', err)
-    return null
+  } catch (err: any) {
+    throw new Error(`Higgsfield submit failed: ${err.message}`)
   }
 }
 
