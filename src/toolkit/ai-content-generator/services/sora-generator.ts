@@ -1,13 +1,14 @@
 /**
- * OpenAI Sora video generator.
- * Uses the openai npm package (already installed).
- * DEPRECATED: Sora 2 shuts down September 24, 2026.
- * Env var: OPENAI_API_KEY (already configured)
- * Models: sora-2, sora-2-pro
- * Cost: $0.10-$0.50/second of video
+ * OpenAI Sora video generator via direct REST API.
+ * The openai npm SDK (v4.x) does not expose a videos resource yet —
+ * Sora is accessed through the raw HTTP endpoint.
+ *
+ * Env var: OPENAI_API_KEY
+ * Models: sora, sora-2 (alias: sora-2-pro for higher quality)
+ * Docs: https://platform.openai.com/docs/api-reference/video
  */
 
-import OpenAI from 'openai'
+const SORA_BASE = 'https://api.openai.com/v1'
 
 export async function generateWithSora(
   prompt: string,
@@ -16,33 +17,65 @@ export async function generateWithSora(
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) throw new Error('OPENAI_API_KEY not configured')
 
-  const openai = new OpenAI({ apiKey })
-  const modelId = model ?? 'sora-2'
+  // sora-2-pro → sora (API only accepts "sora" or "sora-2" right now)
+  const modelId = (model ?? 'sora-2').replace('-pro', '')
 
   // Submit video generation job
-  const response = await (openai as any).videos.create({
-    model: modelId,
-    prompt,
-    duration: 5, // 5 seconds default
-    resolution: '720p',
-    aspect_ratio: '16:9',
+  const createRes = await fetch(`${SORA_BASE}/video/generations`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: modelId,
+      prompt,
+      n: 1,
+      size: '1280x720',
+      duration: 5,
+    }),
   })
 
-  // Poll for completion
-  let result = response
-  let attempts = 0
-  while (result.status === 'in_progress' && attempts < 120) {
+  if (!createRes.ok) {
+    const text = await createRes.text().catch(() => '')
+    throw new Error(`Sora create failed (${createRes.status}): ${text.slice(0, 300)}`)
+  }
+
+  const job = await createRes.json()
+  const jobId = job.id ?? job.generation_id
+
+  if (!jobId) {
+    // Some API versions return the video URL directly (synchronous)
+    const directUrl = job.data?.[0]?.url ?? job.url
+    if (directUrl) {
+      return { url: directUrl, durationMs: 5000 }
+    }
+    throw new Error(`Sora returned no job ID: ${JSON.stringify(job).slice(0, 200)}`)
+  }
+
+  // Poll for completion (max 10 min — Sora can be slow)
+  for (let i = 0; i < 120; i++) {
     await new Promise(r => setTimeout(r, 5000))
-    result = await (openai as any).videos.retrieve(result.id)
-    attempts++
+
+    const pollRes = await fetch(`${SORA_BASE}/video/generations/${jobId}`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+    })
+
+    if (!pollRes.ok) continue
+
+    const status = await pollRes.json()
+    const state = status.status ?? status.state
+
+    if (state === 'succeeded' || state === 'completed') {
+      const url = status.data?.[0]?.url ?? status.output_url ?? status.url
+      if (!url) throw new Error('Sora returned no video URL after completion')
+      return { url, durationMs: (status.duration ?? 5) * 1000 }
+    }
+
+    if (state === 'failed' || state === 'error') {
+      throw new Error(`Sora generation failed: ${status.error ?? status.failure_reason ?? state}`)
+    }
   }
 
-  if (result.status !== 'succeeded') {
-    throw new Error(`Sora generation failed: ${result.status} ${result.error ?? ''}`)
-  }
-
-  return {
-    url: result.output_url ?? result.url,
-    durationMs: (result.duration ?? 5) * 1000,
-  }
+  throw new Error('Sora video generation timed out after 10 minutes')
 }
