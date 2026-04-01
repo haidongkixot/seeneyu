@@ -162,6 +162,26 @@ async function generateVideoAsync(
         throw new Error(`Video generation returned null for provider: ${provider}`)
       }
 
+      // Async providers (e.g. Sora) return a pending sentinel with no buffer.
+      // Store the provider job ID and leave status as 'generating' for the poll cron.
+      if ((result.metadata as any)?.pending) {
+        await prisma.aiGeneratedAsset.update({
+          where: { id: assetId },
+          data: {
+            status: 'generating',
+            metadata: {
+              provider,
+              model,
+              mimeType: result.mimeType,
+              hasAudio: (result.metadata as any)?.hasAudio ?? false,
+              providerTaskId: (result.metadata as any)?.providerTaskId,
+              pending: true,
+            },
+          },
+        })
+        continue
+      }
+
       const blobUrl = await uploadVideoToBlob(result.buffer, requestId, assetId)
 
       await prisma.aiGeneratedAsset.update({

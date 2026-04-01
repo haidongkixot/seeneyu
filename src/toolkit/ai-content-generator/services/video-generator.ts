@@ -625,23 +625,34 @@ async function generateWithLuma(
 
 // ── OpenAI Sora ─────────────────────────────────────────────────────
 
+/**
+ * Sora: submit job only, return a pending result with providerTaskId.
+ * The generate route stores the job ID; the video-poll cron completes it.
+ */
 async function generateWithSoraVideo(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
 ): Promise<GenerationResult | null> {
   if (!process.env.OPENAI_API_KEY) return null
   try {
-    const { generateWithSora } = await import('./sora-generator')
+    const { submitSoraJob } = await import('./sora-generator')
     const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-    const { buffer, durationMs } = await generateWithSora(prompt, model)
+    const jobId = await submitSoraJob(prompt, model)
+    // Return a sentinel buffer — the real video is fetched by the poll cron
     return {
-      buffer,
+      buffer: Buffer.alloc(0),
       mimeType: 'video/mp4',
-      durationMs,
-      metadata: { model: model || 'sora-2', provider: 'openai-sora', hasAudio: true },
+      durationMs: 0,
+      metadata: {
+        model: model || 'sora-2',
+        provider: 'openai-sora',
+        hasAudio: true,
+        providerTaskId: jobId,
+        pending: true,
+      },
     }
   } catch (err) {
-    console.error('Sora video generation failed:', err)
+    console.error('Sora job submission failed:', err)
     return null
   }
 }
