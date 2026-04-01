@@ -5,29 +5,18 @@
  * Status: Early access, sparse documentation
  */
 
-export async function generateWithHiggsfield(
+/** Submit a Higgsfield job. Returns the task ID immediately. */
+export async function submitHiggsfieldJob(
   prompt: string,
   model?: string,
-): Promise<{ url: string; durationMs: number } | null> {
+): Promise<string> {
   const apiKey = process.env.HIGGSFIELD_API_KEY
-  if (!apiKey) {
-    console.warn('[Higgsfield] API key not configured — skipping')
-    return null
-  }
+  if (!apiKey) throw new Error('HIGGSFIELD_API_KEY not configured')
 
-  // Submit generation task
   const response = await fetch('https://cloud.higgsfield.ai/api/v1/videos', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      prompt,
-      model: model ?? 'diffuse-xl',
-      duration: 5,
-      resolution: '720p',
-    }),
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({ prompt, model: model ?? 'diffuse-xl', duration: 5, resolution: '720p' }),
   })
 
   if (!response.ok) {
@@ -37,27 +26,38 @@ export async function generateWithHiggsfield(
 
   const task = await response.json()
   const taskId = task.id ?? task.task_id
+  if (!taskId) throw new Error(`Higgsfield returned no task ID: ${JSON.stringify(task).slice(0, 200)}`)
+  return taskId as string
+}
 
-  // Poll for completion (max 2 min)
-  let attempts = 0
-  while (attempts < 60) {
-    await new Promise(r => setTimeout(r, 3000))
-    const statusRes = await fetch(`https://cloud.higgsfield.ai/api/v1/videos/${taskId}`, {
-      headers: { 'Authorization': `Bearer ${apiKey}` },
-    })
-    const statusData = await statusRes.json()
+/**
+ * Poll a submitted Higgsfield job.
+ * Returns video buffer if complete, null if still in progress, throws on failure.
+ */
+export async function pollHiggsfieldJob(
+  taskId: string,
+): Promise<{ buffer: Buffer; durationMs: number } | null> {
+  const apiKey = process.env.HIGGSFIELD_API_KEY
+  if (!apiKey) throw new Error('HIGGSFIELD_API_KEY not configured')
 
-    if (statusData.status === 'completed' || statusData.status === 'succeeded') {
-      return {
-        url: statusData.output_url ?? statusData.video_url ?? statusData.url,
-        durationMs: (statusData.duration ?? 5) * 1000,
-      }
-    }
-    if (statusData.status === 'failed') {
-      throw new Error(`Higgsfield generation failed: ${statusData.error ?? 'unknown'}`)
-    }
-    attempts++
+  const statusRes = await fetch(`https://cloud.higgsfield.ai/api/v1/videos/${taskId}`, {
+    headers: { 'Authorization': `Bearer ${apiKey}` },
+  })
+  if (!statusRes.ok) return null
+
+  const data = await statusRes.json()
+
+  if (data.status === 'completed' || data.status === 'succeeded') {
+    const videoUrl = data.output_url ?? data.video_url ?? data.url
+    if (!videoUrl) throw new Error('Higgsfield returned no video URL')
+    const videoRes = await fetch(videoUrl)
+    const buffer = Buffer.from(await videoRes.arrayBuffer())
+    return { buffer, durationMs: (data.duration ?? 5) * 1000 }
   }
 
-  throw new Error('Higgsfield generation timed out after 3 minutes')
+  if (data.status === 'failed') {
+    throw new Error(`Higgsfield generation failed: ${data.error ?? 'unknown'}`)
+  }
+
+  return null // still processing
 }

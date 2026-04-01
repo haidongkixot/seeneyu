@@ -27,6 +27,8 @@ export async function generateVideo(
       return generateWithOpenAIVideo(input, model)
     case 'openai-sora':
       return generateWithSoraVideo(input, model)
+    case 'higgsfield':
+      return generateWithHiggsfieldVideo(input, model)
     case 'runway':
       return generateWithRunway(input, model)
     case 'luma':
@@ -261,6 +263,24 @@ async function generateWithOpenAIVideo(
   }
 }
 
+// ── Pending sentinel helper ─────────────────────────────────────────
+
+/** Return a zero-byte pending sentinel so the generate route stores the
+ *  provider task ID and leaves the asset in 'generating' for the poll cron. */
+function pendingResult(
+  provider: string,
+  model: string,
+  providerTaskId: string,
+  extra?: Record<string, unknown>,
+): GenerationResult {
+  return {
+    buffer: Buffer.alloc(0),
+    mimeType: 'video/mp4',
+    durationMs: 0,
+    metadata: { provider, model, hasAudio: true, providerTaskId, pending: true, ...extra },
+  }
+}
+
 // ── Kling AI Video ──────────────────────────────────────────────────
 
 async function generateWithKling(
@@ -271,20 +291,12 @@ async function generateWithKling(
 
   const { getKlingToken } = await import('./kling-auth')
   const apiKey = getKlingToken()
-
   const resolvedModel = model || 'kling-v1.6-standard-t2v'
-
-  // Determine if text-to-video or image-to-video
   const isI2V = input.imageUrl && resolvedModel.includes('i2v')
   const endpoint = isI2V
     ? 'https://api.klingai.com/v1/videos/image2video'
     : 'https://api.klingai.com/v1/videos/text2video'
-
-  // Map model name to API model_name
-  const modelName = resolvedModel
-    .replace('kling-', '')
-    .replace('-t2v', '')
-    .replace('-i2v', '')
+  const modelName = resolvedModel.replace('kling-', '').replace('-t2v', '').replace('-i2v', '')
 
   try {
     const body: any = {
@@ -293,74 +305,24 @@ async function generateWithKling(
       duration: '5',
       mode: modelName.includes('pro') ? 'pro' : 'std',
     }
-
-    if (isI2V && input.imageUrl) {
-      body.image = input.imageUrl
-    }
+    if (isI2V && input.imageUrl) body.image = input.imageUrl
 
     const createRes = await fetch(endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify(body),
     })
-
     if (!createRes.ok) {
       const text = await createRes.text().catch(() => '')
-      throw new Error(`Kling video create failed (${createRes.status}): ${text.slice(0, 200)}`)
+      throw new Error(`Kling create failed (${createRes.status}): ${text.slice(0, 200)}`)
     }
-
     const createData = await createRes.json()
     const taskId = createData.data?.task_id
     if (!taskId) throw new Error('Kling returned no task_id')
 
-    // Poll for completion (max 180s — video generation takes longer)
-    for (let i = 0; i < 90; i++) {
-      await new Promise(r => setTimeout(r, 2000))
-
-      const pollEndpoint = isI2V
-        ? `https://api.klingai.com/v1/videos/image2video/${taskId}`
-        : `https://api.klingai.com/v1/videos/text2video/${taskId}`
-
-      const pollRes = await fetch(pollEndpoint, {
-        headers: { 'Authorization': `Bearer ${apiKey}` },
-      })
-
-      if (!pollRes.ok) continue
-
-      const pollData = await pollRes.json()
-      const status = pollData.data?.task_status
-
-      if (status === 'succeed') {
-        const videoUrl = pollData.data?.task_result?.videos?.[0]?.url
-        if (!videoUrl) throw new Error('Kling returned no video URL')
-
-        const videoRes = await fetch(videoUrl)
-        const buffer = Buffer.from(await videoRes.arrayBuffer())
-
-        return {
-          buffer,
-          mimeType: 'video/mp4',
-          durationMs: 5000,
-          metadata: {
-            model: resolvedModel,
-            provider: 'kling-video',
-            hasAudio: true,
-            taskId,
-          },
-        }
-      }
-
-      if (status === 'failed') {
-        throw new Error(`Kling video failed: ${pollData.data?.task_status_msg || 'unknown'}`)
-      }
-    }
-
-    throw new Error('Kling video generation timed out')
+    return pendingResult('kling-video', resolvedModel, taskId, { isI2V: !!isI2V })
   } catch (err) {
-    console.error('Kling video generation failed:', err)
+    console.error('Kling video submit failed:', err)
     return null
   }
 }
@@ -377,13 +339,9 @@ async function generateWithReplicate(
   const resolvedModel = model || 'minimax/video-01'
 
   try {
-    // Create prediction
     const createRes = await fetch('https://api.replicate.com/v1/predictions', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         version: resolvedModel.includes('/') ? undefined : resolvedModel,
         model: resolvedModel.includes('/') ? resolvedModel : undefined,
@@ -394,47 +352,16 @@ async function generateWithReplicate(
         },
       }),
     })
-
     if (!createRes.ok) {
       const text = await createRes.text()
       throw new Error(`Replicate create failed (${createRes.status}): ${text.slice(0, 200)}`)
     }
-
     const prediction = await createRes.json()
-
-    // Poll for completion (max 120 seconds)
     const pollUrl = prediction.urls?.get || `https://api.replicate.com/v1/predictions/${prediction.id}`
-    for (let i = 0; i < 60; i++) {
-      await new Promise(r => setTimeout(r, 2000))
 
-      const pollRes = await fetch(pollUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      const status = await pollRes.json()
-
-      if (status.status === 'succeeded') {
-        const outputUrl = Array.isArray(status.output) ? status.output[0] : status.output
-        if (!outputUrl) throw new Error('No output URL from Replicate')
-
-        const videoRes = await fetch(outputUrl)
-        const buffer = Buffer.from(await videoRes.arrayBuffer())
-
-        return {
-          buffer,
-          mimeType: 'video/mp4',
-          durationMs: 5000,
-          metadata: { model: resolvedModel, provider: 'replicate', hasAudio: true },
-        }
-      }
-
-      if (status.status === 'failed') {
-        throw new Error(`Replicate failed: ${status.error}`)
-      }
-    }
-
-    throw new Error('Replicate prediction timed out')
+    return pendingResult('replicate', resolvedModel, prediction.id, { pollUrl })
   } catch (err) {
-    console.error('Replicate video generation failed:', err)
+    console.error('Replicate video submit failed:', err)
     return null
   }
 }
@@ -500,49 +427,14 @@ async function generateWithRunway(
         watermark: false,
       }),
     })
-
     if (!createRes.ok) {
       const text = await createRes.text()
       throw new Error(`Runway create failed (${createRes.status}): ${text.slice(0, 200)}`)
     }
-
     const { id } = await createRes.json()
-
-    // Poll for completion
-    for (let i = 0; i < 60; i++) {
-      await new Promise(r => setTimeout(r, 2000))
-
-      const pollRes = await fetch(`https://api.dev.runwayml.com/v1/tasks/${id}`, {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'X-Runway-Version': '2024-11-06',
-        },
-      })
-      const task = await pollRes.json()
-
-      if (task.status === 'SUCCEEDED') {
-        const videoUrl = task.output?.[0]
-        if (!videoUrl) throw new Error('No video URL from Runway')
-
-        const videoRes = await fetch(videoUrl)
-        const buffer = Buffer.from(await videoRes.arrayBuffer())
-
-        return {
-          buffer,
-          mimeType: 'video/mp4',
-          durationMs: 5000,
-          metadata: { model: resolvedModel, provider: 'runway', hasAudio: true },
-        }
-      }
-
-      if (task.status === 'FAILED') {
-        throw new Error(`Runway failed: ${task.failure}`)
-      }
-    }
-
-    throw new Error('Runway task timed out')
+    return pendingResult('runway', resolvedModel, id)
   } catch (err) {
-    console.error('Runway video generation failed:', err)
+    console.error('Runway video submit failed:', err)
     return null
   }
 }
@@ -556,69 +448,30 @@ async function generateWithLuma(
   const apiKey = process.env.LUMA_API_KEY
   if (!apiKey) return null
 
+  const resolvedModel = model || 'ray2'
+
   try {
     const body: any = {
       prompt: input.prompt || 'A person demonstrating a facial expression',
-      model: model || 'ray2',
+      model: resolvedModel,
       duration: '5s',
       resolution: '720p',
     }
-
-    if (input.imageUrl) {
-      body.keyframes = {
-        frame0: { type: 'image', url: input.imageUrl },
-      }
-    }
+    if (input.imageUrl) body.keyframes = { frame0: { type: 'image', url: input.imageUrl } }
 
     const createRes = await fetch('https://api.lumalabs.ai/dream-machine/v1/generations', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-
     if (!createRes.ok) {
       const text = await createRes.text()
       throw new Error(`Luma create failed (${createRes.status}): ${text.slice(0, 200)}`)
     }
-
     const generation = await createRes.json()
-
-    // Poll for completion
-    for (let i = 0; i < 90; i++) {
-      await new Promise(r => setTimeout(r, 2000))
-
-      const pollRes = await fetch(
-        `https://api.lumalabs.ai/dream-machine/v1/generations/${generation.id}`,
-        { headers: { Authorization: `Bearer ${apiKey}` } },
-      )
-      const status = await pollRes.json()
-
-      if (status.state === 'completed') {
-        const videoUrl = status.assets?.video
-        if (!videoUrl) throw new Error('No video URL from Luma')
-
-        const videoRes = await fetch(videoUrl)
-        const buffer = Buffer.from(await videoRes.arrayBuffer())
-
-        return {
-          buffer,
-          mimeType: 'video/mp4',
-          durationMs: 5000,
-          metadata: { model: model || 'ray2', provider: 'luma', hasAudio: true },
-        }
-      }
-
-      if (status.state === 'failed') {
-        throw new Error(`Luma failed: ${status.failure_reason}`)
-      }
-    }
-
-    throw new Error('Luma generation timed out')
+    return pendingResult('luma', resolvedModel, generation.id)
   } catch (err) {
-    console.error('Luma video generation failed:', err)
+    console.error('Luma video submit failed:', err)
     return null
   }
 }
@@ -653,6 +506,24 @@ async function generateWithSoraVideo(
     }
   } catch (err) {
     console.error('Sora job submission failed:', err)
+    return null
+  }
+}
+
+// ── Higgsfield ──────────────────────────────────────────────────────
+
+async function generateWithHiggsfieldVideo(
+  input: { prompt?: string; imageUrl?: string },
+  model?: string,
+): Promise<GenerationResult | null> {
+  if (!process.env.HIGGSFIELD_API_KEY) return null
+  try {
+    const { submitHiggsfieldJob } = await import('./higgsfield-generator')
+    const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
+    const taskId = await submitHiggsfieldJob(prompt, model)
+    return pendingResult('higgsfield', model || 'diffuse-xl', taskId)
+  } catch (err) {
+    console.error('Higgsfield video submit failed:', err)
     return null
   }
 }
