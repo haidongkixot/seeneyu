@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft, Plus, Sparkles, Clock, Eye, CheckCircle2, XCircle,
-  Image, ChevronLeft, ChevronRight, Trash2, ExternalLink,
+  Image, ChevronLeft, ChevronRight, Trash2, ExternalLink, Bot,
 } from 'lucide-react'
 
 // ── Types ──────────────────────────────────────────────────────────────
@@ -158,12 +158,20 @@ export default function AiGeneratorPage() {
               Generate expression and body language reference images with AI.
             </p>
           </div>
-          <Link
-            href="/admin/toolkit/ai-generator/new"
-            className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-accent-400 text-bg-base rounded-xl hover:bg-accent-300 transition-colors"
-          >
-            <Plus size={14} /> New Content
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/admin/toolkit/ai-generator/agent"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-accent-400/30 text-accent-400 rounded-xl hover:bg-accent-400/10 transition-colors"
+            >
+              <Bot size={14} /> Content Agent
+            </Link>
+            <Link
+              href="/admin/toolkit/ai-generator/new"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-accent-400 text-bg-base rounded-xl hover:bg-accent-300 transition-colors"
+            >
+              <Plus size={14} /> New Content
+            </Link>
+          </div>
         </div>
       </div>
 

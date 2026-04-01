@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
 import {
   BarChart3, CheckCircle2, Clock, Zap, Settings, List, History,
-  LayoutDashboard, Play, X, Check, ExternalLink, RefreshCw, Loader2
+  LayoutDashboard, Play, X, Check, ExternalLink, RefreshCw, Loader2,
+  ArrowLeft, Sparkles,
 } from 'lucide-react'
 
 type Tab = 'dashboard' | 'suggestions' | 'history' | 'settings'
@@ -195,18 +197,32 @@ export default function ContentAgentPage() {
   const pendingSuggestions = suggestions.filter(s => s.status === 'pending')
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+    <div className="p-8">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-xs text-text-muted mb-4">
+        <Link href="/admin/toolkit" className="hover:text-text-secondary">Toolkit</Link>
+        <span>/</span>
+        <Link href="/admin/toolkit/ai-generator" className="hover:text-text-secondary">AI Generator</Link>
+        <span>/</span>
+        <span className="text-text-secondary">Content Agent</span>
+      </div>
+
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">Content Agent</h1>
-          <p className="text-sm text-text-secondary mt-1">Autonomous content gap analysis and AI generation</p>
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-accent-400/10">
+            <Sparkles size={22} className="text-accent-400" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Content Agent</h1>
+            <p className="text-sm text-text-secondary mt-0.5">Autonomous content gap analysis and AI generation</p>
+          </div>
         </div>
-        <a
+        <Link
           href="/admin/toolkit/ai-generator"
-          className="text-sm text-accent-400 hover:text-accent-500 font-medium"
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-black/10 text-text-secondary rounded-xl hover:bg-bg-overlay transition-colors"
         >
-          ← Manual Generator
-        </a>
+          <ArrowLeft size={14} /> Manual Generator
+        </Link>
       </div>
 
       {/* Tabs */}

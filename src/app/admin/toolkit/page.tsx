@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target, Sparkles, Eye } from 'lucide-react'
+import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target, Sparkles, Eye, Bot, Zap, BarChart3 } from 'lucide-react'
 
 interface ToolkitStats {
   contentSources: { total: number; raw: number; curated: number; published: number }
@@ -21,20 +21,30 @@ interface AiGeneratorStats {
   totalAssets: number
 }
 
+interface AgentStats {
+  totalCycles: number
+  pendingReview: number
+  generating: number
+  completed: number
+  latestStatus: string | null
+}
+
 export default function AdminToolkitPage() {
   const [stats, setStats] = useState<ToolkitStats | null>(null)
   const [gameStats, setGameStats] = useState<MiniGameStats | null>(null)
   const [aiStats, setAiStats] = useState<AiGeneratorStats | null>(null)
+  const [agentStats, setAgentStats] = useState<AgentStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [sourcesRes, expressionsRes, analyticsRes, aiRes] = await Promise.all([
+        const [sourcesRes, expressionsRes, analyticsRes, aiRes, agentRes] = await Promise.all([
           fetch('/api/admin/toolkit/crawler/jobs?page=1'),
           fetch('/api/admin/toolkit/crawler/expressions?page=1'),
           fetch('/api/admin/toolkit/mini-games/analytics').catch(() => null),
           fetch('/api/admin/toolkit/ai-generator/stats').catch(() => null),
+          fetch('/api/admin/toolkit/ai-generator/agent/stats').catch(() => null),
         ])
         const sourcesData = await sourcesRes.json()
         const expressionsData = await expressionsRes.json()
@@ -68,6 +78,10 @@ export default function AdminToolkitPage() {
 
         if (aiRes && aiRes.ok) {
           setAiStats(await aiRes.json())
+        }
+
+        if (agentRes && agentRes.ok) {
+          setAgentStats(await agentRes.json())
         }
       } catch {
         setStats(null)
@@ -110,6 +124,17 @@ export default function AdminToolkitPage() {
         { label: 'Requests', value: aiStats.total, Icon: Sparkles },
         { label: 'In review', value: aiStats.byStatus.review, Icon: Eye },
         { label: 'Published', value: aiStats.byStatus.published, Icon: CheckCircle2 },
+      ] : [],
+    },
+    {
+      href: '/admin/toolkit/ai-generator/agent',
+      label: 'Content Agent',
+      description: 'Autonomous AI agent that analyses user activity, finds content gaps, and generates new training material.',
+      Icon: Bot,
+      stats: agentStats ? [
+        { label: 'Cycles', value: agentStats.totalCycles, Icon: BarChart3 },
+        { label: 'Pending', value: agentStats.pendingReview, Icon: Clock },
+        { label: 'Generated', value: agentStats.completed, Icon: Zap },
       ] : [],
     },
   ]
