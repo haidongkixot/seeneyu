@@ -3,16 +3,15 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Home, BookOpen, Play, Gamepad2, Zap, User } from 'lucide-react'
+import { Home, BookOpen, Play, Gamepad2, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 const tabs = [
   { href: '/', label: 'Home', Icon: Home },
+  { href: '/dashboard', label: 'My Path', Icon: LayoutDashboard },
   { href: '/foundation', label: 'Learn', Icon: BookOpen },
   { href: '/library', label: 'Practice', Icon: Play },
-  { href: '/games', label: 'Games', Icon: Gamepad2 },
-  { href: '/arcade', label: 'Arcade', Icon: Zap },
-  { href: '/profile', label: 'Profile', Icon: User },
+  { href: '/arcade', label: 'Arcade', Icon: Gamepad2 },
 ] as const
 
 export function BottomTabBar() {
