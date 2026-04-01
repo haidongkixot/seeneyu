@@ -456,17 +456,26 @@ export default function AiGeneratorDetailPage() {
                           <span className="text-[10px] text-red-400 px-2 text-center">{asset.errorMessage || 'Failed'}</span>
                         </div>
                       ) : asset.blobUrl ? (
-                        <button
-                          onClick={() => setSelectedImage(asset.blobUrl!)}
-                          className="w-full h-full"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                        asset.type === 'video' || asset.blobUrl.endsWith('.mp4') ? (
+                          <video
                             src={asset.blobUrl}
-                            alt="Generated asset"
-                            className="w-full h-full object-cover hover:scale-105 transition-transform"
+                            controls
+                            className="w-full h-full object-cover"
+                            preload="metadata"
                           />
-                        </button>
+                        ) : (
+                          <button
+                            onClick={() => setSelectedImage(asset.blobUrl!)}
+                            className="w-full h-full"
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={asset.blobUrl}
+                              alt="Generated asset"
+                              className="w-full h-full object-cover hover:scale-105 transition-transform"
+                            />
+                          </button>
+                        )
                       ) : null}
                       <div className="absolute top-2 right-2">
                         <StatusBadge status={asset.status} />
