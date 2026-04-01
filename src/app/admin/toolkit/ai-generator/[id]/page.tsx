@@ -98,6 +98,8 @@ export default function AiGeneratorDetailPage() {
   const [regenProvider, setRegenProvider] = useState('')
   const [regenModel, setRegenModel] = useState('')
   const [regenCount, setRegenCount] = useState(3)
+  const [polling, setPolling] = useState(false)
+  const [pollResult, setPollResult] = useState<string | null>(null)
   const [error, setError] = useState('')
 
   const fetchRequest = useCallback(async () => {
@@ -193,6 +195,18 @@ export default function AiGeneratorDetailPage() {
       }
     } catch { setError('Generation failed') }
     setRegenerating(false)
+  }
+
+  async function handlePollNow() {
+    setPolling(true)
+    setPollResult(null)
+    try {
+      const res = await fetch('/api/cron/video-poll')
+      const data = await res.json()
+      setPollResult(`Checked ${data.checked} jobs: ${data.completed} completed, ${data.still_pending} pending, ${data.failed} failed`)
+      if (data.completed > 0) fetchRequest()
+    } catch { setPollResult('Poll failed') }
+    setPolling(false)
   }
 
   async function handlePublish(assetId: string) {
@@ -406,8 +420,21 @@ export default function AiGeneratorDetailPage() {
                 {readyAssets.length > 0 && <span className="text-emerald-400">{readyAssets.length} ready</span>}
                 {generatingAssets.length > 0 && <span className="text-amber-400">{generatingAssets.length} generating</span>}
                 {failedAssets.length > 0 && <span className="text-red-400">{failedAssets.length} failed</span>}
+                {generatingAssets.length > 0 && (
+                  <button
+                    onClick={handlePollNow}
+                    disabled={polling}
+                    className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 rounded-md transition-colors disabled:opacity-50"
+                  >
+                    {polling ? 'Polling...' : '↻ Poll Now'}
+                  </button>
+                )}
               </div>
             </div>
+
+            {pollResult && (
+              <p className="text-[10px] text-text-muted mb-3">{pollResult}</p>
+            )}
 
             {request.assets.length === 0 ? (
               <div className="text-center py-12 text-text-muted text-sm">

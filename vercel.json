@@ -3,7 +3,7 @@
     { "path": "/api/cron/morning", "schedule": "0 8 * * *" },
     { "path": "/api/cron/engagement-check", "schedule": "0 22 * * *" },
     { "path": "/api/cron/content-agent-analyze", "schedule": "0 6 * * 1" },
-    { "path": "/api/cron/content-agent-process", "schedule": "*/5 * * * *" },
-    { "path": "/api/cron/video-poll", "schedule": "*/2 * * * *" }
+    { "path": "/api/cron/content-agent-process", "schedule": "0 2 * * *" },
+    { "path": "/api/cron/video-poll", "schedule": "0 3 * * *" }
   ]
 }
