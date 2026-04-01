@@ -1,27 +1,29 @@
 /**
  * OpenAI Sora video generator via direct REST API.
- * The openai npm SDK (v4.x) does not expose a videos resource yet —
- * Sora is accessed through the raw HTTP endpoint.
+ *
+ * Confirmed working endpoints (probed 2026-04-01):
+ *   POST /v1/videos          — create job (no `n` or `duration` params)
+ *   GET  /v1/videos/{id}     — poll status
+ *   GET  /v1/videos/{id}/content — download mp4 binary
  *
  * Env var: OPENAI_API_KEY
- * Models: sora, sora-2 (alias: sora-2-pro for higher quality)
- * Docs: https://platform.openai.com/docs/api-reference/video
+ * Models: sora, sora-2 (sora-2-pro maps to sora-2)
  */
 
-const SORA_BASE = 'https://api.openai.com/v1'
+const BASE = 'https://api.openai.com/v1'
 
 export async function generateWithSora(
   prompt: string,
   model?: string,
-): Promise<{ url: string; durationMs: number }> {
+): Promise<{ buffer: Buffer; durationMs: number }> {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) throw new Error('OPENAI_API_KEY not configured')
 
-  // sora-2-pro → sora (API only accepts "sora" or "sora-2" right now)
+  // sora-2-pro → sora-2 (API only accepts "sora" or "sora-2")
   const modelId = (model ?? 'sora-2').replace('-pro', '')
 
-  // Submit video generation job
-  const createRes = await fetch(`${SORA_BASE}/video/generations`, {
+  // Submit generation job
+  const createRes = await fetch(`${BASE}/videos`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
@@ -30,9 +32,7 @@ export async function generateWithSora(
     body: JSON.stringify({
       model: modelId,
       prompt,
-      n: 1,
       size: '1280x720',
-      duration: 5,
     }),
   })
 
@@ -42,38 +42,33 @@ export async function generateWithSora(
   }
 
   const job = await createRes.json()
-  const jobId = job.id ?? job.generation_id
+  const jobId: string = job.id
+  if (!jobId) throw new Error(`Sora returned no job ID: ${JSON.stringify(job).slice(0, 200)}`)
 
-  if (!jobId) {
-    // Some API versions return the video URL directly (synchronous)
-    const directUrl = job.data?.[0]?.url ?? job.url
-    if (directUrl) {
-      return { url: directUrl, durationMs: 5000 }
-    }
-    throw new Error(`Sora returned no job ID: ${JSON.stringify(job).slice(0, 200)}`)
-  }
-
-  // Poll for completion (max 10 min — Sora can be slow)
+  // Poll for completion (max 10 min — Sora typically takes ~45s)
   for (let i = 0; i < 120; i++) {
     await new Promise(r => setTimeout(r, 5000))
 
-    const pollRes = await fetch(`${SORA_BASE}/video/generations/${jobId}`, {
+    const pollRes = await fetch(`${BASE}/videos/${jobId}`, {
       headers: { 'Authorization': `Bearer ${apiKey}` },
     })
-
     if (!pollRes.ok) continue
 
     const status = await pollRes.json()
-    const state = status.status ?? status.state
 
-    if (state === 'succeeded' || state === 'completed') {
-      const url = status.data?.[0]?.url ?? status.output_url ?? status.url
-      if (!url) throw new Error('Sora returned no video URL after completion')
-      return { url, durationMs: (status.duration ?? 5) * 1000 }
+    if (status.status === 'completed') {
+      // Download mp4 binary from /content endpoint
+      const dlRes = await fetch(`${BASE}/videos/${jobId}/content`, {
+        headers: { 'Authorization': `Bearer ${apiKey}` },
+      })
+      if (!dlRes.ok) throw new Error(`Sora content download failed (${dlRes.status})`)
+      const buffer = Buffer.from(await dlRes.arrayBuffer())
+      const durationMs = parseFloat(status.seconds ?? '5') * 1000
+      return { buffer, durationMs }
     }
 
-    if (state === 'failed' || state === 'error') {
-      throw new Error(`Sora generation failed: ${status.error ?? status.failure_reason ?? state}`)
+    if (status.status === 'failed' || status.status === 'error') {
+      throw new Error(`Sora generation failed: ${status.error ?? status.failure_reason ?? status.status}`)
     }
   }
 

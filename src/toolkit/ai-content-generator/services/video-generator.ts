@@ -633,9 +633,7 @@ async function generateWithSoraVideo(
   try {
     const { generateWithSora } = await import('./sora-generator')
     const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-    const { url, durationMs } = await generateWithSora(prompt, model)
-    const videoRes = await fetch(url)
-    const buffer = Buffer.from(await videoRes.arrayBuffer())
+    const { buffer, durationMs } = await generateWithSora(prompt, model)
     return {
       buffer,
       mimeType: 'video/mp4',
