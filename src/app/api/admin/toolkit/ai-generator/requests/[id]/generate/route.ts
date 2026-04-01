@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -64,13 +65,13 @@ export async function POST(
       ),
     )
 
-    // Kick off generation asynchronously (non-blocking)
+    // Kick off generation — waitUntil keeps Vercel alive until the promise resolves
     if (assetType === 'video') {
-      generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
-        .catch(console.error)
+      waitUntil(generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+        .catch(console.error))
     } else {
-      generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
-        .catch(console.error)
+      waitUntil(generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+        .catch(console.error))
     }
 
     return NextResponse.json({
