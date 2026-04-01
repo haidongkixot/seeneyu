@@ -25,6 +25,8 @@ export async function generateVideo(
       return generateWithPollinationsVideo(input, model)
     case 'openai-video':
       return generateWithOpenAIVideo(input, model)
+    case 'openai-sora':
+      return generateWithSoraVideo(input, model)
     case 'runway':
       return generateWithRunway(input, model)
     case 'luma':
@@ -617,6 +619,31 @@ async function generateWithLuma(
     throw new Error('Luma generation timed out')
   } catch (err) {
     console.error('Luma video generation failed:', err)
+    return null
+  }
+}
+
+// ── OpenAI Sora ─────────────────────────────────────────────────────
+
+async function generateWithSoraVideo(
+  input: { prompt?: string; imageUrl?: string },
+  model?: string,
+): Promise<GenerationResult | null> {
+  if (!process.env.OPENAI_API_KEY) return null
+  try {
+    const { generateWithSora } = await import('./sora-generator')
+    const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
+    const { url, durationMs } = await generateWithSora(prompt, model)
+    const videoRes = await fetch(url)
+    const buffer = Buffer.from(await videoRes.arrayBuffer())
+    return {
+      buffer,
+      mimeType: 'video/mp4',
+      durationMs,
+      metadata: { model: model || 'sora-2', provider: 'openai-sora', hasAudio: true },
+    }
+  } catch (err) {
+    console.error('Sora video generation failed:', err)
     return null
   }
 }

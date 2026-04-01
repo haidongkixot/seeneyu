@@ -172,6 +172,9 @@ export default function AiGeneratorDetailPage() {
         })
       }
 
+      const selectedProv = providers.find((p) => p.id === regenProvider)
+      const assetType = selectedProv?.models.find((m) => m.id === regenModel)?.type ?? 'image'
+
       const res = await fetch(`/api/admin/toolkit/ai-generator/requests/${id}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -179,6 +182,7 @@ export default function AiGeneratorDetailPage() {
           provider: regenProvider || undefined,
           model: regenModel || undefined,
           count: regenCount,
+          type: assetType,
         }),
       })
       if (res.ok) {
