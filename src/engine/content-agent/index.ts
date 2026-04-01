@@ -1,0 +1,8 @@
+export { analyzeContentCoverage } from './analyzers/content-coverage-analyzer'
+export { analyzeUserDemand } from './analyzers/user-demand-analyzer'
+export { prioritizeGaps } from './analyzers/gap-prioritizer'
+export { runAnalysisCycle } from './cycle-runner'
+export { generateSuggestions } from './suggestion-engine'
+export { processApprovedSuggestions } from './generation-orchestrator'
+export { processCompletedJobs } from './post-processor'
+export type * from './types'

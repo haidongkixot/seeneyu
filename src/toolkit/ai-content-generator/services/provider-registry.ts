@@ -172,6 +172,39 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     envVar: 'HF_TOKEN',
     models: ['stabilityai/stable-video-diffusion-img2vid-xt'],
   },
+
+  // ── Gemini Imagen (Google AI) ──────────────────────────────────
+  {
+    id: 'gemini-imagen',
+    name: 'Gemini Imagen',
+    type: 'image',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta',
+    requiresKey: true,
+    envVar: 'GOOGLE_AI_API_KEY',
+    models: ['gemini-2.0-flash-exp'],
+  },
+
+  // ── OpenAI Sora (Video) ────────────────────────────────────────
+  {
+    id: 'openai-sora',
+    name: 'OpenAI Sora',
+    type: 'video',
+    endpoint: 'https://api.openai.com/v1',
+    requiresKey: true,
+    envVar: 'OPENAI_API_KEY',
+    models: ['sora-2', 'sora-2-pro'],
+  },
+
+  // ── Higgsfield (Video) ─────────────────────────────────────────
+  {
+    id: 'higgsfield',
+    name: 'Higgsfield',
+    type: 'video',
+    endpoint: 'https://cloud.higgsfield.ai/api/v1',
+    requiresKey: true,
+    envVar: 'HIGGSFIELD_API_KEY',
+    models: ['diffuse-xl'],
+  },
 ]
 
 // ── Public API ──────────────────────────────────────────────────────

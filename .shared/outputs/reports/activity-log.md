@@ -398,6 +398,7 @@
 - GPT-4o Vision retained as optional fallback for full performance rich feedback
 
 ### [builder] M17-M20 + MediaPipe Deployment — DEPLOYED
+
 - MediaPipe integration deployed to https://seeneyu.vercel.app
 - Commit b56564b — 0 TS errors, 31 pages generated, all health checks pass
 - M17-M20 features all live
@@ -484,5 +485,20 @@
 - M10-M25 all code-complete and deployed — 16 milestones awaiting tester sign-off
 - Smoke test request sent to Tester for M21-M25
 - M10-M20 backlog still uncleared
+
+---
+
+## 2026-03-29
+
+### [pm] Phase advanced to 51-commercialization — M51 IN PROGRESS
+- New directive from BDD: commercialization sprint takes priority over M36-M50 feature work
+- Previous M36-M50 milestones remain in planning (not cancelled)
+- M51-M54 defined across 4 priority sprints (P0 → P3):
+  - M51 Sprint 1 (P0 — NOW): Remove registration approval gate, add content gating, upgrade prompt flows at locked content
+  - M52 Sprint 2 (P1): Pricing page redesign, onboarding improvements, VIP/premium content tier
+  - M53 Sprint 3 (P2): Free trials, discount coupons, cancellation/retention flow
+  - M54 Sprint 4 (P3): Referral system, embeddable games for lead gen, B2B teams feature
+- Rationale: P0 are conversion killers — broken/confusing auth + paywall flows block all revenue regardless of traffic
+- Blueprint updated: seeneyu-blueprint.md Phase 15 (Commercialization) added to build order
 
 ---

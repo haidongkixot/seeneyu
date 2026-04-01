@@ -976,3 +976,106 @@ model TeamPlan {
 
   @@index([adminId])
 }
+
+// ── Content Agent models ────────────────────────────────────────────
+
+model ContentAgentCycle {
+  id               String              @id @default(cuid())
+  type             String              // 'daily' | 'weekly'
+  status           String              @default("analyzing") // analyzing | suggestions_ready | approved | generating | completed | failed
+  analysisData     Json?               // full gap analysis snapshot
+  suggestionsCount Int                 @default(0)
+  approvedCount    Int                 @default(0)
+  generatedCount   Int                 @default(0)
+  costEstimate     Float?
+  actualCost       Float?
+  approvedBy       String?
+  approvedAt       DateTime?
+  rejectedBy       String?
+  rejectedAt       DateTime?
+  completedAt      DateTime?
+  errorMessage     String?             @db.Text
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  suggestions      ContentSuggestion[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ContentSuggestion {
+  id                String              @id @default(cuid())
+  cycleId           String
+  cycle             ContentAgentCycle   @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  expressionType    String
+  bodyLanguageType  String
+  skillCategory     String
+  difficulty        String              // beginner | intermediate | advanced
+  rationale         String              @db.Text
+  gapType           String              // skill_gap | difficulty_gap | engagement_gap | content_variety
+  priority          Int                 @default(5) // 1 = highest
+  suggestedProvider String?
+  suggestedModel    String?
+  mediaType         String              // 'image' | 'video'
+  classification    String              @default("for_later") // 'for_public' | 'for_later'
+  publishTargets    Json?               // ['library', 'foundation', 'arcade']
+  status            String              @default("pending") // pending | approved | rejected | generating | completed | failed
+  adminNote         String?             @db.Text
+  contentRequestId  String?             // links to AiContentRequest once generation starts
+  estimatedCost     Float?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  generationJobs    AgentGenerationJob[]
+
+  @@index([cycleId])
+  @@index([status])
+  @@index([skillCategory])
+  @@index([gapType])
+}
+
+model ContentGapSnapshot {
+  id                 String   @id @default(cuid())
+  cycleId            String?
+  skillCoverage      Json     // { "eye-contact": { total, beginner, intermediate, advanced }, ... }
+  difficultyCoverage Json     // { "beginner": 45, "intermediate": 30, "advanced": 15 }
+  practiceFrequency  Json     // { "eye-contact": 340, "facial-expressions": 520, ... }
+  engagementBySkill  Json?    // avg engagement score per skill
+  contentFreshness   Json     // days since last content added per skill
+  totalUsers         Int      @default(0)
+  activeUsers        Int      @default(0) // active in last 30 days
+  recommendations    Json?    // AI-generated text summary
+  createdAt          DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model CloudStorageConfig {
+  id        String   @id @default(cuid())
+  provider  String   @unique // 'google_drive' | 'onedrive' | 'vercel_blob'
+  isEnabled Boolean  @default(false)
+  config    Json     // { folderId, accessToken, refreshToken, basePath, etc. }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AgentGenerationJob {
+  id               String             @id @default(cuid())
+  suggestionId     String
+  suggestion       ContentSuggestion  @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
+  contentRequestId String?
+  provider         String
+  model            String?
+  status           String             @default("queued") // queued | generating | uploading | completed | failed
+  providerTaskId   String?            // external task ID for polling
+  blobUrl          String?
+  cloudStorageUrl  String?
+  errorMessage     String?            @db.Text
+  retryCount       Int                @default(0)
+  startedAt        DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([status])
+  @@index([suggestionId])
+}

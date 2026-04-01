@@ -3,8 +3,8 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-03-30T01:11:50.058Z",
-    "open_count": 55
+    "last_updated": "2026-04-01T04:04:41.862Z",
+    "open_count": 56
   },
   "signals": [
     {
@@ -239,6 +239,17 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_reporter_pm_1775016281861",
+      "from": "reporter",
+      "to": "pm",
+      "type": "fyi",
+      "task": "blueprint-update-m51",
+      "priority": "medium",
+      "message": "Reporter session 2026-03-29 complete. Blueprint seeneyu-blueprint.md updated: Phase 15 (Commercialization) added to build order table, sprint structure (M51-M54 P0-P3) documented, commercialization checklist item added. Activity log appended with 2026-03-29 phase change entry. No unread reporter signals were on the board.",
+      "timestamp": "2026-04-01T04:04:41.861Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_tester_1774833110057",
