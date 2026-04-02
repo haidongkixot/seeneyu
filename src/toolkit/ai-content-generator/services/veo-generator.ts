@@ -78,24 +78,33 @@ export async function pollVeoJob(
 
   if (!operation.done) return null // still in progress
 
-  // Extract video from response
+  // Extract video from response — Veo returns two possible shapes:
+  //   1. response.predictions[].bytesBase64Encoded (older API)
+  //   2. response.generateVideoResponse.generatedSamples[].video.uri (current API)
   const predictions = operation.response?.predictions ?? []
   const prediction = predictions[0]
 
-  if (!prediction) throw new Error('Veo returned no predictions in completed operation')
-
-  // Video may be returned as base64 bytesBase64Encoded or a URI
-  if (prediction.bytesBase64Encoded) {
+  // Shape 1: predictions array with base64 or video URI
+  if (prediction?.bytesBase64Encoded) {
     const buffer = Buffer.from(prediction.bytesBase64Encoded, 'base64')
     return { buffer, durationMs: 5000 }
   }
-
-  if (prediction.video?.uri) {
-    const videoRes = await fetch(prediction.video.uri)
+  if (prediction?.video?.uri) {
+    const videoRes = await fetch(`${prediction.video.uri}&key=${apiKey}`)
     if (!videoRes.ok) throw new Error(`Veo video download failed (${videoRes.status})`)
     const buffer = Buffer.from(await videoRes.arrayBuffer())
     return { buffer, durationMs: 5000 }
   }
 
-  throw new Error(`Veo returned unexpected prediction shape: ${JSON.stringify(prediction).slice(0, 200)}`)
+  // Shape 2: generateVideoResponse.generatedSamples (current Veo API)
+  const samples = operation.response?.generateVideoResponse?.generatedSamples ?? []
+  const sample = samples[0]
+  if (sample?.video?.uri) {
+    const videoRes = await fetch(`${sample.video.uri}&key=${apiKey}`)
+    if (!videoRes.ok) throw new Error(`Veo video download failed (${videoRes.status})`)
+    const buffer = Buffer.from(await videoRes.arrayBuffer())
+    return { buffer, durationMs: 5000 }
+  }
+
+  throw new Error(`Veo returned unexpected response shape: ${JSON.stringify(operation.response).slice(0, 300)}`)
 }
