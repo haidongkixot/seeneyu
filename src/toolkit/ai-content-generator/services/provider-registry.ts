@@ -173,15 +173,19 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     models: ['stabilityai/stable-video-diffusion-img2vid-xt'],
   },
 
-  // ── Gemini Imagen (Google AI) ──────────────────────────────────
+  // ── Gemini Imagen / Nano Banana (Google AI) ─────────────────────
   {
     id: 'gemini-imagen',
-    name: 'Gemini Imagen',
+    name: 'Nano Banana (Google)',
     type: 'image',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta',
     requiresKey: true,
     envVar: 'GOOGLE_AI_API_KEY',
-    models: ['gemini-2.0-flash-exp'],
+    models: [
+      'imagen-4.0-generate-001',
+      'imagen-4.0-fast-generate-001',
+      'nano-banana-pro-preview',
+    ],
   },
 
   // ── OpenAI Sora (Video) ────────────────────────────────────────
