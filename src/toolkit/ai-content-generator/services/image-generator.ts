@@ -34,6 +34,8 @@ export async function generateImage(
       return generateWithTogether(prompt, resolvedModel)
     case 'kling':
       return generateWithKling(prompt, resolvedModel, options?.width ?? 768, options?.height ?? 768)
+    case 'gemini-imagen':
+      return generateWithGeminiImagen(prompt, resolvedModel, options)
     default:
       throw new Error(`No generation handler for provider: ${provider}`)
   }
@@ -321,4 +323,22 @@ export async function generateWithKling(
     }
   }
   throw new Error('Kling image generation timed out')
+}
+
+// ── Google Gemini Imagen (Nano Banana) ──────────────────────────────
+
+async function generateWithGeminiImagen(
+  prompt: string,
+  model: string,
+  options?: GenerationOptions,
+): Promise<GenerationResult> {
+  const { generateWithGeminiImagen: generate } = await import('./gemini-imagen-generator')
+  const result = await generate(prompt, model, options)
+  return {
+    buffer: result.buffer,
+    mimeType: result.mimeType,
+    width: options?.width ?? 1024,
+    height: options?.height ?? 1024,
+    metadata: { model, provider: 'gemini-imagen' },
+  }
 }
