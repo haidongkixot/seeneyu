@@ -166,6 +166,11 @@ async function pollProvider(
       return pollHiggsfieldJob(taskId)
     }
 
+    case 'google-veo': {
+      const { pollVeoJob } = await import('@/toolkit/ai-content-generator/services/veo-generator')
+      return pollVeoJob(taskId)
+    }
+
     default:
       console.warn(`video-poll: unknown provider "${provider}", skipping`)
       return null

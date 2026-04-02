@@ -188,6 +188,23 @@ const PROVIDER_REGISTRY: ProviderConfig[] = [
     ],
   },
 
+  // ── Google Veo (Nano Banana Video) ────────────────────────────
+  {
+    id: 'google-veo',
+    name: 'Nano Banana Video (Veo)',
+    type: 'video',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta',
+    requiresKey: true,
+    envVar: 'GOOGLE_AI_API_KEY',
+    models: [
+      'veo-2.0-generate-001',
+      'veo-3.0-generate-001',
+      'veo-3.0-fast-generate-001',
+      'veo-3.1-generate-preview',
+      'veo-3.1-fast-generate-preview',
+    ],
+  },
+
   // ── OpenAI Sora (Video) ────────────────────────────────────────
   {
     id: 'openai-sora',

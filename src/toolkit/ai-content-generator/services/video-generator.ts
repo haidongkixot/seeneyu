@@ -27,6 +27,8 @@ export async function generateVideo(
       return generateWithOpenAIVideo(input, model)
     case 'openai-sora':
       return generateWithSoraVideo(input, model)
+    case 'google-veo':
+      return generateWithVeoVideo(input, model)
     case 'higgsfield':
       return generateWithHiggsfieldVideo(input, model)
     case 'runway':
@@ -487,6 +489,19 @@ async function generateWithSoraVideo(
   const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
   const jobId = await submitSoraJob(prompt, model) // throws with real API error if it fails
   return pendingResult('openai-sora', model || 'sora-2', jobId)
+}
+
+// ── Google Veo (Nano Banana Video) ─────────────────────────────────
+
+async function generateWithVeoVideo(
+  input: { prompt?: string; imageUrl?: string },
+  model?: string,
+): Promise<GenerationResult | null> {
+  if (!process.env.GOOGLE_AI_API_KEY) return null
+  const { submitVeoJob } = await import('./veo-generator')
+  const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
+  const operationName = await submitVeoJob(prompt, model)
+  return pendingResult('google-veo', model || 'veo-2.0-generate-001', operationName)
 }
 
 // ── Higgsfield ──────────────────────────────────────────────────────
