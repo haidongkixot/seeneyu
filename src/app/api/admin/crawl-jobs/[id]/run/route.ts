@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-export const maxDuration = 60
+export const maxDuration = 300
 import { prisma } from '@/lib/prisma'
 import { searchYouTube } from '@/services/youtube-crawler'
 import { scoreClipsBatch } from '@/services/clip-relevance-scorer'
