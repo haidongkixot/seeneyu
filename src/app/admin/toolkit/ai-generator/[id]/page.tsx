@@ -134,12 +134,38 @@ export default function AiGeneratorDetailPage() {
     fetchProviders()
   }, [fetchRequest, fetchProviders])
 
-  // Poll for generating status
+  // Refresh DB state every 3s while generating
   useEffect(() => {
     if (request?.status !== 'generating') return
     const interval = setInterval(fetchRequest, 3000)
     return () => clearInterval(interval)
   }, [request?.status, fetchRequest])
+
+  // Auto-trigger provider poll every 15s when there are generating video assets.
+  // Without this, the video sits in 'generating' forever until the daily cron at 3AM.
+  const VIDEO_PROVIDERS = ['video', 'sora', 'veo', 'kling', 'runway', 'luma', 'replicate', 'higgsfield']
+  const hasGeneratingVideo = request?.assets.some(
+    (a) => a.status === 'generating' && (
+      a.type === 'video' || VIDEO_PROVIDERS.some((p) => a.provider?.includes(p))
+    )
+  ) ?? false
+
+  useEffect(() => {
+    if (!hasGeneratingVideo) return
+
+    const pollProvider = async () => {
+      try {
+        const res = await fetch('/api/cron/video-poll')
+        const data = await res.json()
+        if (data.completed > 0) fetchRequest()
+      } catch { /* ignore */ }
+    }
+
+    pollProvider()
+    const interval = setInterval(pollProvider, 15000)
+    return () => clearInterval(interval)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasGeneratingVideo, fetchRequest])
 
   async function savePrompt() {
     setSaving(true)
