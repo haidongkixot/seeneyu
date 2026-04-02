@@ -19,11 +19,14 @@ const BASE = 'https://generativelanguage.googleapis.com/v1beta'
 export async function submitVeoJob(
   prompt: string,
   model?: string,
+  options?: { aspectRatio?: string; duration?: number },
 ): Promise<string> {
   const apiKey = process.env.GOOGLE_AI_API_KEY
   if (!apiKey) throw new Error('GOOGLE_AI_API_KEY not configured')
 
   const modelId = model ?? 'veo-2.0-generate-001'
+  const aspectRatio = options?.aspectRatio ?? '16:9'
+  const durationSeconds = options?.duration ?? 5
 
   const res = await fetch(`${BASE}/models/${modelId}:predictLongRunning?key=${apiKey}`, {
     method: 'POST',
@@ -33,8 +36,8 @@ export async function submitVeoJob(
         prompt,
       }],
       parameters: {
-        aspectRatio: '16:9',
-        durationSeconds: 5,
+        aspectRatio,
+        durationSeconds,
         sampleCount: 1,
       },
     }),

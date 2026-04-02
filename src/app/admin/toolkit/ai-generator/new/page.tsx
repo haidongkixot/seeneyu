@@ -52,6 +52,11 @@ export default function NewAiGeneratorPage() {
   const [videoProvider, setVideoProvider] = useState('')
   const [videoModel, setVideoModel] = useState('')
   const [count, setCount] = useState(3)
+  // Video generation options
+  const [videoDuration, setVideoDuration] = useState(5)
+  const [videoAspectRatio, setVideoAspectRatio] = useState<'16:9' | '9:16' | '1:1' | '4:3'>('16:9')
+  const [videoResolution, setVideoResolution] = useState<'480p' | '720p' | '1080p'>('720p')
+  const [videoStyle, setVideoStyle] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [step, setStep] = useState<'idle' | 'creating' | 'generating' | 'generating-video'>('idle')
@@ -168,6 +173,12 @@ export default function NewAiGeneratorPage() {
             model: videoModel || undefined,
             count: 1,
             type: 'video',
+            options: {
+              duration: videoDuration,
+              aspectRatio: videoAspectRatio,
+              resolution: videoResolution,
+              ...(videoStyle ? { style: videoStyle } : {}),
+            },
           }),
         })
 
@@ -367,6 +378,63 @@ export default function NewAiGeneratorPage() {
                     <option key={m.id} value={m.id}>{m.name}</option>
                   ))}
                 </select>
+              </div>
+
+              {/* Video generation options */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    Duration <span className="text-text-muted">(seconds)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={60}
+                    value={videoDuration}
+                    onChange={(e) => setVideoDuration(Math.min(60, Math.max(1, parseInt(e.target.value) || 5)))}
+                    className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">Aspect Ratio</label>
+                  <select
+                    value={videoAspectRatio}
+                    onChange={(e) => setVideoAspectRatio(e.target.value as any)}
+                    className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                  >
+                    <option value="16:9">16:9 (Landscape)</option>
+                    <option value="9:16">9:16 (Portrait)</option>
+                    <option value="1:1">1:1 (Square)</option>
+                    <option value="4:3">4:3 (Classic)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">Resolution</label>
+                  <select
+                    value={videoResolution}
+                    onChange={(e) => setVideoResolution(e.target.value as any)}
+                    className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                  >
+                    <option value="480p">480p</option>
+                    <option value="720p">720p (recommended)</option>
+                    <option value="1080p">1080p</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    Style <span className="text-text-muted">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={videoStyle}
+                    onChange={(e) => setVideoStyle(e.target.value)}
+                    placeholder="e.g. cinematic, anime, documentary"
+                    className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-400/50"
+                  />
+                </div>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">

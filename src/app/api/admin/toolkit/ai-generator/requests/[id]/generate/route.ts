@@ -26,6 +26,7 @@ export async function POST(
     const provider = body.provider
     const model = body.model
     const assetType: 'image' | 'video' = body.type === 'video' ? 'video' : 'image'
+    const options = body.options ?? {}
 
     const request = await prisma.aiContentRequest.findUnique({ where: { id } })
     if (!request) {
@@ -67,10 +68,10 @@ export async function POST(
 
     // Kick off generation — waitUntil keeps Vercel alive until the promise resolves
     if (assetType === 'video') {
-      waitUntil(generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+      waitUntil(generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id, options)
         .catch(console.error))
     } else {
-      waitUntil(generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id)
+      waitUntil(generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id, options)
         .catch(console.error))
     }
 
@@ -96,11 +97,12 @@ async function generateAsync(
   provider: string,
   model: string | null,
   requestId: string,
+  options?: Record<string, unknown>,
 ) {
   for (const assetId of assetIds) {
     try {
       // Generate the image via the toolkit service
-      const result = await generateImage(prompt, provider, model || undefined)
+      const result = await generateImage(prompt, provider, model || undefined, options as any)
 
       // Upload to Vercel Blob
       const blobUrl = await uploadToBlob(result.buffer, requestId, assetId, result.mimeType)
@@ -150,6 +152,7 @@ async function generateVideoAsync(
   provider: string,
   model: string | null,
   requestId: string,
+  options?: Record<string, unknown>,
 ) {
   for (const assetId of assetIds) {
     try {
@@ -157,6 +160,7 @@ async function generateVideoAsync(
         { prompt },
         provider,
         model || undefined,
+        options as any,
       )
 
       if (!result) throw new Error(`${provider} returned no result (missing API key or unsupported input)`)

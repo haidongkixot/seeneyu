@@ -1,5 +1,5 @@
 import { put } from '@vercel/blob'
-import type { GenerationResult } from '../types'
+import type { GenerationResult, GenerationOptions } from '../types'
 
 /**
  * Generate a video with sound from a text prompt or image.
@@ -11,36 +11,39 @@ export async function generateVideo(
   input: { prompt?: string; imageUrl?: string },
   provider?: string,
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   const resolvedProvider = provider || detectBestVideoProvider()
 
+  // Inject style into prompt if specified and not already present
+  const styledInput = options?.style && input.prompt && !input.prompt.includes(options.style)
+    ? { ...input, prompt: `${input.prompt}, ${options.style} style` }
+    : input
+
   switch (resolvedProvider) {
     case 'kling-video':
-      return generateWithKling(input, model)
+      return generateWithKling(styledInput, model, options)
     case 'replicate':
-      return generateWithReplicate(input, model)
+      return generateWithReplicate(styledInput, model, options)
     case 'huggingface-video':
-      return generateWithHFVideo(input, model)
+      return generateWithHFVideo(styledInput, model)
     case 'pollinations-video':
-      return generateWithPollinationsVideo(input, model)
+      return generateWithPollinationsVideo(styledInput, model, options)
     case 'openai-video':
-      return generateWithOpenAIVideo(input, model)
+      return generateWithOpenAIVideo(styledInput, model)
     case 'openai-sora':
-      return generateWithSoraVideo(input, model)
+      return generateWithSoraVideo(styledInput, model, options)
     case 'google-veo':
-      return generateWithVeoVideo(input, model)
+      return generateWithVeoVideo(styledInput, model, options)
     case 'higgsfield':
-      return generateWithHiggsfieldVideo(input, model)
+      return generateWithHiggsfieldVideo(styledInput, model, options)
     case 'runway':
-      return generateWithRunway(input, model)
+      return generateWithRunway(styledInput, model, options)
     case 'luma':
-      return generateWithLuma(input, model)
+      return generateWithLuma(styledInput, model, options)
     default:
-      // Fallback: generate silent video + add TTS audio
-      const video = await generateWithHFVideo(input, model)
-      if (video && input.prompt) {
-        return addTTSAudio(video, input.prompt)
-      }
+      const video = await generateWithHFVideo(styledInput, model)
+      if (video && styledInput.prompt) return addTTSAudio(video, styledInput.prompt)
       return video
   }
 }
@@ -288,6 +291,7 @@ function pendingResult(
 async function generateWithKling(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   if (!process.env.KLING_ACCESS_KEY || !process.env.KLING_SECRET_KEY) return null
 
@@ -300,14 +304,20 @@ async function generateWithKling(
     : 'https://api.klingai.com/v1/videos/text2video'
   const modelName = resolvedModel.replace('kling-', '').replace('-t2v', '').replace('-i2v', '')
 
+  // Kling supports: duration (5 or 10), aspect_ratio (16:9, 9:16, 1:1)
+  const duration = options?.duration && options.duration <= 10 ? String(options.duration) : '5'
+  const aspectRatio = options?.aspectRatio ?? '16:9'
+
   try {
     const body: any = {
       model_name: modelName,
       prompt: input.prompt || 'A person demonstrating a facial expression naturally',
-      duration: '5',
+      duration,
+      aspect_ratio: aspectRatio,
       mode: modelName.includes('pro') ? 'pro' : 'std',
     }
     if (isI2V && input.imageUrl) body.image = input.imageUrl
+    if (options?.negativePrompt) body.negative_prompt = options.negativePrompt
 
     const createRes = await fetch(endpoint, {
       method: 'POST',
@@ -333,11 +343,20 @@ async function generateWithKling(
 async function generateWithReplicate(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   const token = process.env.REPLICATE_API_TOKEN
   if (!token) return null
 
   const resolvedModel = model || 'minimax/video-01'
+
+  // Map resolution to width/height for Replicate models that support it
+  const resMap: Record<string, { width: number; height: number }> = {
+    '480p': { width: 854, height: 480 },
+    '720p': { width: 1280, height: 720 },
+    '1080p': { width: 1920, height: 1080 },
+  }
+  const resDims = options?.resolution ? resMap[options.resolution] : undefined
 
   try {
     const createRes = await fetch('https://api.replicate.com/v1/predictions', {
@@ -350,6 +369,9 @@ async function generateWithReplicate(
           prompt: input.prompt || 'A person demonstrating a facial expression',
           ...(input.imageUrl ? { first_frame_image: input.imageUrl } : {}),
           ...(resolvedModel.includes('minimax') ? { prompt_optimizer: true } : {}),
+          ...(options?.duration ? { duration: options.duration } : {}),
+          ...(resDims ?? {}),
+          ...(options?.negativePrompt ? { negative_prompt: options.negativePrompt } : {}),
         },
       }),
     })
@@ -371,13 +393,14 @@ async function generateWithReplicate(
 async function generateWithPollinationsVideo(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   const prompt = input.prompt || 'A person demonstrating a facial expression'
 
   try {
-    // Pollinations text-to-video endpoint
     const encodedPrompt = encodeURIComponent(prompt)
-    const url = `https://video.pollinations.ai/prompt/${encodedPrompt}?model=${model || 'fast-svd'}&duration=4`
+    const duration = options?.duration ?? 4
+    const url = `https://video.pollinations.ai/prompt/${encodedPrompt}?model=${model || 'fast-svd'}&duration=${duration}`
 
     const res = await fetch(url, { signal: AbortSignal.timeout(60000) })
     if (!res.ok) {
@@ -405,11 +428,14 @@ async function generateWithPollinationsVideo(
 async function generateWithRunway(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   const apiKey = process.env.RUNWAY_API_KEY
   if (!apiKey) return null
 
   const resolvedModel = model || 'gen3a_turbo'
+  // Runway supports duration 5 or 10
+  const duration = options?.duration && options.duration >= 10 ? 10 : 5
 
   try {
     const createRes = await fetch('https://api.dev.runwayml.com/v1/image_to_video', {
@@ -423,7 +449,7 @@ async function generateWithRunway(
         model: resolvedModel,
         promptImage: input.imageUrl,
         promptText: input.prompt || 'A person demonstrating an expression naturally',
-        duration: 5,
+        duration,
         watermark: false,
       }),
     })
@@ -443,18 +469,24 @@ async function generateWithRunway(
 async function generateWithLuma(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   const apiKey = process.env.LUMA_API_KEY
   if (!apiKey) return null
 
   const resolvedModel = model || 'ray2'
+  const duration = options?.duration ? `${options.duration}s` : '5s'
+  const resolution = options?.resolution ?? '720p'
+  // Luma aspect ratio format: '16:9', '9:16', '1:1', '4:3'
+  const aspectRatio = options?.aspectRatio ?? '16:9'
 
   try {
     const body: any = {
       prompt: input.prompt || 'A person demonstrating a facial expression',
       model: resolvedModel,
-      duration: '5s',
-      resolution: '720p',
+      duration,
+      resolution,
+      aspect_ratio: aspectRatio,
     }
     if (input.imageUrl) body.keyframes = { frame0: { type: 'image', url: input.imageUrl } }
 
@@ -483,11 +515,12 @@ async function generateWithLuma(
 async function generateWithSoraVideo(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   if (!process.env.OPENAI_API_KEY) return null
   const { submitSoraJob } = await import('./sora-generator')
   const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-  const jobId = await submitSoraJob(prompt, model) // throws with real API error if it fails
+  const jobId = await submitSoraJob(prompt, model, options)
   return pendingResult('openai-sora', model || 'sora-2', jobId)
 }
 
@@ -496,11 +529,12 @@ async function generateWithSoraVideo(
 async function generateWithVeoVideo(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   if (!process.env.GOOGLE_AI_API_KEY) return null
   const { submitVeoJob } = await import('./veo-generator')
   const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-  const operationName = await submitVeoJob(prompt, model)
+  const operationName = await submitVeoJob(prompt, model, { aspectRatio: options?.aspectRatio, duration: options?.duration })
   return pendingResult('google-veo', model || 'veo-2.0-generate-001', operationName)
 }
 
@@ -509,12 +543,13 @@ async function generateWithVeoVideo(
 async function generateWithHiggsfieldVideo(
   input: { prompt?: string; imageUrl?: string },
   model?: string,
+  options?: GenerationOptions,
 ): Promise<GenerationResult | null> {
   if (!process.env.HIGGSFIELD_API_KEY) return null
   try {
     const { submitHiggsfieldJob } = await import('./higgsfield-generator')
     const prompt = input.prompt || 'A person demonstrating a facial expression naturally'
-    const taskId = await submitHiggsfieldJob(prompt, model)
+    const taskId = await submitHiggsfieldJob(prompt, model, { duration: options?.duration, resolution: options?.resolution })
     return pendingResult('higgsfield', model || 'diffuse-xl', taskId)
   } catch (err: any) {
     throw new Error(`Higgsfield submit failed: ${err.message}`)

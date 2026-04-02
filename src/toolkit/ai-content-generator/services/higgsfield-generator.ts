@@ -9,14 +9,18 @@
 export async function submitHiggsfieldJob(
   prompt: string,
   model?: string,
+  options?: { duration?: number; resolution?: string },
 ): Promise<string> {
   const apiKey = process.env.HIGGSFIELD_API_KEY
   if (!apiKey) throw new Error('HIGGSFIELD_API_KEY not configured')
 
+  const duration = options?.duration ?? 5
+  const resolution = options?.resolution ?? '720p'
+
   const response = await fetch('https://cloud.higgsfield.ai/api/v1/videos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-    body: JSON.stringify({ prompt, model: model ?? 'diffuse-xl', duration: 5, resolution: '720p' }),
+    body: JSON.stringify({ prompt, model: model ?? 'diffuse-xl', duration, resolution }),
   })
 
   if (!response.ok) {

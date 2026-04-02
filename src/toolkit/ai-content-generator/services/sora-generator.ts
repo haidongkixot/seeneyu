@@ -16,15 +16,25 @@
 
 const BASE = 'https://api.openai.com/v1'
 
+const SIZE_MAP: Record<string, Record<string, string>> = {
+  '480p':  { '16:9': '854x480',   '9:16': '480x854',   '1:1': '480x480',   '4:3': '640x480'  },
+  '720p':  { '16:9': '1280x720',  '9:16': '720x1280',  '1:1': '720x720',   '4:3': '960x720'  },
+  '1080p': { '16:9': '1920x1080', '9:16': '1080x1920', '1:1': '1080x1080', '4:3': '1440x1080' },
+}
+
 /** Submit a generation job. Returns the Sora job ID immediately. */
 export async function submitSoraJob(
   prompt: string,
   model?: string,
+  options?: { aspectRatio?: string; resolution?: string },
 ): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) throw new Error('OPENAI_API_KEY not configured')
 
   const modelId = (model ?? 'sora-2').replace('-pro', '')
+  const resolution = options?.resolution ?? '720p'
+  const aspectRatio = options?.aspectRatio ?? '16:9'
+  const size = SIZE_MAP[resolution]?.[aspectRatio] ?? '1280x720'
 
   const createRes = await fetch(`${BASE}/videos`, {
     method: 'POST',
@@ -32,7 +42,7 @@ export async function submitSoraJob(
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ model: modelId, prompt, size: '1280x720' }),
+    body: JSON.stringify({ model: modelId, prompt, size }),
   })
 
   if (!createRes.ok) {
