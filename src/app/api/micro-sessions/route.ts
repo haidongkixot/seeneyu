@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
+import { put, del } from '@vercel/blob'
 import OpenAI from 'openai'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 export const maxDuration = 30
 import { prisma } from '@/lib/prisma'
 import { scoreMicroPracticeFromAnalysis } from '@/services/expression-scorer'
+import { shouldStoreRecording } from '@/services/consent-manager'
 import type { MicroFeedback } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -137,6 +140,21 @@ export async function POST(req: NextRequest) {
             },
           })
 
+          // If user opted out of data storage, delete recording blobs (keep feedback)
+          const authSession = await getServerSession(authOptions)
+          const authUserId = (authSession?.user as any)?.id as string | undefined
+          if (authUserId) {
+            const keep = await shouldStoreRecording(authUserId)
+            if (!keep) {
+              del(blob.url).catch(() => {})
+              for (const url of frameUrls) del(url).catch(() => {})
+              prisma.microSession.update({
+                where: { id: microSession.id },
+                data: { recordingUrl: null },
+              }).catch(() => {})
+            }
+          }
+
           // Log analysis metric (fire-and-forget)
           ;(prisma as any).analysisMetric.create({
             data: {
@@ -205,6 +223,21 @@ export async function POST(req: NextRequest) {
         status: 'complete',
       },
     })
+
+    // If user opted out of data storage, delete recording blobs
+    const authSession2 = await getServerSession(authOptions)
+    const authUserId2 = (authSession2?.user as any)?.id as string | undefined
+    if (authUserId2) {
+      const keep = await shouldStoreRecording(authUserId2)
+      if (!keep) {
+        del(blob.url).catch(() => {})
+        for (const url of frameUrls) del(url).catch(() => {})
+        prisma.microSession.update({
+          where: { id: microSession.id },
+          data: { recordingUrl: null },
+        }).catch(() => {})
+      }
+    }
 
     return NextResponse.json({ microSessionId: microSession.id, ...feedback })
   } catch (error) {

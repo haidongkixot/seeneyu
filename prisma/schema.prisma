@@ -851,6 +851,10 @@ model LearnerProfile {
   notificationFrequency String   @default("normal")
   whatsappPhone         String?
   whatsappOptIn         Boolean  @default(false)
+  // Data consent (opt-out model — default: agree to store)
+  dataConsentStorageAgreed Boolean  @default(true)
+  dataConsentUpdatedAt     DateTime?
+  dataConsentVersion       Int      @default(1)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   @@index([engagementScore])

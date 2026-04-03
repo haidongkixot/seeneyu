@@ -3,8 +3,10 @@ import OpenAI from 'openai'
 
 export const maxDuration = 30
 import { prisma } from '@/lib/prisma'
+import { del } from '@vercel/blob'
 import { scoreFullPerformanceFromAnalysis } from '@/services/expression-scorer'
 import { generateTextFeedback } from '@/services/feedback-generator'
+import { shouldStoreRecording } from '@/services/consent-manager'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -149,6 +151,21 @@ export async function POST(
         },
       })
 
+      // If user opted out of data storage, delete recording blobs (keep scores/feedback)
+      if (session.userId) {
+        const keep = await shouldStoreRecording(session.userId)
+        if (!keep) {
+          if (session.recordingUrl) del(session.recordingUrl).catch(() => {})
+          if (session.frameUrls) {
+            for (const url of JSON.parse(session.frameUrls as string)) del(url).catch(() => {})
+          }
+          prisma.userSession.update({
+            where: { id },
+            data: { recordingUrl: null, recordingKey: null, frameUrls: null },
+          }).catch(() => {})
+        }
+      }
+
       // Log analysis metric (fire-and-forget)
       ;(prisma as any).analysisMetric.create({
         data: {
@@ -226,6 +243,21 @@ export async function POST(
         completedAt: new Date(),
       },
     })
+
+    // If user opted out of data storage, delete recording blobs
+    if (session.userId) {
+      const keep = await shouldStoreRecording(session.userId)
+      if (!keep) {
+        if (session.recordingUrl) del(session.recordingUrl).catch(() => {})
+        if (session.frameUrls) {
+          for (const url of JSON.parse(session.frameUrls as string)) del(url).catch(() => {})
+        }
+        prisma.userSession.update({
+          where: { id },
+          data: { recordingUrl: null, recordingKey: null, frameUrls: null },
+        }).catch(() => {})
+      }
+    }
 
     return NextResponse.json({ feedback })
   } catch (error) {
