@@ -1,7 +1,9 @@
 import OpenAI from 'openai'
 import { prisma } from '@/lib/prisma'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+function getOpenAI() {
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' })
+}
 
 export interface EnrichmentResult {
   keyInsights: string[]
@@ -42,7 +44,7 @@ Analyze this content and return JSON with:
 
 Return ONLY valid JSON.`
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [{ role: 'user', content: prompt }],
     response_format: { type: 'json_object' },
@@ -94,7 +96,7 @@ export async function autoTagExpressionAsset(assetId: string): Promise<{
     throw new Error('OPENAI_API_KEY is not set')
   }
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: 'gpt-4o',
     messages: [
       {
