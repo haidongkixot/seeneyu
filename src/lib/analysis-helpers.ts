@@ -74,3 +74,9 @@ function computeIntensity(blendshapes: Record<string, number>): number {
   }
   return sum
 }
+
+/**
+ * Re-export temporal analysis for convenience.
+ * Imported dynamically to keep client bundle lean when not needed.
+ */
+export { computeTemporalAnalysis } from '@/services/temporal-analyzer'

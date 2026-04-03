@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import type { AnalysisSnapshot, PoseLandmarkData } from '@/lib/mediapipe-types'
+import type { AnalysisSnapshot, PoseLandmarkData, HandLandmarkData, Point3D } from '@/lib/mediapipe-types'
 
 type FaceLandmarkerResult = {
   faceBlendshapes?: Array<{ categories: Array<{ categoryName: string; score: number }> }>
@@ -10,6 +10,11 @@ type FaceLandmarkerResult = {
 
 type PoseLandmarkerResult = {
   landmarks?: Array<Array<{ x: number; y: number; z: number; visibility?: number }>>
+}
+
+type HandLandmarkerResult = {
+  landmarks?: Array<Array<{ x: number; y: number; z: number }>>
+  handedness?: Array<Array<{ categoryName: string; score: number }>>
 }
 
 // Pose landmark indices (MediaPipe standard)
@@ -43,6 +48,26 @@ function extractPoseLandmarks(
   }
 }
 
+// Hand landmark indices (MediaPipe standard — 21 per hand)
+const HAND_NAMES: (keyof HandLandmarkData)[] = [
+  'wrist', 'thumbCmc', 'thumbMcp', 'thumbIp', 'thumbTip',
+  'indexMcp', 'indexPip', 'indexDip', 'indexTip',
+  'middleMcp', 'middlePip', 'middleDip', 'middleTip',
+  'ringMcp', 'ringPip', 'ringDip', 'ringTip',
+  'pinkyMcp', 'pinkyPip', 'pinkyDip', 'pinkyTip',
+]
+
+function extractHandLandmarks(
+  landmarks: Array<{ x: number; y: number; z: number }>,
+): HandLandmarkData {
+  const data: Record<string, Point3D> = {}
+  for (let i = 0; i < HAND_NAMES.length; i++) {
+    const lm = landmarks[i]
+    data[HAND_NAMES[i]] = { x: lm.x, y: lm.y, z: lm.z }
+  }
+  return data as unknown as HandLandmarkData
+}
+
 export type DetectAllFn = (
   video: HTMLVideoElement,
   timestampMs: number
@@ -54,6 +79,7 @@ export function useMediaPipe() {
   const [error, setError] = useState<string | null>(null)
   const faceRef = useRef<any>(null)
   const poseRef = useRef<any>(null)
+  const handRef = useRef<any>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -61,10 +87,11 @@ export function useMediaPipe() {
     async function load() {
       try {
         const { getAll } = await import('@/lib/mediapipe-init')
-        const { face, pose } = await getAll()
+        const { face, pose, hand } = await getAll()
         if (!cancelled) {
           faceRef.current = face
           poseRef.current = pose
+          handRef.current = hand
           setIsReady(true)
         }
       } catch (e: any) {
@@ -120,10 +147,36 @@ export function useMediaPipe() {
         // Pose detection can fail — skip
       }
 
+      // Hand analysis
+      let handLandmarks: { left: HandLandmarkData | null; right: HandLandmarkData | null } | undefined
+      try {
+        if (handRef.current) {
+          const handResult: HandLandmarkerResult = handRef.current.detectForVideo(video, timestampMs)
+          if (handResult.landmarks && handResult.landmarks.length > 0) {
+            let left: HandLandmarkData | null = null
+            let right: HandLandmarkData | null = null
+            for (let i = 0; i < handResult.landmarks.length; i++) {
+              const lm = handResult.landmarks[i]
+              if (lm.length < 21) continue
+              const label = handResult.handedness?.[i]?.[0]?.categoryName?.toLowerCase() ?? ''
+              // MediaPipe mirrors: "Left" in result = user's right hand (camera mirror)
+              if (label === 'left' && !right) right = extractHandLandmarks(lm)
+              else if (label === 'right' && !left) left = extractHandLandmarks(lm)
+              else if (!left) left = extractHandLandmarks(lm)
+              else if (!right) right = extractHandLandmarks(lm)
+            }
+            if (left || right) handLandmarks = { left, right }
+          }
+        }
+      } catch {
+        // Hand detection can fail — skip
+      }
+
       return {
         timestampMs,
         blendshapes,
         poseLandmarks,
+        ...(handLandmarks ? { handLandmarks } : {}),
         faceDetected,
       }
     },

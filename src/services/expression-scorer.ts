@@ -7,7 +7,8 @@
  * Used by: Arcade attempts, Micro-Practice, Full Performance
  */
 
-import type { AnalysisSnapshot, PoseLandmarkData } from '@/lib/mediapipe-types'
+import type { AnalysisSnapshot, PoseLandmarkData, HandLandmarkData, Point3D, TemporalAnalysis } from '@/lib/mediapipe-types'
+import { computeTemporalAnalysis } from '@/services/temporal-analyzer'
 
 // ─── Expression Pattern Library ────────────────────────────────────────────
 // Maps expression keywords to expected blendshape targets (0.0 - 1.0)
@@ -278,6 +279,122 @@ function gestureActivity(pose: PoseLandmarkData): number {
   return clamp((Math.max(leftDelta, rightDelta) + 0.1) * 200, 0, 100)
 }
 
+// ─── Hand Gesture Utilities ──────────────────────────────────────────────
+
+function dist3d(a: Point3D, b: Point3D): number {
+  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2)
+}
+
+/** How open the hand is: average fingertip-to-wrist distance relative to palm size */
+function handOpenness(hand: HandLandmarkData): number {
+  const palmSize = dist3d(hand.wrist, hand.middleMcp) || 0.001
+  const tips = [hand.thumbTip, hand.indexTip, hand.middleTip, hand.ringTip, hand.pinkyTip]
+  const avgDist = tips.reduce((s, t) => s + dist3d(hand.wrist, t), 0) / tips.length
+  return clamp((avgDist / palmSize - 1.0) * 50, 0, 100) // 0=fist, 100=fully open
+}
+
+/** Spread between fingers: average angle between adjacent fingertip vectors */
+function fingerSpread(hand: HandLandmarkData): number {
+  const tips = [hand.indexTip, hand.middleTip, hand.ringTip, hand.pinkyTip]
+  let totalAngle = 0
+  for (let i = 0; i < tips.length - 1; i++) {
+    const dx = tips[i + 1].x - tips[i].x
+    const dy = tips[i + 1].y - tips[i].y
+    totalAngle += Math.sqrt(dx * dx + dy * dy)
+  }
+  return clamp(totalAngle * 500, 0, 100) // normalized spread score
+}
+
+/** How high hands are relative to the body (0=at hip, 100=above head) */
+function handHeight(hand: HandLandmarkData, pose: PoseLandmarkData | null): number {
+  if (!pose) return 50
+  const hipY = (pose.leftHip.y + pose.rightHip.y) / 2
+  const shoulderY = (pose.leftShoulder.y + pose.rightShoulder.y) / 2
+  const range = hipY - shoulderY || 0.001 // Y is inverted (0=top)
+  const wristDelta = hipY - hand.wrist.y
+  return clamp((wristDelta / range) * 100, 0, 100)
+}
+
+/** Classify dominant gesture from both hands */
+function gestureClassifier(
+  left: HandLandmarkData | null,
+  right: HandLandmarkData | null,
+): string {
+  const hands = [left, right].filter(Boolean) as HandLandmarkData[]
+  if (hands.length === 0) return 'none'
+
+  // Both hands open + spread = steeple / open gesture
+  if (hands.length === 2) {
+    const o1 = handOpenness(hands[0])
+    const o2 = handOpenness(hands[1])
+    if (o1 > 60 && o2 > 60) return 'open-gesture'
+    if (o1 < 30 && o2 < 30) return 'closed-fist'
+  }
+
+  const h = hands[0]
+  const openScore = handOpenness(h)
+  if (openScore > 70) return 'open-palm'
+  if (openScore < 25) return 'closed-fist'
+
+  // Check pointing: index extended, others curled
+  const indexLen = dist3d(h.wrist, h.indexTip)
+  const middleLen = dist3d(h.wrist, h.middleTip)
+  if (indexLen > middleLen * 1.3) return 'pointing'
+
+  return 'neutral-hand'
+}
+
+/** Score hand gestures for the 'hand-gestures' skill category */
+function scoreHandGestures(snapshots: AnalysisSnapshot[]): {
+  openness: number
+  spread: number
+  height: number
+  activity: number
+  gestureVariety: number
+} {
+  const handSnapshots = snapshots.filter((s) => s.handLandmarks)
+  if (handSnapshots.length === 0) {
+    return { openness: 0, spread: 0, height: 0, activity: 0, gestureVariety: 0 }
+  }
+
+  let totalOpenness = 0
+  let totalSpread = 0
+  let totalHeight = 0
+  const gestures = new Set<string>()
+
+  for (const snap of handSnapshots) {
+    const hands = [snap.handLandmarks?.left, snap.handLandmarks?.right].filter(Boolean) as HandLandmarkData[]
+    for (const h of hands) {
+      totalOpenness += handOpenness(h)
+      totalSpread += fingerSpread(h)
+      totalHeight += handHeight(h, snap.poseLandmarks)
+    }
+    gestures.add(gestureClassifier(snap.handLandmarks?.left ?? null, snap.handLandmarks?.right ?? null))
+  }
+
+  const handCount = handSnapshots.reduce(
+    (s, snap) => s + (snap.handLandmarks?.left ? 1 : 0) + (snap.handLandmarks?.right ? 1 : 0),
+    0,
+  ) || 1
+
+  // Activity = variation in hand height across frames
+  const heights = handSnapshots.map((s) => {
+    const h = s.handLandmarks?.left ?? s.handLandmarks?.right
+    return h ? handHeight(h, s.poseLandmarks) : 50
+  })
+  const avgHeight = heights.reduce((a, b) => a + b, 0) / heights.length
+  const heightVariance = heights.reduce((s, h) => s + (h - avgHeight) ** 2, 0) / heights.length
+  const activity = clamp(Math.sqrt(heightVariance) * 5, 0, 100)
+
+  return {
+    openness: totalOpenness / handCount,
+    spread: totalSpread / handCount,
+    height: totalHeight / handCount,
+    activity,
+    gestureVariety: clamp(gestures.size * 25, 0, 100),
+  }
+}
+
 // ─── Arcade Scoring ────────────────────────────────────────────────────────
 
 export interface ArcadeScoreResult {
@@ -360,12 +477,21 @@ export function scoreArcadeAttemptFromAnalysis(opts: {
     }
   }
 
-  const score = Math.round(
+  let baseScore = Math.round(
     expressionMatch * 0.5 + intensity * 0.25 + contextFit * 0.25
   )
 
+  // Temporal bonus/penalty: smooth transitions = +10%, jerky = -10%
+  if (snapshots.length >= 4) {
+    const temporal = computeTemporalAnalysis(snapshots)
+    const temporalBonus = ((temporal.avgTransitionSmoothness - 50) / 50) * 10
+    baseScore = Math.round(baseScore + temporalBonus)
+  }
+
+  const score = clamp(baseScore, 0, 100)
+
   return {
-    score: clamp(score, 0, 100),
+    score,
     breakdown: {
       expression_match: Math.round(expressionMatch),
       intensity: Math.round(intensity),
@@ -410,6 +536,7 @@ const SKILL_BLENDSHAPES: Record<string, string[]> = {
   'confident-disagreement': [
     'browDownLeft', 'browDownRight', 'mouthPressLeft', 'mouthPressRight',
   ],
+  'hand-gestures': [], // primarily hand-landmark-based
 }
 
 export function scoreMicroPracticeFromAnalysis(
@@ -454,6 +581,21 @@ export function scoreMicroPracticeFromAnalysis(
       : score * 0.6 + poseScore * 0.4
   }
 
+  // Hand-gestures: score entirely from hand landmarks
+  if (skillCategory === 'hand-gestures') {
+    const handScores = scoreHandGestures(snapshots)
+    score = Math.round(
+      handScores.openness * 0.25 +
+      handScores.spread * 0.15 +
+      handScores.height * 0.2 +
+      handScores.activity * 0.2 +
+      handScores.gestureVariety * 0.2,
+    )
+    if (snapshots.every((s) => !s.handLandmarks)) {
+      score = 0 // No hands detected at all
+    }
+  }
+
   score = Math.round(clamp(score, 0, 100))
   const verdict: 'pass' | 'needs-work' = score >= 70 ? 'pass' : 'needs-work'
 
@@ -479,12 +621,22 @@ export function scoreMicroPracticeFromAnalysis(
     ? Math.round(clamp(avgBlendshapeActivation(facialSnapshots, eyeBlendshapes) * 200 + 40, 0, 100))
     : 0
 
-  const scores = [
-    { label: 'Facial expression accuracy', score: facialScore },
-    { label: 'Body posture alignment', score: poseScore },
-    { label: 'Timing and naturalness', score: timingScore },
-    { label: 'Eye contact quality', score: eyeScore },
-  ]
+  const scores: { label: string; score: number }[] = skillCategory === 'hand-gestures'
+    ? (() => {
+        const hs = scoreHandGestures(snapshots)
+        return [
+          { label: 'Hand openness', score: Math.round(hs.openness) },
+          { label: 'Finger spread', score: Math.round(hs.spread) },
+          { label: 'Hand positioning', score: Math.round(hs.height) },
+          { label: 'Gesture variety', score: Math.round(hs.gestureVariety) },
+        ]
+      })()
+    : [
+        { label: 'Facial expression accuracy', score: facialScore },
+        { label: 'Body posture alignment', score: poseScore },
+        { label: 'Timing and naturalness', score: timingScore },
+        { label: 'Eye contact quality', score: eyeScore },
+      ]
 
   const detailedFeedback = generateDetailedMicroFeedback(skillCategory, skillFocus, scores, facialSnapshots.length, poseSnapshots.length)
 
@@ -568,6 +720,7 @@ export interface FullPerformanceMetrics {
   dimensions: DimensionScore[]
   expressionTimeline: number[]
   poseTimeline: number[]
+  temporalAnalysis?: TemporalAnalysis
 }
 
 const SKILL_DIMENSIONS: Record<string, string[]> = {
@@ -576,6 +729,7 @@ const SKILL_DIMENSIONS: Record<string, string[]> = {
   'active-listening': ['Forward Lean', 'Nod Timing', 'Facial Mirroring', 'Stillness'],
   'vocal-pacing': ['Pause Timing', 'Tempo Variation', 'Volume Range', 'Rhythm Control'],
   'confident-disagreement': ['Posture Stability', 'Eye Contact Hold', 'Voice Steadiness', 'Open Body'],
+  'hand-gestures': ['Hand Openness', 'Gesture Variety', 'Hand Positioning', 'Movement Flow'],
 }
 
 export function scoreFullPerformanceFromAnalysis(
@@ -630,11 +784,15 @@ export function scoreFullPerformanceFromAnalysis(
 
   const overallScore = Math.round(avg(dimensionScores.map(d => d.score)) * 10)
 
+  // Compute temporal analysis for the full performance
+  const temporal = snapshots.length >= 4 ? computeTemporalAnalysis(snapshots) : undefined
+
   return {
     overallScore: clamp(overallScore, 0, 100),
     dimensions: dimensionScores,
     expressionTimeline,
     poseTimeline,
+    temporalAnalysis: temporal,
   }
 }
 

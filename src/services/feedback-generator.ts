@@ -161,6 +161,10 @@ const SKILL_POSITIVES: Record<string, string[][]> = {
     ['Your posture stayed stable and grounded', 'You maintained composure well'],
     ['Body language projected calm confidence', 'Good eye contact during difficult moments'],
   ],
+  'hand-gestures': [
+    ['Good hand openness — your gestures felt inviting', 'Your hand positioning enhanced your message'],
+    ['Nice variety of gestures throughout', 'Your finger spread showed natural expressiveness'],
+  ],
 }
 
 function templatePositives(metrics: FullPerformanceMetrics, skill: string): string[] {
@@ -191,6 +195,10 @@ const SKILL_IMPROVEMENTS: Record<string, string[][]> = {
   'confident-disagreement': [
     ['Keep your weight centered — avoid shifting', 'Maintain eye contact when making your point'],
     ['Take a breath before responding to stay composed', 'Keep your voice steady and measured'],
+  ],
+  'hand-gestures': [
+    ['Open your palms outward when presenting a point', 'Raise your hands to chest height for emphasis'],
+    ['Vary between open-palm and pointing gestures', 'Avoid keeping hands at your sides — use them to illustrate'],
   ],
 }
 
