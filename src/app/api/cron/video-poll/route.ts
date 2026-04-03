@@ -18,14 +18,23 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Query ALL generating assets — use Prisma JSON filter where possible
   const pendingAssets = await prisma.aiGeneratedAsset.findMany({
     where: { status: 'generating' },
-    take: 20,
+    take: 50,
   })
 
   const toProcess = pendingAssets.filter(
     (a) => (a.metadata as any)?.pending && (a.metadata as any)?.providerTaskId,
   )
+
+  // Debug: log what we found so we can diagnose stuck jobs
+  console.log(`[video-poll] found ${pendingAssets.length} generating assets, ${toProcess.length} with pending+taskId`)
+  if (pendingAssets.length > 0 && toProcess.length === 0) {
+    console.log('[video-poll] generating assets without pending metadata:', pendingAssets.map(a => ({
+      id: a.id, provider: a.provider, meta: JSON.stringify(a.metadata).slice(0, 150),
+    })))
+  }
 
   let completed = 0
   let still_pending = 0
@@ -73,7 +82,7 @@ export async function GET(req: Request) {
     }
   }
 
-  return NextResponse.json({ completed, still_pending, failed, checked: toProcess.length })
+  return NextResponse.json({ completed, still_pending, failed, checked: toProcess.length, totalGenerating: pendingAssets.length })
 }
 
 async function pollProvider(
