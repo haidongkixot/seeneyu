@@ -82,6 +82,17 @@ export interface FeedbackResult {
   nextClipId?: string
   modelUsed: string
   processingMs: number
+  /** Holistic breakdown when full analysis is available (M65) */
+  holisticBreakdown?: {
+    visual: { face: number; pose: number; hands: number }
+    temporal: { smoothness: number; rhythm: number; variety: number }
+    voice: {
+      pitchVariation: number
+      speakingRate: number
+      volumeDynamics: number
+      voiceScore: number
+    } | null
+  }
 }
 
 export interface PracticeStep {

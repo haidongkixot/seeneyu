@@ -8,6 +8,7 @@ import { scoreFullPerformanceFromAnalysis, combineVisualAndVoiceScores } from '@
 import { generateTextFeedback, getVoiceTips } from '@/services/feedback-generator'
 import { shouldStoreRecording } from '@/services/consent-manager'
 import { analyzeVoice } from '@/services/voice-analyzer'
+import { computeHolisticScore } from '@/services/holistic-scorer'
 import type { VoiceMetrics } from '@/services/voice-analyzer'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
@@ -20,6 +21,7 @@ const SKILL_DIMENSIONS: Record<string, string[]> = {
   'active-listening':       ['Forward Lean', 'Nod Timing', 'Facial Mirroring', 'Stillness'],
   'vocal-pacing':           ['Pause Timing', 'Tempo Variation', 'Volume Range', 'Rhythm Control'],
   'confident-disagreement': ['Posture Stability', 'Eye Contact Hold', 'Voice Steadiness', 'Open Body'],
+  'hand-gestures':          ['Hand Openness', 'Gesture Variety', 'Hand Positioning', 'Movement Flow'],
 }
 
 interface ClipContext {
@@ -114,23 +116,21 @@ export async function POST(
 
     if (analysisSnapshots && analysisSnapshots.length > 0) {
       const skill = analysisSkillCategory || session.clip.skillCategory
-      const metrics = scoreFullPerformanceFromAnalysis(skill, analysisSnapshots)
 
       // Voice analysis: extract and analyze audio from the recording (zero AI cost)
       let voiceMetrics: VoiceMetrics | null = null
       if (session.recordingUrl) {
         try {
           voiceMetrics = await analyzeVoice(session.recordingUrl)
-          // Blend voice score into overall score
-          if (voiceMetrics.voiceScore > 0) {
-            metrics.overallScore = combineVisualAndVoiceScores(
-              metrics.overallScore, voiceMetrics.voiceScore, skill,
-            )
-          }
         } catch (err) {
           console.warn('[feedback] voice analysis failed (non-blocking):', (err as Error).message)
         }
       }
+
+      // Holistic scoring: visual (face+pose+hands) + temporal + voice
+      const holistic = computeHolisticScore(analysisSnapshots, skill, voiceMetrics)
+      const metrics = holistic.visualMetrics
+      metrics.overallScore = holistic.composite // use blended score
 
       const clipCtx = {
         skillCategory: session.clip.skillCategory,
@@ -164,6 +164,17 @@ export async function POST(
         ...textFeedback,
         nextClipId,
         processingMs: Date.now() - startMs,
+        // Holistic data for rich UI display
+        holisticBreakdown: {
+          visual: holistic.visual,
+          temporal: holistic.temporal,
+          voice: voiceMetrics ? {
+            pitchVariation: voiceMetrics.pitchVariation,
+            speakingRate: voiceMetrics.speakingRate,
+            volumeDynamics: voiceMetrics.volumeDynamics,
+            voiceScore: voiceMetrics.voiceScore,
+          } : null,
+        },
       }
 
       await prisma.userSession.update({
