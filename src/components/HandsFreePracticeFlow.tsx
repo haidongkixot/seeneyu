@@ -284,7 +284,44 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
           playsInline
         />
 
-        {/* Overlay */}
+        {/* Top controls — always visible over camera */}
+        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/70 to-transparent pointer-events-auto">
+          <button
+            onClick={handleExit}
+            className="flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
+          >
+            <LogOut size={16} /> Exit
+          </button>
+
+          <div className="flex items-center gap-2">
+            <span className="text-white/60 text-xs">Step {currentStep + 1}/{steps.length}</span>
+            <div className="flex gap-1.5">
+              {steps.map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full ${i < currentStep ? 'bg-emerald-400' : i === currentStep ? 'bg-accent-400' : 'bg-white/30'}`} />
+              ))}
+            </div>
+          </div>
+
+          {phase === 'recording' ? (
+            <button
+              onClick={handleStopEarly}
+              className="flex items-center gap-1.5 text-white bg-red-500/80 hover:bg-red-500 text-sm font-medium px-3 py-2 rounded-lg transition-colors"
+            >
+              <Square size={14} fill="white" /> Stop
+            </button>
+          ) : phase === 'paused' ? (
+            <button
+              onClick={handleResume}
+              className="flex items-center gap-1.5 text-white bg-emerald-500/80 hover:bg-emerald-500 text-sm font-medium px-3 py-2 rounded-lg transition-colors"
+            >
+              <Play size={14} /> Resume
+            </button>
+          ) : (
+            <div className="w-20" />
+          )}
+        </div>
+
+        {/* Center overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           {phase === 'preparing' && (
             <div className="bg-black/60 backdrop-blur-sm rounded-2xl px-8 py-6 text-center">
@@ -309,22 +346,30 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
 
           {phase === 'recording' && (
             <>
-              <div className="absolute top-4 left-4 flex items-center gap-2 bg-red-500/80 rounded-full px-3 py-1.5 pointer-events-none">
-                <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                <span className="text-white text-xs font-bold">REC {elapsed}s / {dur}s</span>
+              {/* Recording timer badge */}
+              <div className="absolute top-16 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-red-500/80 rounded-full px-4 py-2 pointer-events-none">
+                <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                <span className="text-white text-sm font-bold">REC {elapsed}s / {dur}s</span>
               </div>
-              {/* Stop button — prominent, centered bottom */}
-              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-4 pointer-events-auto">
+              {/* Bottom controls: pause + stop */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 pointer-events-auto">
+                <button
+                  onClick={handlePause}
+                  className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                  title="Pause"
+                >
+                  <Pause size={20} className="text-white" />
+                </button>
                 <button
                   onClick={handleStopEarly}
                   className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center shadow-lg transition-colors"
-                  title="Stop recording"
+                  title="Stop and submit"
                 >
                   <Square size={24} className="text-white" fill="white" />
                 </button>
               </div>
               {/* Progress bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/20">
                 <div className="h-full bg-accent-400 transition-all" style={{ width: `${(elapsed / dur) * 100}%` }} />
               </div>
             </>
@@ -358,39 +403,7 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
         </div>
       </div>
 
-      {/* Controls bar */}
-      <div className="bg-black/80 px-6 py-4 flex items-center justify-between pointer-events-auto">
-        <button
-          onClick={handleExit}
-          className="flex items-center gap-1.5 text-white/70 hover:text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
-        >
-          <LogOut size={16} /> Exit Practice
-        </button>
-
-        <div className="flex items-center gap-3">
-          <span className="text-white/40 text-xs">
-            Step {currentStep + 1} of {steps.length}
-          </span>
-          <div className="flex gap-1.5">
-            {steps.map((_, i) => (
-              <div key={i} className={`w-2 h-2 rounded-full ${i < currentStep ? 'bg-emerald-400' : i === currentStep ? 'bg-accent-400' : 'bg-white/20'}`} />
-            ))}
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          {phase === 'recording' && (
-            <button onClick={handlePause} className="flex items-center gap-1 text-white/70 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
-              <Pause size={16} /> Pause
-            </button>
-          )}
-          {phase === 'paused' && (
-            <button onClick={handleResume} className="flex items-center gap-1 text-white/70 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
-              <Play size={16} /> Resume
-            </button>
-          )}
-        </div>
-      </div>
+      {/* No bottom bar — controls are on top of camera and center */}
 
       {/* Error */}
       {error && (

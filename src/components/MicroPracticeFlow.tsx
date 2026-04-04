@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { X, Hand } from 'lucide-react'
 import { SkillBadge } from '@/components/SkillBadge'
 import { StepCard } from '@/components/StepCard'
 import { PracticeRecorder } from '@/components/PracticeRecorder'
@@ -23,6 +24,7 @@ interface MicroPracticeFlowProps {
 }
 
 export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTitle, steps }: MicroPracticeFlowProps) {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(0)   // 0-indexed
   const [phase, setPhase] = useState<StepPhase>('recording')
   const [feedback, setFeedback] = useState<MicroFeedback | null>(null)
@@ -126,7 +128,13 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
         </Link>
         <span className="text-sm font-semibold text-text-primary">Step {currentStep + 1} of {totalSteps}</span>
         <SkillBadge skill={skillCategory as SkillCategory} size="sm" />
-        <Link href={`/library/${clipId}`} className="ml-auto text-text-tertiary hover:text-text-secondary transition-colors">
+        <button
+          onClick={() => router.push(`/library/${clipId}/practice?mode=handsfree`)}
+          className="ml-auto flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-black/10 text-text-secondary hover:text-accent-400 hover:border-accent-400/30 rounded-lg transition-colors"
+        >
+          <Hand size={13} /> Hands-Free
+        </button>
+        <Link href={`/library/${clipId}`} className="text-text-tertiary hover:text-text-secondary transition-colors">
           <X size={18} />
         </Link>
       </div>
@@ -163,6 +171,10 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
             focusLabel={step.skillFocus}
             instruction={step.instruction}
             tip={step.tip}
+            demoImageUrl={step.demoImageUrl}
+            voiceUrl={step.voiceUrl}
+            subSteps={step.subSteps}
+            onNavigate={(idx) => { setCurrentStep(idx); setPhase('recording'); setFeedback(null) }}
           />
         </div>
 
