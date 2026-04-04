@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Loader2, Pause, Play, X, Volume2, Camera } from 'lucide-react'
+import { Loader2, Pause, Play, X, Volume2, Camera, Square, LogOut } from 'lucide-react'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
 import { startAnalysisCollection } from '@/lib/analysis-helpers'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
@@ -250,7 +250,20 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
     }
   }
 
+  function handleStopEarly() {
+    if (phase !== 'recording') return
+    if (timerRef.current) clearInterval(timerRef.current)
+    const { blob, snapshots } = stopRecording()
+    setPhase('processing')
+    submitRecording(blob, snapshots)
+      .then((data) => { setFeedback(data); setPhase('result') })
+      .catch(() => { setError('Analysis failed'); setPhase('result') })
+  }
+
   function handleExit() {
+    if (timerRef.current) clearInterval(timerRef.current)
+    try { recorderRef.current?.stop() } catch { /* ignore */ }
+    collectorRef.current?.stop()
     stopCamera()
     window.speechSynthesis?.cancel()
     onComplete?.()
@@ -300,6 +313,16 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                 <span className="text-white text-xs font-bold">REC {elapsed}s / {dur}s</span>
               </div>
+              {/* Stop button — prominent, centered bottom */}
+              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-4 pointer-events-auto">
+                <button
+                  onClick={handleStopEarly}
+                  className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center shadow-lg transition-colors"
+                  title="Stop recording"
+                >
+                  <Square size={24} className="text-white" fill="white" />
+                </button>
+              </div>
               {/* Progress bar */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
                 <div className="h-full bg-accent-400 transition-all" style={{ width: `${(elapsed / dur) * 100}%` }} />
@@ -337,31 +360,33 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
 
       {/* Controls bar */}
       <div className="bg-black/80 px-6 py-4 flex items-center justify-between pointer-events-auto">
-        <button onClick={handleExit} className="flex items-center gap-1 text-white/60 hover:text-white text-xs">
-          <X size={14} /> Exit
+        <button
+          onClick={handleExit}
+          className="flex items-center gap-1.5 text-white/70 hover:text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
+        >
+          <LogOut size={16} /> Exit Practice
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className="text-white/40 text-xs">
             Step {currentStep + 1} of {steps.length}
           </span>
-          {/* Progress dots */}
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {steps.map((_, i) => (
-              <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < currentStep ? 'bg-emerald-400' : i === currentStep ? 'bg-accent-400' : 'bg-white/20'}`} />
+              <div key={i} className={`w-2 h-2 rounded-full ${i < currentStep ? 'bg-emerald-400' : i === currentStep ? 'bg-accent-400' : 'bg-white/20'}`} />
             ))}
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           {phase === 'recording' && (
-            <button onClick={handlePause} className="text-white/60 hover:text-white">
-              <Pause size={16} />
+            <button onClick={handlePause} className="flex items-center gap-1 text-white/70 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
+              <Pause size={16} /> Pause
             </button>
           )}
           {phase === 'paused' && (
-            <button onClick={handleResume} className="text-white/60 hover:text-white">
-              <Play size={16} />
+            <button onClick={handleResume} className="flex items-center gap-1 text-white/70 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
+              <Play size={16} /> Resume
             </button>
           )}
         </div>

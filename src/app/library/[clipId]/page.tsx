@@ -9,7 +9,7 @@ import { DifficultyPill } from '@/components/DifficultyPill'
 import { ClipViewerClient } from './ClipViewerClient'
 import { ClipDetailTabs } from './ClipDetailTabs'
 import type { SkillCategory, Difficulty, ObservationGuide } from '@/lib/types'
-import { ArrowLeft, FileText } from 'lucide-react'
+import { ArrowLeft, FileText, ListChecks, ImageIcon, Hand } from 'lucide-react'
 import { AiMediaPlayer } from '@/components/AiMediaPlayer'
 
 interface PageProps {
@@ -27,7 +27,10 @@ export default async function ClipViewerPage({ params }: PageProps) {
 
   const clip = await prisma.clip.findUnique({
     where: { id: clipId, isActive: true },
-    include: { annotations: { orderBy: { atSecond: 'asc' } } },
+    include: {
+      annotations: { orderBy: { atSecond: 'asc' } },
+      practiceSteps: { orderBy: { stepNumber: 'asc' } },
+    },
   })
 
   if (!clip) notFound()
@@ -128,6 +131,39 @@ export default async function ClipViewerPage({ params }: PageProps) {
           />
         </div>
 
+        {/* Practice Steps Preview */}
+        {clip.practiceSteps.length > 0 && (
+          <div className="mt-8">
+            <div className="flex items-center gap-2 mb-4">
+              <ListChecks size={16} className="text-accent-400" />
+              <h3 className="text-sm font-semibold text-text-primary">Practice Guide ({clip.practiceSteps.length} steps)</h3>
+            </div>
+            <div className="space-y-2">
+              {clip.practiceSteps.map((step: any) => (
+                <div key={step.id} className="bg-bg-surface border border-black/[0.06] rounded-xl p-4 flex gap-4">
+                  {step.demoImageUrl && (
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-bg-inset flex-shrink-0">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={step.demoImageUrl} alt={step.skillFocus} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-bold text-accent-400">STEP {step.stepNumber}</span>
+                      <span className="text-xs font-medium text-text-primary">{step.skillFocus}</span>
+                      <span className="text-[10px] text-text-muted">{step.targetDurationSec}s</span>
+                    </div>
+                    <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">{step.instruction}</p>
+                    {step.tip && (
+                      <p className="text-[10px] text-text-tertiary italic mt-1">{step.tip}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Actions */}
         <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
           <Link
@@ -135,6 +171,13 @@ export default async function ClipViewerPage({ params }: PageProps) {
             className="bg-accent-400 text-text-inverse rounded-pill px-8 py-3.5 font-semibold hover:bg-accent-500 hover:shadow-glow transition-all duration-150 flex items-center gap-2"
           >
             I&apos;m Ready to Mimic →
+          </Link>
+          <Link
+            href={`/library/${clipId}/practice?mode=handsfree`}
+            className="border border-black/10 text-text-primary rounded-pill px-6 py-3.5 font-medium hover:bg-bg-overlay transition-all duration-150 flex items-center gap-2"
+          >
+            <Hand size={16} />
+            Hands-Free Mode
           </Link>
         </div>
       </main>
