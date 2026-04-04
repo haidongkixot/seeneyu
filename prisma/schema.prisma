@@ -181,6 +181,9 @@ model PracticeStep {
   instruction       String @db.Text
   tip               String? @db.Text
   targetDurationSec Int     @default(20)
+  demoImageUrl      String?           // AI-generated demo image for this step
+  subSteps          Json?             // [{order, text, imageUrl?}]
+  voiceUrl          String?           // ElevenLabs TTS audio URL (Vercel Blob)
 
   @@index([clipId])
 }
@@ -706,10 +709,12 @@ model BlogPost {
   tags        Json?
   status      String   @default("draft")
   authorId    String?
+  category    String   @default("blog") // "blog" | "knowledge"
   publishedAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@index([status, publishedAt])
+  @@index([category, status])
 }
 
 model SiteSettings {

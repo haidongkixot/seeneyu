@@ -224,7 +224,7 @@ export function ApproveModal({ result, jobId, onClose, onApproved }: ApproveModa
                 aria-busy={submitting}
                 className="w-full bg-accent-400 text-bg-base font-semibold py-3 rounded-xl text-sm hover:bg-amber-300 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
               >
-                {submitting ? 'Creating clip…' : 'Create Clip & Generate Guide →'}
+                {submitting ? 'Creating practice…' : 'Create Practice & Generate Guide →'}
               </button>
             )}
           </div>

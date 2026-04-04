@@ -390,7 +390,7 @@ export default function ClipForm({ initial, mode }: Props) {
           className="flex items-center gap-2 bg-accent-400 text-text-inverse rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-accent-500 transition-all duration-150 disabled:opacity-60"
         >
           {saving && <Loader2 size={14} className="animate-spin" />}
-          {saving ? 'Saving…' : mode === 'new' ? 'Create Clip' : 'Save Changes'}
+          {saving ? 'Saving…' : mode === 'new' ? 'Create Practice' : 'Save Changes'}
         </button>
         <button
           type="button"

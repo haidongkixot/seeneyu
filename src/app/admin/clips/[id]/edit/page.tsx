@@ -42,7 +42,7 @@ export default async function EditClipPage({ params }: { params: { id: string } 
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary">Edit Clip</h1>
+        <h1 className="text-2xl font-bold text-text-primary">Edit Practice</h1>
         <p className="text-text-secondary text-sm mt-1">{clip.movieTitle}</p>
       </div>
 

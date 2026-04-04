@@ -10,7 +10,7 @@ export default async function AdminDashboard() {
   ])
 
   const stats = [
-    { label: 'Total Clips', value: clipCount, Icon: Film },
+    { label: 'Total Practices', value: clipCount, Icon: Film },
     { label: 'Learners', value: userCount, Icon: Users },
     { label: 'Sessions Completed', value: sessionCount, Icon: Activity },
   ]
@@ -44,7 +44,7 @@ export default async function AdminDashboard() {
           className="flex items-center gap-2 bg-accent-400 text-text-inverse rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-accent-500 transition-all duration-150"
         >
           <Plus size={15} />
-          Add Clip
+          Add Practice
         </Link>
         <Link
           href="/admin/users"

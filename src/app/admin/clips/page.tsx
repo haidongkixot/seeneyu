@@ -47,15 +47,15 @@ export default function AdminClipsPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Clips</h1>
-          <p className="text-text-secondary text-sm mt-1">{clips.length} total clips</p>
+          <h1 className="text-2xl font-bold text-text-primary">Practices</h1>
+          <p className="text-text-secondary text-sm mt-1">{clips.length} total practices</p>
         </div>
         <Link
           href="/admin/clips/new"
           className="flex items-center gap-2 bg-accent-400 text-text-inverse rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-accent-500 transition-all duration-150"
         >
           <Plus size={15} />
-          Add Clip
+          Add Practice
         </Link>
       </div>
 
