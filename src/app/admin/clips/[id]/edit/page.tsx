@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ClipForm from '../../ClipForm'
 import { GenerateObservationGuide } from './GenerateObservationGuide'
+import PracticeStepEditor from './PracticeStepEditor'
 import { CrawlScreenplay } from './CrawlScreenplay'
 import { FetchTranscript } from './FetchTranscript'
 
@@ -100,6 +101,11 @@ export default async function EditClipPage({ params }: { params: { id: string } 
             hasScreenplayText={hasScreenplayText}
           />
         </div>
+      </div>
+
+      {/* Practice Steps Editor */}
+      <div className="max-w-2xl mt-6">
+        <PracticeStepEditor clipId={clip.id} />
       </div>
     </div>
   )

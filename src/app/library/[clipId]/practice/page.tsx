@@ -4,17 +4,21 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { MicroPracticeFlow } from '@/components/MicroPracticeFlow'
 import { AiImagePractice } from '@/components/AiImagePractice'
+import PracticeModeToggle from './PracticeModeToggle'
 import type { PracticeStep } from '@/lib/types'
 
 interface PageProps {
   params: Promise<{ clipId: string }>
+  searchParams: Promise<{ mode?: string }>
 }
 
-export default async function PracticePage({ params }: PageProps) {
+export default async function PracticePage({ params, searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
   if (!session) redirect('/auth/signin')
 
   const { clipId } = await params
+  const { mode } = await searchParams
+  const isHandsFree = mode === 'handsfree'
 
   const clip = await prisma.clip.findUnique({
     where: { id: clipId, isActive: true },
@@ -52,6 +56,9 @@ export default async function PracticePage({ params }: PageProps) {
         instruction: s.instruction,
         tip: s.tip,
         targetDurationSec: s.targetDurationSec,
+        demoImageUrl: (s as any).demoImageUrl ?? null,
+        subSteps: (s as any).subSteps ?? null,
+        voiceUrl: (s as any).voiceUrl ?? null,
       }))
     : clip.annotations.length > 0
     ? clip.annotations.slice(0, 5).map((a, i) => ({
@@ -74,12 +81,23 @@ export default async function PracticePage({ params }: PageProps) {
       }]
 
   return (
-    <MicroPracticeFlow
-      clipId={clip.id}
-      characterName={clip.characterName}
-      skillCategory={clip.skillCategory}
-      clipTitle={clip.sceneDescription}
-      steps={steps}
-    />
+    <>
+      <PracticeModeToggle clipId={clip.id} isHandsFree={isHandsFree} />
+      {isHandsFree ? (
+        <PracticeModeToggle.HandsFree
+          clipId={clip.id}
+          steps={steps}
+          skillCategory={clip.skillCategory}
+        />
+      ) : (
+        <MicroPracticeFlow
+          clipId={clip.id}
+          characterName={clip.characterName}
+          skillCategory={clip.skillCategory}
+          clipTitle={clip.sceneDescription}
+          steps={steps}
+        />
+      )}
+    </>
   )
 }

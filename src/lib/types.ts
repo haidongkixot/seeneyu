@@ -95,6 +95,12 @@ export interface FeedbackResult {
   }
 }
 
+export interface SubStep {
+  order: number
+  text: string
+  imageUrl?: string | null
+}
+
 export interface PracticeStep {
   id: string
   clipId: string
@@ -103,6 +109,9 @@ export interface PracticeStep {
   instruction: string
   tip: string | null
   targetDurationSec: number
+  demoImageUrl?: string | null
+  subSteps?: SubStep[] | null
+  voiceUrl?: string | null
 }
 
 export interface MicroFeedbackScore {
