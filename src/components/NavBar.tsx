@@ -19,6 +19,7 @@ export function NavBar() {
 
   const baseLinks = [
     { href: '/library', label: 'Library', Icon: Library },
+    { href: '/knowledge', label: 'Learn', Icon: BookOpen },
     { href: '/foundation', label: 'Foundation', Icon: BookOpen },
     { href: '/arcade', label: 'Arcade', Icon: Zap },
     { href: '/games', label: 'Games', Icon: Gamepad2 },

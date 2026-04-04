@@ -19,7 +19,11 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get('page') ?? '0')
     const limit = parseInt(searchParams.get('limit') ?? '20')
 
-    const where = status ? { status } : {}
+    const category = searchParams.get('category')
+    const where = {
+      ...(status ? { status } : {}),
+      ...(category ? { category } : {}),
+    }
 
     const [posts, total] = await Promise.all([
       prisma.blogPost.findMany({
@@ -41,7 +45,7 @@ export async function POST(req: Request) {
   try {
     const session = await requireAdmin()
     const body = await req.json()
-    const { slug, title, excerpt, body: postBody, coverImage, tags, status } = body
+    const { slug, title, excerpt, body: postBody, coverImage, tags, status, category } = body
 
     if (!slug || !title || !postBody) {
       return NextResponse.json({ error: 'slug, title, and body are required' }, { status: 400 })
@@ -56,6 +60,7 @@ export async function POST(req: Request) {
         coverImage: coverImage ?? null,
         tags: tags ?? null,
         status: status ?? 'draft',
+        category: category ?? 'blog',
         authorId: (session.user as any).id ?? null,
         publishedAt: status === 'published' ? new Date() : null,
       },

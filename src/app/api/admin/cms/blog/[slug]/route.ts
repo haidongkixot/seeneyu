@@ -34,7 +34,7 @@ export async function PUT(
   try {
     await requireAdmin()
     const body = await req.json()
-    const { title, excerpt, body: postBody, coverImage, tags, status, slug: newSlug } = body
+    const { title, excerpt, body: postBody, coverImage, tags, status, slug: newSlug, category } = body
 
     const updateData: Record<string, unknown> = {}
     if (title !== undefined) updateData.title = title
@@ -43,6 +43,7 @@ export async function PUT(
     if (coverImage !== undefined) updateData.coverImage = coverImage
     if (tags !== undefined) updateData.tags = tags
     if (newSlug !== undefined) updateData.slug = newSlug
+    if (category !== undefined) updateData.category = category
     if (status !== undefined) {
       updateData.status = status
       if (status === 'published') updateData.publishedAt = new Date()
