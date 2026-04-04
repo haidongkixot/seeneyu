@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { MicroPracticeFlow } from '@/components/MicroPracticeFlow'
 import { AiImagePractice } from '@/components/AiImagePractice'
-import PracticeModeToggle from './PracticeModeToggle'
+import PracticeModeToggle, { HandsFreeWrapper } from './PracticeModeToggle'
 import type { PracticeStep } from '@/lib/types'
 
 interface PageProps {
@@ -84,7 +84,7 @@ export default async function PracticePage({ params, searchParams }: PageProps) 
     <>
       <PracticeModeToggle clipId={clip.id} isHandsFree={isHandsFree} />
       {isHandsFree ? (
-        <PracticeModeToggle.HandsFree
+        <HandsFreeWrapper
           clipId={clip.id}
           steps={steps}
           skillCategory={clip.skillCategory}

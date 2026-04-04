@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Hand, MousePointer } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
@@ -40,8 +40,8 @@ export default function PracticeModeToggle({ clipId, isHandsFree }: ToggleProps)
   )
 }
 
-// Export hands-free component for use in practice page
-PracticeModeToggle.HandsFree = function HandsFree(props: {
+/** Separate named export for the hands-free flow wrapper */
+export function HandsFreeWrapper(props: {
   clipId: string
   steps: any[]
   skillCategory: string
