@@ -9,6 +9,7 @@ import { generateTextFeedback, getVoiceTips } from '@/services/feedback-generato
 import { shouldStoreRecording } from '@/services/consent-manager'
 import { analyzeVoice } from '@/services/voice-analyzer'
 import { computeHolisticScore } from '@/services/holistic-scorer'
+import { getVoiceAccess, getHolisticBreakdownAccess, getTemporalAccess } from '@/lib/access-control'
 import type { VoiceMetrics } from '@/services/voice-analyzer'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
@@ -90,7 +91,7 @@ export async function POST(
   try {
     const session = await prisma.userSession.findUnique({
       where: { id },
-      include: { clip: true },
+      include: { clip: true, user: { select: { plan: true } } },
     })
 
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 })
@@ -116,10 +117,12 @@ export async function POST(
 
     if (analysisSnapshots && analysisSnapshots.length > 0) {
       const skill = analysisSkillCategory || session.clip.skillCategory
+      const userPlan = (session.user as any)?.plan ?? 'basic'
 
-      // Voice analysis: extract and analyze audio from the recording (zero AI cost)
+      // Voice analysis: only run for standard+ (saves server CPU for free users)
       let voiceMetrics: VoiceMetrics | null = null
-      if (session.recordingUrl) {
+      const voiceAccess = getVoiceAccess(userPlan)
+      if (voiceAccess !== 'none' && session.recordingUrl) {
         try {
           voiceMetrics = await analyzeVoice(session.recordingUrl)
         } catch (err) {
@@ -141,8 +144,8 @@ export async function POST(
       }
       const textFeedback = await generateTextFeedback(metrics, clipCtx)
 
-      // Append voice tips if voice analysis succeeded
-      if (voiceMetrics && voiceMetrics.voiceScore > 0) {
+      // Append voice tips only for standard+ with successful voice analysis
+      if (voiceAccess !== 'none' && voiceMetrics && voiceMetrics.voiceScore > 0) {
         const vTips = getVoiceTips(skill)
         if (vTips.length > 0) textFeedback.tips = [...(textFeedback.tips ?? []), ...vTips]
       }
@@ -160,21 +163,27 @@ export async function POST(
         nextClipId = nextClip?.id
       }
 
+      // Build holistic breakdown — gated by plan
+      const temporalAccess = getTemporalAccess(userPlan)
+      const showHolistic = getHolisticBreakdownAccess(userPlan)
+
       const feedback: FeedbackResult = {
         ...textFeedback,
         nextClipId,
         processingMs: Date.now() - startMs,
-        // Holistic data for rich UI display
-        holisticBreakdown: {
-          visual: holistic.visual,
-          temporal: holistic.temporal,
-          voice: voiceMetrics ? {
-            pitchVariation: voiceMetrics.pitchVariation,
-            speakingRate: voiceMetrics.speakingRate,
-            volumeDynamics: voiceMetrics.volumeDynamics,
-            voiceScore: voiceMetrics.voiceScore,
-          } : null,
-        },
+        // Holistic breakdown: advanced gets full, others get nothing (score still benefits from holistic math)
+        ...(showHolistic ? {
+          holisticBreakdown: {
+            visual: holistic.visual,
+            temporal: temporalAccess !== 'none' ? holistic.temporal : { smoothness: 0, rhythm: 0, variety: 0 },
+            voice: voiceAccess === 'full' && voiceMetrics ? {
+              pitchVariation: voiceMetrics.pitchVariation,
+              speakingRate: voiceMetrics.speakingRate,
+              volumeDynamics: voiceMetrics.volumeDynamics,
+              voiceScore: voiceMetrics.voiceScore,
+            } : null,
+          },
+        } : {}),
       }
 
       await prisma.userSession.update({

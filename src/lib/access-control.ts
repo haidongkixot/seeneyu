@@ -128,3 +128,37 @@ export function getAllowedGames(plan: string): string[] {
 export function canPostComments(plan: string): boolean {
   return plan === 'standard' || plan === 'advanced'
 }
+
+// ── M62-M65 Feature Gating ─────────────────────────────────────────
+
+/** M62: Hand gesture scoring — free gets detection only, standard+ gets full scoring */
+export function getHandGestureAccess(plan: string): 'none' | 'detection' | 'full' {
+  switch (plan) {
+    case 'advanced': return 'full'
+    case 'standard': return 'full'
+    default: return 'detection' // hand landmarks captured but not scored
+  }
+}
+
+/** M63: Temporal analysis detail level */
+export function getTemporalAccess(plan: string): 'none' | 'basic' | 'full' {
+  switch (plan) {
+    case 'advanced': return 'full'   // smoothness, rhythm, holds, recovery speed
+    case 'standard': return 'basic'  // transition count + smoothness only
+    default: return 'none'           // temporal bonus applied to score but not shown
+  }
+}
+
+/** M64: Voice analysis detail level */
+export function getVoiceAccess(plan: string): 'none' | 'score_only' | 'full' {
+  switch (plan) {
+    case 'advanced': return 'full'        // full metrics: pitch, rate, pauses, volume
+    case 'standard': return 'score_only'  // voice score blended into overall, no details
+    default: return 'none'                // no voice analysis at all
+  }
+}
+
+/** M65: Holistic breakdown visibility */
+export function getHolisticBreakdownAccess(plan: string): boolean {
+  return plan === 'advanced'
+}

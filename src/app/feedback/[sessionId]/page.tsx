@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { SkillBadge } from '@/components/SkillBadge'
 import { LockedFeedbackSection } from '@/components/LockedFeedbackSection'
 import { FeedbackPoller } from './FeedbackPoller'
-import { getFeedbackSections } from '@/lib/access-control'
+import { getFeedbackSections, getHolisticBreakdownAccess } from '@/lib/access-control'
 import type { FeedbackResult, ActionPlanStep, SkillCategory } from '@/lib/types'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 
@@ -270,6 +270,95 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
           )}
         </div>
       </div>
+
+      {/* Holistic Breakdown — Advanced plan only */}
+      <LockedFeedbackSection isLocked={!getHolisticBreakdownAccess(userPlan)}>
+        {feedback.holisticBreakdown ? (
+          <div>
+            <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-4">Holistic Performance Breakdown</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Visual */}
+              <div className="bg-bg-surface border border-black/[0.06] rounded-xl p-4">
+                <p className="text-xs font-semibold text-text-secondary mb-3">Visual</p>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Face', value: feedback.holisticBreakdown.visual.face },
+                    { label: 'Posture', value: feedback.holisticBreakdown.visual.pose },
+                    { label: 'Hands', value: feedback.holisticBreakdown.visual.hands },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center justify-between">
+                      <span className="text-xs text-text-tertiary">{item.label}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-bg-inset rounded-full overflow-hidden">
+                          <div className="h-full bg-accent-400 rounded-full" style={{ width: `${item.value}%` }} />
+                        </div>
+                        <span className="text-xs font-medium text-text-primary w-6 text-right">{item.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Temporal */}
+              <div className="bg-bg-surface border border-black/[0.06] rounded-xl p-4">
+                <p className="text-xs font-semibold text-text-secondary mb-3">Temporal</p>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Smoothness', value: feedback.holisticBreakdown.temporal.smoothness },
+                    { label: 'Rhythm', value: feedback.holisticBreakdown.temporal.rhythm },
+                    { label: 'Variety', value: feedback.holisticBreakdown.temporal.variety },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center justify-between">
+                      <span className="text-xs text-text-tertiary">{item.label}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-bg-inset rounded-full overflow-hidden">
+                          <div className="h-full bg-purple-400 rounded-full" style={{ width: `${item.value}%` }} />
+                        </div>
+                        <span className="text-xs font-medium text-text-primary w-6 text-right">{item.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Voice */}
+              <div className="bg-bg-surface border border-black/[0.06] rounded-xl p-4">
+                <p className="text-xs font-semibold text-text-secondary mb-3">Voice</p>
+                {feedback.holisticBreakdown.voice ? (
+                  <div className="space-y-2">
+                    {[
+                      { label: 'Pitch variety', value: Math.round(feedback.holisticBreakdown.voice.pitchVariation * 100) },
+                      { label: 'Speaking rate', value: Math.min(100, Math.round(feedback.holisticBreakdown.voice.speakingRate * 20)) },
+                      { label: 'Volume dynamics', value: feedback.holisticBreakdown.voice.volumeDynamics },
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center justify-between">
+                        <span className="text-xs text-text-tertiary">{item.label}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-1.5 bg-bg-inset rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-400 rounded-full" style={{ width: `${item.value}%` }} />
+                          </div>
+                          <span className="text-xs font-medium text-text-primary w-6 text-right">{item.value}</span>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="pt-1 border-t border-black/[0.04]">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-text-secondary font-medium">Voice Score</span>
+                        <span className="text-sm font-bold text-text-primary">{feedback.holisticBreakdown.voice.voiceScore}</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xs text-text-muted italic">No audio detected in recording</p>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-6">
+            <p className="text-sm text-text-secondary">Holistic breakdown available with Advanced plan</p>
+            <p className="text-xs text-text-muted mt-1">See visual, temporal, and voice analysis of your performance</p>
+          </div>
+        )}
+      </LockedFeedbackSection>
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-4 pt-2">

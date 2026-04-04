@@ -9,6 +9,7 @@ import { prisma } from '@/lib/prisma'
 import { scoreMicroPracticeFromAnalysis, combineVisualAndVoiceScores } from '@/services/expression-scorer'
 import { shouldStoreRecording } from '@/services/consent-manager'
 import { analyzeVoice } from '@/services/voice-analyzer'
+import { getVoiceAccess } from '@/lib/access-control'
 import type { MicroFeedback } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -120,9 +121,12 @@ export async function POST(req: NextRequest) {
           const skill = skillCategory || 'eye-contact'
           const result = scoreMicroPracticeFromAnalysis(skill, skillFocus, instruction, snapshots)
 
-          // Voice analysis for vocal skills (zero AI cost)
+          // Voice analysis for vocal skills — gated by plan (standard+)
+          const authSess = await getServerSession(authOptions)
+          const userPlan = (authSess?.user as any)?.plan ?? 'basic'
+          const voiceAccess = getVoiceAccess(userPlan)
           const VOCAL_SKILL_SET = new Set(['vocal-pacing', 'confident-disagreement'])
-          if (VOCAL_SKILL_SET.has(skill) && blob.url) {
+          if (voiceAccess !== 'none' && VOCAL_SKILL_SET.has(skill) && blob.url) {
             try {
               const voiceMetrics = await analyzeVoice(blob.url)
               if (voiceMetrics.voiceScore > 0 && result.score !== undefined) {
