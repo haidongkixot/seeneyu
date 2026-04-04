@@ -796,6 +796,32 @@ export function scoreFullPerformanceFromAnalysis(
   }
 }
 
+// ─── Voice + Visual Combination ──────────────────────────────────────────
+
+/** Per-skill voice weight: how much voice analysis influences the final score */
+const VOICE_WEIGHTS: Record<string, number> = {
+  'vocal-pacing': 0.4,
+  'confident-disagreement': 0.35,
+  'active-listening': 0.15,
+  'eye-contact': 0.05,
+  'open-posture': 0.05,
+  'hand-gestures': 0.05,
+}
+
+/**
+ * Combine a visual-only score with voice metrics into a blended score.
+ * Returns the adjusted overall score (0-100).
+ */
+export function combineVisualAndVoiceScores(
+  visualScore: number,
+  voiceScore: number,
+  skillCategory: string,
+): number {
+  const voiceWeight = VOICE_WEIGHTS[skillCategory] ?? 0.1
+  const visualWeight = 1 - voiceWeight
+  return Math.round(clamp(visualScore * visualWeight + voiceScore * voiceWeight, 0, 100))
+}
+
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
 function avg(arr: number[]): number {

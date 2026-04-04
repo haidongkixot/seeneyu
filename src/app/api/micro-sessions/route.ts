@@ -4,10 +4,11 @@ import OpenAI from 'openai'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-export const maxDuration = 30
+export const maxDuration = 60
 import { prisma } from '@/lib/prisma'
-import { scoreMicroPracticeFromAnalysis } from '@/services/expression-scorer'
+import { scoreMicroPracticeFromAnalysis, combineVisualAndVoiceScores } from '@/services/expression-scorer'
 import { shouldStoreRecording } from '@/services/consent-manager'
+import { analyzeVoice } from '@/services/voice-analyzer'
 import type { MicroFeedback } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -116,12 +117,23 @@ export async function POST(req: NextRequest) {
       try {
         const { snapshots } = JSON.parse(analysisDataRaw) as { snapshots: AnalysisSnapshot[] }
         if (snapshots && snapshots.length > 0) {
-          const result = scoreMicroPracticeFromAnalysis(
-            skillCategory || 'eye-contact',
-            skillFocus,
-            instruction,
-            snapshots
-          )
+          const skill = skillCategory || 'eye-contact'
+          const result = scoreMicroPracticeFromAnalysis(skill, skillFocus, instruction, snapshots)
+
+          // Voice analysis for vocal skills (zero AI cost)
+          const VOCAL_SKILL_SET = new Set(['vocal-pacing', 'confident-disagreement'])
+          if (VOCAL_SKILL_SET.has(skill) && blob.url) {
+            try {
+              const voiceMetrics = await analyzeVoice(blob.url)
+              if (voiceMetrics.voiceScore > 0 && result.score !== undefined) {
+                result.score = combineVisualAndVoiceScores(result.score, voiceMetrics.voiceScore, skill)
+                result.verdict = result.score >= 70 ? 'pass' : 'needs-work'
+              }
+            } catch (err) {
+              console.warn('[micro] voice analysis failed (non-blocking):', (err as Error).message)
+            }
+          }
+
           const feedback: MicroFeedback = {
             verdict: result.verdict,
             headline: result.headline,

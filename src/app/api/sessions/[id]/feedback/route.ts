@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-export const maxDuration = 30
+export const maxDuration = 60
 import { prisma } from '@/lib/prisma'
 import { del } from '@vercel/blob'
-import { scoreFullPerformanceFromAnalysis } from '@/services/expression-scorer'
-import { generateTextFeedback } from '@/services/feedback-generator'
+import { scoreFullPerformanceFromAnalysis, combineVisualAndVoiceScores } from '@/services/expression-scorer'
+import { generateTextFeedback, getVoiceTips } from '@/services/feedback-generator'
 import { shouldStoreRecording } from '@/services/consent-manager'
+import { analyzeVoice } from '@/services/voice-analyzer'
+import type { VoiceMetrics } from '@/services/voice-analyzer'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -113,6 +115,23 @@ export async function POST(
     if (analysisSnapshots && analysisSnapshots.length > 0) {
       const skill = analysisSkillCategory || session.clip.skillCategory
       const metrics = scoreFullPerformanceFromAnalysis(skill, analysisSnapshots)
+
+      // Voice analysis: extract and analyze audio from the recording (zero AI cost)
+      let voiceMetrics: VoiceMetrics | null = null
+      if (session.recordingUrl) {
+        try {
+          voiceMetrics = await analyzeVoice(session.recordingUrl)
+          // Blend voice score into overall score
+          if (voiceMetrics.voiceScore > 0) {
+            metrics.overallScore = combineVisualAndVoiceScores(
+              metrics.overallScore, voiceMetrics.voiceScore, skill,
+            )
+          }
+        } catch (err) {
+          console.warn('[feedback] voice analysis failed (non-blocking):', (err as Error).message)
+        }
+      }
+
       const clipCtx = {
         skillCategory: session.clip.skillCategory,
         characterName: session.clip.characterName,
@@ -121,6 +140,12 @@ export async function POST(
         script: (session.clip as any).script ?? null,
       }
       const textFeedback = await generateTextFeedback(metrics, clipCtx)
+
+      // Append voice tips if voice analysis succeeded
+      if (voiceMetrics && voiceMetrics.voiceScore > 0) {
+        const vTips = getVoiceTips(skill)
+        if (vTips.length > 0) textFeedback.tips = [...(textFeedback.tips ?? []), ...vTips]
+      }
 
       // Find next clip
       const currentDiff = session.clip.difficulty

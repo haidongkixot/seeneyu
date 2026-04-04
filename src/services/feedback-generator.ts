@@ -243,8 +243,30 @@ const SKILL_TIPS: Record<string, FeedbackTip[]> = {
     { title: 'Ground & Center', body: 'Plant both feet firmly and keep your weight balanced. A stable base projects calmness even during heated moments. Avoid swaying or stepping back.' },
     { title: 'The Measured Response', body: 'Take one slow breath before responding to something you disagree with. This micro-pause prevents reactive body language and gives you a moment to compose your response.' },
   ],
+  'hand-gestures': [
+    { title: 'The Gesture Zone', body: 'Keep hand gestures between your waist and shoulders — the "power zone". Gestures above or below this range feel erratic or weak. Match gesture size to your message impact.' },
+    { title: 'Open Palm Authority', body: 'Showing open palms signals honesty and openness. Pointing with fingers can feel aggressive — use an open-hand gesture to direct attention instead.' },
+  ],
+}
+
+// ── Voice-Aware Feedback Templates ──────────────────────────────────
+
+const VOICE_TIPS: Record<string, FeedbackTip[]> = {
+  'vocal-pacing': [
+    { title: 'Pitch Variety', body: 'Vary your pitch by 50-100Hz when transitioning between points. A monotone pitch (< 30Hz range) puts listeners to sleep. Practice "upward" inflection for questions and "downward" for statements.' },
+    { title: 'Strategic Pausing', body: 'Insert 0.5-1 second pauses before key points. Your current pause pattern shows room for more deliberate silence. Pauses create anticipation and give listeners time to absorb.' },
+  ],
+  'confident-disagreement': [
+    { title: 'Vocal Steadiness', body: 'Keep your volume consistent when disagreeing — sudden increases sound aggressive, drops sound uncertain. Aim for a steady 3-5 dB range within sentences.' },
+    { title: 'Measured Tempo', body: 'Slow your speaking rate to ~3 syllables/sec when making a counterpoint. Rushing signals anxiety; measured delivery signals confidence and control.' },
+  ],
 }
 
 function templateTips(skill: string): FeedbackTip[] {
   return SKILL_TIPS[skill] ?? SKILL_TIPS['eye-contact']
+}
+
+/** Get voice-specific tips when voice analysis is available */
+export function getVoiceTips(skill: string): FeedbackTip[] {
+  return VOICE_TIPS[skill] ?? []
 }
