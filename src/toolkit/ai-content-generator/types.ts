@@ -57,8 +57,25 @@ export interface GenerationResult {
 }
 
 export interface GenerationOptions {
+  // Image options
   width?: number
   height?: number
   seed?: number
   negativePrompt?: string
+
+  // Video options
+  /** Duration in seconds (1–60). Provider-dependent limits apply. */
+  duration?: number
+  /** Aspect ratio. Defaults to 16:9. */
+  aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3'
+  /** Output resolution. Defaults to 720p. */
+  resolution?: '480p' | '720p' | '1080p'
+  /**
+   * Visual style. Injected into the prompt when providers don't have
+   * a native style parameter.
+   * e.g. 'cinematic', 'photorealistic', 'anime', 'artistic', 'documentary'
+   */
+  style?: string
+  /** Motion intensity for video (provider-dependent). */
+  motionStrength?: 'low' | 'medium' | 'high'
 }

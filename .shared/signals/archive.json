@@ -1,8 +1,8 @@
 {
   "_meta": {
     "description": "Signal archive — completed/read signals. Append-only. Do NOT read this during normal sessions.",
-    "last_updated": "2026-03-28T16:13:12.091Z",
-    "total": 157
+    "last_updated": "2026-04-03T10:00:42.875Z",
+    "total": 158
   },
   "signals": [
     {
@@ -1878,6 +1878,18 @@
       "timestamp": "2026-03-25T04:07:26.016Z",
       "status": "done",
       "done_at": "2026-03-28T16:13:12.090Z"
+    },
+    {
+      "id": "sig_pm_reporter_1775209381493",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "TASK: Create a PDF document explaining MediaPipe in the seeneyu platform. Title: 'MediaPipe Technical Architecture — How seeneyu Delivers Real-Time Body Language Analysis'. Structure: (1) Executive Summary — what MediaPipe is and why seeneyu uses it. (2) Architecture Overview — client-side ML pipeline: @mediapipe/tasks-vision, FaceLandmarker (52 blendshapes), PoseLandmarker (11 key landmarks), browser WASM/WebGL execution. (3) Core Infrastructure — mediapipe-init.ts (singleton loader, GPU delegate), useMediaPipe.ts (React hook), mediapipe-types.ts (AnalysisSnapshot, PoseLandmarkData), analysis-helpers.ts (snapshot collection at 500ms/1000ms intervals). (4) Features Using MediaPipe — Arcade Mode (10s challenge, cosine similarity scoring, 0 API cost), Micro-Practice (multi-step skill practice, skill-specific scoring), Full Performance (30-60s recording, 4-dimension scoring + GPT-4o text coaching). (5) Scoring Engine — expression-scorer.ts (776 lines): expression pattern library (20+ patterns mapped to blendshape targets), cosine similarity matching, pose analysis (shoulder openness, head tilt, forward lean, gesture activity). (6) The Migration — replaced GPT-4o Vision with MediaPipe (commit b56564b, 2026-03-25), before vs after comparison. (7) Pros: zero API cost for scoring, instant feedback (<100ms), works offline, deterministic/reproducible scores, privacy (no video sent to cloud), scales to unlimited users. (8) Cons: limited to visible body language (no audio/tone analysis), requires modern browser with WebGL, ~8MB model download on first visit, less nuanced than GPT-4o Vision for complex social cues, blendshape accuracy varies by lighting/angle. (9) Alignment with seeneyu vision/mission — democratizes body language coaching, makes practice accessible/affordable, supports the Watch-Observe-Mimic-Feedback-Repeat loop. Use docs/pdf-gen/ pattern to generate the PDF. Target: docs/mediapipe-architecture.pdf, A4, cover page + TOC, ~15 pages. Priority: medium. Deadline: 2026-04-05.",
+      "timestamp": "2026-04-03T09:43:01.494Z",
+      "status": "done",
+      "done_at": "2026-04-03T10:00:42.867Z"
     }
   ]
 }

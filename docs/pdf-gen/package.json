@@ -1,0 +1,10 @@
+{
+  "name": "seeneyu-pdf-gen",
+  "private": true,
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "puppeteer": "^24.0.0"
+  }
+}
