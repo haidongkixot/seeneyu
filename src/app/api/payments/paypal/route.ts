@@ -52,7 +52,7 @@ export async function GET(req: Request) {
     const plan = await (prisma as any).plan.findUnique({ where: { slug: planSlug } })
     const amount = period === 'annual' ? (plan.annualPrice ?? plan.monthlyPrice * 12) : plan.monthlyPrice
 
-    await activateSubscription(userId, planSlug, period, 'paypal', orderId, amount, 'USD')
+    await activateSubscription({ userId, planSlug, period, gateway: 'paypal', gatewayOrderId: orderId, amount, currency: 'USD' })
 
     return NextResponse.json({ status: 'success', planSlug })
   } catch (err: any) {

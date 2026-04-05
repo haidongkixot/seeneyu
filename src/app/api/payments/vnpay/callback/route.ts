@@ -48,7 +48,7 @@ export async function GET(req: Request) {
   const amount = parseFloat(searchParams.get('vnp_Amount') || '0') / 100
 
   try {
-    await activateSubscription(user.id, plan.slug, period, 'vnpay', orderId, amount, 'VND')
+    await activateSubscription({ userId: user.id, planSlug: plan.slug, period, gateway: 'vnpay', gatewayOrderId: orderId, amount, currency: 'VND' })
     return NextResponse.redirect(new URL(`/payment/success?plan=${plan.slug}`, req.url))
   } catch {
     return NextResponse.redirect(new URL('/pricing?error=activation_failed', req.url))

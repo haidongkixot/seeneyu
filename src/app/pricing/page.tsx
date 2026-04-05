@@ -304,12 +304,12 @@ export default function PricingPage() {
                   )}
 
                   {isPaid && !isCurrent && (
-                    <button
-                      onClick={() => handleSelectPlan(plan.slug)}
-                      className="text-xs text-text-tertiary hover:text-text-secondary transition-colors text-center mt-3"
+                    <a
+                      href={`/checkout?plan=${plan.slug}&period=${period}`}
+                      className="text-xs text-text-tertiary hover:text-text-secondary transition-colors text-center mt-3 block"
                     >
                       Or pay now →
-                    </button>
+                    </a>
                   )}
                 </div>
               )

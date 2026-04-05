@@ -431,12 +431,16 @@ model Subscription {
   cancelledAt      DateTime?
   trialStartedAt   DateTime?
   trialEndsAt      DateTime?
+  autoRenew        Boolean   @default(true)
+  stripeCustomerId String?
+  stripeSubId      String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   payments         Payment[]
 
   @@index([userId])
   @@index([status])
+  @@index([stripeSubId])
 }
 
 model Payment {
@@ -448,6 +452,9 @@ model Payment {
   amount         Float
   currency       String       @default("USD")
   status         String       @default("pending")
+  discount       Float        @default(0)
+  couponId       String?
+  invoiceUrl     String?
   metadata       Json?
   createdAt      DateTime     @default(now())
 

@@ -1,15 +1,31 @@
 import { prisma } from '@/lib/prisma'
 
-export async function activateSubscription(
-  userId: string,
-  planSlug: string,
-  period: 'monthly' | 'annual',
-  gateway: string,
-  gatewayOrderId: string,
-  amount: number,
-  currency: string
-) {
-  const plan = await (prisma as any).plan.findUnique({ where: { slug: planSlug } })
+interface ActivateParams {
+  userId: string
+  planId?: string
+  planSlug: string
+  period: string
+  gateway: string
+  gatewayOrderId: string
+  amount: number
+  currency?: string
+  couponId?: string
+  discount?: number
+  stripeCustomerId?: string
+  stripeSubId?: string
+  invoiceUrl?: string
+}
+
+export async function activateSubscription(params: ActivateParams) {
+  const {
+    userId, planSlug, period, gateway, gatewayOrderId,
+    amount, currency = 'usd', couponId, discount = 0,
+    stripeCustomerId, stripeSubId, invoiceUrl,
+  } = params
+
+  const plan = params.planId
+    ? await (prisma as any).plan.findUnique({ where: { id: params.planId } })
+    : await (prisma as any).plan.findUnique({ where: { slug: planSlug } })
   if (!plan) throw new Error('Plan not found')
 
   // Cancel any existing active subscription
@@ -33,6 +49,9 @@ export async function activateSubscription(
       status: 'active',
       period,
       endDate,
+      autoRenew: gateway === 'stripe', // Stripe auto-renews, others manual
+      stripeCustomerId: stripeCustomerId || null,
+      stripeSubId: stripeSubId || null,
     },
   })
 
@@ -45,6 +64,9 @@ export async function activateSubscription(
       amount,
       currency,
       status: 'completed',
+      discount,
+      couponId: couponId || null,
+      invoiceUrl: invoiceUrl || null,
     },
   })
 
