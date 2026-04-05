@@ -73,6 +73,12 @@ export default async function HomePage() {
     cta1Url: '/library',
     cta2Text: 'Browse the Library',
     cta2Url: '/library',
+    // Preview card (right side)
+    cardImage: '',
+    cardSkill: 'Eye Contact',
+    cardDuration: '1:45',
+    cardQuote: 'Watch how he holds the gaze without blinking — 2-3 seconds, then a natural break...',
+    cardScore: '82',
   })
   const mission = await getSection('home', 'mission', {
     title: 'Transforming how the world communicates',
@@ -138,26 +144,31 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Right column — floating preview card */}
+          {/* Right column — floating preview card (CMS-editable) */}
           <div className="hidden lg:flex justify-center">
             <div className="float-animation w-80 bg-bg-surface border border-black/10 rounded-2xl shadow-xl p-4">
               <div className="aspect-video bg-bg-elevated rounded-xl overflow-hidden flex items-center justify-center">
-                <Film size={48} className="text-text-tertiary" />
+                {hero.cardImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={hero.cardImage} alt={hero.cardSkill} className="w-full h-full object-cover" />
+                ) : (
+                  <Film size={48} className="text-text-tertiary" />
+                )}
               </div>
               <div className="mt-3 flex items-center gap-2 flex-wrap">
-                <SkillBadge skill="eye-contact" size="sm" />
-                <span className="text-xs text-text-tertiary bg-bg-elevated rounded-pill px-2 py-0.5 font-mono">1:45</span>
+                <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-600">{hero.cardSkill || 'Eye Contact'}</span>
+                <span className="text-xs text-text-tertiary bg-bg-elevated rounded-pill px-2 py-0.5 font-mono">{hero.cardDuration || '1:45'}</span>
               </div>
               <p className="text-sm text-text-secondary italic mt-2 leading-relaxed">
-                &ldquo;Watch how he holds the gaze without blinking &mdash; 2-3 seconds, then a natural break...&rdquo;
+                &ldquo;{hero.cardQuote || 'Watch how he holds the gaze without blinking — 2-3 seconds, then a natural break...'}&rdquo;
               </p>
               <div className="bg-bg-elevated rounded-xl p-3 mt-3">
                 <p className="text-xs text-text-tertiary mb-1.5">AI Score</p>
                 <div className="flex items-center gap-3">
                   <div className="flex-1 bg-black/5 rounded-pill h-2 overflow-hidden">
-                    <div className="bg-success h-2 rounded-pill" style={{ width: '82%' }} />
+                    <div className="bg-success h-2 rounded-pill" style={{ width: `${hero.cardScore || 82}%` }} />
                   </div>
-                  <span className="text-xl font-black text-success">82</span>
+                  <span className="text-xl font-black text-success">{hero.cardScore || 82}</span>
                 </div>
               </div>
             </div>

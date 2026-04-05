@@ -29,7 +29,12 @@ const SECTION_DEFS: {
       { name: 'cta2Text', type: 'text', label: 'Secondary CTA Text' },
       { name: 'cta2Url', type: 'url', label: 'Secondary CTA URL' },
       { name: 'badge', type: 'text', label: 'Badge Text' },
-      { name: 'heroImage', type: 'image', label: 'Hero Image/Video' },
+      { name: 'heroImage', type: 'image', label: 'Hero Background Image' },
+      { name: 'cardImage', type: 'image', label: 'Preview Card Image (right side)' },
+      { name: 'cardSkill', type: 'text', label: 'Preview Card Skill Label' },
+      { name: 'cardDuration', type: 'text', label: 'Preview Card Duration' },
+      { name: 'cardQuote', type: 'textarea', label: 'Preview Card Quote' },
+      { name: 'cardScore', type: 'text', label: 'Preview Card AI Score (0-100)' },
     ],
   },
   {
