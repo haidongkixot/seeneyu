@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Upload } from 'lucide-react'
+import { ArrowLeft, Upload, Sparkles, Loader2, Trash2, CheckCircle } from 'lucide-react'
 
 export default function EditChallengePage() {
   const params = useParams()
@@ -14,6 +14,8 @@ export default function EditChallengePage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [guidanceSteps, setGuidanceSteps] = useState<any[]>([])
+  const [generatingGuidance, setGeneratingGuidance] = useState(false)
   const [form, setForm] = useState({
     type: 'facial',
     title: '',
@@ -43,6 +45,7 @@ export default function EditChallengePage() {
           xpReward: data.xpReward,
           orderIndex: data.orderIndex,
         })
+        setGuidanceSteps(data.guidanceSteps ?? [])
         setLoading(false)
       })
   }, [challengeId])
@@ -233,6 +236,84 @@ export default function EditChallengePage() {
           {saving ? 'Saving…' : 'Save Changes'}
         </button>
       </form>
+
+      {/* Guidance Steps */}
+      <div className="mt-8 bg-bg-surface border border-black/8 rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-text-primary">Guidance Steps</h3>
+          <button
+            onClick={async () => {
+              setGeneratingGuidance(true)
+              try {
+                const res = await fetch(`/api/admin/arcade/challenges/${challengeId}/guidance`, { method: 'POST' })
+                if (res.ok) {
+                  const data = await res.json()
+                  setGuidanceSteps(data.steps ?? [])
+                }
+              } catch { /* ignore */ }
+              setGeneratingGuidance(false)
+            }}
+            disabled={generatingGuidance}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-purple-500/15 text-purple-400 rounded-lg hover:bg-purple-500/25 disabled:opacity-40 transition-colors"
+          >
+            {generatingGuidance ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+            {guidanceSteps.length > 0 ? 'Regenerate' : 'Generate Guidance'}
+          </button>
+        </div>
+
+        {guidanceSteps.length === 0 ? (
+          <p className="text-xs text-text-muted py-4 text-center">No guidance steps yet. Click Generate to create them with AI.</p>
+        ) : (
+          <div className="space-y-3">
+            {guidanceSteps.map((gs: any, i: number) => (
+              <div key={i} className="bg-bg-overlay border border-black/[0.04] rounded-xl p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-purple-400">Step {gs.stepNumber}</span>
+                  <button
+                    onClick={() => {
+                      const next = guidanceSteps.filter((_: any, j: number) => j !== i).map((s: any, j: number) => ({ ...s, stepNumber: j + 1 }))
+                      setGuidanceSteps(next)
+                    }}
+                    className="text-text-muted hover:text-red-400"
+                  ><Trash2 size={10} /></button>
+                </div>
+                <textarea
+                  className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-xs text-text-primary resize-none min-h-[48px]"
+                  value={gs.instruction}
+                  onChange={(e) => {
+                    const next = [...guidanceSteps]
+                    next[i] = { ...next[i], instruction: e.target.value }
+                    setGuidanceSteps(next)
+                  }}
+                />
+                <input
+                  className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-xs text-text-primary"
+                  value={gs.tip ?? ''}
+                  onChange={(e) => {
+                    const next = [...guidanceSteps]
+                    next[i] = { ...next[i], tip: e.target.value || null }
+                    setGuidanceSteps(next)
+                  }}
+                  placeholder="Tip (optional)"
+                />
+              </div>
+            ))}
+            <button
+              onClick={async () => {
+                const res = await fetch(`/api/admin/arcade/challenges/${challengeId}/guidance`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ steps: guidanceSteps }),
+                })
+                if (res.ok) alert('Guidance saved!')
+              }}
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-accent-400 text-bg-base rounded-lg hover:bg-accent-300 transition-colors"
+            >
+              <CheckCircle size={12} /> Save Guidance Steps
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

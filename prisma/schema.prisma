@@ -347,6 +347,7 @@ model ArcadeChallenge {
   difficulty        String
   xpReward          Int             @default(20)
   orderIndex        Int
+  guidanceSteps     Json?           // [{stepNumber, instruction, tip?, imageUrl?, voiceUrl?}]
   attempts          ArcadeAttempt[]
   comments          Comment[]
 

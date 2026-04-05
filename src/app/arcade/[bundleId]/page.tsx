@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles, BookOpen } from 'lucide-react'
+import { GuidanceStepViewer, type GuidanceStep } from '@/components/GuidanceStepViewer'
 import { useParams } from 'next/navigation'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
 import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
@@ -26,6 +27,7 @@ interface ChallengeData {
   isComplete: boolean
   isLocked: boolean
   bestScore: number | null
+  guidanceSteps: GuidanceStep[] | null
 }
 
 interface BundleDetail {
@@ -276,6 +278,17 @@ export default function BundlePage() {
               {activeChallenge.context && (
                 <div className="p-3 rounded-lg bg-bg-inset border border-black/6">
                   <p className="text-xs text-text-tertiary leading-relaxed italic">{activeChallenge.context}</p>
+                </div>
+              )}
+
+              {/* Guidance steps (if available) */}
+              {activeChallenge.guidanceSteps && activeChallenge.guidanceSteps.length > 0 && (
+                <div className="mt-4">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <BookOpen size={12} className="text-accent-400" />
+                    <span className="text-xs font-semibold text-text-secondary">How to do it</span>
+                  </div>
+                  <GuidanceStepViewer steps={activeChallenge.guidanceSteps} compact />
                 </div>
               )}
             </div>
