@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useCallback, useEffect } from 'react'
-import { Circle, Square, RotateCcw } from 'lucide-react'
+import { Circle, Square, RotateCcw, Camera, Loader2, Eye } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-helpers'
 import type { DetectAllFn } from '@/hooks/useMediaPipe'
@@ -175,10 +175,9 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       {/* Webcam */}
       <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black">
         {state === 'idle' && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg-inset">
-            <div className="w-10 h-10 border-2 border-accent-400/30 border-t-accent-400 rounded-full animate-spin" />
-            <p className="text-sm text-text-secondary text-center px-4">Loading camera & analysis models...</p>
-            <p className="text-[10px] text-text-muted">This may take a moment on first use</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg-inset">
+            <Camera size={32} className="text-text-tertiary/40" />
+            <p className="text-xs text-text-muted">Camera preview will appear here</p>
           </div>
         )}
 
@@ -250,22 +249,53 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       {/* Controls */}
       <div className="flex items-center gap-3">
         {state === 'idle' && (
-          <button
-            onClick={startCamera}
-            className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
-          >
-            <Circle size={14} strokeWidth={2} />
-            Start Recording
-          </button>
+          <div className="flex-1 flex flex-col gap-2">
+            <button
+              onClick={startCamera}
+              className="w-full bg-accent-400 text-text-inverse rounded-pill py-3 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
+            >
+              <Circle size={14} strokeWidth={2} />
+              Start Recording
+            </button>
+            {/* Coach Ney readiness indicator */}
+            <div className="flex items-center justify-center gap-1.5">
+              {detectAll ? (
+                <>
+                  <Eye size={12} className="text-emerald-400" />
+                  <span className="text-[10px] text-emerald-400 font-medium">Coach Ney watching ready</span>
+                </>
+              ) : (
+                <>
+                  <Loader2 size={12} className="text-text-muted animate-spin" />
+                  <span className="text-[10px] text-text-muted">Coach Ney loading analysis models...</span>
+                </>
+              )}
+            </div>
+          </div>
         )}
         {state === 'ready' && (
-          <button
-            onClick={beginCountdown}
-            className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
-          >
-            <span className="w-3 h-3 rounded-full bg-error" />
-            Start Recording
-          </button>
+          <div className="flex-1 flex flex-col gap-2">
+            <button
+              onClick={beginCountdown}
+              className="w-full bg-accent-400 text-text-inverse rounded-pill py-3 text-sm font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
+            >
+              <span className="w-3 h-3 rounded-full bg-error" />
+              Start Recording
+            </button>
+            <div className="flex items-center justify-center gap-1.5">
+              {detectAll ? (
+                <>
+                  <Eye size={12} className="text-emerald-400" />
+                  <span className="text-[10px] text-emerald-400 font-medium">Coach Ney watching ready</span>
+                </>
+              ) : (
+                <>
+                  <Loader2 size={12} className="text-amber-400 animate-spin" />
+                  <span className="text-[10px] text-amber-400">Coach Ney still loading — recording will work but without AI analysis</span>
+                </>
+              )}
+            </div>
+          </div>
         )}
         {state === 'countdown' && (
           <div className="flex-1 flex items-center justify-center gap-2 py-3 text-text-secondary text-sm">
