@@ -79,6 +79,13 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
     }
   }
 
+  function handlePreviousStep() {
+    if (currentStep <= 0) return
+    setCurrentStep((i) => i - 1)
+    setFeedback(null)
+    setPhase('recording')
+  }
+
   function handleRetry() {
     setFeedback(null)
     setVerdicts(prev => prev.slice(0, -1))
@@ -126,6 +133,14 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
         <Link href={`/library/${clipId}`} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
           ← Back
         </Link>
+        {currentStep > 0 && (
+          <button
+            onClick={handlePreviousStep}
+            className="text-xs text-text-secondary hover:text-accent-400 transition-colors"
+          >
+            ← Prev Step
+          </button>
+        )}
         <span className="text-sm font-semibold text-text-primary">Step {currentStep + 1} of {totalSteps}</span>
         <SkillBadge skill={skillCategory as SkillCategory} size="sm" />
         <button

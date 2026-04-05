@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Loader2, Pause, Play, X, Volume2, Camera, Square, LogOut } from 'lucide-react'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
+import { usePracticeAssistant } from '@/hooks/usePracticeAssistant'
 import { startAnalysisCollection } from '@/lib/analysis-helpers'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
@@ -47,20 +48,31 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
   const chunksRef = useRef<Blob[]>([])
   const collectorRef = useRef<ReturnType<typeof startAnalysisCollection> | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const [cameraReady, setCameraReady] = useState(false)
 
   const { isReady, detectAll } = useMediaPipe()
+  const { stopAllSounds, speakText, playAudio, playCountdown, announceResult } = usePracticeAssistant()
   const step = steps[currentStep]
 
   // ── Camera ──────────────────────────────────────────────────────
 
   const startCamera = useCallback(async () => {
     try {
+      setCameraReady(false)
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       streamRef.current = stream
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         videoRef.current.muted = true
-        await videoRef.current.play()
+        // Wait for video to actually be playing (avoids frozen first frames)
+        await new Promise<void>((resolve) => {
+          const v = videoRef.current!
+          v.onloadeddata = () => resolve()
+          v.play().catch(() => resolve())
+        })
+        // Extra delay to let camera warm up and MediaPipe init
+        await new Promise((r) => setTimeout(r, 500))
+        setCameraReady(true)
       }
     } catch {
       setError('Camera access denied. Please allow camera and microphone.')
@@ -70,31 +82,6 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop())
     streamRef.current = null
-  }, [])
-
-  // ── Voice playback ──────────────────────────────────────────────
-
-  const speakText = useCallback((text: string): Promise<void> => {
-    return new Promise((resolve) => {
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text)
-        utter.rate = 0.9
-        utter.onend = () => resolve()
-        utter.onerror = () => resolve()
-        window.speechSynthesis.speak(utter)
-      } else {
-        resolve()
-      }
-    })
-  }, [])
-
-  const playAudio = useCallback((url: string): Promise<void> => {
-    return new Promise((resolve) => {
-      const audio = new Audio(url)
-      audio.onended = () => resolve()
-      audio.onerror = () => resolve()
-      audio.play().catch(() => resolve())
-    })
   }, [])
 
   // ── Recording ───────────────────────────────────────────────────
@@ -147,7 +134,8 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
   useEffect(() => {
     if (phase === 'preparing') {
       startCamera().then(() => {
-        setTimeout(() => setPhase('reading'), 1500)
+        // Camera is now ready (setCameraReady(true) already called)
+        setPhase('reading')
       })
     }
 
@@ -209,7 +197,7 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
     if (phase === 'result' && feedback) {
       const announce = async () => {
         const score = feedback.score ?? (feedback.verdict === 'pass' ? 80 : 45)
-        await speakText(`Score: ${score}. ${feedback.headline}`)
+        await announceResult(score, feedback.headline)
         // Auto-advance after 3 seconds
         setTimeout(() => {
           if (currentStep < steps.length - 1) {
@@ -226,14 +214,14 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, currentStep])
 
-  // Cleanup on unmount
+  // Cleanup on unmount — stop EVERYTHING
   useEffect(() => {
     return () => {
+      stopAllSounds()
       stopCamera()
       if (timerRef.current) clearInterval(timerRef.current)
-      window.speechSynthesis?.cancel()
     }
-  }, [stopCamera])
+  }, [stopCamera, stopAllSounds])
 
   function handlePause() {
     if (phase === 'recording') {
@@ -260,12 +248,23 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
       .catch(() => { setError('Analysis failed'); setPhase('result') })
   }
 
+  function handlePreviousStep() {
+    if (currentStep <= 0) return
+    stopAllSounds()
+    if (timerRef.current) clearInterval(timerRef.current)
+    try { recorderRef.current?.stop() } catch { /* ignore */ }
+    collectorRef.current?.stop()
+    setFeedback(null)
+    setCurrentStep((prev) => prev - 1)
+    setPhase('reading')
+  }
+
   function handleExit() {
+    stopAllSounds()
     if (timerRef.current) clearInterval(timerRef.current)
     try { recorderRef.current?.stop() } catch { /* ignore */ }
     collectorRef.current?.stop()
     stopCamera()
-    window.speechSynthesis?.cancel()
     onComplete?.()
   }
 
@@ -286,12 +285,22 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
 
         {/* Top controls — always visible over camera */}
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/70 to-transparent pointer-events-auto">
-          <button
-            onClick={handleExit}
-            className="flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
-          >
-            <LogOut size={16} /> Exit
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExit}
+              className="flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
+            >
+              <LogOut size={16} /> Exit
+            </button>
+            {currentStep > 0 && phase !== 'recording' && (
+              <button
+                onClick={handlePreviousStep}
+                className="flex items-center gap-1 text-white/60 hover:text-white text-xs px-2 py-1.5 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                ← Prev Step
+              </button>
+            )}
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="text-white/60 text-xs">Step {currentStep + 1}/{steps.length}</span>
@@ -325,8 +334,9 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           {phase === 'preparing' && (
             <div className="bg-black/60 backdrop-blur-sm rounded-2xl px-8 py-6 text-center">
-              <Camera size={32} className="text-white mx-auto mb-2" />
-              <p className="text-white text-sm font-medium">Setting up camera...</p>
+              <Loader2 size={32} className="text-accent-400 mx-auto mb-3 animate-spin" />
+              <p className="text-white text-sm font-medium mb-1">Loading camera & analysis models...</p>
+              <p className="text-white/50 text-xs">This may take a few seconds on first use</p>
             </div>
           )}
 

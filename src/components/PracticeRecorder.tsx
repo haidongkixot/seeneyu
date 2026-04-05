@@ -67,6 +67,14 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         videoRef.current.muted = true
+        // Wait for video to actually be playing (avoids frozen first frames)
+        await new Promise<void>((resolve) => {
+          const v = videoRef.current!
+          v.onloadeddata = () => resolve()
+          v.play().catch(() => resolve())
+        })
+        // Brief warmup delay for camera + MediaPipe
+        await new Promise((r) => setTimeout(r, 300))
       }
       setState('ready')
     } catch {
@@ -168,10 +176,9 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black">
         {state === 'idle' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg-inset">
-            <div className="w-12 h-12 rounded-full bg-bg-elevated flex items-center justify-center text-text-tertiary">
-              <Circle size={24} strokeWidth={1.5} />
-            </div>
-            <p className="text-sm text-text-tertiary text-center px-4">Camera will start when you're ready</p>
+            <div className="w-10 h-10 border-2 border-accent-400/30 border-t-accent-400 rounded-full animate-spin" />
+            <p className="text-sm text-text-secondary text-center px-4">Loading camera & analysis models...</p>
+            <p className="text-[10px] text-text-muted">This may take a moment on first use</p>
           </div>
         )}
 
