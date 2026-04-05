@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-triggers'
 
 interface ActivateParams {
   userId: string
@@ -76,6 +77,16 @@ export async function activateSubscription(params: ActivateParams) {
     data: { plan: planSlug },
   })
 
+  // Fire email: payment receipt
+  const endDateStr = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  fireEmailTrigger('payment_receipt', userId, {
+    plan: planSlug.charAt(0).toUpperCase() + planSlug.slice(1),
+    amount: amount.toFixed(2),
+    currency: currency.toUpperCase(),
+    nextBillingDate: endDateStr,
+    invoiceUrl: invoiceUrl || '',
+  }).catch(() => {})
+
   return subscription
 }
 
@@ -104,6 +115,15 @@ export async function cancelSubscription(subscriptionId: string, userId: string)
     where: { id: userId },
     data: { plan: 'basic' },
   })
+
+  // Fire email: cancellation confirmation
+  const accessUntil = sub.endDate
+    ? new Date(sub.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    : 'end of current period'
+  fireEmailTrigger('cancellation_confirm', userId, {
+    accessUntil,
+    reactivateUrl: 'https://seeneyu.vercel.app/pricing',
+  }).catch(() => {})
 
   return sub
 }

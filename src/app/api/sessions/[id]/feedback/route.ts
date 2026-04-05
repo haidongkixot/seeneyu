@@ -10,6 +10,7 @@ import { shouldStoreRecording } from '@/services/consent-manager'
 import { analyzeVoice } from '@/services/voice-analyzer'
 import { computeHolisticScore } from '@/services/holistic-scorer'
 import { getVoiceAccess, getHolisticBreakdownAccess, getTemporalAccess } from '@/lib/access-control'
+import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-triggers'
 import type { VoiceMetrics } from '@/services/voice-analyzer'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
@@ -195,6 +196,16 @@ export async function POST(
           completedAt: new Date(),
         },
       })
+
+      // Fire feedback_ready email (non-blocking)
+      if (session.userId) {
+        const baseUrl = process.env.NEXTAUTH_URL || 'https://seeneyu.vercel.app'
+        fireEmailTrigger('feedback_ready', session.userId, {
+          clipTitle: session.clip.movieTitle,
+          score: feedback.overallScore,
+          feedbackUrl: `${baseUrl}/feedback/${id}`,
+        }).catch(() => {})
+      }
 
       // If user opted out of data storage, delete recording blobs (keep scores/feedback)
       if (session.userId) {

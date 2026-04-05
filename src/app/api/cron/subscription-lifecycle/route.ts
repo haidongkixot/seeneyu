@@ -10,6 +10,7 @@
 
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-triggers'
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET
@@ -34,8 +35,13 @@ export async function GET(req: Request) {
     })
 
     for (const sub of expiringTrials) {
-      // TODO: fire email trigger 'trial_expiring' when M72 is implemented
-      console.log(`[lifecycle] trial expiring for user ${sub.userId} at ${sub.trialEndsAt}`)
+      const daysLeft = Math.ceil(((sub.trialEndsAt?.getTime() ?? 0) - now.getTime()) / (24 * 60 * 60 * 1000))
+      fireEmailTrigger('trial_expiring', sub.userId, {
+        plan: 'Standard',
+        daysLeft,
+        upgradeUrl: 'https://seeneyu.vercel.app/checkout?plan=standard&period=monthly',
+      }).catch(() => {})
+      console.log(`[lifecycle] trial expiring for user ${sub.userId} — ${daysLeft} days left`)
       trialWarnings++
     }
 
@@ -56,6 +62,9 @@ export async function GET(req: Request) {
         where: { id: sub.userId },
         data: { plan: 'basic' },
       })
+      fireEmailTrigger('trial_expired', sub.userId, {
+        upgradeUrl: 'https://seeneyu.vercel.app/checkout?plan=standard&period=monthly',
+      }).catch(() => {})
       console.log(`[lifecycle] trial expired — downgraded user ${sub.userId} to basic`)
       trialExpired++
     }
