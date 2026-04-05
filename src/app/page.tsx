@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getSection } from '@/lib/page-sections'
 import { SkillBadge } from '@/components/SkillBadge'
 import { PracticeShowcase } from '@/components/cms/PracticeShowcase'
 import { HeroVideo } from '@/components/cms/HeroVideo'
@@ -62,7 +63,27 @@ const TEAM = [
 ]
 
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Load CMS-editable sections (falls back to hardcoded defaults)
+  const hero = await getSection('home', 'hero', {
+    title: 'Learn to command',
+    titleAccent: 'any room.',
+    subtitle: "From Hollywood's greatest performances — one scene at a time.",
+    cta1Text: "Start Learning — It's Free",
+    cta1Url: '/library',
+    cta2Text: 'Browse the Library',
+    cta2Url: '/library',
+  })
+  const mission = await getSection('home', 'mission', {
+    title: 'Transforming how the world communicates',
+    description: 'seeneyu uses AI and cinematic storytelling to help you master the non-verbal language of confident people.',
+  })
+  const ctaBanner = await getSection('home', 'cta', {
+    title: 'Ready to transform how you communicate?',
+    subtitle: '65+ curated scenes. 5 essential skills. Unlimited practice.',
+    ctaText: 'Start Free Today',
+    ctaUrl: '/library',
+  })
   return (
     <div className="min-h-screen bg-bg-base">
       {/* ── Hero with animated gradient ────────────────────── */}
@@ -78,20 +99,20 @@ export default function HomePage() {
             <SkillBadge skill="eye-contact" size="sm" className="self-start mb-6" />
 
             <h1 className="text-5xl lg:text-6xl font-black text-text-primary leading-[1.08] tracking-tight">
-              Learn to command<br />
-              <span className="text-accent-400">any room.</span>
+              {hero.title}<br />
+              <span className="text-accent-400">{hero.titleAccent}</span>
             </h1>
 
             <p className="text-xl text-text-secondary mt-5 max-w-md leading-relaxed">
-              From Hollywood&apos;s greatest performances &mdash; one scene at a time.
+              {hero.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8">
               <Link
-                href="/library"
+                href={hero.cta1Url}
                 className="bg-accent-400 text-text-inverse rounded-pill px-8 py-4 text-lg font-semibold shadow-glow hover:bg-accent-500 hover:scale-[1.02] transition-all duration-150"
               >
-                Start Learning &mdash; It&apos;s Free
+                {hero.cta1Text}
               </Link>
               <Link
                 href="/library"
@@ -167,11 +188,10 @@ export default function HomePage() {
             Our Mission
           </p>
           <h2 className="text-4xl lg:text-5xl font-extrabold text-text-primary mb-6 leading-tight">
-            Transforming how the world communicates
+            {mission.title}
           </h2>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
-            seeneyu uses AI and cinematic storytelling to help you master
-            the non-verbal language of confident people.
+            {mission.description}
           </p>
         </div>
       </section>
@@ -245,10 +265,10 @@ export default function HomePage() {
       <section className="bg-bg-surface border-t border-black/8 py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-text-primary mb-4">
-            Ready to transform how you communicate?
+            {ctaBanner.title}
           </h2>
           <p className="text-text-secondary mb-8">
-            65+ curated scenes. 5 essential skills. Unlimited practice.
+            {ctaBanner.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

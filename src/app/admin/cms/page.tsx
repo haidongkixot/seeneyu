@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileText, BookOpen, Users2, Settings } from 'lucide-react'
+import { FileText, BookOpen, Users2, Settings, Layout } from 'lucide-react'
 
 const cards = [
   {
@@ -24,6 +24,13 @@ const cards = [
     description: 'Manage team members displayed on the site',
     Icon: Users2,
     color: 'text-cyan-400 bg-cyan-400/10',
+  },
+  {
+    href: '/admin/cms/sections',
+    label: 'Page Sections',
+    description: 'Edit homepage, pricing, and global content: titles, images, videos, testimonials',
+    Icon: Layout,
+    color: 'text-emerald-400 bg-emerald-400/10',
   },
   {
     href: '/admin/cms/settings',
