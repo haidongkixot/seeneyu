@@ -78,6 +78,12 @@ export default async function HomePage() {
     title: 'Transforming how the world communicates',
     description: 'seeneyu uses AI and cinematic storytelling to help you master the non-verbal language of confident people.',
   })
+  const heroVideo = await getSection('home', 'video', {
+    title: 'See it in action',
+    subtitle: 'Watch how seeneyu turns a 90-second movie clip into a personalized coaching session.',
+    videoUrl: null,
+    badge: 'Coming soon',
+  })
   const ctaBanner = await getSection('home', 'cta', {
     title: 'Ready to transform how you communicate?',
     subtitle: '65+ curated scenes. 5 essential skills. Unlimited practice.',
@@ -163,7 +169,7 @@ export default async function HomePage() {
       <PracticeShowcase />
 
       {/* ── M39: Hero Video (See it in action) ────────────── */}
-      <HeroVideo />
+      <HeroVideo title={heroVideo.title} subtitle={heroVideo.subtitle} videoUrl={heroVideo.videoUrl} badge={heroVideo.badge} />
 
       {/* ── M39: Before/After Compare ──────────────────────── */}
       <BeforeAfterCompare />

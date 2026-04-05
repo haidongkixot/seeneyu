@@ -55,6 +55,18 @@ const SECTION_DEFS: {
     repeatable: true,
   },
   {
+    key: 'section_home_video',
+    label: 'Demo Video',
+    page: 'Homepage',
+    description: '"See it in action" section — video URL, title, subtitle',
+    fields: [
+      { name: 'title', type: 'text', label: 'Title' },
+      { name: 'subtitle', type: 'textarea', label: 'Subtitle' },
+      { name: 'videoUrl', type: 'url', label: 'Video URL (YouTube or direct MP4)' },
+      { name: 'badge', type: 'text', label: 'Badge Text (shown on placeholder)' },
+    ],
+  },
+  {
     key: 'section_home_testimonials',
     label: 'Testimonials',
     page: 'Homepage',
