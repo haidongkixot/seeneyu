@@ -24,14 +24,14 @@ async function requireAdmin() {
 /** POST — auto-generate guidance steps from challenge data */
 export async function POST(
   _req: NextRequest,
-  { params }: { params: Promise<{ challengeId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireAdmin()
-    const { challengeId } = await params
+    const { id } = await params
 
     const challenge = await (prisma as any).arcadeChallenge.findUnique({
-      where: { id: challengeId },
+      where: { id: id },
       include: { bundle: { select: { title: true } } },
     })
     if (!challenge) return NextResponse.json({ error: 'Challenge not found' }, { status: 404 })
@@ -90,7 +90,7 @@ Return valid JSON only:
 
     // Save to DB
     await (prisma as any).arcadeChallenge.update({
-      where: { id: challengeId },
+      where: { id: id },
       data: { guidanceSteps: steps },
     })
 
@@ -104,15 +104,15 @@ Return valid JSON only:
 /** PUT — update guidance steps */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ challengeId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireAdmin()
-    const { challengeId } = await params
+    const { id } = await params
     const { steps } = await req.json()
 
     await (prisma as any).arcadeChallenge.update({
-      where: { id: challengeId },
+      where: { id: id },
       data: { guidanceSteps: steps },
     })
 
@@ -126,14 +126,14 @@ export async function PUT(
 /** DELETE — remove guidance steps */
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: Promise<{ challengeId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireAdmin()
-    const { challengeId } = await params
+    const { id } = await params
 
     await (prisma as any).arcadeChallenge.update({
-      where: { id: challengeId },
+      where: { id: id },
       data: { guidanceSteps: null },
     })
 
