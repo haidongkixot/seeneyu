@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, Move, Ear, Mic, ShieldCheck, Sparkles, Briefcase, Users, Heart, Crown } from 'lucide-react'
+import { Eye, Move, Ear, Mic, ShieldCheck, Sparkles, Briefcase, Users, Heart, Crown, ChevronLeft } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { SkillCategory, SkillLevel } from '@/lib/types'
+import { GENRES, PURPOSES, TRAITS, GENDERS } from '@/lib/preference-constants'
 
-type Phase = 'goal' | 'assessing' | 'processing' | 'recommendation' | 'complete'
+type Phase = 'goal' | 'preferences' | 'assessing' | 'processing' | 'recommendation' | 'complete'
 
 interface GoalOption {
   id: string
@@ -208,6 +209,13 @@ export function OnboardingFlow() {
   const [error, setError] = useState('')
   const [recommendation, setRecommendation] = useState<ReturnType<typeof scoreToPlan> | null>(null)
 
+  // Preference capture state
+  const [prefStep, setPrefStep] = useState(0) // 0: genres, 1: purpose+traits, 2: gender
+  const [genres, setGenres] = useState<string[]>([])
+  const [purposes, setPurposes] = useState<string[]>([])
+  const [traits, setTraits] = useState<string[]>([])
+  const [gender, setGender] = useState<string | null>(null)
+
   const currentQ = QUESTIONS[step]
   const selectedLevel = ratings[step]
   // step 0 = goal (not counted in skill progress)
@@ -231,6 +239,10 @@ export function OnboardingFlow() {
             level: ratings[i] ?? 'beginner',
           })),
           goal: selectedGoal,
+          genres,
+          purposes,
+          traits,
+          gender,
         }),
       })
       if (!res.ok) throw new Error('Failed to save')
@@ -291,12 +303,203 @@ export function OnboardingFlow() {
               ))}
             </div>
             <button
-              onClick={() => { if (selectedGoal) setPhase('assessing') }}
+              onClick={() => { if (selectedGoal) setPhase('preferences') }}
               disabled={!selectedGoal}
               className="w-full bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Continue →
             </button>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // ── Preferences phase ───────────────────────────────────────────────────
+  if (phase === 'preferences') {
+    const totalPrefSteps = 3
+    const prefProgressPct = ((prefStep + 1) / (totalPrefSteps + 1)) * 50 // 0-50% of bar, rest for skill assessment
+
+    const toggleGenre = (v: string) =>
+      setGenres((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]))
+    const togglePurpose = (v: string) =>
+      setPurposes((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]))
+    const toggleTrait = (v: string) =>
+      setTraits((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]))
+
+    const handlePrefContinue = () => {
+      if (prefStep < totalPrefSteps - 1) {
+        setPrefStep((s) => s + 1)
+      } else {
+        setPhase('assessing')
+      }
+    }
+
+    const handlePrefBack = () => {
+      if (prefStep > 0) {
+        setPrefStep((s) => s - 1)
+      } else {
+        setPhase('goal')
+      }
+    }
+
+    const canContinue =
+      prefStep === 0
+        ? genres.length > 0
+        : prefStep === 1
+          ? purposes.length > 0 || traits.length > 0
+          : true // gender is optional
+
+    return (
+      <>
+        <div className="px-6 py-4 flex items-center justify-between border-b border-black/8">
+          <button onClick={handlePrefBack} className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition-colors">
+            <ChevronLeft size={16} />
+            <span className="text-sm">Back</span>
+          </button>
+          <span className="text-sm text-text-secondary">
+            {prefStep === 0 ? 'Genres' : prefStep === 1 ? 'Purpose & Traits' : 'About You'}
+          </span>
+        </div>
+        <div className="h-1 bg-black/5 w-full">
+          <div className="h-1 bg-accent-400 transition-all duration-500" style={{ width: `${prefProgressPct}%` }} />
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-md">
+            {/* Step 0: Genres */}
+            {prefStep === 0 && (
+              <>
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-bold text-text-primary mb-2">Pick your content genres</h2>
+                  <p className="text-sm text-text-secondary">Choose the styles you enjoy watching and learning from.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {GENRES.map(({ value, label, description, icon }) => {
+                    const selected = genres.includes(value)
+                    return (
+                      <button
+                        key={value}
+                        onClick={() => toggleGenre(value)}
+                        className={cn(
+                          'flex items-start gap-3 p-4 rounded-2xl border text-left transition-all',
+                          selected
+                            ? 'border-accent-400/60 bg-accent-400/10'
+                            : 'border-black/10 hover:border-black/20 hover:bg-bg-surface'
+                        )}
+                      >
+                        <span className="text-xl flex-shrink-0 mt-0.5">{icon}</span>
+                        <div className="min-w-0">
+                          <p className={`text-sm font-semibold ${selected ? 'text-accent-400' : 'text-text-primary'}`}>
+                            {label}
+                          </p>
+                          {description && (
+                            <p className="text-xs text-text-tertiary mt-0.5 leading-tight">{description}</p>
+                          )}
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+
+            {/* Step 1: Purpose + Traits */}
+            {prefStep === 1 && (
+              <>
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-bold text-text-primary mb-2">Why are you here?</h2>
+                  <p className="text-sm text-text-secondary">Select your purposes and the traits you want to develop.</p>
+                </div>
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-text-primary mb-3">Purpose</h3>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {PURPOSES.map(({ value, label, icon }) => {
+                      const selected = purposes.includes(value)
+                      return (
+                        <button
+                          key={value}
+                          onClick={() => togglePurpose(value)}
+                          className={cn(
+                            'inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-all',
+                            selected
+                              ? 'border-accent-400/60 bg-accent-400/10 text-accent-400'
+                              : 'border-black/8 text-text-secondary hover:border-black/15 hover:bg-bg-surface'
+                          )}
+                        >
+                          {icon && <span>{icon}</span>}
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <h3 className="text-sm font-semibold text-text-primary mb-3">Traits to develop</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {TRAITS.map(({ value, label }) => {
+                      const selected = traits.includes(value)
+                      return (
+                        <button
+                          key={value}
+                          onClick={() => toggleTrait(value)}
+                          className={cn(
+                            'px-4 py-2 rounded-full text-sm font-medium border transition-all',
+                            selected
+                              ? 'border-accent-400/60 bg-accent-400/10 text-accent-400'
+                              : 'border-black/8 text-text-secondary hover:border-black/15 hover:bg-bg-surface'
+                          )}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Step 2: Gender */}
+            {prefStep === 2 && (
+              <>
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-bold text-text-primary mb-2">One more thing</h2>
+                  <p className="text-sm text-text-secondary">This helps us tailor clip recommendations. Totally optional.</p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-3 mb-6">
+                  {GENDERS.map(({ value, label }) => {
+                    const selected = gender === value
+                    return (
+                      <button
+                        key={value}
+                        onClick={() => setGender(selected ? null : value)}
+                        className={cn(
+                          'px-5 py-2.5 rounded-full text-sm font-medium border transition-all',
+                          selected
+                            ? 'border-accent-400/60 bg-accent-400/10 text-accent-400'
+                            : 'border-black/8 text-text-secondary hover:border-black/15 hover:bg-bg-surface'
+                        )}
+                      >
+                        {label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+
+            <button
+              onClick={handlePrefContinue}
+              disabled={!canContinue && prefStep !== 2}
+              className="w-full bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {prefStep < 2 ? 'Continue \u2192' : 'Start Skill Assessment \u2192'}
+            </button>
+            {prefStep === 2 && (
+              <button
+                onClick={() => setPhase('assessing')}
+                className="w-full mt-3 text-sm text-text-secondary hover:text-text-primary transition-colors text-center"
+              >
+                Skip
+              </button>
+            )}
           </div>
         </div>
       </>
