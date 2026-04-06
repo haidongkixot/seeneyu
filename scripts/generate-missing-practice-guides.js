@@ -127,6 +127,7 @@ async function saveSteps(clipId, steps) {
           instruction:       step.instruction,
           tip:               step.tip,
           targetDurationSec: step.targetDurationSec,
+          imagePrompt:       step.imagePrompt,
           demoImageUrl:      step.demoImageUrl,
           voiceUrl:          step.voiceUrl,
         },
