@@ -3,10 +3,120 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-04T09:33:37.747Z",
-    "open_count": 60
+    "last_updated": "2026-04-06T16:57:29.406Z",
+    "open_count": 79
   },
   "signals": [
+    {
+      "id": "sig_pm_backend-engineer_1775494638114",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "sprint3-feedback-route-overhaul",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Sprint 3 — Feedback Route + Holistic Scorer (Day 3-5). Three changes to src/app/api/sessions/[id]/feedback/route.ts in ONE pass: (1) I2 — After MediaPipe scoring (~line 119), compute snapshotScores: map analysisSnapshots to [{sec, score}] using new scoreSnapshot() from holistic-scorer.ts. Find peak 3-sec window via findPeakWindow(). Persist snapshotScores + recordingDurationSec to UserSession. Client must send recordingDurationSec in POST body. (2) I3 — After saving feedback, compute nextReviewAt based on score: <50→1d, 50-70→3d, 71-85→7d, 86+→21d. Update UserSession with nextReviewAt + increment reviewCount. (3) I2 prep — Refactor src/services/holistic-scorer.ts: extract per-frame scoring into exported scoreSnapshot(snapshot, skill) function + add findPeakWindow(snapshotScores, windowSec) function. This is a refactor of existing iteration logic, not new scoring. Also: Sprint 4A — Build spaced review engine: modify skill-gap-analyzer.ts (add UserSession queries, return clipsReadyForReview), morning cron route (query reviews due, create notifications with dedup), xp-engine.ts (add review_session:25), quest-generator.ts (add complete_3_reviews), email-triggers.ts (add review_reminder trigger). Reference: roles/pm/library/effort-estimation-code-grounded.md for exact file paths and line numbers.",
+      "timestamp": "2026-04-06T16:57:18.114Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1775494618914",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "ai-auto-tag-clips",
+      "priority": "high",
+      "message": "DATA ENGINEER: Sprint 2 — AI Auto-Tagging Pipeline. Build scripts/auto-tag-clips.js: a standalone Node script that sends clip metadata (movieTitle, year, characterName, actorName, sceneDescription, annotation, script) to GPT-4o-mini and classifies each clip into genre(s), purpose(s), and character trait(s). Schema (already migrated by Sprint 1): ClipTag model with clipId, category ('genre'|'purpose'|'trait'), value (slug), source ('ai-auto'), confidence (Float). Valid values defined in src/lib/preference-constants.ts. Tags with confidence >= 0.8 get source='ai-confirmed', lower stay 'ai-auto' for admin review. Process all 77 clips (active + inactive). Use .env.local for OPENAI_API_KEY. Pattern: follow scripts/generate-missing-practice-guides.js for Prisma + OpenAI direct usage. Output: ClipTag records in DB. Expected: ~770 tags total (77 clips × ~10 tags each). Also build src/app/api/admin/clips/[id]/tags/route.ts — GET/PUT/DELETE for admin tag CRUD.",
+      "timestamp": "2026-04-06T16:56:58.914Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1775494605562",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "unified-test-plan",
+      "priority": "high",
+      "message": "TESTER: Test plan needed for unified learning system upgrade (I1+I2+I3+LC). 12 verification scenarios: (1) Schema: prisma db push creates 6 new fields + 2 tables + 1 index. (2) Auto-tag: script tags 77 clips with genre/purpose/trait, confidence scores present. (3) New user onboarding: goal → preferences (3 sub-screens) → skill assessment → recommendation → dashboard. (4) DeltaCard: appears on feedback page after 2nd attempt on same clip, shows per-dimension deltas. (5) BestMomentCard: shows peak 3-sec window from snapshotScores, seekTo works on video + YouTube. (6) Progress page: sparklines render, userId filter works (was bug — fetched ALL users). (7) Dashboard: 'Ready to Review' shows clips where nextReviewAt <= now. (8) Dashboard: preference prompt for users without UserPreferences. (9) Library: 'For You' tab filters by preferences, 'All' shows everything. (10) Daily plan: includes review activities + preference-matched content. (11) Backward compat: existing user with no preferences sees all content unchanged. (12) Edge cases: null snapshotScores hides BestMomentCard, <3sec recording skips peak, 0 preference matches shows fallback message. Priority: HIGH — this spans 30 files across 7 sprints.",
+      "timestamp": "2026-04-06T16:56:45.562Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1775494595832",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "unified-ui-specs",
+      "priority": "high",
+      "message": "DESIGNER: UI specs needed for unified learning system upgrade (4 workstreams shipping together). Deliver specs for: (1) DeltaCard component — shows dimension score changes between sessions on feedback page (e.g. 'Eye Contact 6.2 → 7.4 (+1.2) ↑'). Position: above score ring. (2) BestMomentCard component — shows peak performance window (e.g. 'Your Best Moment: 0:04–0:07 · Score: 89') with Play button. Position: below score ring. (3) Ready to Review section on dashboard — clip cards with last score + days since practiced, 'Review Now' CTA. Position: between LearningPlanCard and skill tracks. (4) Preferences Settings page at /settings/preferences — 4 sections: Genres (card grid multi-select), Purpose (pill multi-select), Traits (pill multi-select), Gender (single select). Follow /settings/notifications pattern. (5) Onboarding preferences phase — 3 sub-screens between goal selection and skill assessment. (6) Library 'For You' / 'All' toggle with preference badge count. (7) Learning Curve summary card on dashboard — compact chips showing active preferences. (8) 'Recommended for you' badge for arcade bundles. Reference files: src/app/feedback/[sessionId]/page.tsx, src/app/dashboard/page.tsx, src/app/settings/notifications/page.tsx, src/app/onboarding/OnboardingFlow.tsx, src/app/library/LibraryFilters.tsx.",
+      "timestamp": "2026-04-06T16:56:35.832Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1775494584572",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "sprint1-unified-schema-migration",
+      "priority": "high",
+      "message": "BUILDER: Sprint 1 — Unified Schema Migration (Day 1). Apply ALL schema changes in ONE prisma db push. Changes: (1) UserSession: add snapshotScores Json?, recordingDurationSec Int?, nextReviewAt DateTime?, reviewCount Int @default(0), @@index([nextReviewAt]). (2) NEW model ClipTag: id, clipId, clip relation, category String, value String, source String @default('manual'), confidence Float?, createdAt, @@unique([clipId,category,value]), @@index([category,value]). (3) NEW model UserPreferences: id, userId @unique, user relation, goal String?, genres Json @default('[]'), purposes Json @default('[]'), traits Json @default('[]'), gender String?, updatedAt @updatedAt, createdAt. (4) Add relations: Clip gets tags ClipTag[], User gets preferences UserPreferences?. After push: verify all tables created, regenerate Prisma client, commit schema. This MUST be done first — all 4 workstreams (I1 session delta, I2 feedforward, I3 spaced review, LC personalized learning curve) depend on this single migration.",
+      "timestamp": "2026-04-06T16:56:24.572Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_scientist_marketer_1775463781635",
+      "from": "scientist",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "coach-noeys-lab-sprint1-complete",
+      "priority": "high",
+      "message": "SCIENTIST: Coach Noey's Lab Sprint 1 complete. 4 research threads built, 23 peer-reviewed sources collected and graded. Key outputs for your use: (1) Evidence Brief at roles/scientist/lab/evidence-brief/index.html — synthesized argument + competitor comparison table + recommended investor claims. (2) Master Lab dashboard at roles/scientist/lab/index.html. STRONGEST SINGLE CITATION for investor use: Bellini & Akullian (2007) meta-analysis — 'video self-modeling is effective and efficient for social-communication skills with generalization to real-world settings' (Grade A, directly in seeneyu's target domain). STRONGEST DIFFERENTIATOR CLAIM: 'seeneyu is the only product to complete the deliberate practice loop — every competitor satisfies at most 1 of the 4 required scientific conditions.' USE CONSERVATIVE EFFECT SIZE: 23-26% variance explained (meta-analytic), NOT the contested 48% original figure. Full HTML evidence pages are viewable by opening the .html files in a browser — all offline, no server needed.",
+      "timestamp": "2026-04-06T08:23:01.636Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1775453781154",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "deployment-status-2026-04-06",
+      "priority": "high",
+      "message": "BUILDER: Platform is live at seeneyu.vercel.app with M61–M73 deployed (last confirmed via npx vercel --prod --force). Key env vars to verify in Vercel: ELEVENLABS_API_KEY (needed for M67/M68 voice narration), STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET (M71 checkout), SENDGRID_API_KEY (M72 email marketing), NEXTAUTH_SECRET + NEXTAUTH_URL (existing). Schema migrations applied: tourCompleted (Boolean) added to User model — confirm db push was successful. Known open bugs from previous state: BUG-005 (pricing page uses admin endpoint — public users get 401), BUG-006 (Plan + ArcadeBundle tables empty in production — seed never ran). Onboarding tour data must be seeded via: cd seeneyu && node -e script or POST to /api/admin/cms/settings/onboarding_tour. Current git branch: master. Verify deployment is on latest commit (37c5b59 — onboarding tour nav fix).",
+      "timestamp": "2026-04-06T05:36:21.154Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1775453771301",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "document-m61-m73",
+      "priority": "high",
+      "message": "REPORTER: Activity log is out of date. Major gap since last session (2026-03-28). Please add entries for the following milestones — all code-complete and deployed: M61 (user data consent system, opt-out model, ConsentBanner component), M62+M63 (hand gesture tracking MediaPipe Hands + temporal pattern analysis across recording frames), M64 (server-side voice analysis — pitch variance, pace, pause detection, zero AI cost), M65 (holistic scoring — unified visual + temporal + voice feedback card), M66 (Knowledge Base / Wiki — /wiki route, CMS-managed pages, Researcher role, category support in admin), M67+M68 (practice step editor in admin, steps visible on clip detail + practice pages; ElevenLabs TTS voice narration; hands-free mode using voice commands), M69 (Clips → Practices rename throughout schema and UI), M70 (auto-generate practice guide from admin with GPT-4o + demo image capture), M71 (professional Stripe checkout — /checkout, /pricing redesigned, order summary, lifecycle cron, webhook handler), M72 (email marketing system — 17 SendGrid templates, welcome/drip/re-engagement/milestone/cancellation flows, admin template editor), M73 (plugin-style guided onboarding tour at src/plugins/onboarding-tour/ — state machine, intro slideshow, spotlight overlay, step navigation with router.push, XP award, admin CMS at /admin/cms/onboarding-tour). Also document: CMS page sections system (hero, demo, preview card all admin-editable). Marketing pitch deck added at roles/marketer/. Current date: 2026-04-06.",
+      "timestamp": "2026-04-06T05:36:11.301Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1775453760923",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "review-m62-m73",
+      "priority": "high",
+      "message": "TESTER PRIORITY — Large backlog of milestones ready for sign-off. In addition to existing M10-M25 backlog, the following are now code-complete and deployed: M61 (user data consent — opt-out model), M62+M63 (hand gesture tracking + temporal pattern analysis on webcam recordings), M64 (server-side voice pitch/pace/pause analysis), M65 (holistic scoring combining visual+temporal+voice into unified feedback), M66 (Knowledge Base at /wiki — CMS-managed pages, Researcher role can publish), M67+M68 (practice steps shown on clip detail + practice page; ElevenLabs voice narration; hands-free mode), M69 (Clips renamed to Practices throughout app), M70 (admin can auto-generate practice guide with AI + capture demo images), M71 (Stripe checkout flow at /checkout — pricing page, order summary, webhook), M72 (email marketing — welcome, drip, re-engagement, 17 templates, SendGrid), M73 (onboarding tour — guided tour auto-starts for new users, 3 intro slides + 7 steps ending at first practice + AI feedback, admin-configurable at /admin/cms/onboarding-tour). CRITICAL: No milestone can be marked complete without Tester sign-off. The current backlog is now M10–M25 + M61–M73 = 29 milestones awaiting review.",
+      "timestamp": "2026-04-06T05:36:00.923Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_pm_1775453750739",
+      "from": "pm",
+      "to": "pm",
+      "type": "fyi",
+      "task": "platform-update-2026-04-06",
+      "priority": "high",
+      "message": "PLATFORM UPDATE — 2026-04-06. Major milestones completed since last state sync (2026-03-29): M62+M63 (hand gesture + temporal pattern analysis), M64 (server-side voice analysis, zero AI cost), M65 (holistic scoring — visual + temporal + voice unified), M61 (user data consent system), M66 (Knowledge Base / Wiki pages + Researcher role + CMS category support), M67+M68 (Practice step editor + ElevenLabs voice narration + hands-free mode), M69 (Rename Clips → Practices), M70 (AI auto-generate practice guide with demo images from admin), M71 (Professional Stripe checkout flow, order summary, lifecycle cron), M72 (Full lifecycle email marketing — 17 templates, SendGrid, triggers), M73 (Plugin-style guided onboarding tour — 3 intro slides + 7 deep steps → first practice submission, XP reward, admin-configurable). CMS ENHANCEMENTS: admin-editable page sections, HeroVideo + demo section wired to CMS, hero preview card fully CMS-editable. ACTION NEEDED: Update project-state.json to reflect M62-M73 as code-complete. State file shows last_updated 2026-03-29 — needs 10+ milestones added to milestones_code_complete_awaiting_tester.",
+      "timestamp": "2026-04-06T05:35:50.739Z",
+      "status": "unread"
+    },
     {
       "id": "sig_reporter_pm_1774714413646",
       "from": "reporter",
@@ -239,6 +349,105 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_marketer_1775494649405",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "learning-curve-feature-preview",
+      "priority": "normal",
+      "message": "MARKETER: Major feature incoming — Personalized Learning Curve. Users will select movie genres, practicing purpose (work/hobby/performing/education/social/leadership), character traits (confident/empathetic/aggressive/humorous), and gender during onboarding. The platform then tailors Library clips, Arcade challenges, Foundation courses, and Games to their preferences. Key marketing angles: (1) 'Your personal body language coach — learns what YOU need' (2) No two learning paths are the same (3) Combined with LVI metric: 'Users improve X points in Y sessions on their personalized path'. Also shipping: session-to-session score deltas (visible improvement proof), best-moment highlight reel (shareable!), and spaced review scheduling (science-backed retention). The best-moment highlight is especially viral — users can share 'seeneyu caught my best eye contact moment'. Timeline: ~4 weeks to full rollout. Prepare landing page copy and social content around personalization angle.",
+      "timestamp": "2026-04-06T16:57:29.405Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1775494626622",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "unified-plan-cascade",
+      "priority": "normal",
+      "message": "REPORTER: Major unified plan cascaded to all roles. 4 workstreams shipping together over 7 sprints (~18 days): I1 Session Delta (cross-session score comparison), I2 Feedforward Best-Moment Highlight (peak performance window), I3 Spaced Review Scheduling (nextReviewAt with expanding intervals), LC Personalized Learning Curve (user preferences → tailored content). Full plan at: .claude/plans/wiggly-singing-boot.md. Scientific basis at: roles/pm/library/scientific-assessment-learning-loop.md. Effort estimation at: roles/pm/library/effort-estimation-code-grounded.md. Key architecture decision: single schema migration (Sprint 1) covering all 4 workstreams to avoid conflicts. Shared files (feedback route, dashboard, activity planner) each touched in exactly one sprint. New core metric: Learning Velocity Index (LVI) — average score improvement per skill per user over first 5 sessions. Log this as a major planning milestone.",
+      "timestamp": "2026-04-06T16:57:06.622Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_scientist_pm_1775463781746",
+      "from": "scientist",
+      "to": "pm",
+      "type": "fyi",
+      "task": "scientist-role-created",
+      "priority": "normal",
+      "message": "SCIENTIST role created. Coach Noey's Lab Sprint 1 complete. Role directory: roles/scientist/. Sprint 1: 4 threads, 23 sources, 2 research lanes (social + clinical). All outputs are standalone HTML pages viewable offline. Evidence gaps identified for Sprint 2 (Threads 05-10): AI feedback efficacy, spaced repetition, microlearning, non-verbal communication & perceived competence, gamification & motivation, cross-cultural body language. Priority recommendation: instrument the platform to collect first-party outcome data (MediaPipe score trajectories over sessions) — this would be more compelling to investors than any academic citation. Update project-state.json to add 'scientist' to team roles.",
+      "timestamp": "2026-04-06T08:23:01.747Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1775453822764",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "backend-status-2026-04-06",
+      "priority": "normal",
+      "message": "BACKEND ENGINEER: Platform update 2026-04-06. Current code-complete milestones: M61-M73 (deployed, on master branch, latest commit 37c5b59). Open bugs still on your plate: BUG-005 — pricing page calls /api/admin/plans (requires admin auth), public users get 401 and plans never load. Fix: create /api/public/plans endpoint or remove requireAdmin() from GET handler. BUG-006 — Plan + ArcadeBundle tables empty in production (seed never ran). Coordinate with Builder to run seed-plans.ts. M73 onboarding tour is fully functional — nav fix applied today (advanceStep() now calls router.push on navigate steps). Next likely backend work per commercialization roadmap: M52 (cancellation flow), M53 (trial/coupon system), M54 (referral program). Signal PM when ready to begin next sprint.",
+      "timestamp": "2026-04-06T05:37:02.764Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_marketer_1775453813006",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "platform-capabilities-2026-04-06",
+      "priority": "normal",
+      "message": "MARKETER: Major new capabilities available as of 2026-04-06 that strengthen the product story: (1) ONBOARDING TOUR (M73) — new users are now guided step-by-step through their first practice submission. This is a key retention and activation feature. Use in marketing: 'Get your first AI feedback in under 5 minutes'. (2) STRIPE CHECKOUT (M71) — professional paid checkout flow live. Subscription tiers ready for commercial launch. (3) EMAIL MARKETING ENGINE (M72) — 17 lifecycle email templates (welcome, drip D1/D3/D7, re-engagement, plan upgrade prompts, cancellation flow, milestone celebrations). SendGrid integration. This enables automated nurture sequences. (4) PRACTICE GUIDES WITH VOICE (M67-M70) — AI-generated step-by-step practice instructions with ElevenLabs voice narration and demo images. Strong demo asset. (5) HOLISTIC AI SCORING (M65) — body language + voice analysis + temporal patterns all unified in one feedback card. Differentiator vs competitors. Marketing pitch deck is at roles/marketer/seeneyu-pitch-deck.md (end-user sales deck). Consider updating with M71/M72/M73 as proof of commercial readiness.",
+      "timestamp": "2026-04-06T05:36:53.006Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1775453802169",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": "data-needs-m66-m73",
+      "priority": "normal",
+      "message": "DATA ENGINEER: Platform update 2026-04-06. New content areas that may need data curation: (1) Knowledge Base / Wiki (M66) — admin can create wiki pages at /admin/cms/wiki. Consider curating foundational articles: 'What is body language?', 'Eye contact techniques', 'Posture fundamentals', etc. (2) Practice Guides (M67-M70) — each practice (formerly 'clip') now has admin-editable step-by-step guide with title, instructions, demo image, ElevenLabs voice. Auto-generate via AI is available at /admin/cms/practices/[id]/practice-guide. Existing 65+ clips may benefit from generated guides. (3) Onboarding Tour (M73) — default tour is seeded and targets Iron Man 2 clip (id: cmn0m0egt000cjohkftp27v6m) for first practice walkthrough. Confirm this clip exists and is beginner-appropriate in current DB. (4) Email content (M72) — 17 email templates are code-only; no additional data curation needed. Current DB: 65+ practices, 3 foundation courses (30 lessons), 30 arcade challenges, 50 communication tactics.",
+      "timestamp": "2026-04-06T05:36:42.169Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1775453791460",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "design-review-m61-m73",
+      "priority": "normal",
+      "message": "DESIGNER: Platform has grown significantly since last design session. New UI areas that may need design review or spec updates: (1) Onboarding Tour (M73) — fullscreen intro slideshow + SVG spotlight overlay + positioned tooltip card — uses amber-400 accent, white tooltip bg, dark overlay. Plugin at src/plugins/onboarding-tour/. (2) Practice Guide (M67-M70) — step cards on clip detail page, hands-free mode indicator, ElevenLabs voice toggle, demo image lightbox. (3) Stripe Checkout (M71) — /checkout page with order summary, plan comparison, card input. (4) Email templates (M72) — 17 SendGrid templates using seeneyu brand. (5) Knowledge Base / Wiki (M66) — /wiki index + /wiki/[slug] pages with prose rendering. (6) Admin CMS (multiple) — page sections editor, hero video configurator, onboarding tour editor, practice step editor. All current UI uses dark bg (#0d0d14), amber-400 accent. Please flag any components needing design-system alignment.",
+      "timestamp": "2026-04-06T05:36:31.460Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1775358972809",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "URGENT: Update blueprint and mark ALL successful achievements. Here is the complete list of milestones completed in this session and previous sessions:\n\nCOMPLETED MILESTONES (mark all as DONE):\n\n=== Previous Sessions ===\nM0-M8: Tester-approved (Foundation, Library, Arcade, Games, Gamification, etc.)\nM9-M37: Code-complete\nM38: Light mode UI transition\nM52-M54: Value Perception, Monetisation, Growth Mechanics\n\n=== Vercel Build & Infrastructure Fixes ===\n- Fixed Vercel build crash: 3 files had module-level OpenAI init (description-generator, content-enricher, arcade-scorer) → lazy getOpenAI()\n- Fixed video auto-poll: admin detail page auto-calls /api/cron/video-poll every 15s for async video providers\n- Fixed crawl job scoring: lazy OpenAI init, retry logic, reduced concurrency 5→3, maxDuration 60→300s\n- Deployed via npx vercel --prod after git-push deploys were silently failing\n\n=== AI Content Generation ===\n- Generalized AI generation: all 8 video providers accept duration, aspectRatio, resolution, style, motionStrength\n- Sora video generation: REST API (not SDK), submit-then-poll pattern\n- Nano Banana (Gemini Imagen) for image generation\n- Google Veo for video generation with predictLongRunning polling\n- Video-poll cron with debug logging\n\n=== M61: Data Consent System ===\n- LearnerProfile: dataConsentStorageAgreed, dataConsentUpdatedAt, dataConsentVersion\n- consent-manager.ts service\n- /settings/privacy page with toggle\n- /api/preferences/consent GET/PUT\n- /api/cron/consent-cleanup daily 4AM\n- Recording deletion after feedback for opted-out users\n\n=== M62: Hand Gesture Tracking ===\n- MediaPipe HandLandmarker (21 landmarks per hand)\n- hand-gestures skill category with scoring (handOpenness, fingerSpread, handHeight, gestureClassifier)\n- useMediaPipe hook extracts hand landmarks\n- Feedback templates for hand gestures\n\n=== M63: Temporal Pattern Analysis ===\n- temporal-analyzer.ts: transition detection, expression holds, recovery speed, rhythm scoring\n- Cosine distance between consecutive frames (threshold 0.3)\n- Arcade ±10% temporal bonus/penalty\n- TemporalAnalysis attached to full performance metrics\n\n=== M64: Server-Side Voice Analysis Engine ===\n- ZERO AI COST using Meyda + pitchy + node-web-audio-api\n- Pitch range/variation, speaking rate, pause patterns, volume dynamics\n- Per-skill voice weights (vocal-pacing 40%, confident-disagreement 35%)\n- Replaces Whisper fallback for vocal skills\n\n=== M65: Holistic Scoring Integration ===\n- holistic-scorer.ts: combines visual (face+pose+hands) + temporal + voice\n- FeedbackResult extended with holisticBreakdown\n- Per-skill weighted composite scores\n\n=== Plan-Based Tier Gating (M62-M65 features) ===\n- getHandGestureAccess, getTemporalAccess, getVoiceAccess, getHolisticBreakdownAccess\n- Voice analysis gated to standard+, holistic breakdown to advanced only\n- Feedback page: locked holistic breakdown section with upgrade prompt\n\n=== M66: Body Language Knowledge Base ===\n- BlogPost model + category field (blog/knowledge)\n- /knowledge page + /knowledge/[slug] with prev/next navigation\n- Researcher role created (roles/researcher/CLAUDE.md)\n- 3 chapters published (Science of Body Language, First Impressions, Eye Contact Mastery)\n- 12 more chapters planned\n\n=== M67: Multi-Step Practice Guide with Demo Images ===\n- PracticeStep extended: demoImageUrl, subSteps (Json), voiceUrl\n- PracticeStepEditor admin component: reorderable steps, sub-steps, image gen, voice gen\n- API: GET/PUT /api/admin/clips/[id]/steps (bulk upsert)\n- API: POST demo-image generation per step\n\n=== M68: Hands-Free Practice Mode ===\n- ElevenLabs TTS service (REST API, voice Rachel)\n- Admin voice generation: one-by-one with preview\n- HandsFreePracticeFlow: full-screen voice-guided practice\n- State machine: preparing → reading → countdown → recording → processing → result → next\n- Toggle via ?mode=handsfree\n- Browser SpeechSynthesis fallback\n\n=== M69: Rename Clips → Practices ===\n- 7 admin files updated (labels only, routes unchanged)\n\n=== M70: Auto-Generate Practice Guide ===\n- POST /api/admin/clips/[id]/steps/auto-generate (GPT generates 4-6 steps)\n- Preview/edit flow in PracticeStepEditor\n- Accept & Save with Images: bulk save + sequential image generation\n\n=== Arcade Guided Steps ===\n- ArcadeChallenge + guidanceSteps (Json)\n- GuidanceStepViewer reusable component\n- Admin: generate/edit/save guidance per challenge\n- API: POST/PUT/DELETE arcade guidance\n\n=== Practice UX Fixes ===\n- Previous Step button in both MicroPracticeFlow and HandsFreePracticeFlow\n- Camera loading: show placeholder, not spinner in camera zone\n- Coach Ney status indicator below Start Recording button\n- Sound cleanup on exit (stopAllSounds kills speech + audio)\n- usePracticeAssistant reusable hook\n\n=== Documentation ===\n- docs/mediapipe-architecture.pdf (15 pages, Reporter-generated)\n- docs/seeneyu-pitch-deck.md (12-slide marketing pitch deck)\n\n=== Practice Steps on Clip Detail Page ===\n- Practice Guide section with demo images before 'I'm Ready to Mimic'\n- Hands-Free Mode button on clip detail page\n- StepCard: demo image lightbox, voice player, sub-steps, prev/next navigation\n\nUpdate the blueprint, milestone tracker, activity logs. Signal ALL team members (PM, Designer, Tester, Data Engineer, Builder, Backend Engineer, Marketer) about these achievements.",
+      "timestamp": "2026-04-05T03:16:12.809Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_researcher_1775321156368",
+      "from": "pm",
+      "to": "researcher",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "START WORK: You are activated. Begin writing the 15-chapter Body Language Knowledge Base. Follow your CLAUDE.md mandate exactly.\n\nPriority order — start with these 5 chapters first:\n1. The Science of Body Language (foundations, Mehrabian's research)\n2. Eye Contact Mastery (types, triangles, cultural context)  \n3. Posture & Power (power poses, open/closed, spine alignment)\n4. Hand Gestures (illustrators, emblems, adaptors)\n5. Facial Micro-Expressions (Ekman's FACS, 7 universal expressions)\n\nFor each chapter:\n- Write 2000-3000 word HTML body with proper h2/h3 headings\n- Include at least 3 academic citations (Ekman, Mehrabian, Pease, Navarro)\n- Add 'Did You Know?' callout boxes for surprising facts\n- End with 3-5 'Try This Now' practical exercises\n- Generate 2-3 sketch-style illustrations per chapter using AI image generator\n- Upload illustrations via /api/admin/cms/upload\n- Save as BlogPost via POST /api/admin/cms/blog with category: 'knowledge', status: 'published'\n- Use slug format: body-language-ch01-science, body-language-ch02-eye-contact, etc.\n- Tags: ['knowledge', 'body-language', '<specific-topic>']\n\nAfter first 5 chapters are published, continue with chapters 6-10, then 11-15.\nSignal PM when each batch is complete.\n\nThe /knowledge page is live and will display chapters automatically once published.\nAdmin CMS credentials: use your admin session.\nCheckpoint after each chapter.",
+      "timestamp": "2026-04-04T16:45:56.369Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_reporter_1775295217746",
