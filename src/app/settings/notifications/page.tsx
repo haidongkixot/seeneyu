@@ -292,10 +292,25 @@ export default function NotificationPreferencesPage() {
           {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Preferences'}
         </button>
 
+        {/* Learning Preferences link */}
+        <Link
+          href="/settings/preferences"
+          className="flex items-center gap-3 mt-6 p-4 bg-bg-surface border border-black/8 rounded-2xl hover:border-black/15 transition-colors group"
+        >
+          <div className="w-8 h-8 rounded-lg bg-accent-400/10 flex items-center justify-center">
+            <Bell size={14} className="text-accent-400" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-text-primary">Learning Preferences</p>
+            <p className="text-xs text-text-tertiary">Customize genres, purpose, and traits for your learning curve</p>
+          </div>
+          <ArrowLeft size={14} className="text-text-muted rotate-180 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
+
         {/* Privacy & Data link */}
         <Link
           href="/settings/privacy"
-          className="flex items-center gap-3 mt-6 p-4 bg-bg-surface border border-black/8 rounded-2xl hover:border-black/15 transition-colors group"
+          className="flex items-center gap-3 mt-4 p-4 bg-bg-surface border border-black/8 rounded-2xl hover:border-black/15 transition-colors group"
         >
           <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
             <Bell size={14} className="text-blue-400" />

@@ -234,6 +234,18 @@ export default function LearningPreferencesPage() {
           {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Preferences'}
         </button>
 
+        {/* Other settings links */}
+        <Link
+          href="/settings/notifications"
+          className="flex items-center gap-3 p-4 bg-bg-surface border border-black/8 rounded-2xl hover:border-black/15 transition-colors group"
+        >
+          <div className="flex-1">
+            <p className="text-sm font-medium text-text-primary">Notification Preferences</p>
+            <p className="text-xs text-text-tertiary">Channels, frequency, and schedule</p>
+          </div>
+          <ArrowLeft size={14} className="text-text-muted rotate-180 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
+
         {/* Toast */}
         {saved && (
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-accent-400 text-text-inverse text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg animate-fade-in-up z-50">

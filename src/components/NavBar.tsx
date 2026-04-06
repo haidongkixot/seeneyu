@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard, UserCircle } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard, UserCircle, Settings, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { GamificationBar } from '@/components/gamification/GamificationBar'
 
@@ -90,7 +90,7 @@ export function NavBar() {
                   {initials}
                 </button>
               {avatarOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
+                <div className="absolute right-0 top-10 w-52 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
                   <div className="px-3 py-2 border-b border-black/8">
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
@@ -102,6 +102,22 @@ export function NavBar() {
                   >
                     <UserCircle size={14} />
                     My Profile
+                  </Link>
+                  <Link
+                    href="/progress"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <BarChart3 size={14} />
+                    My Progress
+                  </Link>
+                  <Link
+                    href="/settings/preferences"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <Settings size={14} />
+                    Learning Preferences
                   </Link>
                   <Link
                     href="/pricing"
@@ -163,7 +179,7 @@ export function NavBar() {
                 {initials}
               </button>
               {avatarOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
+                <div className="absolute right-0 top-10 w-52 bg-bg-elevated border border-black/8 rounded-xl shadow-xl py-1 z-[100]">
                   <div className="px-3 py-2 border-b border-black/8">
                     <p className="text-sm text-text-primary font-medium truncate">{session.user?.name ?? session.user?.email}</p>
                     <p className="text-xs text-text-muted capitalize">{userRole}</p>
@@ -175,6 +191,22 @@ export function NavBar() {
                   >
                     <UserCircle size={14} />
                     My Profile
+                  </Link>
+                  <Link
+                    href="/progress"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <BarChart3 size={14} />
+                    My Progress
+                  </Link>
+                  <Link
+                    href="/settings/preferences"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
+                  >
+                    <Settings size={14} />
+                    Learning Preferences
                   </Link>
                   <Link
                     href="/pricing"

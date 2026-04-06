@@ -369,7 +369,9 @@ export default function ProfilePage() {
           <h2 className="text-sm font-semibold text-text-primary mb-3">Quick Links</h2>
           <div className="space-y-1">
             {[
+              { href: '/settings/preferences', label: 'Learning Preferences' },
               { href: '/settings/notifications', label: 'Notification Preferences' },
+              { href: '/progress', label: 'My Progress' },
               { href: '/submissions', label: 'My Submissions' },
               { href: '/leaderboard', label: 'Leaderboard' },
               { href: '/pricing', label: 'Pricing & Plans' },
