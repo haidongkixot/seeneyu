@@ -20,6 +20,8 @@ const QUEST_TEMPLATES: QuestTemplate[] = [
   { questType: 'play_minigame', description: 'Play 3 mini-games', target: 3, xpReward: 60 },
   { questType: 'post_comment', description: 'Post a comment or reply', target: 1, xpReward: 30 },
   { questType: 'post_comment', description: 'Post 3 comments', target: 3, xpReward: 50 },
+  { questType: 'complete_reviews', description: 'Complete a scheduled review', target: 1, xpReward: 40 },
+  { questType: 'complete_reviews', description: 'Complete 3 scheduled reviews', target: 3, xpReward: 75 },
 ]
 
 function getTodayDate(): string {

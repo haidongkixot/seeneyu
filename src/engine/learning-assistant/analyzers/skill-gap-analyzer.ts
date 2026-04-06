@@ -118,10 +118,34 @@ export async function analyzeSkillGaps(userId: string): Promise<SkillGapSnapshot
     }
   }
 
+  // I3: Find clips ready for spaced review
+  const clipsReadyForReview = await prisma.userSession.findMany({
+    where: {
+      userId,
+      status: 'complete',
+      nextReviewAt: { lte: new Date() },
+    },
+    select: {
+      clipId: true,
+      scores: true,
+      nextReviewAt: true,
+      clip: { select: { movieTitle: true, skillCategory: true } },
+    },
+    orderBy: { nextReviewAt: 'asc' },
+    take: 5,
+  })
+
   return {
     weakSkills,
     strongSkills,
     neglectedSkills,
     daysSinceBySkill,
+    clipsReadyForReview: clipsReadyForReview.map(s => ({
+      clipId: s.clipId,
+      clipTitle: s.clip.movieTitle,
+      skillCategory: s.clip.skillCategory,
+      lastScore: (s.scores as any)?.overallScore ?? 0,
+      nextReviewAt: s.nextReviewAt,
+    })),
   }
 }

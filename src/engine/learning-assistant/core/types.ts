@@ -98,6 +98,14 @@ export interface SkillGapSnapshot {
   strongSkills: string[]
   neglectedSkills: string[]
   daysSinceBySkill: Record<string, number>
+  /** I3: Clips due for spaced review */
+  clipsReadyForReview?: {
+    clipId: string
+    clipTitle: string
+    skillCategory: string
+    lastScore: number
+    nextReviewAt: Date | null
+  }[]
 }
 
 // ── Planners ────────────────────────────────────────────────────────

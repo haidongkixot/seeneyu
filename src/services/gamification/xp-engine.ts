@@ -12,6 +12,7 @@ export const XP_AMOUNTS: Record<string, number> = {
   daily_quest: 50,
   daily_quest_all_bonus: 100,
   tour_complete: 150,
+  review_session: 25,
 }
 
 /**
