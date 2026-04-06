@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { BottomTabBarWrapper } from '@/components/BottomTabBarWrapper'
 import { NavBarWrapper } from '@/components/NavBarWrapper'
+import { OnboardingTour } from '@/plugins/onboarding-tour'
 import './globals.css'
 
 const sans = Plus_Jakarta_Sans({
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <div className="flex-1 pb-20 md:pb-0 page-fade-in">{children}</div>
             <Footer />
             <BottomTabBarWrapper />
+            <OnboardingTour />
           </ErrorBoundary>
         </Providers>
       </body>

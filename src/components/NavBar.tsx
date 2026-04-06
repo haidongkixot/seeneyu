@@ -18,12 +18,12 @@ export function NavBar() {
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   const baseLinks = [
-    { href: '/library', label: 'Library', Icon: Library },
-    { href: '/knowledge', label: 'Learn', Icon: BookOpen },
-    { href: '/foundation', label: 'Foundation', Icon: BookOpen },
-    { href: '/arcade', label: 'Arcade', Icon: Zap },
-    { href: '/games', label: 'Games', Icon: Gamepad2 },
-    { href: '/pricing', label: 'Pricing', Icon: CreditCard },
+    { href: '/library', label: 'Library', Icon: Library, tour: 'nav-library' },
+    { href: '/knowledge', label: 'Learn', Icon: BookOpen, tour: 'nav-learn' },
+    { href: '/foundation', label: 'Foundation', Icon: BookOpen, tour: 'nav-foundation' },
+    { href: '/arcade', label: 'Arcade', Icon: Zap, tour: 'nav-arcade' },
+    { href: '/games', label: 'Games', Icon: Gamepad2, tour: 'nav-games' },
+    { href: '/pricing', label: 'Pricing', Icon: CreditCard, tour: 'nav-pricing' },
   ]
 
   const authLinks = session
@@ -58,11 +58,12 @@ export function NavBar() {
 
         {/* Desktop nav — hidden on mobile (BottomTabBar handles mobile nav) */}
         <div className="hidden md:flex items-center gap-1 md:gap-2">
-          {navLinks.map(({ href, label, Icon }) => (
+          {navLinks.map(({ href, label, Icon, tour }: any) => (
             <Link
               key={href}
               href={href}
               aria-current={isActive(href) ? 'page' : undefined}
+              {...(tour ? { 'data-tour': tour } : {})}
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-all duration-150',
                 isActive(href)
