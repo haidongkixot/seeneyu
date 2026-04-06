@@ -11,6 +11,20 @@ export async function generateDailyPlan(
 ): Promise<PlannedActivity[]> {
   const activities: PlannedActivity[] = []
 
+  // 0. I3: Spaced review — highest priority if clips are due
+  const reviewClips = ctx.skillGaps.clipsReadyForReview ?? []
+  if (reviewClips.length > 0) {
+    const review = reviewClips[0]
+    activities.push({
+      type: 'review',
+      contentId: review.clipId,
+      title: `Review: ${review.clipTitle.slice(0, 40)}`,
+      reason: `Time to reinforce your ${formatSkill(review.skillCategory)} practice`,
+      priority: 0,
+      deepLink: `/library/${review.clipId}/record`,
+    })
+  }
+
   // 1. Fill skill gaps — suggest lessons/arcade for weak skills
   if (ctx.skillGaps.weakSkills.length > 0) {
     const weakSkill = ctx.skillGaps.weakSkills[0]
