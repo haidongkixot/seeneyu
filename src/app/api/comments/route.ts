@@ -6,6 +6,8 @@ import { sanitizeCommentBody } from '@/lib/sanitize'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { canPostComments } from '@/lib/access-control'
 
+export const dynamic = 'force-dynamic'
+
 const COMMENT_SELECT = {
   id: true,
   body: true,

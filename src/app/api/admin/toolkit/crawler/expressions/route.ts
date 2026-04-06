@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { importExpressionAssets } from '@/toolkit/data-crawler'
 
+export const dynamic = 'force-dynamic'
+
 async function requireAdmin() {
   const session = await getServerSession(authOptions)
   if (!session || (session.user as any).role !== 'admin') {

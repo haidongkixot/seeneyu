@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getAssistantLimits, countMessagesToday } from '@/services/assistant-service'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/assistant/conversations?context=X
  * Get conversation history for the current user, optionally filtered by context.

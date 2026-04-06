@@ -5,6 +5,8 @@ import { createPayPalOrder, capturePayPalOrder } from '@/services/payment-gatewa
 import { activateSubscription } from '@/services/subscription-manager'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

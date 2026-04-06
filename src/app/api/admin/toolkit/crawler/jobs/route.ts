@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { crawlArticle } from '@/toolkit/data-crawler'
 import type { ContentSourceType } from '@/toolkit/data-crawler/types'
 
+export const dynamic = 'force-dynamic'
+
 async function requireAdmin() {
   const session = await getServerSession(authOptions)
   if (!session || (session.user as any).role !== 'admin') {

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUserFromRequest } from '@/lib/mobile-auth'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/notifications
  * List user's notification history.
