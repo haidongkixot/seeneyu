@@ -8,7 +8,7 @@ import { scoreFullPerformanceFromAnalysis, combineVisualAndVoiceScores } from '@
 import { generateTextFeedback, getVoiceTips } from '@/services/feedback-generator'
 import { shouldStoreRecording } from '@/services/consent-manager'
 import { analyzeVoice } from '@/services/voice-analyzer'
-import { computeHolisticScore } from '@/services/holistic-scorer'
+import { computeHolisticScore, scoreSnapshot } from '@/services/holistic-scorer'
 import { getVoiceAccess, getHolisticBreakdownAccess, getTemporalAccess } from '@/lib/access-control'
 import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-triggers'
 import type { VoiceMetrics } from '@/services/voice-analyzer'
@@ -105,6 +105,7 @@ export async function POST(
     // ── MediaPipe path: client-side analysis data in POST body ──
     let analysisSnapshots: AnalysisSnapshot[] | null = null
     let analysisSkillCategory: string | null = null
+    let recordingDurationSec: number | null = null  // I2: feedforward peak detection
     try {
       const contentType = req.headers.get('content-type') || ''
       if (contentType.includes('application/json')) {
@@ -112,6 +113,9 @@ export async function POST(
         if (body.analysisData?.snapshots) {
           analysisSnapshots = body.analysisData.snapshots
           analysisSkillCategory = body.analysisData.skillCategory || null
+        }
+        if (typeof body.recordingDurationSec === 'number') {
+          recordingDurationSec = body.recordingDurationSec
         }
       }
     } catch { /* not JSON body — use legacy path */ }
@@ -135,6 +139,13 @@ export async function POST(
       const holistic = computeHolisticScore(analysisSnapshots, skill, voiceMetrics)
       const metrics = holistic.visualMetrics
       metrics.overallScore = holistic.composite // use blended score
+
+      // I2: Compute per-snapshot scores for feedforward peak detection
+      const duration = recordingDurationSec || (analysisSnapshots.length * 0.5) // estimate if not provided
+      const snapshotScores = analysisSnapshots.map((snap, i) => ({
+        sec: Math.round(((i / Math.max(analysisSnapshots!.length - 1, 1)) * duration) * 100) / 100,
+        score: scoreSnapshot(snap, skill),
+      }))
 
       const clipCtx = {
         skillCategory: session.clip.skillCategory,
@@ -187,6 +198,11 @@ export async function POST(
         } : {}),
       }
 
+      // I3: Compute nextReviewAt based on score
+      const reviewScore = feedback.overallScore ?? 0
+      const reviewDays = reviewScore < 50 ? 1 : reviewScore < 70 ? 3 : reviewScore < 85 ? 7 : 21
+      const nextReviewAt = new Date(Date.now() + reviewDays * 86400000)
+
       await prisma.userSession.update({
         where: { id },
         data: {
@@ -194,6 +210,12 @@ export async function POST(
           feedback: JSON.parse(JSON.stringify(feedback)),
           scores: JSON.parse(JSON.stringify({ overallScore: feedback.overallScore, dimensions: feedback.dimensions })),
           completedAt: new Date(),
+          // I2: Persist per-snapshot scores for feedforward
+          snapshotScores: JSON.parse(JSON.stringify(snapshotScores)),
+          recordingDurationSec: recordingDurationSec ? Math.round(recordingDurationSec) : null,
+          // I3: Schedule spaced review
+          nextReviewAt,
+          reviewCount: { increment: 1 },
         },
       })
 

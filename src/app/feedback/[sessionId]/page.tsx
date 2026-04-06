@@ -36,6 +36,31 @@ export default async function FeedbackPage({ params }: PageProps) {
 
   const feedback = userSession.feedback as FeedbackResult | null
 
+  // I1: Query previous session on same clip for delta comparison
+  let previousScores: { overallScore: number; dimensions: { label: string; score: number }[] } | null = null
+  if (feedback && userSession.userId && userSession.completedAt) {
+    const previousSession = await prisma.userSession.findFirst({
+      where: {
+        clipId: userSession.clipId,
+        userId: userSession.userId,
+        status: 'complete',
+        id: { not: sessionId },
+        completedAt: { lt: userSession.completedAt },
+      },
+      orderBy: { completedAt: 'desc' },
+      select: { scores: true },
+    })
+    if (previousSession?.scores) {
+      const prev = previousSession.scores as any
+      if (prev.overallScore != null) {
+        previousScores = { overallScore: prev.overallScore, dimensions: prev.dimensions ?? [] }
+      }
+    }
+  }
+
+  // I2: Get snapshotScores for best-moment highlight
+  const snapshotScores = (userSession as any).snapshotScores as { sec: number; score: number }[] | null
+
   return (
     <div className="min-h-screen bg-bg-base">
       <main
@@ -77,6 +102,8 @@ export default async function FeedbackPage({ params }: PageProps) {
             endSec={userSession.clip.endSec}
             recordingUrl={userSession.recordingUrl}
             userPlan={userPlan}
+            previousScores={previousScores}
+            snapshotScores={snapshotScores}
           />
         )}
       </main>
@@ -125,9 +152,11 @@ interface FeedbackDisplayProps {
   endSec: number
   recordingUrl: string | null
   userPlan: string
+  previousScores: { overallScore: number; dimensions: { label: string; score: number }[] } | null
+  snapshotScores: { sec: number; score: number }[] | null
 }
 
-function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, recordingUrl, userPlan }: FeedbackDisplayProps) {
+function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, recordingUrl, userPlan, previousScores, snapshotScores }: FeedbackDisplayProps) {
   const score = feedback.overallScore
   const sections = getFeedbackSections(userPlan)
 
@@ -140,8 +169,72 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
   const r = 54; const cx = 60; const circumference = 2 * Math.PI * r
   const dashOffset = circumference - (score / 100) * circumference
 
+  // I2: Find best moment from snapshot scores
+  let bestMoment: { startSec: number; endSec: number; avgScore: number } | null = null
+  if (snapshotScores && snapshotScores.length >= 2) {
+    const sorted = [...snapshotScores].sort((a, b) => a.sec - b.sec)
+    const totalDur = sorted[sorted.length - 1].sec - sorted[0].sec
+    const windowSec = Math.min(3, totalDur)
+    if (windowSec >= 1) {
+      let bestStart = 0, bestAvg = 0
+      for (let i = 0; i < sorted.length; i++) {
+        const wStart = sorted[i].sec
+        const wEnd = wStart + windowSec
+        const wScores = sorted.filter(s => s.sec >= wStart && s.sec <= wEnd)
+        const wAvg = wScores.reduce((a, b) => a + b.score, 0) / wScores.length
+        if (wAvg > bestAvg) { bestAvg = wAvg; bestStart = wStart }
+      }
+      bestMoment = {
+        startSec: Math.round(bestStart * 10) / 10,
+        endSec: Math.round((bestStart + windowSec) * 10) / 10,
+        avgScore: Math.round(bestAvg),
+      }
+    }
+  }
+
   return (
     <div className="flex flex-col gap-8">
+      {/* I1: Delta card — shows improvement from previous attempt */}
+      {previousScores && (
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 animate-fade-in-up">
+          <p className="text-text-tertiary text-xs font-semibold uppercase tracking-widest mb-3">Compared to Last Attempt</p>
+          <div className="flex items-center gap-4 mb-3">
+            <span className="text-text-secondary text-sm">Overall</span>
+            <span className="text-text-primary font-semibold">{previousScores.overallScore}</span>
+            <span className="text-text-tertiary">→</span>
+            <span className="text-text-primary font-semibold">{score}</span>
+            {(() => {
+              const d = score - previousScores.overallScore
+              return (
+                <span className={`text-sm font-bold ${d > 0 ? 'text-success' : d < 0 ? 'text-error' : 'text-text-tertiary'}`}>
+                  {d > 0 ? `+${d}` : d === 0 ? '±0' : `${d}`} {d > 0 ? '↑' : d < 0 ? '↓' : ''}
+                </span>
+              )
+            })()}
+          </div>
+          {previousScores.dimensions.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              {feedback.dimensions.map((dim) => {
+                const prevDim = previousScores!.dimensions.find(d => d.label === dim.label)
+                if (!prevDim) return null
+                const d = dim.score - prevDim.score
+                return (
+                  <div key={dim.label} className="flex items-center gap-2 text-sm">
+                    <span className="text-text-secondary w-36 shrink-0">{dim.label}</span>
+                    <span className="text-text-tertiary">{prevDim.score}</span>
+                    <span className="text-text-tertiary">→</span>
+                    <span className="text-text-primary font-medium">{dim.score}</span>
+                    <span className={`font-semibold ${d > 0 ? 'text-success' : d < 0 ? 'text-error' : 'text-text-tertiary'}`}>
+                      ({d > 0 ? '+' : ''}{d.toFixed(1)}) {d > 0 ? '↑' : d < 0 ? '↓' : ''}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Score ring — always visible */}
       <div className="flex flex-col items-center gap-3 py-4">
         <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label={`Score: ${score} out of 100`}>
@@ -166,6 +259,22 @@ function FeedbackDisplay({ feedback, clipId, youtubeVideoId, startSec, endSec, r
         </svg>
         <p className="text-text-secondary text-base text-center max-w-sm">{feedback.summary}</p>
       </div>
+
+      {/* I2: Best moment highlight — feedforward */}
+      {bestMoment && bestMoment.avgScore > 0 && (
+        <div className="bg-[rgba(251,191,36,0.06)] border border-[rgba(251,191,36,0.25)] rounded-2xl p-5 animate-fade-in-up">
+          <p className="text-accent-400 text-xs font-semibold uppercase tracking-widest mb-2">Your Best Moment</p>
+          <p className="text-text-primary text-base font-semibold">
+            {Math.floor(bestMoment.startSec / 60)}:{String(Math.floor(bestMoment.startSec % 60)).padStart(2, '0')}
+            {' – '}
+            {Math.floor(bestMoment.endSec / 60)}:{String(Math.floor(bestMoment.endSec % 60)).padStart(2, '0')}
+            <span className="text-accent-400 ml-2">Score: {bestMoment.avgScore}</span>
+          </p>
+          <p className="text-text-secondary text-sm mt-1">
+            This is what you're building toward — your peak performance window.
+          </p>
+        </div>
+      )}
 
       {/* Score breakdown — locked for free users */}
       <LockedFeedbackSection isLocked={!sections.dimensions}>
