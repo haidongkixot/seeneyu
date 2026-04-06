@@ -85,7 +85,7 @@ export default function GamesPage() {
   const [recommendedTypes, setRecommendedTypes] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    fetch('/api/preferences')
+    fetch('/api/preferences', { credentials: 'include' })
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data && !data.error) setPrefs(data)

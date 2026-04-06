@@ -305,7 +305,7 @@ export default function BundlePage() {
                 </div>
               )}
             </div>
-            <div className="flex-1 relative bg-black rounded-b-2xl overflow-hidden min-h-[200px]">
+            <div className="relative bg-black rounded-b-2xl overflow-hidden aspect-video max-h-[45vh]">
               <video
                 ref={videoRef}
                 autoPlay

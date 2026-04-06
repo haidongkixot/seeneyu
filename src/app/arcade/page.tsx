@@ -53,7 +53,7 @@ export default function ArcadePage() {
   const [recommendedIds, setRecommendedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    fetch('/api/preferences')
+    fetch('/api/preferences', { credentials: 'include' })
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data && !data.error) setPrefs(data)
