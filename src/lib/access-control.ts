@@ -35,7 +35,7 @@ export function getFeedbackSections(plan: string): FeedbackSections {
     case 'standard':
       return { score: true, summary: true, dimensions: true, positives: true, improvements: true, steps: true, tips: true, advancedTips: false }
     default:
-      return { score: true, summary: true, dimensions: false, positives: false, improvements: false, steps: false, tips: false, advancedTips: false }
+      return { score: true, summary: true, dimensions: true, positives: false, improvements: false, steps: false, tips: false, advancedTips: false }
   }
 }
 
