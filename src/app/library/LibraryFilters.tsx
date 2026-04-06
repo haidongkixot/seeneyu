@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { SkillBadge } from '@/components/SkillBadge'
 import { DifficultyPill } from '@/components/DifficultyPill'
 import type { SkillCategory, Difficulty } from '@/lib/types'
-import { X, SlidersHorizontal, ChevronDown, Search } from 'lucide-react'
+import { X, SlidersHorizontal, ChevronDown, Search, Sparkles, Settings2 } from 'lucide-react'
+import Link from 'next/link'
 
 const FILM_VISIBLE_COUNT = 8
 const LS_KEY = 'library-filters-open'
@@ -23,9 +24,12 @@ interface LibraryFiltersProps {
   filmOptions: string[]
   clipCount: number
   initialSearch?: string
+  hasPreferences?: boolean
+  forYou?: boolean
+  matchedCount?: number
 }
 
-export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasScreenplay, filmOptions, clipCount, initialSearch }: LibraryFiltersProps) {
+export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasScreenplay, filmOptions, clipCount, initialSearch, hasPreferences, forYou, matchedCount }: LibraryFiltersProps) {
   const router = useRouter()
   const [filmExpanded, setFilmExpanded] = useState(false)
   const [panelOpen, setPanelOpen] = useState<boolean | null>(null)
@@ -51,6 +55,7 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
       if (activeDifficulty) params.set('difficulty', activeDifficulty)
       if (activeFilm) params.set('film', activeFilm)
       if (hasScreenplay) params.set('screenplay', 'true')
+      if (forYou) params.set('forYou', 'true')
       if (searchQuery.trim()) params.set('search', searchQuery.trim())
       router.push(`/library${params.toString() ? `?${params}` : ''}`)
     }, 300)
@@ -70,6 +75,18 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
     if (difficulty) params.set('difficulty', difficulty)
     if (film) params.set('film', film)
     if (screenplay) params.set('screenplay', 'true')
+    if (forYou) params.set('forYou', 'true')
+    if (searchQuery.trim()) params.set('search', searchQuery.trim())
+    router.push(`/library${params.toString() ? `?${params}` : ''}`)
+  }
+
+  function toggleForYou() {
+    const params = new URLSearchParams()
+    if (activeSkill) params.set('skill', activeSkill)
+    if (activeDifficulty) params.set('difficulty', activeDifficulty)
+    if (activeFilm) params.set('film', activeFilm)
+    if (hasScreenplay) params.set('screenplay', 'true')
+    if (!forYou) params.set('forYou', 'true')
     if (searchQuery.trim()) params.set('search', searchQuery.trim())
     router.push(`/library${params.toString() ? `?${params}` : ''}`)
   }
@@ -81,6 +98,7 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
     if (activeDifficulty) params.set('difficulty', activeDifficulty)
     if (activeFilm) params.set('film', activeFilm)
     if (hasScreenplay) params.set('screenplay', 'true')
+    if (forYou) params.set('forYou', 'true')
     router.push(`/library${params.toString() ? `?${params}` : ''}`)
   }
 
@@ -95,6 +113,47 @@ export function LibraryFilters({ activeSkill, activeDifficulty, activeFilm, hasS
   return (
     <div className="sticky top-14 z-raised bg-bg-base/90 backdrop-blur-md border-b border-black/6 pb-4 mb-8 -mx-4 px-4 lg:-mx-8 lg:px-8">
       <div className="flex flex-col gap-3 pt-4">
+
+        {/* For You / All toggle — only shown when user has preferences */}
+        {hasPreferences && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleForYou}
+              className={`inline-flex items-center gap-1.5 rounded-pill px-3 py-1.5 text-sm font-medium border transition-all duration-150 ${
+                !forYou
+                  ? 'bg-accent-400 text-text-inverse border-accent-400'
+                  : 'bg-accent-400/10 text-accent-400 border-accent-400/30 hover:bg-accent-400/20'
+              }`}
+            >
+              All
+            </button>
+            <button
+              onClick={toggleForYou}
+              className={`inline-flex items-center gap-1.5 rounded-pill px-3 py-1.5 text-sm font-medium border transition-all duration-150 ${
+                forYou
+                  ? 'bg-accent-400 text-text-inverse border-accent-400'
+                  : 'bg-accent-400/10 text-accent-400 border-accent-400/30 hover:bg-accent-400/20'
+              }`}
+            >
+              <Sparkles size={14} />
+              For You
+              {matchedCount !== undefined && (
+                <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-pill text-xs font-semibold ${
+                  forYou ? 'bg-white/20 text-text-inverse' : 'bg-accent-400/20 text-accent-400'
+                }`}>
+                  {matchedCount}
+                </span>
+              )}
+            </button>
+            <Link
+              href="/settings/preferences"
+              className="ml-1 inline-flex items-center gap-1 text-xs text-text-tertiary hover:text-accent-400 transition-colors duration-150"
+            >
+              <Settings2 size={12} />
+              Edit Preferences
+            </Link>
+          </div>
+        )}
 
         {/* Search bar — always visible */}
         <div className="relative flex items-center">

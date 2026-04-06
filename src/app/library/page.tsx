@@ -5,20 +5,22 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { getAllowedDifficulties } from '@/lib/access-control'
+import { getPreferenceMatchedClipIds } from '@/engine/learning-assistant/matchers/preference-matcher'
 import type { SkillCategory, Difficulty } from '@/lib/types'
 import { SearchX, Lock } from 'lucide-react'
 import Link from 'next/link'
 
 interface LibraryPageProps {
-  searchParams: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string }
+  searchParams: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string; forYou?: string }
 }
 
-function buildWhere(skill?: string, difficulty?: string, film?: string, screenplay?: string, search?: string) {
+function buildWhere(skill?: string, difficulty?: string, film?: string, screenplay?: string, search?: string, matchedClipIds?: string[]) {
   const where: any = { isActive: true }
   if (skill) where.skillCategory = skill
   if (difficulty) where.difficulty = difficulty
   if (film) where.movieTitle = film
   if (screenplay === 'true') where.screenplaySource = { not: null }
+  if (matchedClipIds) where.id = { in: matchedClipIds }
   if (search) {
     where.OR = [
       { sceneDescription: { contains: search, mode: 'insensitive' } },
@@ -30,9 +32,9 @@ function buildWhere(skill?: string, difficulty?: string, film?: string, screenpl
   return where
 }
 
-async function ClipGrid({ skill, difficulty, film, screenplay, search, allowedDifficulties }: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string; allowedDifficulties: string[] }) {
+async function ClipGrid({ skill, difficulty, film, screenplay, search, allowedDifficulties, matchedClipIds }: { skill?: string; difficulty?: string; film?: string; screenplay?: string; search?: string; allowedDifficulties: string[]; matchedClipIds?: string[] }) {
   const clips = await prisma.clip.findMany({
-    where: buildWhere(skill, difficulty, film, screenplay, search),
+    where: buildWhere(skill, difficulty, film, screenplay, search, matchedClipIds),
     orderBy: [{ skillCategory: 'asc' }, { difficultyScore: 'asc' }],
     select: {
       id: true,
@@ -116,6 +118,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const film = params.film
   const screenplay = params.screenplay
   const search = params.search
+  const forYou = params.forYou === 'true'
 
   // Get user plan for content gating
   const session = await getServerSession(authOptions)
@@ -127,9 +130,24 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   }
   const allowedDifficulties = getAllowedDifficulties(userPlan)
 
+  // Preference matching for "For You" filter
+  let matchedClipIds: string[] | undefined
+  let matchedCount: number | undefined
+  let hasPreferences = false
+  if (userId) {
+    const matchResults = await getPreferenceMatchedClipIds(userId).catch(() => null)
+    hasPreferences = matchResults !== null
+    if (hasPreferences && matchResults) {
+      matchedCount = matchResults.length
+      if (forYou) {
+        matchedClipIds = matchResults.map(r => r.clipId)
+      }
+    }
+  }
+
   const totalCount = await prisma.clip.count({ where: { isActive: true } }).catch(() => 0)
   const filteredCount = await prisma.clip.count({
-    where: buildWhere(skill, difficulty, film, screenplay, search),
+    where: buildWhere(skill, difficulty, film, screenplay, search, matchedClipIds),
   }).catch(() => 0)
 
   // Fetch distinct film titles for filter
@@ -160,12 +178,15 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
           filmOptions={filmOptions}
           clipCount={filteredCount}
           initialSearch={search}
+          hasPreferences={hasPreferences}
+          forYou={forYou}
+          matchedCount={matchedCount}
         />
 
         {/* Grid */}
         <div className="mt-8">
           <Suspense fallback={<ClipGridSkeleton />}>
-            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} search={search} allowedDifficulties={allowedDifficulties} />
+            <ClipGrid skill={skill} difficulty={difficulty} film={film} screenplay={screenplay} search={search} allowedDifficulties={allowedDifficulties} matchedClipIds={matchedClipIds} />
           </Suspense>
         </div>
       </main>
