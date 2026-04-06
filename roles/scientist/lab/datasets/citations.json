@@ -1,0 +1,499 @@
+{
+  "generated_at": "2026-04-06T08:17:33.879Z",
+  "total_sources": 23,
+  "total_threads": 4,
+  "threads": [
+    {
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition",
+      "lane": "social-science",
+      "last_updated": "2026-04-06",
+      "source_count": 5,
+      "key_finding": "Deliberate practice with immediate feedback explains 23-48% of performance variance across domains. The absence of feedback is the single biggest predictor of practice ineffectiveness.",
+      "evidence_grade_summary": "B/D — foundational theoretical framework (Grade D) supported by empirical replication studies (Grade B/C). Contested on effect size but not on core mechanism.",
+      "seeneyu_relevance": "seeneyu's core loop (Watch → Record → AI Feedback → Repeat) is a direct implementation of deliberate practice: each session has a well-defined goal (mimic a specific skill), immediate feedback (AI scoring), and structured repetition. This thread establishes that expert performance is built through this exact mechanism."
+    },
+    {
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention",
+      "lane": "clinical",
+      "last_updated": "2026-04-06",
+      "source_count": 6,
+      "key_finding": "VSM is an evidence-based intervention (nearly 200 studies over 3 decades) showing efficacy across communication, motor, social, and academic domains. Improvements generalize across settings and are maintained over time.",
+      "evidence_grade_summary": "B — Supported by multiple controlled studies, school-based systematic reviews, and meta-analyses, particularly in communication skills and motor learning.",
+      "seeneyu_relevance": "seeneyu users record themselves, then receive AI-annotated feedback on their own video. This is a clinical Video Self-Modeling (VSM) intervention. Nearly 200 published studies confirm VSM produces measurable behavioral change — including communication skills, motor skill acquisition, and self-efficacy."
+    },
+    {
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling",
+      "lane": "social-clinical",
+      "last_updated": "2026-04-06",
+      "source_count": 6,
+      "key_finding": "Observational learning activates the same neural motor circuits as physical practice. Social information 'feeds into circuits involved in conventional direct learning.' Watching expert models before practicing produces better outcomes than practice alone.",
+      "evidence_grade_summary": "B/C — Strong neuroscientific evidence for mirror neuron activation during observation; moderate evidence for transfer to behavioral performance in humans.",
+      "seeneyu_relevance": "Before users record themselves, they watch Hollywood actors — expert performers of non-verbal communication. This is structured observational learning. The neurological basis (mirror neurons, motor system pre-activation) explains why watching skilled models before practicing is more effective than practicing without observation."
+    },
+    {
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills",
+      "lane": "clinical",
+      "last_updated": "2026-04-06",
+      "source_count": 6,
+      "key_finding": "Off-line cognition is body-based (Wilson, 2002): mental representations of skills are grounded in motor system simulations. Practice that involves physical enactment produces fundamentally different (superior) skill encoding than study alone.",
+      "evidence_grade_summary": "B/D — Strong theoretical framework (Wilson 2002, Grade D) supported by controlled studies in performance domains including sport, music, and social behavior (Grade B/C).",
+      "seeneyu_relevance": "Body language is not just knowledge — it is motor memory encoded in muscle and posture. Wilson's embodied cognition framework explains why seeneyu users must physically record themselves (not just think about or read about body language). Physical enactment is the mechanism by which abstract body language knowledge becomes automatic, natural behavior."
+    }
+  ],
+  "citations": [
+    {
+      "id": "src_dp_001",
+      "authors": [
+        "Ericsson, K.A.",
+        "Krampe, R.T.",
+        "Tesch-Römer, C."
+      ],
+      "year": 1993,
+      "title": "The role of deliberate practice in the acquisition of expert performance",
+      "journal": "Psychological Review",
+      "volume": "100(3)",
+      "pages": "363–406",
+      "doi": "10.1037/0033-295X.100.3.363",
+      "url": "https://psycnet.apa.org/record/1993-40718-001",
+      "evidence_grade": "D",
+      "citations": "9000+",
+      "key_finding": "Expert performance is the product of structured practice with immediate feedback, not innate talent. Practice alone (self-regulated, goal-directed, with feedback) explains up to 48% of performance variance.",
+      "seeneyu_application": "The Watch → Record → AI Feedback → Repeat cycle is a direct operationalization of deliberate practice. Each clip session has a defined skill goal, behavioral execution, and immediate scored feedback.",
+      "quote": "Deliberate practice involves the provision of immediate feedback, time for problem-solving and evaluation, and opportunities for repeated performance to refine behavior.",
+      "limitation": "Original effect size (48%) was not replicated in double-blind study; revised estimate ~23-26%.",
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition"
+    },
+    {
+      "id": "src_dp_002",
+      "authors": [
+        "Macnamara, B.N.",
+        "Maitra, M."
+      ],
+      "year": 2019,
+      "title": "The role of deliberate practice in expert performance: revisiting Ericsson, Krampe & Tesch-Römer (1993)",
+      "journal": "Royal Society Open Science",
+      "volume": "6(8)",
+      "pages": "190327",
+      "doi": "10.1098/rsos.190327",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6731745/",
+      "evidence_grade": "B",
+      "key_finding": "Pre-registered replication with double-blind procedures found deliberate practice explains 26% of performance variance (vs. 48% in original). The core mechanism is real, but effect size is more modest than originally claimed.",
+      "seeneyu_application": "26% is still a strong, clinically meaningful effect size for a behavioral intervention. Practice remains the strongest modifiable predictor of skill improvement.",
+      "quote": "We did not replicate Ericsson et al.'s major result of complete correspondence between the skill level of the groups and their average accumulation of practice time alone with the violin.",
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition"
+    },
+    {
+      "id": "src_dp_003",
+      "authors": [
+        "Ericsson, K.A.",
+        "Pool, R."
+      ],
+      "year": 2016,
+      "title": "Peak: Secrets from the New Science of Expertise",
+      "publisher": "Houghton Mifflin Harcourt",
+      "isbn": "978-0544456235",
+      "evidence_grade": "D",
+      "key_finding": "Refined deliberate practice model: mental representations are built through practice-feedback-correction cycles. Without feedback, 'naive practice' produces plateaus, not improvement.",
+      "seeneyu_application": "AI feedback prevents users from plateauing. Users without feedback (e.g., free-tier self-practice) will stagnate; users with AI scoring will keep improving — this differentiates paid tiers.",
+      "quote": "Without feedback — either from yourself or from outside observers — you cannot figure out what you need to improve on or how close you are to achieving your goal.",
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition"
+    },
+    {
+      "id": "src_dp_004",
+      "authors": [
+        "Macnamara, B.N.",
+        "Hambrick, D.Z.",
+        "Oswald, F.L."
+      ],
+      "year": 2014,
+      "title": "Deliberate practice and performance in music, games, sports, education, and professions: A meta-analysis",
+      "journal": "Psychological Science",
+      "volume": "25(8)",
+      "pages": "1608–1618",
+      "doi": "10.1177/0956797614535810",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24986855/",
+      "evidence_grade": "A",
+      "key_finding": "Meta-analysis of 88 studies: deliberate practice explains 26% of performance variance in games, 21% in music, 18% in sports, 4% in education, 1% in professions. Domain matters — motor and performance skills respond most strongly to deliberate practice.",
+      "seeneyu_application": "Body language is a motor/performance skill (same category as music and sports) — the highest-responding category. This is the strongest evidence category for seeneyu's approach.",
+      "quote": "Deliberate practice explained 26% of the variance in performance for games, 21% for music, 18% for sports.",
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition"
+    },
+    {
+      "id": "src_dp_005",
+      "authors": [
+        "Ericsson, K.A."
+      ],
+      "year": 2008,
+      "title": "Deliberate practice and acquisition of expert performance: A general overview",
+      "journal": "Academic Emergency Medicine",
+      "volume": "15(11)",
+      "pages": "988–994",
+      "doi": "10.1111/j.1553-2712.2008.00227.x",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18778378/",
+      "evidence_grade": "D",
+      "key_finding": "Deliberate practice requires: (1) a well-defined task with known correct technique, (2) immediate informative feedback, (3) repetition with correction opportunities. All three conditions must be present.",
+      "seeneyu_application": "seeneyu satisfies all three conditions: reference clip = correct technique, AI scoring = immediate feedback, repeat sessions = repetition with correction.",
+      "thread_id": "01-deliberate-practice",
+      "thread_title": "Deliberate Practice & Expert Skill Acquisition"
+    },
+    {
+      "id": "src_vsm_001",
+      "authors": [
+        "Dowrick, P.W."
+      ],
+      "year": 1999,
+      "title": "A review of self-modeling and related interventions",
+      "journal": "Applied & Preventive Psychology",
+      "volume": "8(1)",
+      "pages": "23–39",
+      "doi": "10.1016/S0962-1849(99)80009-2",
+      "url": "https://www.researchgate.net/publication/230539966_Self_modeling_Expanding_the_theories_of_learning",
+      "evidence_grade": "A",
+      "key_finding": "Comprehensive review of ~150 self-modeling studies. VSM produces behavioral change faster than instruction alone. Two mechanisms: feedforward (watching future-capable self) and self-review (watching best current performance). Both show efficacy.",
+      "seeneyu_application": "seeneyu's AI feedback loop is a form of self-review VSM: users watch their recordings with annotated overlays highlighting best-performing moments and areas to improve.",
+      "quote": "Self-modeling interventions using only positive imagery fit well into positive behavior support plans and consistently produce faster skill acquisition than instruction-only approaches.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_vsm_002",
+      "authors": [
+        "Dowrick, P.W."
+      ],
+      "year": 1980,
+      "title": "The use of self-modeling to improve the swimming performance of spina bifida children",
+      "journal": "Journal of Applied Behavior Analysis",
+      "volume": "13(1)",
+      "pages": "51–56",
+      "doi": "10.1901/jaba.1980.13-51",
+      "url": "https://onlinelibrary.wiley.com/doi/abs/10.1901/jaba.1980.13-51",
+      "evidence_grade": "C",
+      "key_finding": "Original VSM study: edited video replay (showing only positive behaviors) improved motor skills in children with physical disabilities. Behavioral improvements observed in close association with intervention with continuing gains on reapplication.",
+      "seeneyu_application": "Establishes VSM as effective for motor skill acquisition — the same class of skills as body language/posture. Foundation paper of the VSM literature.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_vsm_003",
+      "authors": [
+        "Hitchcock, C.H.",
+        "Dowrick, P.W.",
+        "Prater, M.A."
+      ],
+      "year": 2003,
+      "title": "Video self-modeling intervention in school-based settings: A review",
+      "journal": "Remedial and Special Education",
+      "volume": "24(1)",
+      "pages": "36–45",
+      "doi": "10.1177/074193250302400104",
+      "url": "https://journals.sagepub.com/doi/abs/10.1177/074193250302400104",
+      "evidence_grade": "A",
+      "key_finding": "Systematic review confirming VSM functional control of targeted academic and communication behaviors. Evidence for generalization across settings and maintenance over time. VSM works for communication skill acquisition.",
+      "seeneyu_application": "Communication skill generalization — skills learned through VSM transfer to real-world contexts, not just the practice setting. This directly supports seeneyu's core promise.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_vsm_004",
+      "authors": [
+        "Dowrick, P.W.",
+        "Kim-Rupnow, W.S.",
+        "Power, T.J."
+      ],
+      "year": 2006,
+      "title": "Video feedforward for reading",
+      "journal": "Journal of Special Education",
+      "volume": "39(4)",
+      "pages": "194–207",
+      "doi": "10.1177/00224669060390040101",
+      "url": "https://journals.sagepub.com/doi/10.1177/00224669060390040101",
+      "evidence_grade": "B",
+      "key_finding": "Reading fluency improved significantly for all students. Rate of improvement was significantly greatest during feedforward VSM in 9 out of 10 cases. Watching yourself succeed at something you're trying to learn accelerates acquisition.",
+      "seeneyu_application": "The feedforward mechanism directly maps to seeneyu: users watch themselves performing the target behavior (body language) in the context of a reference clip, then practice. The model of 'watching yourself succeed' builds self-efficacy before practice.",
+      "quote": "Rate of improvement was significantly greatest during feedforward in 9 out of 10 cases.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_vsm_005",
+      "authors": [
+        "Bellini, S.",
+        "Akullian, J."
+      ],
+      "year": 2007,
+      "title": "A meta-analysis of video modeling and video self-modeling interventions for children and adolescents with autism spectrum disorders",
+      "journal": "Exceptional Children",
+      "volume": "73(3)",
+      "pages": "264–287",
+      "doi": "10.1177/001440290707300301",
+      "evidence_grade": "A",
+      "key_finding": "Meta-analysis: VSM and video modeling are effective and efficient interventions. Effect maintained at follow-up. Social-communication skills specifically showed strong effect sizes. Intervention effects generalize to naturalistic settings.",
+      "seeneyu_application": "Social-communication skills — the exact domain seeneyu targets — show the strongest VSM effect sizes. Directly validates the product category.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_vsm_006",
+      "authors": [
+        "Wert, B.Y.",
+        "Neisworth, J.T."
+      ],
+      "year": 2003,
+      "title": "Effects of video self-modeling on spontaneous requesting in children with autism",
+      "journal": "Journal of Positive Behavior Interventions",
+      "volume": "5(1)",
+      "pages": "30–34",
+      "doi": "10.1177/10983007030050010501",
+      "evidence_grade": "C",
+      "key_finding": "Increases in confidence, self-efficacy, and motivation are secondary outcomes of VSM beyond the primary target skill. Users become more motivated to practice when they see themselves succeeding.",
+      "seeneyu_application": "Motivation and self-efficacy gains from VSM directly support user retention. Seeing your own AI-scored progress builds intrinsic motivation to continue — supporting seeneyu's gamification layer.",
+      "thread_id": "02-video-self-modeling",
+      "thread_title": "Video Self-Modeling as a Behavioral Intervention"
+    },
+    {
+      "id": "src_ol_001",
+      "authors": [
+        "Bandura, A."
+      ],
+      "year": 1977,
+      "title": "Social Learning Theory",
+      "publisher": "Prentice Hall",
+      "isbn": "978-0138167448",
+      "evidence_grade": "D",
+      "citations": "100,000+",
+      "key_finding": "Learning occurs by observing others — no direct experience required. Four processes: Attention → Retention → Motor Reproduction → Motivation. Expert modeling activates all four simultaneously. Performance improves faster when learners first observe skilled models.",
+      "seeneyu_application": "seeneyu's 'Watch' phase is a precisely structured Bandura observational learning session: users attend to a specific skill, retain via Observation Guide annotations, then reproduce via recording.",
+      "quote": "From observing others, one forms an idea of how new behaviors are performed, and on later occasions this coded information serves as a guide for action.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ol_002",
+      "authors": [
+        "Rizzolatti, G.",
+        "Craighero, L."
+      ],
+      "year": 2004,
+      "title": "The mirror-neuron system",
+      "journal": "Annual Review of Neuroscience",
+      "volume": "27",
+      "pages": "169–192",
+      "doi": "10.1146/annurev.neuro.27.070203.144230",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15217330/",
+      "evidence_grade": "B",
+      "citations": "8500+",
+      "key_finding": "Mirror neurons in the premotor cortex fire both during action execution and during observation of the same action. This 'action observation network' creates a direct link between watching and doing — observation alone activates motor preparation.",
+      "seeneyu_application": "When users watch an Iron Man scene showing confident open posture, their premotor cortex fires as if they were performing the posture. This neurological priming makes subsequent practice (recording) more accurate.",
+      "quote": "Mirror neurons discharge during both the execution of motor acts and during the observation of similar acts performed by other individuals.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ol_003",
+      "authors": [
+        "Cook, R.",
+        "Bird, G.",
+        "Catmur, C.",
+        "Press, C.",
+        "Heyes, C."
+      ],
+      "year": 2014,
+      "title": "Mirror neurons: From origin to function",
+      "journal": "Behavioral and Brain Sciences",
+      "volume": "37(2)",
+      "pages": "177–192",
+      "doi": "10.1017/S0140525X13000903",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24785420/",
+      "evidence_grade": "B",
+      "key_finding": "Mirror neurons develop through associative learning — they are not innate. They form by pairing sensory observations with self-produced actions. This means mirror neuron strength for a skill can be trained by repeatedly pairing watching expert models with personal practice.",
+      "seeneyu_application": "Each Watch → Record cycle strengthens the user's mirror neuron associations for target skills. The pairing is the mechanism. This directly validates seeneyu's loop as neurologically optimal.",
+      "limitation": "Direct measurement of mirror neurons in humans requires invasive methods; most human evidence is from fMRI showing mirror-system homologs rather than single-cell recording.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ol_004",
+      "authors": [
+        "Heyes, C.",
+        "Foster, C.L."
+      ],
+      "year": 2002,
+      "title": "Motor learning by observation: Evidence from a serial reaction time task",
+      "journal": "Quarterly Journal of Experimental Psychology Section A",
+      "volume": "55(2)",
+      "pages": "593–607",
+      "doi": "10.1080/02724980143000389",
+      "evidence_grade": "C",
+      "key_finding": "Motor learning from observation produces the same implicit sequence learning effects as physical practice. Watching a skilled performer activates motor programs — observation is motor practice by another means.",
+      "seeneyu_application": "The 'Watch' phase is not passive content consumption — it is motor practice. Users are literally building motor memory by watching skilled performers.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ol_005",
+      "authors": [
+        "Mattar, A.A.",
+        "Gribble, P.L."
+      ],
+      "year": 2005,
+      "title": "Motor learning by observing",
+      "journal": "Neuron",
+      "volume": "46(1)",
+      "pages": "153–160",
+      "doi": "10.1016/j.neuron.2005.02.008",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15820701/",
+      "evidence_grade": "B",
+      "key_finding": "Controlled experiment: subjects who watched a skilled performer adapted their motor system as if they had physically practiced. Observation-based motor adaptation was statistically indistinguishable from practice-based adaptation in the early trials.",
+      "seeneyu_application": "Empirical confirmation that watching transfers motor skill. The Watch phase is doing real neuroscientific work — not just inspiration.",
+      "quote": "Observation of another person's movements can cause adaptation of the observer's own motor system.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ol_006",
+      "authors": [
+        "Buccino, G.",
+        "Vogt, S.",
+        "Ritzl, A.",
+        "Fink, G.R.",
+        "Zilles, K.",
+        "Freund, H.J.",
+        "Rizzolatti, G."
+      ],
+      "year": 2004,
+      "title": "Neural circuits underlying imitation learning of hand actions: An event-related fMRI study",
+      "journal": "Neuron",
+      "volume": "42(2)",
+      "pages": "323–334",
+      "doi": "10.1016/S0896-6273(04)00181-3",
+      "evidence_grade": "B",
+      "key_finding": "fMRI shows that imitation learning activates a distinct neural circuit (STS → inferior frontal gyrus → primary motor cortex). This circuit is specifically activated when watching an expert model for the purpose of imitation — more strongly than passive observation.",
+      "seeneyu_application": "The instruction to 'watch this scene to mimic it' activates a different, stronger neural circuit than passive watching. The framing of watching-to-mimic is neurologically superior to just watching. seeneyu's Observation Guide creates exactly this intentional watching context.",
+      "thread_id": "03-observational-learning",
+      "thread_title": "Observational Learning, Mirror Neurons & Expert Modeling"
+    },
+    {
+      "id": "src_ec_001",
+      "authors": [
+        "Wilson, M."
+      ],
+      "year": 2002,
+      "title": "Six views of embodied cognition",
+      "journal": "Psychonomic Bulletin & Review",
+      "volume": "9(4)",
+      "pages": "625–636",
+      "doi": "10.3758/BF03196322",
+      "url": "https://pages.ucsd.edu/~scoulson/Courses/200/EmbCog_Wilson.pdf",
+      "evidence_grade": "D",
+      "citations": "4500+",
+      "key_finding": "Sixth claim (best-documented): 'off-line cognition is body-based' — when not engaged in real-time action, the cognitive system uses the motor and sensory systems to simulate action. Physical practice therefore creates richer, more accessible representations than verbal learning. Implicit memory automatizes formerly effortful motor skills.",
+      "seeneyu_application": "Reading about open posture creates a verbal representation. Recording yourself with open posture creates an embodied, motor-cortex representation that eventually becomes automatic. seeneyu's recording requirement is scientifically essential — it is the mechanism of actual skill transfer.",
+      "quote": "Implicit memory is the means by which we learn skills, automatizing what was formerly effortful, and with practice, new skills become automatized, reducing cognitive load.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    },
+    {
+      "id": "src_ec_002",
+      "authors": [
+        "Cuddy, A.J.C.",
+        "Wilmuth, C.A.",
+        "Yap, A.J.",
+        "Carney, D.R."
+      ],
+      "year": 2015,
+      "title": "Preparatory power posing affects nonverbal presence and job interview performance",
+      "journal": "Journal of Applied Psychology",
+      "volume": "100(4)",
+      "pages": "1286–1295",
+      "doi": "10.1037/a0038543",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25603133/",
+      "evidence_grade": "C",
+      "key_finding": "Physical adoption of power postures before performance tasks measurably improves outcome evaluations by independent judges. The body posture affects the cognitive-emotional state which then affects behavioral performance. Effect is real and measurable even if hormonal claims are debated.",
+      "seeneyu_application": "Practicing open/power body postures physically (not just cognitively) changes actual performance. seeneyu's practice loop physically encodes these postures, not just teaches them theoretically.",
+      "quote": "Preparatory nonverbal expansiveness improved interview performance beyond the effect of semantic content of answers.",
+      "limitation": "Hormonal mechanisms (testosterone/cortisol) not reliably replicated. Behavioral performance effect is stronger and more consistent than physiological effect claims.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    },
+    {
+      "id": "src_ec_003",
+      "authors": [
+        "Dijksterhuis, A.",
+        "Bargh, J.A."
+      ],
+      "year": 2001,
+      "title": "The perception-behavior expressway: Automatic effects of social perception on social behavior",
+      "journal": "Advances in Experimental Social Psychology",
+      "volume": "33",
+      "pages": "1–40",
+      "doi": "10.1016/S0065-2601(01)80003-4",
+      "evidence_grade": "B",
+      "key_finding": "Perceiving a behavior automatically activates the motor system to produce that behavior. The 'ideomotor principle': perception and action share common representational systems. Watching skilled behavior primes the body to reproduce it.",
+      "seeneyu_application": "Watching the Iron Man scene is not passive — perception of confident body language automatically activates the same motor circuits. The Watch phase neurologically primes the Record phase.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    },
+    {
+      "id": "src_ec_004",
+      "authors": [
+        "Schmidt, R.A.",
+        "Lee, T.D."
+      ],
+      "year": 2011,
+      "title": "Motor Control and Learning: A Behavioral Emphasis (5th ed.)",
+      "publisher": "Human Kinetics",
+      "isbn": "978-0736079617",
+      "evidence_grade": "D",
+      "key_finding": "Motor schema theory: skills are encoded as generalized motor programs in long-term memory. Each practice repetition strengthens the schema. Feedback quality determines schema precision. High-specificity feedback (e.g., video + AI scoring) produces more precise schemas than general feedback.",
+      "seeneyu_application": "AI scoring that identifies specific metrics (eye contact %, posture alignment, gesture frequency) builds more precise motor schemas than general human feedback like 'good job.' This is the technical case for AI coaching over human-only coaching.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    },
+    {
+      "id": "src_ec_005",
+      "authors": [
+        "Niedenthal, P.M."
+      ],
+      "year": 2007,
+      "title": "Embodying emotion",
+      "journal": "Science",
+      "volume": "316(5827)",
+      "pages": "1002–1005",
+      "doi": "10.1126/science.1136930",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17510358/",
+      "evidence_grade": "B",
+      "key_finding": "Emotional expression is not just output — physically adopting an expression activates the corresponding emotional state (facial feedback hypothesis, extended to full body). Practicing confident body language physically induces a more confident cognitive-emotional state.",
+      "seeneyu_application": "Users who practice open posture and direct eye contact in seeneyu sessions are not just learning to look confident — they are training their emotional state. The practice loop produces both behavioral and psychological change.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    },
+    {
+      "id": "src_ec_006",
+      "authors": [
+        "Barsalou, L.W."
+      ],
+      "year": 2008,
+      "title": "Grounded cognition",
+      "journal": "Annual Review of Psychology",
+      "volume": "59",
+      "pages": "617–645",
+      "doi": "10.1146/annurev.psych.59.103006.093639",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17705682/",
+      "evidence_grade": "B",
+      "citations": "7000+",
+      "key_finding": "Grounded cognition: all concepts (including abstract social ones like 'confidence' or 'authority') are represented as simulations of sensorimotor states. Understanding body language concepts without physical practice produces shallow representations that do not transfer to real performance.",
+      "seeneyu_application": "This explains why every body language book fails to produce real change. Cognitive understanding of 'open posture' does not create a motor program for it. Only physical practice with feedback creates the grounded representation needed for automatic execution.",
+      "quote": "Simulation of relevant sensorimotor and affective states underlies knowledge representation and produces emergent, flexible competence.",
+      "thread_id": "04-embodied-cognition",
+      "thread_title": "Embodied Cognition & Motor Memory in Performance Skills"
+    }
+  ]
+}

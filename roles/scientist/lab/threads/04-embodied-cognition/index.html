@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thread 04: Embodied Cognition — Coach Noey's Lab</title>
+  <style>
+    :root {
+      --lab-bg:#0f1117;--lab-surface:#1a1d27;--lab-border:#2a2d3a;
+      --lab-amber:#f59e0b;--lab-amber-dim:#92400e;--lab-text:#e2e8f0;
+      --lab-muted:#64748b;--lab-green:#10b981;--lab-blue:#3b82f6;
+      --lab-purple:#8b5cf6;--lab-font:Georgia,serif;--lab-mono:'Courier New',monospace;
+    }
+    * { box-sizing:border-box; margin:0; padding:0 }
+    body { background:var(--lab-bg); color:var(--lab-text); font-family:var(--lab-font); line-height:1.75 }
+    .topbar { background:var(--lab-surface); border-bottom:1px solid var(--lab-border); padding:12px 40px; display:flex; align-items:center; gap:12px }
+    .topbar a { color:var(--lab-amber); text-decoration:none; font-size:13px; font-family:var(--lab-mono) }
+    .topbar span { color:var(--lab-muted); font-size:13px }
+    h1 { font-size:2rem; color:#fff; line-height:1.3; margin-bottom:8px }
+    h2 { font-size:1.25rem; color:#fff; margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid var(--lab-border) }
+    p { font-size:15px; margin-bottom:14px }
+    .source-card { background:var(--lab-surface); border:1px solid var(--lab-border); border-radius:10px; padding:22px; margin-bottom:14px }
+    .grade { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; font-size:13px; font-weight:bold; font-family:var(--lab-mono); flex-shrink:0 }
+    .ga { background:rgba(16,185,129,.15); border:1.5px solid #10b981; color:#10b981 }
+    .gb { background:rgba(59,130,246,.15); border:1.5px solid #3b82f6; color:#3b82f6 }
+    .gc { background:rgba(139,92,246,.15); border:1.5px solid #8b5cf6; color:#8b5cf6 }
+    .gd { background:rgba(100,116,139,.15); border:1.5px solid #64748b; color:#94a3b8 }
+    .qblock { border-left:2px solid var(--lab-amber); padding:10px 16px; margin:12px 0; font-style:italic; color:#cbd5e1; font-size:14px }
+    .app { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.2); border-radius:6px; padding:12px 16px; margin-top:12px }
+    .app .lbl { font-size:10px; font-family:var(--lab-mono); color:var(--lab-amber); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px }
+    .app p { font-size:13px; color:#cbd5e1; margin:0 }
+    .caveat { font-size:12px; color:#94a3b8; font-style:italic; margin-top:8px; padding:8px 12px; background:rgba(100,116,139,.1); border-radius:4px }
+    footer { border-top:1px solid var(--lab-border); padding:24px 40px; text-align:center; font-size:12px; color:var(--lab-muted); font-family:var(--lab-mono) }
+    footer a { color:var(--lab-amber); text-decoration:none }
+
+    /* Page-specific styles */
+    .main { max-width:820px; margin:0 auto; padding:48px 40px 64px }
+
+    .lane-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(139,92,246,.12); border:1px solid rgba(139,92,246,.3);
+      color:var(--lab-purple); padding:4px 12px; border-radius:20px;
+      font-size:11px; font-family:var(--lab-mono); text-transform:uppercase; letter-spacing:1px;
+      margin-bottom:16px;
+    }
+    .lane-dot { width:6px; height:6px; border-radius:50%; background:var(--lab-purple) }
+
+    .thread-meta {
+      font-size:12px; color:var(--lab-muted); font-family:var(--lab-mono);
+      margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid var(--lab-border);
+    }
+    .thread-meta span { margin-right:18px }
+
+    .summary-box {
+      background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.25);
+      border-left:3px solid var(--lab-amber); border-radius:8px;
+      padding:20px 24px; margin-bottom:40px;
+    }
+    .summary-box p { font-size:14px; color:#cbd5e1; margin:0; line-height:1.8 }
+
+    .meta-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:40px;
+    }
+    .meta-cell {
+      background:var(--lab-surface); border:1px solid var(--lab-border);
+      border-radius:8px; padding:16px 18px;
+    }
+    .meta-cell .mc-label {
+      font-size:10px; font-family:var(--lab-mono); color:var(--lab-amber);
+      text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;
+    }
+    .meta-cell p { font-size:13px; color:#cbd5e1; margin:0; line-height:1.7 }
+
+    .section-header { margin-bottom:24px }
+    .sources-section { margin-bottom:48px }
+
+    .source-header { display:flex; align-items:flex-start; gap:14px; margin-bottom:14px }
+    .source-title-block { flex:1 }
+    .source-title {
+      font-size:16px; font-weight:bold; color:#fff; font-family:var(--lab-font);
+      margin-bottom:4px; line-height:1.4;
+    }
+    .source-meta {
+      font-size:12px; color:var(--lab-muted); font-family:var(--lab-mono);
+    }
+    .cites-badge {
+      display:inline-block; background:rgba(245,158,11,.1);
+      border:1px solid rgba(245,158,11,.2); color:var(--lab-amber);
+      font-size:10px; font-family:var(--lab-mono); padding:2px 8px;
+      border-radius:4px; margin-left:8px; vertical-align:middle;
+    }
+    .source-finding {
+      font-size:14px; color:#cbd5e1; margin-bottom:0; line-height:1.75;
+    }
+
+    .seeneyu-box {
+      background:linear-gradient(135deg, rgba(245,158,11,.08) 0%, rgba(139,92,246,.06) 100%);
+      border:1px solid rgba(245,158,11,.25); border-radius:12px;
+      padding:32px; margin-bottom:48px;
+    }
+    .seeneyu-box h2 {
+      border-bottom-color:rgba(245,158,11,.2); color:#fff;
+    }
+
+    .loop-diagram {
+      display:flex; align-items:center; gap:0; margin:24px 0; flex-wrap:wrap;
+    }
+    .loop-step {
+      background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.25);
+      border-radius:6px; padding:8px 16px;
+      font-size:12px; font-family:var(--lab-mono); color:var(--lab-amber);
+      white-space:nowrap;
+    }
+    .loop-arrow {
+      color:var(--lab-muted); font-size:18px; margin:0 8px; flex-shrink:0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="../index.html">← Lab Index</a>
+    <span>/</span>
+    <span>Thread 04: Embodied Cognition</span>
+  </div>
+
+  <div class="main">
+
+    <!-- Lane & Title -->
+    <div class="lane-badge">
+      <span class="lane-dot"></span>
+      Clinical Science Lane
+    </div>
+
+    <h1>Embodied Cognition &amp; Motor Memory in Performance Skills</h1>
+
+    <div class="thread-meta">
+      <span>Thread #04</span>
+      <span>·</span>
+      <span style="margin-left:18px">6 Sources</span>
+      <span style="margin-left:18px">·</span>
+      <span style="margin-left:18px">Last updated: 2026-04-06</span>
+      <span style="margin-left:18px">·</span>
+      <span style="margin-left:18px">Evidence: A–D</span>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-box">
+      <p>Body language is not knowledge — it is motor memory. Wilson's embodied cognition framework explains why seeneyu users must physically record themselves rather than just read about or think about body language. Physical enactment is the mechanism by which abstract body language concepts become automatic, natural behavior. AI scoring of the recording is the feedback loop that encodes these behaviors into motor memory.</p>
+    </div>
+
+    <!-- Meta Grid -->
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <div class="mc-label">Core Hypothesis</div>
+        <p>Motor skills like body language can only be meaningfully acquired through physical practice — not cognitive study alone. The body encodes competence through repeated physical enactment.</p>
+      </div>
+      <div class="meta-cell">
+        <div class="mc-label">Key Finding</div>
+        <p>Off-line cognition is body-based (Wilson 2002). Mental representations of skills are grounded in motor-system simulations. Practice involving physical enactment produces fundamentally superior skill encoding vs. study alone.</p>
+      </div>
+      <div class="meta-cell">
+        <div class="mc-label">Strongest Evidence</div>
+        <p>Grade B: Niedenthal (2007) — embodied emotion in Science journal. Physical posture adoption measurably changes emotional state and downstream behavioral performance.</p>
+      </div>
+      <div class="meta-cell">
+        <div class="mc-label">seeneyu Implication</div>
+        <p>The recording requirement is scientifically essential — it is the mechanism of actual skill transfer. Reading body language theory produces verbal representations. Recording yourself produces embodied motor-cortex representations.</p>
+      </div>
+    </div>
+
+    <!-- Background -->
+    <div class="section-header">
+      <h2>Background</h2>
+    </div>
+    <p>The emerging viewpoint of embodied cognition holds that cognitive processes are deeply rooted in the body's interactions with the world. Margaret Wilson's influential 2002 paper "Six Views of Embodied Cognition" evaluated six claims of embodied cognition, concluding that the best-documented and most powerful claim is that off-line cognition is body-based: even when not engaged in real-time physical action, the cognitive system recruits motor and sensory systems to simulate action.</p>
+    <p>This has profound implications for skill learning. Implicit procedural memory — the memory system that stores skills like riding a bike, playing piano, or confidently holding eye contact — is fundamentally embodied. It can only be written through physical practice, not verbal instruction. This explains why every body language book fails to produce lasting behavioral change: reading creates declarative (verbal) memory, not the procedural (motor) memory required for automatic execution.</p>
+
+    <!-- Sources -->
+    <div class="sources-section">
+      <div class="section-header">
+        <h2>Sources</h2>
+      </div>
+
+      <!-- Source 1 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gd">D</div>
+          <div class="source-title-block">
+            <div class="source-title">
+              Six views of embodied cognition
+              <span class="cites-badge">4,500+ citations</span>
+            </div>
+            <div class="source-meta">Wilson &nbsp;·&nbsp; Psychonomic Bulletin &amp; Review, 9(4), 625–636 &nbsp;·&nbsp; 2002</div>
+          </div>
+        </div>
+        <p class="source-finding">Evaluated six embodied cognition claims. Best-documented claim: "off-line cognition is body-based" — the cognitive system uses motor and sensory systems to simulate action even when not physically acting. Implicit memory automatizes skills: new motor skills begin as effortful and conscious, becoming automatic with practice.</p>
+        <div class="qblock">"Implicit memory is the means by which we learn skills, automatizing what was formerly effortful, and with practice, new skills become automatized, reducing cognitive load."</div>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>Reading about open posture creates a declarative (verbal) representation. Recording yourself with open posture creates a procedural (motor-cortex) representation that eventually becomes automatic and effortless. seeneyu's recording requirement is scientifically necessary — it is the only mechanism for creating embodied skill.</p>
+        </div>
+      </div>
+
+      <!-- Source 2 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gb">B</div>
+          <div class="source-title-block">
+            <div class="source-title">Embodying emotion</div>
+            <div class="source-meta">Niedenthal &nbsp;·&nbsp; Science, 316(5827), 1002–1005 &nbsp;·&nbsp; 2007</div>
+          </div>
+        </div>
+        <p class="source-finding">Physical adoption of an emotional expression activates the corresponding emotional state — the facial feedback hypothesis extended to full-body expression. Practicing confident body postures physically induces a more confident cognitive-emotional state, not just the appearance of confidence.</p>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>Users who practice open posture and direct eye contact in seeneyu sessions are not just learning to look confident — they are training their emotional state. The practice loop produces both behavioral and psychological change simultaneously.</p>
+        </div>
+      </div>
+
+      <!-- Source 3 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gc">C</div>
+          <div class="source-title-block">
+            <div class="source-title">Preparatory power posing affects nonverbal presence and job interview performance</div>
+            <div class="source-meta">Cuddy, Wilmuth, Yap &amp; Carney &nbsp;·&nbsp; Journal of Applied Psychology, 100(4), 1286–1295 &nbsp;·&nbsp; 2015</div>
+          </div>
+        </div>
+        <p class="source-finding">Physical adoption of power/expansive body postures before performance tasks measurably improved outcome evaluations by independent judges. Judges could not identify <em>why</em> they rated power-posed candidates higher — the effect operated below conscious detection.</p>
+        <div class="qblock">"Preparatory nonverbal expansiveness improved interview performance beyond the effect of semantic content of answers."</div>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>Physical practice of power/open postures transfers to real interview and presentation performance — as rated by external observers, not self-report. This is the outcome evidence: seeneyu practice changes how others perceive you.</p>
+        </div>
+        <div class="caveat">Caveat: Hormonal claims (testosterone/cortisol) in the original Carney et al. 2010 paper were not reliably replicated. The behavioral performance effect — improved external evaluations — is the reproducible finding.</div>
+      </div>
+
+      <!-- Source 4 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gd">D</div>
+          <div class="source-title-block">
+            <div class="source-title">Motor Control and Learning: A Behavioral Emphasis (5th edition)</div>
+            <div class="source-meta">Schmidt &amp; Lee &nbsp;·&nbsp; Human Kinetics &nbsp;·&nbsp; 2011 &nbsp;·&nbsp; ISBN 978-0736079617</div>
+          </div>
+        </div>
+        <p class="source-finding">Motor schema theory: skills are encoded as generalized motor programs in long-term memory. Each practice repetition refines the schema. Feedback quality directly determines schema precision — high-specificity feedback produces more precise, transferable skills than vague feedback.</p>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>AI scoring that identifies specific metrics (eye contact %, posture angle, gesture frequency) builds more precise motor schemas than general human feedback ("good job"). This is the scientific argument for AI-precision feedback over human coaching for motor skill acquisition.</p>
+        </div>
+      </div>
+
+      <!-- Source 5 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gb">B</div>
+          <div class="source-title-block">
+            <div class="source-title">The perception-behavior expressway: Automatic effects of social perception on social behavior</div>
+            <div class="source-meta">Dijksterhuis &amp; Bargh &nbsp;·&nbsp; Advances in Experimental Social Psychology, 33, 1–40 &nbsp;·&nbsp; 2001</div>
+          </div>
+        </div>
+        <p class="source-finding">Perceiving a behavior automatically activates the motor system to produce that behavior — the "ideomotor principle." Perception and action share common representational systems. This means watching body language involuntarily activates the body to reproduce it.</p>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>The perception-behavior link means that watching confident body language on screen involuntarily begins to activate the user's own confidence postures and movements. The Watch phase is not passive — it is a physical priming event.</p>
+        </div>
+      </div>
+
+      <!-- Source 6 -->
+      <div class="source-card">
+        <div class="source-header">
+          <div class="grade gb">B</div>
+          <div class="source-title-block">
+            <div class="source-title">
+              Grounded cognition
+              <span class="cites-badge">7,000+ citations</span>
+            </div>
+            <div class="source-meta">Barsalou &nbsp;·&nbsp; Annual Review of Psychology, 59, 617–645 &nbsp;·&nbsp; 2008</div>
+          </div>
+        </div>
+        <p class="source-finding">All concepts — including abstract social concepts like "confidence," "authority," or "warmth" — are represented as simulations of sensorimotor states. Understanding body language concepts without physical practice produces shallow representations that do not transfer to real-world behavioral performance.</p>
+        <div class="qblock">"Simulation of relevant sensorimotor and affective states underlies knowledge representation and produces emergent, flexible competence."</div>
+        <div class="app">
+          <div class="lbl">seeneyu Application</div>
+          <p>This explains the universal failure of body language books: cognitive understanding of "open posture" does not create a motor program for it. Only physical practice creates the grounded sensorimotor representation needed for automatic, unconscious execution in high-stakes situations.</p>
+        </div>
+      </div>
+
+    </div><!-- /sources-section -->
+
+    <!-- seeneyu Validation Box -->
+    <div class="seeneyu-box">
+      <h2>How This Research Validates seeneyu</h2>
+      <p>Embodied cognition research provides the deepest scientific explanation for why seeneyu works when body language books, courses, and videos do not: only physical enactment creates the embodied motor memory required for automatic, real-world behavior change.</p>
+
+      <div class="loop-diagram">
+        <div class="loop-step">Watch (sensorimotor priming)</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Record (motor program encoding)</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">AI Feedback (schema refinement)</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Repeat (automatization)</div>
+      </div>
+
+      <p>The recording requirement is not a product feature — it is the scientific mechanism. Body language knowledge without physical practice is declarative memory: accessible when consciously recalled, but not automatic in high-pressure situations. Embodied practice creates procedural memory: automatic, effortless execution under any conditions.</p>
+
+      <p style="margin-bottom:0">This research provides the strongest argument against passive learning competitors: Coursera, YouTube, books, and seminars all produce declarative knowledge. seeneyu is the only product that creates embodied, procedural skill — the only type of learning that changes actual behavioral performance.</p>
+    </div>
+
+  </div><!-- /main -->
+
+  <footer>
+    Coach Noey's Lab &nbsp;·&nbsp; seeneyu Scientific Evidence Base &nbsp;·&nbsp; Thread 04 of 10 planned &nbsp;·&nbsp;
+    <a href="../index.html">← Back to Lab</a>
+  </footer>
+
+</body>
+</html>

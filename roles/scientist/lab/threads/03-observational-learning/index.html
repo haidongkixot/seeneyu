@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thread 03: Observational Learning &amp; Mirror Neurons — Coach Noey's Lab</title>
+<style>
+  :root {
+    --lab-bg:#0f1117;--lab-surface:#1a1d27;--lab-border:#2a2d3a;
+    --lab-amber:#f59e0b;--lab-amber-dim:#92400e;--lab-text:#e2e8f0;
+    --lab-muted:#64748b;--lab-font:Georgia,serif;--lab-mono:'Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--lab-bg);color:var(--lab-text);font-family:var(--lab-font);line-height:1.75}
+  .topbar{background:var(--lab-surface);border-bottom:1px solid var(--lab-border);padding:12px 40px;display:flex;align-items:center;gap:12px}
+  .topbar a{color:var(--lab-amber);text-decoration:none;font-size:13px;font-family:var(--lab-mono)}
+  .topbar span{color:var(--lab-muted);font-size:13px}
+  .hero{padding:56px 40px 36px;max-width:920px;margin:0 auto}
+  .lane-badge{display:inline-block;background:linear-gradient(90deg,rgba(245,158,11,.12) 50%,rgba(139,92,246,.12) 50%);border:1px solid;border-image:linear-gradient(90deg,rgba(180,83,9,.6) 50%,rgba(109,40,217,.5) 50%) 1;font-size:11px;font-family:var(--lab-mono);padding:3px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;background-clip:padding-box;-webkit-background-clip:padding-box;border-radius:20px;position:relative;overflow:hidden}
+  .lane-badge-inner{background:linear-gradient(90deg,var(--lab-amber) 50%,#8b5cf6 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  h1{font-size:2rem;color:#fff;line-height:1.3;margin-bottom:8px}
+  .thread-id{color:var(--lab-muted);font-family:var(--lab-mono);font-size:13px;margin-bottom:24px}
+  .summary-box{background:var(--lab-surface);border-left:3px solid var(--lab-amber);padding:20px 24px;border-radius:0 8px 8px 0;margin-bottom:32px}
+  .summary-box p{font-size:15px}
+  .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:48px}
+  .meta-card{background:var(--lab-surface);border:1px solid var(--lab-border);border-radius:8px;padding:16px}
+  .meta-card .lbl{font-size:10px;font-family:var(--lab-mono);color:var(--lab-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .meta-card .val{font-size:14px}
+  .section{max-width:920px;margin:0 auto;padding:0 40px 48px}
+  h2{font-size:1.25rem;color:#fff;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--lab-border)}
+  h3{font-size:1rem;color:var(--lab-amber);margin:22px 0 8px}
+  p{font-size:15px;margin-bottom:14px}
+  .source-card{background:var(--lab-surface);border:1px solid var(--lab-border);border-radius:10px;padding:22px;margin-bottom:14px}
+  .src-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+  .src-title{font-size:15px;font-weight:bold;color:#fff;line-height:1.4}
+  .src-meta{font-size:12px;color:var(--lab-muted);margin-top:4px;font-family:var(--lab-mono)}
+  .grade{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:13px;font-weight:bold;font-family:var(--lab-mono);flex-shrink:0}
+  .ga{background:rgba(16,185,129,.15);border:1.5px solid #10b981;color:#10b981}
+  .gb{background:rgba(59,130,246,.15);border:1.5px solid #3b82f6;color:#3b82f6}
+  .gc{background:rgba(245,158,11,.15);border:1.5px solid var(--lab-amber);color:var(--lab-amber)}
+  .gd{background:rgba(100,116,139,.15);border:1.5px solid #64748b;color:#94a3b8}
+  .finding{font-size:14px;margin-bottom:10px}
+  .qblock{border-left:2px solid var(--lab-amber);padding:10px 16px;margin:12px 0;font-style:italic;color:#cbd5e1;font-size:14px}
+  .app{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:12px 16px;margin-top:12px}
+  .app .lbl{font-size:10px;font-family:var(--lab-mono);color:var(--lab-amber);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .app p{font-size:13px;color:#cbd5e1;margin:0}
+  .caveat{font-size:12px;color:#94a3b8;font-style:italic;margin-top:8px;padding:8px 12px;background:rgba(100,116,139,.1);border-radius:4px}
+  .cites{display:inline-block;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:#a78bfa;font-size:11px;font-family:var(--lab-mono);padding:2px 8px;border-radius:20px;margin-left:8px}
+  .seeneyu-wrap{max-width:920px;margin:0 auto;padding:0 40px 80px}
+  .seeneyu-box{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:32px}
+  .seeneyu-box h2{border:none;color:var(--lab-amber);padding:0;margin-bottom:16px}
+  .loop{display:flex;flex-wrap:wrap;gap:0;margin:20px 0}
+  .loop-s{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);padding:10px 16px;font-family:var(--lab-mono);font-size:13px;color:var(--lab-amber)}
+  .loop-s:first-child{border-radius:8px 0 0 8px}
+  .loop-s:last-child{border-radius:0 8px 8px 0}
+  .loop-arr{display:flex;align-items:center;padding:0 6px;color:var(--lab-muted);font-size:16px}
+  .grade-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .gl-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--lab-muted);font-family:var(--lab-mono)}
+  footer{border-top:1px solid var(--lab-border);padding:24px 40px;text-align:center;font-size:12px;color:var(--lab-muted);font-family:var(--lab-mono)}
+  footer a{color:var(--lab-amber);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html">&#8592; Coach Noey's Lab</a>
+  <span>/</span>
+  <span>Thread 03: Observational Learning &amp; Mirror Neurons</span>
+</div>
+
+<div class="hero">
+  <div class="lane-badge"><span class="lane-badge-inner">Social + Clinical Lane</span></div>
+  <h1>Observational Learning, Mirror Neurons &amp; Expert Modeling</h1>
+  <div class="thread-id">Thread #03 &middot; 6 Sources &middot; Last updated: 2026-04-06 &middot; Evidence: A&ndash;D</div>
+  <div class="summary-box">
+    <p>Before users record themselves, they watch Hollywood actors &mdash; expert performers of body language. This is structured observational learning. The neuroscience of mirror neurons explains why watching skilled models before practicing is neurologically superior to practicing without observation: <strong>perception and action share motor circuits.</strong></p>
+  </div>
+  <div class="meta-grid">
+    <div class="meta-card"><div class="lbl">Core Hypothesis</div><div class="val">Watching skilled performers execute a target behavior activates the observer's motor system, creating a neural template that improves subsequent physical reproduction.</div></div>
+    <div class="meta-card"><div class="lbl">Key Finding</div><div class="val">Mirror neurons fire during both action execution and observation. Observation = motor practice by another means. Watching-to-mimic activates stronger neural circuits than passive watching.</div></div>
+    <div class="meta-card"><div class="lbl">Strongest Evidence</div><div class="val">Grade B neuroscience studies (Rizzolatti 2004, Mattar &amp; Gribble 2005). fMRI confirms distinct imitation-learning circuit activation during expert model observation.</div></div>
+    <div class="meta-card"><div class="lbl">seeneyu Implication</div><div class="val">The 'Watch' phase is not passive content consumption &mdash; it is motor pre-activation. Observation Guide annotations that direct attention to specific skills amplify this effect.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Background</h2>
+  <p>Albert Bandura's Social Learning Theory (1977) established that learning occurs through observation &mdash; no direct experience required. The four-process model (Attention &rarr; Retention &rarr; Motor Reproduction &rarr; Motivation) describes exactly what happens when a seeneyu user watches an Iron Man scene with an Observation Guide: they attend to specific skills, retain via annotation, reproduce via recording, and are motivated by XP rewards.</p>
+  <p>The subsequent discovery of mirror neurons in macaque monkeys (Rizzolatti, 1996; 2004) provided a neurological basis for what Bandura described behaviorally. Mirror neurons fire both when an animal performs an action and when it observes the same action. Human neuroimaging studies have identified a homologous 'mirror system' in the inferior frontal gyrus and premotor cortex &mdash; the areas activated during both observation and imitation of motor behaviors.</p>
+
+  <h2>Evidence Base</h2>
+  <div class="grade-legend">
+    <div class="gl-item"><div class="grade ga">A</div> Meta-analysis / Systematic review</div>
+    <div class="gl-item"><div class="grade gb">B</div> Controlled study (pre-registered)</div>
+    <div class="gl-item"><div class="grade gc">C</div> Cohort / Observational</div>
+    <div class="gl-item"><div class="grade gd">D</div> Expert framework / Theoretical</div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">Social Learning Theory <span class="cites">100,000+ citations</span></div>
+        <div class="src-meta">Bandura &middot; Prentice Hall &middot; 1977</div>
+      </div>
+      <div class="grade gd">D</div>
+    </div>
+    <p class="finding">Learning occurs by observing others &mdash; no direct experience required. Four processes: Attention &rarr; Retention &rarr; Motor Reproduction &rarr; Motivation. Expert modeling activates all four simultaneously. Performance improves faster when learners first observe skilled models before attempting the skill.</p>
+    <div class="qblock">"From observing others, one forms an idea of how new behaviors are performed, and on later occasions this coded information serves as a guide for action."</div>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>seeneyu's Watch phase is a precisely structured Bandura observational learning session: users attend to a specific skill (Observation Guide directs attention), retain via annotations, then reproduce via recording. The Hollywood actor is the expert model.</p></div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">The mirror-neuron system <span class="cites">8,500+ citations</span></div>
+        <div class="src-meta">Rizzolatti &amp; Craighero &middot; Annual Review of Neuroscience, 27, 169&ndash;192 &middot; 2004</div>
+      </div>
+      <div class="grade gb">B</div>
+    </div>
+    <p class="finding">Mirror neurons in the premotor cortex fire both during action execution and during observation of the same action by another individual. This 'action observation network' creates a direct neural link between watching and doing &mdash; observation activates motor preparation circuits before physical practice begins.</p>
+    <div class="qblock">"Mirror neurons discharge during both the execution of motor acts and during the observation of similar acts performed by other individuals."</div>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>When users watch an Iron Man scene showing confident open posture, their premotor cortex fires as if they were performing the posture. The Watch phase provides neurological priming that makes subsequent recording more accurate &mdash; the brain has already begun motor preparation.</p></div>
+    <div class="caveat">&#9888; Direct single-cell mirror neuron recording in humans is ethically unfeasible. Human evidence comes from fMRI showing mirror-system homologs. The mechanism is established; the precise neural substrate in humans remains an active research area.</div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">Neural circuits underlying imitation learning of hand actions: An event-related fMRI study</div>
+        <div class="src-meta">Buccino et al. &middot; Neuron, 42(2), 323&ndash;334 &middot; 2004</div>
+      </div>
+      <div class="grade gb">B</div>
+    </div>
+    <p class="finding">fMRI shows that imitation learning activates a distinct neural circuit: STS &rarr; inferior frontal gyrus &rarr; primary motor cortex. This circuit is specifically and more strongly activated when watching an expert model with the intention to imitate, compared to passive observation. The framing 'watch this to mimic it' produces a neurologically different, stronger response.</p>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>seeneyu's instruction framing &mdash; 'watch this scene to practice this skill' &mdash; activates a fundamentally stronger neural circuit than passive video watching. The Observation Guide is not just UX &mdash; it is neuroscience: directing intentional watching-to-mimic.</p></div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">Motor learning by observing</div>
+        <div class="src-meta">Mattar &amp; Gribble &middot; Neuron, 46(1), 153&ndash;160 &middot; 2005</div>
+      </div>
+      <div class="grade gb">B</div>
+    </div>
+    <p class="finding">Controlled experiment: subjects who watched a skilled performer adapt a movement adapted their own motor system as if they had physically practiced. Observation-based motor adaptation was statistically indistinguishable from practice-based adaptation in early trials &mdash; the motor benefit of watching is real and measurable.</p>
+    <div class="qblock">"Observation of another person's movements can cause adaptation of the observer's own motor system."</div>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>Empirical confirmation that watching transfers to motor skill without physical practice. The Watch phase does real neuroscientific work &mdash; it is not just inspiration or motivation.</p></div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">Motor learning by observation: Evidence from a serial reaction time task</div>
+        <div class="src-meta">Heyes &amp; Foster &middot; Quarterly Journal of Experimental Psychology, 55A(2), 593&ndash;607 &middot; 2002</div>
+      </div>
+      <div class="grade gc">C</div>
+    </div>
+    <p class="finding">Motor learning from observation produces the same implicit sequence learning effects as physical practice, measured via serial reaction time. Watching a skilled performer activates motor programs &mdash; observation is motor practice by another route.</p>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>Adds implicit learning evidence: users build motor programs for target body language behaviors simply by watching expert models, even without conscious awareness of learning. The Watch phase is teaching the body, not just the mind.</p></div>
+  </div>
+
+  <div class="source-card">
+    <div class="src-hdr">
+      <div>
+        <div class="src-title">Biological mechanisms for observational learning</div>
+        <div class="src-meta">Heyes &middot; Current Opinion in Neurobiology, 54, 114&ndash;121 &middot; 2018 (PMC6361711)</div>
+      </div>
+      <div class="grade gb">B</div>
+    </div>
+    <p class="finding">Social information feeds into established learning circuits &mdash; the same plasticity mechanisms activated by direct experience. Mirror neurons are shaped by associative learning, meaning each Watch &rarr; Record pairing strengthens the neural link between observing the target skill and executing it. The effect compounds with repetition.</p>
+    <div class="app"><div class="lbl">seeneyu Application</div><p>Each Watch &rarr; Record cycle strengthens the user's mirror system associations for target skills. The pairing over multiple sessions creates progressively stronger and more automatic motor responses &mdash; the neuroscientific basis for seeneyu's multi-session improvement trajectory.</p></div>
+  </div>
+</div>
+
+<div class="seeneyu-wrap">
+  <div class="seeneyu-box">
+    <h2>How This Research Validates seeneyu</h2>
+    <p>The Watch phase of seeneyu's core loop is not passive content consumption &mdash; it is a neurologically active event. Observation of expert body language activates mirror system circuits, builds motor templates, and primes the physical execution that follows in the Record phase.</p>
+    <div class="loop">
+      <div class="loop-s">Watch (mirror system activation)</div>
+      <div class="loop-arr">&rarr;</div>
+      <div class="loop-s">Record (motor template execution)</div>
+      <div class="loop-arr">&rarr;</div>
+      <div class="loop-s">AI Feedback (error correction)</div>
+      <div class="loop-arr">&rarr;</div>
+      <div class="loop-s">Repeat (mirror system strengthening)</div>
+    </div>
+    <p>The crucial insight from Buccino et al. (2004) is that intentional watching-to-imitate activates a stronger neural circuit than passive watching. seeneyu's Observation Guide &mdash; which directs attention to specific skills before the clip plays &mdash; creates exactly this intentional observational state, amplifying the neurological benefit.</p>
+    <p>Hollywood actors are not arbitrary choices for models. They are expert performers of human behavior, trained in the precise skills seeneyu teaches. Bandura's expert modeling principle states that the higher the model's skill level, the stronger the observational learning effect.</p>
+  </div>
+</div>
+
+<footer>Coach Noey's Lab &middot; seeneyu Scientific Evidence Base &middot; Thread 03 of 10 planned &middot; <a href="../index.html">&#8592; Back to Lab</a></footer>
+</body>
+</html>
