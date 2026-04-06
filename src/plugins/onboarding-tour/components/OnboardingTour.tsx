@@ -1,16 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useTourConfig } from '../hooks/useTourConfig'
 import { useElementHighlight } from '../hooks/useElementHighlight'
-import type { TourPhase, TourConfig } from '../types'
+import type { TourPhase } from '../types'
 import { X, ChevronLeft, ChevronRight, Sparkles, Award } from 'lucide-react'
 
 export function OnboardingTour() {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const router = useRouter()
   const { config, loading: configLoading } = useTourConfig()
 
   const [phase, setPhase] = useState<TourPhase>('idle')
@@ -37,8 +38,25 @@ export function OnboardingTour() {
     }
   }, [tourCompleted, config, phase])
 
-  const currentStep = config?.steps?.[stepIdx] ?? null
+  const sortedSteps = config?.steps?.slice().sort((a, b) => a.order - b.order) ?? []
+  const currentStep = sortedSteps[stepIdx] ?? null
   const targetRect = useElementHighlight(phase === 'guided' ? currentStep?.targetSelector ?? null : null)
+
+  function advanceStep() {
+    const isLast = stepIdx >= sortedSteps.length - 1
+    if (isLast) {
+      completeTour(false)
+      return
+    }
+    const next = sortedSteps[stepIdx + 1]
+    // Navigate before incrementing so the target page loads while next step renders
+    if (currentStep?.action === 'navigate' && currentStep?.actionUrl) {
+      router.push(currentStep.actionUrl)
+    } else if (next?.page && !pathname?.startsWith(next.page)) {
+      router.push(next.page)
+    }
+    setStepIdx((p) => p + 1)
+  }
 
   async function completeTour(skipped: boolean) {
     setPhase('completing')
@@ -67,8 +85,8 @@ export function OnboardingTour() {
   // Don't render anything if not needed
   if (!session || tourCompleted !== false || !config?.enabled || phase === 'idle') return null
 
-  const slides = config.slides?.sort((a, b) => a.order - b.order) ?? []
-  const steps = config.steps?.sort((a, b) => a.order - b.order) ?? []
+  const slides = config.slides?.slice().sort((a, b) => a.order - b.order) ?? []
+  const steps = sortedSteps
 
   // ── Intro Slideshow ─────────────────────────────────────────
   if (phase === 'slideshow') {
@@ -120,6 +138,7 @@ export function OnboardingTour() {
   // ── Guided Tour (Spotlight + Tooltip) ───────────────────────
   if (phase === 'guided' && currentStep) {
     const isLast = stepIdx >= steps.length - 1
+    const isNavigateStep = currentStep.action === 'navigate'
     const pad = 8
 
     return (
@@ -180,13 +199,10 @@ export function OnboardingTour() {
                     </button>
                   )}
                   <button
-                    onClick={() => {
-                      if (isLast) completeTour(false)
-                      else setStepIdx((p) => p + 1)
-                    }}
+                    onClick={advanceStep}
                     className="bg-amber-400 text-black text-xs font-semibold px-4 py-2 rounded-lg hover:bg-amber-300 transition-colors flex items-center gap-1"
                   >
-                    {isLast ? 'Complete' : 'Next'} <ChevronRight size={14} />
+                    {isLast ? 'Complete' : isNavigateStep ? 'Go →' : 'Next'} <ChevronRight size={14} />
                   </button>
                 </div>
               </div>
@@ -213,10 +229,10 @@ export function OnboardingTour() {
                 </a>
               )}
               <button
-                onClick={() => isLast ? completeTour(false) : setStepIdx((p) => p + 1)}
+                onClick={advanceStep}
                 className="bg-amber-400 text-black text-xs font-semibold px-4 py-2 rounded-lg"
               >
-                {isLast ? 'Complete' : 'Next'}
+                {isLast ? 'Complete' : isNavigateStep ? 'Go →' : 'Next'}
               </button>
             </div>
           </div>
