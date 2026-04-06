@@ -16,10 +16,22 @@ interface BundleData {
   totalXP: number
 }
 
+interface UserPrefs {
+  genres: string[]
+  purposes: string[]
+  traits: string[]
+}
+
 const THEME_EMOJI: Record<string, string> = {
   'Confidence': '\uD83C\uDFC6',
   'Empathy': '\uD83D\uDC9B',
   'Tension': '\u26A1',
+}
+
+function matchesBundlePrefs(bundle: BundleData, prefs: UserPrefs): boolean {
+  const text = `${bundle.title} ${bundle.description} ${bundle.theme}`.toLowerCase()
+  const allKeywords = [...prefs.purposes, ...prefs.traits, ...prefs.genres]
+  return allKeywords.some(kw => text.includes(kw.replace(/-/g, ' ').toLowerCase()))
 }
 
 function DifficultyDots({ level }: { level: string }) {
@@ -37,6 +49,17 @@ function DifficultyDots({ level }: { level: string }) {
 export default function ArcadePage() {
   const [bundles, setBundles] = useState<BundleData[]>([])
   const [loading, setLoading] = useState(true)
+  const [prefs, setPrefs] = useState<UserPrefs | null>(null)
+  const [recommendedIds, setRecommendedIds] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    fetch('/api/preferences')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && !data.error) setPrefs(data)
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     fetch('/api/arcade/bundles')
@@ -44,6 +67,23 @@ export default function ArcadePage() {
       .then(data => { setBundles(data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    if (!prefs || bundles.length === 0) return
+    const allKeywords = [...prefs.purposes, ...prefs.traits, ...prefs.genres]
+    if (allKeywords.length === 0) return
+    const ids = new Set<string>()
+    for (const b of bundles) {
+      if (matchesBundlePrefs(b, prefs)) ids.add(b.id)
+    }
+    setRecommendedIds(ids)
+  }, [prefs, bundles])
+
+  const sortedBundles = [...bundles].sort((a, b) => {
+    const aRec = recommendedIds.has(a.id) ? 1 : 0
+    const bRec = recommendedIds.has(b.id) ? 1 : 0
+    return bRec - aRec
+  })
 
   const totalXP = bundles.reduce((s, b) => s + b.totalXP, 0)
 
@@ -80,11 +120,16 @@ export default function ArcadePage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bundles.map(bundle => (
+            {sortedBundles.map(bundle => (
               <Link key={bundle.id} href={`/arcade/${bundle.id}`}>
                 <div className="group relative flex flex-col p-6 rounded-2xl bg-bg-surface border border-black/8 shadow-card hover:shadow-card-hover hover:-translate-y-1 hover:border-accent-400/20 transition-all duration-300 cursor-pointer min-h-[200px]">
-                  <div className="text-4xl mb-4">
-                    {THEME_EMOJI[bundle.theme] || '\uD83C\uDFAF'}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="text-4xl">
+                      {THEME_EMOJI[bundle.theme] || '\uD83C\uDFAF'}
+                    </div>
+                    {recommendedIds.has(bundle.id) && (
+                      <span className="bg-accent-400/10 text-accent-400 text-xs font-medium px-2 py-0.5 rounded-full">Recommended</span>
+                    )}
                   </div>
                   <h3 className="text-lg font-bold text-text-primary mb-1">{bundle.title}</h3>
                   <p className="text-sm text-text-secondary mb-4 flex-1">{bundle.description}</p>

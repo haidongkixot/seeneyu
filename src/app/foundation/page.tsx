@@ -28,6 +28,8 @@ export default async function FoundationPage() {
   // Get user progress if logged in
   let progressMap: Record<string, number> = {}
   const userId = (session?.user as any)?.id as string | undefined
+  let recommendedCourseIds = new Set<string>()
+
   if (userId) {
     const allProgress = await prisma.foundationProgress.findMany({
       where: { userId, quizPassed: true },
@@ -38,7 +40,31 @@ export default async function FoundationPage() {
       const cId = p.lesson.courseId
       progressMap[cId] = (progressMap[cId] || 0) + 1
     }
+
+    // Check user preferences for recommendations
+    const prefs = await (prisma as any).userPreferences.findUnique({ where: { userId } }).catch(() => null)
+    if (prefs) {
+      const purposes = (prefs.purposes as string[]) ?? []
+      const traits = (prefs.traits as string[]) ?? []
+      const genres = (prefs.genres as string[]) ?? []
+      const allKeywords = [...purposes, ...traits, ...genres]
+      if (allKeywords.length > 0) {
+        for (const course of courses) {
+          const text = `${course.title} ${course.description}`.toLowerCase()
+          if (allKeywords.some(kw => text.includes(kw.replace(/-/g, ' ').toLowerCase()))) {
+            recommendedCourseIds.add(course.id)
+          }
+        }
+      }
+    }
   }
+
+  // Sort recommended courses first
+  const sortedCourses = [...courses].sort((a, b) => {
+    const aRec = recommendedCourseIds.has(a.id) ? 1 : 0
+    const bRec = recommendedCourseIds.has(b.id) ? 1 : 0
+    return bRec - aRec
+  })
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -53,7 +79,7 @@ export default async function FoundationPage() {
 
         {/* Course grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {courses.map((course) => {
+          {sortedCourses.map((course) => {
             const totalLessons = course._count.lessons
             const completedLessons = progressMap[course.id] || 0
             const progressPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
@@ -66,7 +92,12 @@ export default async function FoundationPage() {
                 href={`/foundation/${course.slug}`}
                 className={`group flex flex-col bg-gradient-to-b ${gradientClass} border rounded-2xl p-6 transition-all duration-200 hover:-translate-y-1`}
               >
-                <div className="text-4xl mb-4">{course.icon}</div>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-4xl">{course.icon}</div>
+                  {recommendedCourseIds.has(course.id) && (
+                    <span className="bg-accent-400/10 text-accent-400 text-xs font-medium px-2 py-0.5 rounded-full">Recommended</span>
+                  )}
+                </div>
                 <h2 className="text-xl font-bold text-text-primary mb-2">{course.title}</h2>
                 <p className="text-text-secondary text-sm mb-4 flex-1">{course.description}</p>
                 <div className="flex items-center justify-between text-xs text-text-tertiary mb-3">

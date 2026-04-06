@@ -60,6 +60,18 @@ const GAME_META: Record<string, {
   },
 }
 
+interface UserPrefs {
+  genres: string[]
+  purposes: string[]
+  traits: string[]
+}
+
+function matchesGamePrefs(game: GameData, prefs: UserPrefs): boolean {
+  const text = `${game.title} ${game.description} ${game.type}`.toLowerCase()
+  const allKeywords = [...prefs.traits, ...prefs.purposes, ...prefs.genres]
+  return allKeywords.some(kw => text.includes(kw.replace(/-/g, ' ').toLowerCase()))
+}
+
 // ── Main Page ──────────────────────────────────────────────────────────
 
 export default function GamesPage() {
@@ -69,6 +81,17 @@ export default function GamesPage() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [lbLoading, setLbLoading] = useState(false)
   const [copiedEmbed, setCopiedEmbed] = useState(false)
+  const [prefs, setPrefs] = useState<UserPrefs | null>(null)
+  const [recommendedTypes, setRecommendedTypes] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    fetch('/api/preferences')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && !data.error) setPrefs(data)
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     fetch('/api/public/games')
@@ -83,6 +106,23 @@ export default function GamesPage() {
       })
       .catch(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    if (!prefs || games.length === 0) return
+    const allKeywords = [...prefs.traits, ...prefs.purposes, ...prefs.genres]
+    if (allKeywords.length === 0) return
+    const types = new Set<string>()
+    for (const g of games) {
+      if (matchesGamePrefs(g, prefs)) types.add(g.type)
+    }
+    setRecommendedTypes(types)
+  }, [prefs, games])
+
+  const sortedGames = [...games].sort((a, b) => {
+    const aRec = recommendedTypes.has(a.type) ? 1 : 0
+    const bRec = recommendedTypes.has(b.type) ? 1 : 0
+    return bRec - aRec
+  })
 
   useEffect(() => {
     if (!leaderboardType) return
@@ -135,7 +175,7 @@ export default function GamesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {games.map(game => {
+            {sortedGames.map(game => {
               const meta = GAME_META[game.type]
               if (!meta) return null
               const Icon = meta.icon
@@ -148,11 +188,18 @@ export default function GamesPage() {
                   {/* Gradient header */}
                   <div className={`h-24 bg-gradient-to-br ${meta.color} flex items-center justify-center relative`}>
                     <Icon size={40} className="text-white/60" />
-                    {meta.badge && (
-                      <span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent-400 text-bg-base">
-                        {meta.badge}
-                      </span>
-                    )}
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                      {recommendedTypes.has(game.type) && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent-400/10 text-accent-400 border border-accent-400/30">
+                          Recommended
+                        </span>
+                      )}
+                      {meta.badge && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent-400 text-bg-base">
+                          {meta.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex flex-col flex-1 p-5">
