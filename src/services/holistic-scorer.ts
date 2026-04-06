@@ -123,3 +123,89 @@ export function computeHolisticScore(
     temporalAnalysis,
   }
 }
+
+// ── Per-frame scoring (I2: Feedforward) ──────────────────────────────
+
+export interface SnapshotScore {
+  sec: number
+  score: number
+}
+
+/**
+ * Score a single analysis snapshot (one frame).
+ * Returns 0-100 composite from face + pose + hands presence.
+ * Used to build per-frame score arrays for peak detection.
+ */
+export function scoreSnapshot(snapshot: AnalysisSnapshot, skillCategory: string): number {
+  let score = 0
+  let weights = 0
+
+  // Face score (same logic as above, single frame)
+  if (snapshot.faceDetected) {
+    const vals = Object.values(snapshot.blendshapes).filter((_, i) => i > 0)
+    const faceScore = clamp(avg(vals) * 200 + 30, 0, 100)
+    score += faceScore * 0.5
+    weights += 0.5
+  }
+
+  // Pose score
+  if (snapshot.poseLandmarks) {
+    const p = snapshot.poseLandmarks
+    const width = Math.abs(p.leftShoulder.x - p.rightShoulder.x)
+    const headSize = Math.abs(p.leftEar.x - p.rightEar.x) || 0.01
+    const poseScore = clamp((width / headSize) * 30, 0, 100)
+    score += poseScore * 0.3
+    weights += 0.3
+  }
+
+  // Hands score
+  if (snapshot.handLandmarks) {
+    score += 75 * 0.2 // hands detected = 75 base score
+    weights += 0.2
+  }
+
+  return weights > 0 ? Math.round(score / weights) : 0
+}
+
+/**
+ * Find the best-performing window of `windowSec` seconds within snapshot scores.
+ * Returns the start/end seconds and average score of the peak window.
+ * Returns null if data is insufficient.
+ */
+export function findPeakWindow(
+  scores: SnapshotScore[],
+  windowSec: number = 3,
+): { startSec: number; endSec: number; avgScore: number } | null {
+  if (scores.length < 2) return null
+
+  const totalDuration = scores[scores.length - 1].sec - scores[0].sec
+  if (totalDuration < windowSec) {
+    // Recording shorter than window — use entire recording
+    const avgScore = Math.round(avg(scores.map(s => s.score)))
+    return { startSec: scores[0].sec, endSec: scores[scores.length - 1].sec, avgScore }
+  }
+
+  let bestStart = 0
+  let bestAvg = 0
+
+  for (let i = 0; i < scores.length; i++) {
+    const windowStart = scores[i].sec
+    const windowEnd = windowStart + windowSec
+
+    // Collect scores within this window
+    const windowScores = scores.filter(s => s.sec >= windowStart && s.sec <= windowEnd)
+    if (windowScores.length === 0) continue
+
+    const windowAvg = avg(windowScores.map(s => s.score))
+    if (windowAvg > bestAvg) {
+      bestAvg = windowAvg
+      bestStart = windowStart
+    }
+  }
+
+  return {
+    startSec: Math.round(bestStart * 10) / 10,
+    endSec: Math.round((bestStart + windowSec) * 10) / 10,
+    avgScore: Math.round(bestAvg),
+  }
+}
