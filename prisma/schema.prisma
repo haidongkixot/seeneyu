@@ -41,6 +41,7 @@ model Clip {
   annotations    Annotation[]
   sessions       UserSession[]
   practiceSteps  PracticeStep[]
+  tags           ClipTag[]
 
   @@index([skillCategory])
   @@index([difficulty])
@@ -70,15 +71,22 @@ model UserSession {
   status       String    @default("recording")
   feedback     Json?
   scores       Json?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  completedAt  DateTime?
-  userId       String?
-  user         User?     @relation(fields: [userId], references: [id])
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  completedAt          DateTime?
+  userId               String?
+  user                 User?     @relation(fields: [userId], references: [id])
+  // ── I2: Feedforward ──
+  snapshotScores       Json?     // [{sec: number, score: number}] per-frame scores for peak detection
+  recordingDurationSec Int?      // needed for timestamp calculation
+  // ── I3: Spaced Review ──
+  nextReviewAt         DateTime?
+  reviewCount          Int       @default(0)
 
   @@index([clipId])
   @@index([status])
   @@index([createdAt])
+  @@index([nextReviewAt])
 }
 
 // ── Auth models (NextAuth.js v4 Prisma adapter) ────────────────────────────
@@ -122,6 +130,7 @@ model User {
   teamPlanId         String?
   teamPlan           TeamPlan?       @relation(fields: [teamPlanId], references: [id])
   managedTeams       TeamPlan[]      @relation("TeamAdmin")
+  preferences        UserPreferences?
 
   @@index([status])
 }
@@ -137,6 +146,37 @@ model SkillBaseline {
 
   @@unique([userId, skillCategory])
   @@index([userId])
+}
+
+// ── LC: Clip Tags (genre, purpose, character traits) ──────────────────────────
+
+model ClipTag {
+  id         String   @id @default(cuid())
+  clipId     String
+  clip       Clip     @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  category   String   // 'genre' | 'purpose' | 'trait'
+  value      String   // e.g. 'drama', 'for-work', 'confident'
+  source     String   @default("manual") // 'manual' | 'ai-auto' | 'ai-confirmed'
+  confidence Float?
+  createdAt  DateTime @default(now())
+
+  @@unique([clipId, category, value])
+  @@index([category, value])
+}
+
+// ── LC: User Preferences (personalized learning curve) ────────────────────────
+
+model UserPreferences {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal      String?  // 'job-interview' | 'public-speaking' | 'dating-social' | 'leadership' | 'performing-career' | 'education'
+  genres    Json     @default("[]") // String[] of genre slugs
+  purposes  Json     @default("[]") // String[] of purpose slugs
+  traits    Json     @default("[]") // String[] of trait slugs
+  gender    String?  // 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 }
 
 model Account {
