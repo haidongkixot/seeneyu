@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard, UserCircle, Settings, BarChart3 } from 'lucide-react'
+import { Library, LayoutDashboard, Menu, X, User, LogOut, ShieldCheck, BookOpen, Zap, Gamepad2, ExternalLink, CreditCard, UserCircle, Settings, BarChart3, GraduationCap } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { GamificationBar } from '@/components/gamification/GamificationBar'
 
@@ -120,6 +120,14 @@ export function NavBar() {
                     Learning Preferences
                   </Link>
                   <Link
+                    href="/knowledge"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors md:hidden"
+                  >
+                    <GraduationCap size={14} />
+                    Learn
+                  </Link>
+                  <Link
                     href="/pricing"
                     onClick={() => setAvatarOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors"
@@ -207,6 +215,14 @@ export function NavBar() {
                   >
                     <Settings size={14} />
                     Learning Preferences
+                  </Link>
+                  <Link
+                    href="/knowledge"
+                    onClick={() => setAvatarOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors md:hidden"
+                  >
+                    <GraduationCap size={14} />
+                    Learn
                   </Link>
                   <Link
                     href="/pricing"

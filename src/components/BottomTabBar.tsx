@@ -3,15 +3,17 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Home, BookOpen, Play, Gamepad2, LayoutDashboard } from 'lucide-react'
+import { Library, BookOpen, Zap, Gamepad2, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
+// Mirrors desktop NavBar baseLinks (icons + labels) so mobile and desktop
+// stay consistent. 5 tabs max for usability.
 const tabs = [
-  { href: '/', label: 'Home', Icon: Home },
   { href: '/dashboard', label: 'My Path', Icon: LayoutDashboard },
-  { href: '/foundation', label: 'Learn', Icon: BookOpen },
-  { href: '/library', label: 'Practice', Icon: Play },
-  { href: '/arcade', label: 'Arcade', Icon: Gamepad2 },
+  { href: '/library', label: 'Library', Icon: Library },
+  { href: '/foundation', label: 'Foundation', Icon: BookOpen },
+  { href: '/arcade', label: 'Arcade', Icon: Zap },
+  { href: '/games', label: 'Games', Icon: Gamepad2 },
 ] as const
 
 export function BottomTabBar() {
