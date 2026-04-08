@@ -3,10 +3,43 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-08T15:11:10.503Z",
-    "open_count": 97
+    "last_updated": "2026-04-08T15:27:38.195Z",
+    "open_count": 100
   },
   "signals": [
+    {
+      "id": "sig_pm_tester_1775662058194",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "camera-leak-verification",
+      "priority": "high",
+      "message": "TESTER: After Backend + Builder ship the camera + hands-free hot-fix, run 7 verification scenarios from roles/pm/library/camera-cleanup-handsfree-relocation-plan.md Phase 4. CRITICAL: confirm camera LED on your laptop turns OFF after each scenario (browser navigation away, tab switch, etc). Report any leaks back via signal.",
+      "timestamp": "2026-04-08T15:27:38.194Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1775662058116",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "handsfree-button-relocation",
+      "priority": "high",
+      "message": "BUILDER: Move 'Start Hands-Free Mode' button from bundle list to challenge detail screen. File: src/app/arcade/[bundleId]/page.tsx. REMOVE the button currently rendered in the bundle list header (above challenge cards). ADD it to the Challenge Active Screen (screen === 'challenge') as a secondary CTA next to the existing record controls. When clicked, call setHandsFreeActive(true) — but the hands-free flow must start at the CURRENT challenge (startIdx={activeIdx}) not from index 0. Reason: user wants explicit per-challenge opt-in, not bundle-wide. Coordinate with Backend Engineer who is fixing camera leaks in the same file in parallel.",
+      "timestamp": "2026-04-08T15:27:38.116Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1775662058040",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "camera-cleanup-hotfix",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: P0 hot-fix. Camera leaks across the app — stays on after navigation. Plan: roles/pm/library/camera-cleanup-handsfree-relocation-plan.md. PHASE 1: build src/hooks/useCameraStream.ts (returns videoRef + streamRef + startCamera + stopCamera, auto-stops on unmount + visibilitychange + beforeunload, clears srcObject). PHASE 2: patch 7 files with inline cleanup useEffect (RecordClient.tsx, AiImagePractice.tsx, arcade/[bundleId]/page.tsx, HandsFreePracticeFlow.tsx, ArcadeHandsFreeFlow.tsx, PracticeRecorder.tsx, ExpressionKingGame.tsx). Every file must: stop tracks, clear videoRef.current.srcObject, null streamRef.current. Estimated 3h total. P0 — privacy bug.",
+      "timestamp": "2026-04-08T15:27:38.040Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_tester_1775661060246",
       "from": "pm",

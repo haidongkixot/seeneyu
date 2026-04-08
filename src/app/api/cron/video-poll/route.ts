@@ -7,6 +7,7 @@
  * Flow: asset.status='generating' + metadata.pending=true + metadata.providerTaskId
  *   → poll provider → on complete: upload to Blob, mark ready, advance request to review
  */
+export const dynamic = 'force-dynamic'
 
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'

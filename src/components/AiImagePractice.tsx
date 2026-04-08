@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { Camera, RotateCcw, CheckCircle, XCircle, ArrowLeft, Star } from 'lucide-react'
 import Link from 'next/link'
 
@@ -23,6 +23,15 @@ export function AiImagePractice({ clipId, imageUrl, title, skillCategory, annota
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
+
+  // Hot-fix: ensure camera stops on unmount (stops tracks, clears srcObject, nulls ref)
+  useEffect(() => {
+    return () => {
+      streamRef.current?.getTracks().forEach(t => t.stop())
+      if (videoRef.current) videoRef.current.srcObject = null
+      streamRef.current = null
+    }
+  }, [])
 
   const startCamera = useCallback(async () => {
     try {

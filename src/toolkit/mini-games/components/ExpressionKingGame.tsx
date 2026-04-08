@@ -92,6 +92,8 @@ export default function ExpressionKingGame({
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((t) => t.stop())
       }
+      if (videoRef.current) videoRef.current.srcObject = null
+      streamRef.current = null
     }
   }, [])
 

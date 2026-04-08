@@ -113,6 +113,7 @@ export default function ArcadeHandsFreeFlow({ challenges, startIdx = 0, onExit, 
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop())
+    if (videoRef.current) videoRef.current.srcObject = null
     streamRef.current = null
   }, [])
 

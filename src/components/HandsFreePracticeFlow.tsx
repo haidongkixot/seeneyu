@@ -81,6 +81,7 @@ export default function HandsFreePracticeFlow({ clipId, steps, skillCategory, on
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop())
+    if (videoRef.current) videoRef.current.srcObject = null
     streamRef.current = null
   }, [])
 

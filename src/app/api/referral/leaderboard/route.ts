@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   // Get top 10 referrers by converted referrals
   const results = await (prisma as any).referral.groupBy({

@@ -104,8 +104,28 @@ export default function BundlePage() {
 
   function stopCamera() {
     streamRef.current?.getTracks().forEach(t => t.stop())
+    if (videoRef.current) videoRef.current.srcObject = null
     streamRef.current = null
   }
+
+  // Hot-fix: ensure camera stops on unmount + tab hidden + page unload
+  useEffect(() => {
+    const stop = () => {
+      streamRef.current?.getTracks().forEach(t => t.stop())
+      if (videoRef.current) videoRef.current.srcObject = null
+      streamRef.current = null
+    }
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') stop()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('beforeunload', stop)
+    return () => {
+      stop()
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('beforeunload', stop)
+    }
+  }, [])
 
   function startRecording() {
     if (!streamRef.current) return
@@ -264,12 +284,16 @@ export default function BundlePage() {
         </div>
       )
     }
+    // Start at current challenge if user opted in from challenge detail screen
+    const startId = activeChallenge?.id
+    const startIdx = startId ? Math.max(0, playable.findIndex(c => c.id === startId)) : 0
     return (
       <ArcadeHandsFreeFlow
         challenges={playable}
-        startIdx={0}
+        startIdx={startIdx}
         onExit={() => {
           setHandsFreeActive(false)
+          setScreen('list')
           fetchBundle()
         }}
         onComplete={() => {
@@ -403,15 +427,26 @@ export default function BundlePage() {
         )}
 
         {/* Action buttons */}
-        <div className="flex items-center justify-center gap-4 px-4 py-4 pb-6">
+        <div className="flex items-center justify-center gap-3 px-4 py-4 pb-6 flex-wrap">
           {!isRecording && !hasRecorded && (
-            <button
-              onClick={startRecording}
-              className="flex items-center gap-2 px-8 py-3 rounded-pill bg-error text-white font-semibold text-base hover:bg-error/80 transition-colors duration-150 shadow-[0_0_20px_rgba(239,68,68,0.30)]"
-            >
-              <div className="w-3 h-3 rounded-full bg-white animate-pulse" />
-              Start Recording
-            </button>
+            <>
+              <button
+                onClick={startRecording}
+                className="flex items-center gap-2 px-8 py-3 rounded-pill bg-error text-white font-semibold text-base hover:bg-error/80 transition-colors duration-150 shadow-[0_0_20px_rgba(239,68,68,0.30)]"
+              >
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse" />
+                Start Recording
+              </button>
+              <button
+                onClick={() => { stopCamera(); setHandsFreeActive(true) }}
+                className="flex items-center gap-2 px-6 py-3 rounded-pill bg-accent-400/10 border border-accent-400/40 text-accent-400 text-sm font-semibold hover:bg-accent-400/15 hover:border-accent-400/60 transition-all"
+                title="Voice-guided practice — auto records, scores, and advances"
+              >
+                <Volume2 size={14} />
+                Hands-Free
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-400/20 px-1.5 py-0.5 rounded">New</span>
+              </button>
+            </>
           )}
           {isRecording && (
             <>
@@ -581,18 +616,6 @@ export default function BundlePage() {
               style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
             />
           </div>
-
-          {/* Hands-Free Mode CTA */}
-          {totalCount > 0 && (
-            <button
-              onClick={() => setHandsFreeActive(true)}
-              className="mt-5 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-pill bg-accent-400/10 border border-accent-400/30 text-accent-400 text-sm font-semibold hover:bg-accent-400/15 hover:border-accent-400/50 transition-all"
-            >
-              <Volume2 size={16} />
-              Start Hands-Free Mode
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-400/20 px-1.5 py-0.5 rounded">New</span>
-            </button>
-          )}
         </div>
 
         {/* Free tier badge */}

@@ -57,6 +57,8 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       if (frameTimerRef.current) clearInterval(frameTimerRef.current)
       if (hardStopRef.current) clearTimeout(hardStopRef.current)
       streamRef.current?.getTracks().forEach(t => t.stop())
+      if (videoRef.current) videoRef.current.srcObject = null
+      streamRef.current = null
     }
   }, [])
 

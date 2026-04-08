@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Circle, Square, RotateCcw, ArrowRight, CheckSquare } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -49,6 +49,15 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
   const collectorRef = useRef<AnalysisCollector | null>(null)
 
   const { isReady: mpReady, detectAll } = useMediaPipe()
+
+  // Hot-fix: ensure camera stops on unmount (stops tracks, clears srcObject, nulls ref)
+  useEffect(() => {
+    return () => {
+      streamRef.current?.getTracks().forEach(t => t.stop())
+      if (videoRef.current) videoRef.current.srcObject = null
+      streamRef.current = null
+    }
+  }, [])
 
   const [state, setState] = useState<RecordState>('idle')
   const [countdownVal, setCountdownVal] = useState(3)
