@@ -9,7 +9,7 @@ import { DifficultyPill } from '@/components/DifficultyPill'
 import { ClipViewerClient } from './ClipViewerClient'
 import { ClipDetailTabs } from './ClipDetailTabs'
 import type { SkillCategory, Difficulty, ObservationGuide } from '@/lib/types'
-import { ArrowLeft, FileText, ListChecks, ImageIcon, Hand } from 'lucide-react'
+import { ArrowLeft, FileText, ListChecks, ImageIcon } from 'lucide-react'
 import { AiMediaPlayer } from '@/components/AiMediaPlayer'
 
 interface PageProps {
@@ -165,19 +165,12 @@ export default async function ClipViewerPage({ params }: PageProps) {
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
+        <div className="flex items-center justify-center mt-8">
           <Link
             href={`/library/${clipId}/practice`}
             className="bg-accent-400 text-text-inverse rounded-pill px-8 py-3.5 font-semibold hover:bg-accent-500 hover:shadow-glow transition-all duration-150 flex items-center gap-2"
           >
             I&apos;m Ready to Mimic →
-          </Link>
-          <Link
-            href={`/library/${clipId}/practice?mode=handsfree`}
-            className="border border-black/10 text-text-primary rounded-pill px-6 py-3.5 font-medium hover:bg-bg-overlay transition-all duration-150 flex items-center gap-2"
-          >
-            <Hand size={16} />
-            Hands-Free Mode
           </Link>
         </div>
       </main>
