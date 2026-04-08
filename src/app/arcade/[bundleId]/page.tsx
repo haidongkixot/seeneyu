@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles, BookOpen } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Lock, CheckCircle, Camera, RotateCcw, Star, Timer, Loader2, Sparkles, BookOpen, Volume2 } from 'lucide-react'
 import { GuidanceStepViewer, type GuidanceStep } from '@/components/GuidanceStepViewer'
 import { useParams } from 'next/navigation'
 import { useMediaPipe } from '@/hooks/useMediaPipe'
@@ -11,6 +11,7 @@ import { startAnalysisCollection, type AnalysisCollector } from '@/lib/analysis-
 import { FreeTierBadge } from '@/components/auth/FreeTierBadge'
 import { CommentThread } from '@/components/discussions'
 import { AssistantButton } from '@/components/assistant'
+import ArcadeHandsFreeFlow from '@/components/ArcadeHandsFreeFlow'
 
 interface ChallengeData {
   id: string
@@ -52,6 +53,7 @@ export default function BundlePage() {
   const [loading, setLoading] = useState(true)
   const [screen, setScreen] = useState<Screen>('list')
   const [activeIdx, setActiveIdx] = useState(0)
+  const [handsFreeActive, setHandsFreeActive] = useState(false)
 
   // Recording state
   const [isRecording, setIsRecording] = useState(false)
@@ -233,6 +235,47 @@ export default function BundlePage() {
           <Link href="/arcade" className="text-accent-400 text-sm mt-4 inline-block">Back to Arcade</Link>
         </main>
       </div>
+    )
+  }
+
+  // ── Hands-Free Mode (full-screen overlay) ────────────────
+  if (handsFreeActive) {
+    // Filter to playable challenges (respect free-tier per-type gate)
+    const counts: Record<string, number> = {}
+    const playable = bundle.challenges.filter((c) => {
+      if (c.isLocked) return false
+      const idx = counts[c.type] || 0
+      counts[c.type] = idx + 1
+      if (!isAuthenticated && idx >= FREE_PER_TYPE) return false
+      return true
+    })
+    if (playable.length === 0) {
+      return (
+        <div className="min-h-screen bg-bg-base flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-text-secondary">No playable challenges in this bundle.</p>
+            <button
+              onClick={() => setHandsFreeActive(false)}
+              className="mt-4 text-accent-400 text-sm hover:underline"
+            >
+              Back to bundle
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return (
+      <ArcadeHandsFreeFlow
+        challenges={playable}
+        startIdx={0}
+        onExit={() => {
+          setHandsFreeActive(false)
+          fetchBundle()
+        }}
+        onComplete={() => {
+          fetchBundle()
+        }}
+      />
     )
   }
 
@@ -538,6 +581,18 @@ export default function BundlePage() {
               style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
             />
           </div>
+
+          {/* Hands-Free Mode CTA */}
+          {totalCount > 0 && (
+            <button
+              onClick={() => setHandsFreeActive(true)}
+              className="mt-5 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-pill bg-accent-400/10 border border-accent-400/30 text-accent-400 text-sm font-semibold hover:bg-accent-400/15 hover:border-accent-400/50 transition-all"
+            >
+              <Volume2 size={16} />
+              Start Hands-Free Mode
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-400/20 px-1.5 py-0.5 rounded">New</span>
+            </button>
+          )}
         </div>
 
         {/* Free tier badge */}
