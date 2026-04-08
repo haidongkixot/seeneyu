@@ -3,10 +3,65 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-08T11:03:30.986Z",
-    "open_count": 90
+    "last_updated": "2026-04-08T15:11:10.503Z",
+    "open_count": 97
   },
   "signals": [
+    {
+      "id": "sig_pm_tester_1775661060246",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "mobile-v1.1-test-plan",
+      "priority": "high",
+      "message": "TESTER: Mobile v1.1.x adaptation test plan. Will receive an EAS preview APK after each of 4 sprints. Plan: roles/pm/library/mobile-android-v1.1-adaptation-plan.md. PER-SPRINT VERIFICATION: M1) Mobile app loads, doesn't crash on missing v1.1.x fields; API client returns the new fields. M2) New signup goes through preferences screen → submit → Home shows curve card. Existing user sees personalize banner. Recommended badges appear in Practice/Arcade/Foundation/Games. Settings/preferences saves and updates content. M3) Record same clip twice → 2nd attempt feedback shows DeltaCard with per-dimension deltas. BestMomentCard shows peak window with working Replay button. DimensionBars rendered for free users. After 1+ day passes, Home shows Ready to Review section. M4) Hands-Free Arcade runs an entire bundle with voice (TTS works on Android), auto-advances. Library hands-free works. Onboarding tour highlights tabs but DOES NOT block taps (verify by tapping highlighted target during tour). XP bumps in header within 1-2s after recording submit (no manual refresh). FINAL: cross-platform parity check — every v1.1.x web feature visible/usable on Android. Report bugs via signal to PM with sprint ID.",
+      "timestamp": "2026-04-08T15:11:00.246Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1775661050348",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "mobile-v1.1-sprint-m2-m4-implementation",
+      "priority": "high",
+      "message": "BUILDER: Sprint M2-M4 of mobile v1.1.x adaptation (~12 days). Plan: roles/pm/library/mobile-android-v1.1-adaptation-plan.md. SPRINT M2 (LC, Day 2-5): create mobile/app/(auth)/preferences.tsx (post-signup flow, 4 sub-screens), mobile/app/settings/preferences.tsx (edit), modify (tabs)/practice.tsx (For You toggle), (tabs)/arcade.tsx + (tabs)/learn.tsx + (tabs)/games.tsx (Recommended badges via keyword match against user prefs), (tabs)/index.tsx (personalize banner + Learning Curve card). SPRINT M3 (Feedback + Spaced Review, Day 5-9): update clip/[clipId]/record.tsx to send recordingDurationSec in form data; build/extend feedback/[sessionId].tsx with score ring (react-native-svg), DeltaCard, BestMomentCard with expo-av seekTo(peakSec), DimensionBars, coaching tips; add Ready to Review section to (tabs)/index.tsx. SPRINT M4 (Hands-Free + Tour + Real-time XP, Day 9-13): port src/components/ArcadeHandsFreeFlow.tsx to mobile using expo-speech for TTS + expo-camera for recording; same for Library hands-free; build OnboardingTour native equivalent using react-native-reanimated (NO blocking overlay — animated glow border around target measured via measure()); wrap GamificationHeader in a context with refresh() called after every XP-awarding action. Add 'react-native-svg', 'expo-speech', 'react-native-reanimated' to package.json if missing. Build EAS preview APK after each sprint for tester. Final M4 = EAS production App Bundle, version bump app.json to 1.1.0.",
+      "timestamp": "2026-04-08T15:10:50.348Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1775661033835",
+      "from": "pm",
+      "to": "designer",
+      "type": "task-assign",
+      "task": "mobile-v1.1-screen-specs",
+      "priority": "high",
+      "message": "DESIGNER: Sprint M2-M4 of mobile v1.1.x adaptation. Plan: roles/pm/library/mobile-android-v1.1-adaptation-plan.md. SPECS NEEDED FOR REACT NATIVE (Expo, raw StyleSheet — no Tailwind/NativeWind on mobile): (1) Onboarding preferences flow — 4 sub-screens (Genre cards, Purpose pills, Trait pills, Gender select). Match the mood of web settings/preferences page. (2) Settings/preferences screen — same 4 sections, edit + save with toast. (3) Feedback screen with: animated SVG score ring, DeltaCard with up/down arrows, BestMomentCard with 'Replay this part' button (uses expo-av seek), DimensionBars list, coaching tips. (4) Home additions: Personalize banner, Learning Curve summary card with chips, Ready to Review section (3 clip cards). (5) ArcadeHandsFreeFlow full-screen overlay — split reference + camera view, phase overlays (preparing/listen/countdown/REC/scoring/result), top bar with mute + counter, bottom bar with skip/stop early. (6) Onboarding tour highlight — animated amber glow border (no dark overlay) so users CAN tap targets. Use react-native-reanimated. (7) Recommended badge style (small accent pill) for Arcade/Foundation/Games cards. Reference web components: src/components/ArcadeHandsFreeFlow.tsx, src/app/feedback/[sessionId]/page.tsx, src/app/settings/preferences/page.tsx, src/app/dashboard/page.tsx, src/plugins/onboarding-tour/components/OnboardingTour.tsx (after the v1.1.0 fix).",
+      "timestamp": "2026-04-08T15:10:33.835Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1775661022573",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "mobile-v1.1-sprint-m1-types-helpers",
+      "priority": "high",
+      "message": "DATA ENGINEER: Sprint M1 (Day 1-2) of mobile v1.1.x adaptation. Plan: roles/pm/library/mobile-android-v1.1-adaptation-plan.md. YOUR TASKS: (1) Add new TypeScript interfaces to mobile/src/lib/types.ts mirroring v1.1.x web fields: UserSessionFull (snapshotScores, recordingDurationSec, nextReviewAt, reviewCount, dimensions), UserPreferences (goal, genres, purposes, traits, gender), ClipTag, ObservationGuide, ObservationMoment. (2) Port src/lib/preference-constants.ts to mobile/src/lib/preference-constants.ts so mobile preferences UI uses identical genre/purpose/trait/gender lists. (3) Add API helper methods to mobile/src/lib/api.ts: getPreferences(), updatePreferences(prefs), getMatchedClips(), getReadyForReview(), getFeedbackWithDelta(sessionId). All use existing bearer token auth pattern. Coordinate with Backend Engineer who is verifying server-side endpoints in parallel.",
+      "timestamp": "2026-04-08T15:10:22.573Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1775661017559",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "mobile-v1.1-sprint-m1-api-contracts",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Sprint M1 (Day 1-2) of mobile v1.1.x adaptation. Plan: roles/pm/library/mobile-android-v1.1-adaptation-plan.md. YOUR TASKS: (1) Verify GET /api/sessions/[id]/feedback response includes ALL these fields when called with mobile bearer token: snapshotScores (Json|null), recordingDurationSec (Int|null), nextReviewAt (DateTime|null), reviewCount (Int), dimensions array, observationGuide (full Json). If any are missing from the GET serializer add them. (2) Verify GET /api/preferences works with bearer token auth (was tested with cookies for web — confirm middleware allows token). (3) Verify GET /api/clips?forYou=true accepts bearer token and returns matched clip IDs. (4) Add a previousScores field to GET /api/sessions/[id]/feedback response (query previous session on same clip — same logic from src/app/feedback/[sessionId]/page.tsx but moved into the API so mobile gets it without refetching). (5) Optional: add a GET /api/sessions/review-due endpoint for I3 mobile Home section (where userId, status:complete, nextReviewAt<=now, take 5). Coordinate with Data Engineer who is updating mobile/src/lib/api.ts and types in parallel.",
+      "timestamp": "2026-04-08T15:10:17.559Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_scientist_1775646210983",
       "from": "pm",
@@ -426,6 +481,28 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_marketer_1775661070502",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "mobile-v1.1-coming-soon",
+      "priority": "normal",
+      "message": "MARKETER: Mobile Android app v1.1.0 in build (~3 weeks). Will reach feature parity with seeneyu.vercel.app v1.1.1. Marketing-relevant features that will be live in mobile: Personalized Learning Curve (genre/purpose/trait selection), Best-Moment highlight (peak performance replay — highly shareable from mobile via system share sheet), session deltas (visible improvement), Hands-Free Arcade (voice-guided practice on the go — perfect mobile use case while at the gym, walking, etc), Spaced Review (push notifications later — pending decision). Position: 'Practice body language anywhere — completely hands-free on mobile.' Prepare app store screenshots + Play Store listing copy. Plan doc: roles/pm/library/mobile-android-v1.1-adaptation-plan.md.",
+      "timestamp": "2026-04-08T15:11:10.502Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1775661064653",
+      "from": "pm",
+      "to": "reporter",
+      "type": "fyi",
+      "task": "mobile-v1.1-plan-cascade",
+      "priority": "normal",
+      "message": "REPORTER: Mobile Android v1.1.x adaptation plan cascaded to 4 roles (Backend, Data Engineer, Designer, Builder, Tester). Plan doc at roles/pm/library/mobile-android-v1.1-adaptation-plan.md. Scope: bring React Native (Expo) Android app to feature parity with web v1.1.1 (all I1/I2/I3/I4 + LC + Hands-Free Arcade + Onboarding Tour + real-time XP). Estimated: ~16 days across 4 sprints (M1-M4). Outcome: mobile app version bumps to 1.1.0, EAS production App Bundle submitted to Play Store. Log this as the next mobile milestone in activity-log.md.",
+      "timestamp": "2026-04-08T15:11:04.653Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_marketer_1775646199861",
