@@ -168,6 +168,10 @@ export default function BundlePage() {
       setScoreResult(data)
       setScreen('result')
       stopCamera()
+      // Notify GamificationBar to refetch XP/level immediately
+      if (typeof window !== 'undefined' && data.xpEarned > 0) {
+        window.dispatchEvent(new CustomEvent('xp:awarded', { detail: { amount: data.xpEarned } }))
+      }
     } catch (err: any) {
       alert(err.message || 'Failed to score. Please try again.')
       setScreen('challenge')

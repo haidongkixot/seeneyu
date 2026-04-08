@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 import { StreakFlame } from './StreakFlame'
 import { HeartCounter } from './HeartCounter'
 import { LevelBadge } from './LevelBadge'
@@ -29,9 +30,10 @@ interface GamificationProfile {
 
 export function GamificationBar() {
   const [profile, setProfile] = useState<GamificationProfile | null>(null)
+  const pathname = usePathname()
 
-  useEffect(() => {
-    fetch('/api/gamification/profile')
+  const fetchProfile = useCallback(() => {
+    fetch('/api/gamification/profile', { credentials: 'include', cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error('Not authenticated')
         return r.json()
@@ -41,6 +43,23 @@ export function GamificationBar() {
         // Not authenticated or endpoint missing — silently hide
       })
   }, [])
+
+  // Refetch on mount + every route change (catches XP awards from any page action)
+  useEffect(() => {
+    fetchProfile()
+  }, [pathname, fetchProfile])
+
+  // Refetch on custom 'xp:awarded' window event (fired by client code after actions)
+  useEffect(() => {
+    const handler = () => fetchProfile()
+    window.addEventListener('xp:awarded', handler)
+    // Also refetch when tab regains focus (catches background XP awards)
+    window.addEventListener('focus', handler)
+    return () => {
+      window.removeEventListener('xp:awarded', handler)
+      window.removeEventListener('focus', handler)
+    }
+  }, [fetchProfile])
 
   if (!profile) return null
 

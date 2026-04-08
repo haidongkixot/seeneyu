@@ -27,6 +27,10 @@ export function FeedbackPoller({ sessionId }: FeedbackPollerProps) {
     if (!res.ok) return false
     const data = await res.json()
     if (data.status === 'complete' || data.status === 'failed') {
+      // Notify GamificationBar that XP may have been awarded
+      if (data.status === 'complete' && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('xp:awarded'))
+      }
       window.location.reload()
       return true
     }

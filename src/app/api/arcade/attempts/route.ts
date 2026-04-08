@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { scoreArcadeAttemptFromAnalysis } from '@/services/expression-scorer'
 import { getArcadeChallengesPerType } from '@/lib/access-control'
+import { awardXp } from '@/services/gamification/xp-engine'
+import { updateQuestProgress } from '@/services/gamification/quest-generator'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
 
 export async function POST(req: Request) {
@@ -75,6 +77,19 @@ export async function POST(req: Request) {
     },
   })
 
+  // Award XP — base challenge reward + score-based bonus
+  const baseXp = challenge.xpReward || 20
+  const bonus = result.score >= 85 ? 15 : result.score >= 70 ? 8 : 0
+  const totalXp = baseXp + bonus
+  let xpResult: any = null
+  try {
+    xpResult = await awardXp(userId, totalXp, 'arcade_challenge', challengeId, { score: result.score })
+  } catch (e: any) {
+    console.warn('[arcade] awardXp failed:', e?.message)
+  }
+  // Update quest progress
+  updateQuestProgress(userId, 'complete_arcade', 1).catch(() => {})
+
   // Log analysis metric (fire-and-forget)
   ;(prisma as any).analysisMetric.create({
     data: {
@@ -92,6 +107,8 @@ export async function POST(req: Request) {
     score: result.score,
     breakdown: result.breakdown,
     feedbackLine: result.feedback_line,
-    xpEarned: challenge.xpReward,
+    xpEarned: totalXp,
+    leveledUp: xpResult?.leveledUp ?? false,
+    newLevel: xpResult?.level,
   })
 }

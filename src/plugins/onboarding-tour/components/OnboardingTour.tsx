@@ -143,25 +143,29 @@ export function OnboardingTour() {
 
     return (
       <div className="fixed inset-0 z-[200] pointer-events-none">
-        {/* Dark overlay with cutout */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-auto" style={{ cursor: 'default' }}>
-          <defs>
-            <mask id="tour-mask">
-              <rect width="100%" height="100%" fill="white" />
-              {targetRect && (
-                <rect
-                  x={targetRect.left - pad}
-                  y={targetRect.top - pad - window.scrollY}
-                  width={targetRect.width + pad * 2}
-                  height={targetRect.height + pad * 2}
-                  rx="12"
-                  fill="black"
-                />
-              )}
-            </mask>
-          </defs>
-          <rect width="100%" height="100%" fill="rgba(0,0,0,0.7)" mask="url(#tour-mask)" />
-        </svg>
+        {/* Visual highlight only — NO dark overlay, NO click blocking.
+            We just draw a glowing border around the target so users can
+            still interact with the page normally. */}
+        {targetRect && (
+          <div
+            className="absolute pointer-events-none transition-all duration-200"
+            style={{
+              top: targetRect.top - window.scrollY - pad,
+              left: targetRect.left - pad,
+              width: targetRect.width + pad * 2,
+              height: targetRect.height + pad * 2,
+              borderRadius: 12,
+              boxShadow: '0 0 0 3px rgba(251, 191, 36, 0.9), 0 0 0 9999px rgba(0, 0, 0, 0.35)',
+              animation: 'tour-pulse 2s ease-in-out infinite',
+            }}
+          />
+        )}
+        <style jsx>{`
+          @keyframes tour-pulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.9), 0 0 0 9999px rgba(0, 0, 0, 0.35); }
+            50% { box-shadow: 0 0 0 3px rgba(251, 191, 36, 1), 0 0 12px 3px rgba(251, 191, 36, 0.6), 0 0 0 9999px rgba(0, 0, 0, 0.35); }
+          }
+        `}</style>
 
         {/* Tooltip */}
         {targetRect && (

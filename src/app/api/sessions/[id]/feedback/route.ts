@@ -11,6 +11,8 @@ import { analyzeVoice } from '@/services/voice-analyzer'
 import { computeHolisticScore, scoreSnapshot } from '@/services/holistic-scorer'
 import { getVoiceAccess, getHolisticBreakdownAccess, getTemporalAccess } from '@/lib/access-control'
 import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-triggers'
+import { awardXp } from '@/services/gamification/xp-engine'
+import { updateQuestProgress } from '@/services/gamification/quest-generator'
 import type { VoiceMetrics } from '@/services/voice-analyzer'
 import type { FeedbackResult } from '@/lib/types'
 import type { AnalysisSnapshot } from '@/lib/mediapipe-types'
@@ -238,6 +240,21 @@ export async function POST(
           reviewCount: { increment: 1 },
         },
       })
+
+      // Award XP for completed practice (gamification — base 15 XP, bonus for high scores)
+      if (session.userId) {
+        const baseXp = 15
+        const bonus = feedback.overallScore >= 85 ? 20 : feedback.overallScore >= 70 ? 10 : 0
+        const xpAmount = baseXp + bonus
+        awardXp(session.userId, xpAmount, 'practice_session', id, { score: feedback.overallScore })
+          .catch((e: any) => console.warn('[feedback] awardXp failed:', e?.message))
+        // Update related daily quest
+        updateQuestProgress(session.userId, 'practice_skill', 1).catch(() => {})
+        // Also update review quest if this was a review
+        if ((session as any).reviewCount > 0) {
+          updateQuestProgress(session.userId, 'complete_reviews', 1).catch(() => {})
+        }
+      }
 
       // Fire feedback_ready email (non-blocking)
       if (session.userId) {
