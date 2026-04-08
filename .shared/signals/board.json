@@ -3,10 +3,87 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-06T16:57:29.406Z",
-    "open_count": 79
+    "last_updated": "2026-04-08T11:03:30.986Z",
+    "open_count": 90
   },
   "signals": [
+    {
+      "id": "sig_pm_scientist_1775646210983",
+      "from": "pm",
+      "to": "scientist",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-loop-complete",
+      "priority": "high",
+      "message": "SCIENTIST: Blueprint v1.1.0 closes the deliberate practice loop you flagged in your assessment. All 4 Initiatives shipped: I1 (session deltas — visible improvement), I2 (feedforward best-moment highlight — strongest VSM effect), I3 (spaced review scheduling — retention through repetition), I4 (ungated dimensions — free users now in the loop). Plus LC (personalized learning curve) for engagement. Per your scientific assessment doc at roles/pm/library/scientific-assessment-learning-loop.md, seeneyu is now the only product satisfying ALL 4 conditions of the deliberate practice loop. Critical fix you may want to validate: MediaPipe feedback now explicitly references the clip's observation guide moments (which serve as your 'checkpoints' from the analysis) — was generic per-skill before. Final DB state: 123 clips with full observation guides + practice steps + AI-tagged. Time to update Coach Noey's Lab evidence brief with the implementation status. Snapshot: .blueprint-versions/v1.1.0_2026-04-08_*.md.",
+      "timestamp": "2026-04-08T11:03:30.983Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1775646180516",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-architecture",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Blueprint v1.1.0 ships major architectural changes — please review section 19. Key takeaways for future work: (1) Schema migrations should batch across workstreams (we shipped 6 fields + 2 tables + 1 index in one prisma db push). (2) Shared files should be touched in single passes (feedback route got I1+I2+I3 in one commit). (3) Always pass available data to AI prompts — we had observationGuide in DB for months but never fed it to feedback generator. AUDIT YOUR PROMPTS for missing context. (4) XP awarding belongs inline in action routes, not via a side-channel /api/gamification/activity (it was a dead endpoint). (5) UI components displaying mutable state need refetch triggers — useEffect([]) is a footgun. Use route changes + custom window events. (6) Backward compat: 'absent = inclusive' — null preferences = show all, untagged clips = pass all filters, null snapshotScores = hide BestMomentCard. New core modules to know: src/engine/learning-assistant/matchers/preference-matcher.ts (OR within categories, AND across, sparse-content fallback), src/services/holistic-scorer.ts scoreSnapshot() + findPeakWindow() for per-frame scoring, src/lib/preference-constants.ts (single source of truth).",
+      "timestamp": "2026-04-08T11:03:00.516Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1775646154772",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-test-coverage",
+      "priority": "high",
+      "message": "TESTER: Blueprint v1.1.0 in production. New test areas to cover in your next regression pass: (1) Onboarding tour: verify users CAN click highlighted elements (button hover, scroll, type) — was blocked before. (2) XP accumulation: complete a practice session, verify XP bumped on GamificationBar within 1-2s (no page reload). Same for arcade attempts and foundation lessons. Verify foundation XP only awards once per lesson (no farming). (3) MediaPipe feedback quality: verify positives/improvements explicitly mention character name, scene moments, or practice step numbers — flag any generic 'good eye contact' style sentences. (4) 50 new Hollywood clips: spot-check 5 random clips have full data (steps, images, tags, observation guide). Already verified by initial Tester PASS but worth re-checking after deploy. (5) Learning curve: set preferences, verify Library For You filter, Arcade/Foundation/Games Recommended badges appear. (6) Spaced review: complete a session, wait or query DB for nextReviewAt, verify 'Ready to Review' shows on dashboard. Snapshot: .blueprint-versions/v1.1.0_2026-04-08_*.md.",
+      "timestamp": "2026-04-08T11:02:34.772Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1775646138019",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-shipped",
+      "priority": "high",
+      "message": "BUILDER: Blueprint v1.1.0 is now live at d:/Claude Projects/seeneyu-blueprint.md (snapshot at .blueprint-versions/v1.1.0_2026-04-08_learning-system-upgrade-i1-i4-lc-fixes.md). What shipped: I1 session deltas, I2 feedforward best-moment highlight, I3 spaced review, I4 ungated dimension bars, LC personalized learning curve (8 new genres + 6 purposes + 8 traits + gender), +50 Hollywood clips with full data pipeline, AI auto-tagging (587 ClipTag records), MediaPipe feedback now references observation moments + practice steps + character + dimension scores (was generic before), XP now awarded from feedback/arcade/foundation routes (was missing), GamificationBar refetches on route change + xp:awarded event, onboarding tour no longer blocks page interaction (replaced full-screen SVG with non-blocking glow border). Schema diff: UserSession +snapshotScores +recordingDurationSec +nextReviewAt +reviewCount +index([nextReviewAt]); new tables ClipTag and UserPreferences. Last commit: c40d4bb. To snapshot the next version: node scripts/blueprint-snapshot.js v1.2.0 \"description\".",
+      "timestamp": "2026-04-08T11:02:18.019Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1775577271338",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "verify-50-clips-import",
+      "priority": "high",
+      "message": "TESTER: After 50 Hollywood clips are imported, verify each clip has ALL required data: (1) Clip record with skillCategory, difficulty, sceneDescription, annotation, startSec, endSec — all present. (2) script field populated from YouTube transcript. (3) observationGuide JSON with 4-6 moments. (4) 4-5 PracticeStep records per clip. (5) demoImageUrl populated on every step (from Vercel Blob). (6) ClipTag records (genre/purpose/trait) from auto-tagging. (7) Clip is isActive=true and visible in /library. Expected DB state: +50 clips, +200-250 practice steps, +200-250 demo images, +250 new tags. Report any clips with missing data so we can backfill.",
+      "timestamp": "2026-04-07T15:54:31.338Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1775577266196",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "build-clip-pipeline-script",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Build scripts/import-hollywood-clips.js — orchestrates the FULL pipeline: read clip JSON → create Clip record → fetch YouTube transcript → generate observationGuide via GPT-4o-mini → generate practice steps via GPT-4o-mini → generate DALL-E 2 demo image per step → upload to Vercel Blob → save → auto-tag via existing pipeline. Use prisma directly + .env.local. Reuse logic from: scripts/auto-tag-clips.js, scripts/generate-missing-practice-guides.js, scripts/backfill-step-images.js. Each clip must end with ALL data populated. Use --dry flag for preview. Resume-safe: skip clips that already exist. Print progress per clip.",
+      "timestamp": "2026-04-07T15:54:26.196Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1775577261258",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "task-assign",
+      "task": "curate-50-hollywood-clips",
+      "priority": "high",
+      "message": "DATA ENGINEER: Curate 50 short YouTube clips from legendary Hollywood movies showcasing strong facial expression and body language. Provide structured JSON with: youtubeVideoId, startSec, endSec, movieTitle, year, characterName, actorName, sceneDescription, skillCategory (eye-contact|open-posture|active-listening|vocal-pacing|confident-disagreement), difficulty (beginner|intermediate|advanced), annotation. Distribution target: 10 per skill category. Mix legendary classics (Casablanca, Godfather, Pulp Fiction, Schindler's List, Forrest Gump, Apocalypse Now, Fight Club, Goodfellas, Heat, The Shining) with modern (Joker, Whiplash, There Will Be Blood, No Country for Old Men, The Dark Knight). Each clip must be 8-30 seconds. Output: scripts/data/50-hollywood-clips.json",
+      "timestamp": "2026-04-07T15:54:21.259Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_backend-engineer_1775494638114",
       "from": "pm",
@@ -349,6 +426,50 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_marketer_1775646199861",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-features-live",
+      "priority": "normal",
+      "message": "MARKETER: Blueprint v1.1.0 is live at seeneyu.vercel.app. Marketing-relevant launches: (1) PERSONALIZED LEARNING CURVE — users select genres, purpose, character traits, gender → content adapts. Position as 'YOUR personal coach learns what YOU need.' (2) BEST MOMENT HIGHLIGHT — feedback shows the user their peak 3-second window. Highly shareable: 'seeneyu caught my best eye contact moment.' (3) SESSION DELTAS — every feedback shows improvement vs last attempt. Position as visible proof of progress. (4) SPACED REVIEW — science-backed retention loop. (5) +50 LEGENDARY HOLLYWOOD CLIPS — Brando, Day-Lewis, Pacino, Hopkins, Ledger, Streep, Nicholson, Cruise, Bardem, Simmons, Waltz. Each with character-specific coaching. (6) MEDIAPIPE FEEDBACK is now actually clip-specific — references the character, scene moments, and practice step you followed (was generic before). Talking point: 'The only body language coach that scores you against the actual movie scene.'",
+      "timestamp": "2026-04-08T11:03:19.861Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1775646187020",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "log-blueprint-v1.1.0",
+      "priority": "normal",
+      "message": "REPORTER: Log blueprint v1.1.0 release in activity-log.md. Versioning system established: live blueprint at d:/Claude Projects/seeneyu-blueprint.md, snapshots at seeneyu/.blueprint-versions/, index at .blueprint-versions/VERSIONS.md. Snapshot tool: scripts/blueprint-snapshot.js. Semver: MAJOR=new core systems, MINOR=new features, PATCH=fixes. v1.0.0 captured the M0-M73 baseline. v1.1.0 added: I1 session deltas, I2 feedforward best-moment, I3 spaced review, I4 ungated dimensions, LC personalized learning curve, +50 Hollywood clips with full data pipeline, MediaPipe feedback fix (was generic — now references observation moments + practice steps + character + dimension scores), XP awarding fixes (3 routes now call awardXp), GamificationBar refetch on route change, onboarding tour overlay no longer blocks page interaction. Commit range: c271598 → c40d4bb. Final DB state: 123 clips, 512 steps, 381 images, 587 tags.",
+      "timestamp": "2026-04-08T11:03:07.020Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1775646168369",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-pipeline",
+      "priority": "normal",
+      "message": "DATA ENGINEER: Blueprint v1.1.0 includes the AI clip generation pipeline you helped build. New reference scripts now part of the canonical blueprint: scripts/auto-tag-clips.js (bulk tagging via GPT-4o-mini), scripts/import-hollywood-clips.js (full pipeline orchestrator: Clip create → transcript → observation guide → practice steps → DALL-E 2 demo images → auto-tagging), scripts/data/50-hollywood-clips.json (curated input format with skill+difficulty+character metadata), scripts/verify-hollywood-clips.js (post-import data integrity check). Pattern documented in section 19 of the blueprint. Reuse pattern: curated JSON → skip-if-exists → per-clip phases wrapped in try/catch → soft warnings for downstream failures → resumable. Final DB state: 123 clips, 512 practice steps, 381 demo images, 587 ClipTag records. The check from this sprint: youtube-transcript ESM-only package needs dynamic import (not require).",
+      "timestamp": "2026-04-08T11:02:48.369Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1775646146483",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "blueprint-v1.1.0-design-impact",
+      "priority": "normal",
+      "message": "DESIGNER: Blueprint v1.1.0 shipped. Several new UI patterns are now in production at seeneyu.vercel.app — review and incorporate into your design system docs: (1) DeltaCard on feedback page (per-dimension score deltas with up/down arrows). (2) BestMomentCard with amber accent (Your Best Moment timestamp + score). (3) Ready to Review section on dashboard (clip cards with last score + days ago). (4) Learning Curve summary card with chip cluster. (5) Personalize prompt banner. (6) Library 'For You' / 'All' toggle with matched count badge. (7) Recommended badges on Arcade/Foundation/Games. (8) Settings preferences page (4 sections: genre cards, purpose pills, trait pills, gender single-select). (9) Onboarding tour visual: glow border highlight (no dark overlay) — animated amber pulse. (10) Admin tags page with category-colored chips. Snapshot: .blueprint-versions/v1.1.0_2026-04-08_*.md.",
+      "timestamp": "2026-04-08T11:02:26.483Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_marketer_1775494649405",
