@@ -306,68 +306,88 @@ export default function BundlePage() {
   // ── Challenge Active Screen ────────────────
   if (screen === 'challenge' && activeChallenge) {
     return (
-      <div className="min-h-screen bg-bg-base flex flex-col">
-        {/* Top bar */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-black/6">
+      <div className="h-screen bg-bg-base flex flex-col overflow-hidden">
+        {/* Top bar — fixed height */}
+        <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 border-b border-black/6">
           <button onClick={exitChallenge} className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <ArrowLeft size={16} />
             Exit
           </button>
-          <span className="text-sm font-semibold text-text-primary">
-            Challenge {activeChallenge.orderIndex} of {bundle.challenges.length}
-          </span>
-          {isRecording && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-text-primary">
+              Challenge {activeChallenge.orderIndex} of {bundle.challenges.length}
+            </span>
+            <span className={`text-xs px-1.5 py-0.5 rounded-md font-medium ${
+              activeChallenge.type === 'facial'
+                ? 'bg-violet-500/15 text-violet-400'
+                : 'bg-cyan-500/15 text-cyan-400'
+            }`}>
+              {activeChallenge.type === 'facial' ? 'Facial' : 'Gesture'}
+            </span>
+          </div>
+          {isRecording ? (
             <div className="flex items-center gap-1.5 text-sm font-semibold text-error">
               <div className="w-2 h-2 rounded-full bg-error animate-pulse" />
               REC
             </div>
+          ) : (
+            <div className="w-12" />
           )}
-          {!isRecording && <div className="w-12" />}
         </div>
 
-        {/* Split screen */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-6">
-          {/* Left: Reference */}
-          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden">
-            <div className="px-4 py-3 border-b border-black/6">
+        {/* Main split — fills available space, internally scrollable per column */}
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-3 p-3 lg:p-4">
+          {/* Left: Reference (scrollable internally) */}
+          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden min-h-0">
+            <div className="flex-shrink-0 px-4 py-2.5 border-b border-black/6 flex items-center justify-between">
               <span className="text-xs font-semibold text-text-tertiary uppercase tracking-widest">Reference</span>
+              {activeChallenge.guidanceSteps && activeChallenge.guidanceSteps.length > 0 && (
+                <span className="text-[10px] text-text-tertiary">
+                  {activeChallenge.guidanceSteps.length} step{activeChallenge.guidanceSteps.length > 1 ? 's' : ''}
+                </span>
+              )}
             </div>
-            <div className="flex-1 flex flex-col p-5">
-              <div className="aspect-video rounded-xl bg-bg-elevated border border-black/8 flex items-center justify-center mb-4 text-4xl overflow-hidden">
+            <div className="flex-1 overflow-y-auto p-4 lg:p-5">
+              {/* Reference media — capped so it doesn't dominate */}
+              <div className="aspect-video rounded-xl bg-bg-elevated border border-black/8 flex items-center justify-center mb-3 text-4xl overflow-hidden max-h-[32vh]">
                 {(activeChallenge.mediaUrl || activeChallenge.referenceImageUrl) ? (
                   activeChallenge.mediaType === 'ai_video' ? (
                     <video src={activeChallenge.mediaUrl!} controls className="w-full h-full object-cover" />
                   ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img src={activeChallenge.mediaUrl || activeChallenge.referenceImageUrl!} alt={activeChallenge.title} className="w-full h-full object-cover" />
                   )
                 ) : (
                   activeChallenge.type === 'facial' ? '\uD83D\uDE10' : '\uD83E\uDDCD'
                 )}
               </div>
-              <h2 className="text-xl font-bold text-text-primary mb-2">{activeChallenge.title}</h2>
-              <p className="text-sm text-text-primary leading-relaxed mb-4">{activeChallenge.description}</p>
+              <h2 className="text-lg lg:text-xl font-bold text-text-primary mb-1.5">{activeChallenge.title}</h2>
+              <p className="text-sm text-text-primary leading-relaxed mb-3">{activeChallenge.description}</p>
               {activeChallenge.context && (
-                <div className="p-3 rounded-lg bg-bg-inset border border-black/6">
+                <div className="p-2.5 rounded-lg bg-bg-inset border border-black/6 mb-3">
                   <p className="text-xs text-text-tertiary leading-relaxed italic">{activeChallenge.context}</p>
                 </div>
               )}
 
-              {/* Guidance steps (if available) */}
+              {/* Guidance steps — collapsible accordion to save space */}
               {activeChallenge.guidanceSteps && activeChallenge.guidanceSteps.length > 0 && (
-                <div className="mt-4">
-                  <div className="flex items-center gap-1.5 mb-2">
+                <details className="group" open>
+                  <summary className="flex items-center gap-1.5 cursor-pointer list-none text-xs font-semibold text-text-secondary hover:text-text-primary transition-colors mb-2">
                     <BookOpen size={12} className="text-accent-400" />
-                    <span className="text-xs font-semibold text-text-secondary">How to do it</span>
+                    How to do it
+                    <span className="ml-auto text-text-tertiary text-[10px] group-open:rotate-180 transition-transform">▾</span>
+                  </summary>
+                  <div className="mt-2">
+                    <GuidanceStepViewer steps={activeChallenge.guidanceSteps} compact />
                   </div>
-                  <GuidanceStepViewer steps={activeChallenge.guidanceSteps} compact />
-                </div>
+                </details>
               )}
             </div>
           </div>
 
-          {/* Right: Camera */}
-          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden">
-            <div className="px-4 py-3 border-b border-black/6 flex items-center justify-between">
+          {/* Right: Camera — fills the column, no scroll */}
+          <div className="flex flex-col bg-bg-surface rounded-2xl border border-black/8 overflow-hidden min-h-0">
+            <div className="flex-shrink-0 px-4 py-2.5 border-b border-black/6 flex items-center justify-between">
               <span className="text-xs font-semibold text-text-tertiary uppercase tracking-widest">You</span>
               {isRecording && (
                 <div className={`flex items-center gap-1 text-sm font-bold tabular-nums ${timeLeft <= 3 ? 'text-error animate-pulse' : 'text-accent-400'}`}>
@@ -376,13 +396,13 @@ export default function BundlePage() {
                 </div>
               )}
             </div>
-            <div className="relative bg-black rounded-b-2xl overflow-hidden aspect-video max-h-[45vh]">
+            <div className="relative bg-black flex-1 min-h-0 overflow-hidden">
               <video
                 ref={videoRef}
                 autoPlay
                 muted
                 playsInline
-                className="w-full h-full object-cover scale-x-[-1]"
+                className="absolute inset-0 w-full h-full object-cover scale-x-[-1]"
               />
               {!isRecording && !hasRecorded && (
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
@@ -394,7 +414,7 @@ export default function BundlePage() {
                   ) : mpError ? (
                     <>
                       <Camera size={40} className="text-error" />
-                      <p className="text-sm text-error">{mpError}</p>
+                      <p className="text-sm text-error text-center px-6">{mpError}</p>
                     </>
                   ) : (
                     <>
@@ -404,69 +424,68 @@ export default function BundlePage() {
                   )}
                 </div>
               )}
+              {/* Recording progress overlay on the camera (so users see it without scrolling) */}
+              {isRecording && (
+                <div className="absolute bottom-0 left-0 right-0 px-4 py-2.5 bg-gradient-to-t from-black/85 to-transparent">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[11px] font-medium text-white/80 tabular-nums">{timeLeft.toFixed(1)}s remaining</span>
+                    <span className="text-[11px] text-white/60">10s max</span>
+                  </div>
+                  <div className="h-1.5 bg-white/15 rounded-pill overflow-hidden">
+                    <div
+                      className={`h-full rounded-pill transition-all duration-100 ${
+                        timeLeft > 5 ? 'bg-accent-400' : timeLeft > 2 ? 'bg-warning' : 'bg-error'
+                      }`}
+                      style={{ width: `${(timeLeft / 10) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Countdown bar */}
-        {isRecording && (
-          <div className="px-4 lg:px-6 pb-2">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-text-tertiary">{timeLeft.toFixed(1)}s remaining</span>
-              <span className="text-xs text-text-tertiary">10s max</span>
-            </div>
-            <div className="h-2 bg-black/5 rounded-pill overflow-hidden">
-              <div
-                className={`h-full rounded-pill transition-all duration-100 ${
-                  timeLeft > 5 ? 'bg-accent-400' : timeLeft > 2 ? 'bg-warning' : 'bg-error'
-                }`}
-                style={{ width: `${(timeLeft / 10) * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Action buttons */}
-        <div className="flex items-center justify-center gap-3 px-4 py-4 pb-6 flex-wrap">
-          {!isRecording && !hasRecorded && (
-            <>
-              <button
-                onClick={startRecording}
-                className="flex items-center gap-2 px-8 py-3 rounded-pill bg-error text-white font-semibold text-base hover:bg-error/80 transition-colors duration-150 shadow-[0_0_20px_rgba(239,68,68,0.30)]"
-              >
-                <div className="w-3 h-3 rounded-full bg-white animate-pulse" />
-                Start Recording
-              </button>
-              <button
-                onClick={() => { stopCamera(); setHandsFreeActive(true) }}
-                className="flex items-center gap-2 px-6 py-3 rounded-pill bg-accent-400/10 border border-accent-400/40 text-accent-400 text-sm font-semibold hover:bg-accent-400/15 hover:border-accent-400/60 transition-all"
-                title="Voice-guided practice — auto records, scores, and advances"
-              >
-                <Volume2 size={14} />
-                Hands-Free
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-400/20 px-1.5 py-0.5 rounded">New</span>
-              </button>
-            </>
-          )}
-          {isRecording && (
-            <>
+        {/* Sticky action bar — always visible, no scrolling needed */}
+        <div className="flex-shrink-0 border-t border-black/6 bg-bg-surface/80 backdrop-blur-md px-4 py-3">
+          <div className="max-w-3xl mx-auto flex items-center justify-center gap-3 flex-wrap">
+            {!isRecording && !hasRecorded && (
+              <>
+                <button
+                  onClick={startRecording}
+                  className="flex items-center gap-2 px-8 py-3 rounded-pill bg-error text-white font-semibold text-base hover:bg-error/80 transition-colors duration-150 shadow-[0_0_20px_rgba(239,68,68,0.30)]"
+                >
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse" />
+                  Start Recording
+                </button>
+                <button
+                  onClick={() => { stopCamera(); setHandsFreeActive(true) }}
+                  className="flex items-center gap-2 px-6 py-3 rounded-pill bg-accent-400/10 border border-accent-400/40 text-accent-400 text-sm font-semibold hover:bg-accent-400/15 hover:border-accent-400/60 transition-all"
+                  title="Voice-guided practice — auto records, scores, and advances"
+                >
+                  <Volume2 size={14} />
+                  Hands-Free
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-400/20 px-1.5 py-0.5 rounded">New</span>
+                </button>
+              </>
+            )}
+            {isRecording && (
               <button
                 onClick={stopRecording}
                 className="px-6 py-3 rounded-pill border border-black/20 text-text-secondary hover:text-text-primary hover:border-black/15 text-sm font-medium transition-all duration-150"
               >
                 Stop Early
               </button>
-            </>
-          )}
-          {hasRecorded && !isRecording && (
-            <button
-              onClick={submitRecording}
-              className="flex items-center gap-2 px-8 py-3 rounded-pill bg-accent-400 text-text-inverse font-semibold text-base hover:bg-accent-500 shadow-glow-sm transition-all duration-150"
-            >
-              Submit
-              <ArrowRight size={18} />
-            </button>
-          )}
+            )}
+            {hasRecorded && !isRecording && (
+              <button
+                onClick={submitRecording}
+                className="flex items-center gap-2 px-8 py-3 rounded-pill bg-accent-400 text-text-inverse font-semibold text-base hover:bg-accent-500 shadow-glow-sm transition-all duration-150"
+              >
+                Submit
+                <ArrowRight size={18} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     )
