@@ -92,7 +92,17 @@ export async function POST(
   try {
     const session = await prisma.userSession.findUnique({
       where: { id },
-      include: { clip: true, user: { select: { plan: true } } },
+      include: {
+        clip: {
+          include: {
+            practiceSteps: {
+              orderBy: { stepNumber: 'asc' },
+              select: { stepNumber: true, skillFocus: true, instruction: true, tip: true },
+            },
+          },
+        },
+        user: { select: { plan: true } },
+      },
     })
 
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 })
@@ -147,12 +157,22 @@ export async function POST(
         score: scoreSnapshot(snap, skill),
       }))
 
+      // Parse observation guide if stored as string
+      let observationGuide: any = (session.clip as any).observationGuide ?? null
+      if (typeof observationGuide === 'string') {
+        try { observationGuide = JSON.parse(observationGuide) } catch { observationGuide = null }
+      }
+
       const clipCtx = {
         skillCategory: session.clip.skillCategory,
         characterName: session.clip.characterName,
+        actorName: (session.clip as any).actorName ?? null,
         movieTitle: session.clip.movieTitle,
         sceneDescription: session.clip.sceneDescription,
         script: (session.clip as any).script ?? null,
+        annotation: session.clip.annotation,
+        observationGuide,
+        practiceSteps: (session.clip as any).practiceSteps ?? null,
       }
       const textFeedback = await generateTextFeedback(metrics, clipCtx)
 

@@ -1,5 +1,12 @@
-import type { FeedbackResult, ActionPlanStep, FeedbackTip } from '@/lib/types'
+import type { FeedbackResult, ActionPlanStep, FeedbackTip, ObservationGuide } from '@/lib/types'
 import type { FullPerformanceMetrics } from '@/services/expression-scorer'
+
+interface PracticeStepCtx {
+  stepNumber: number
+  skillFocus: string
+  instruction: string
+  tip?: string | null
+}
 
 interface FeedbackContext {
   skillCategory: string
@@ -8,6 +15,12 @@ interface FeedbackContext {
   movieTitle: string
   sceneDescription: string
   script?: string | null
+  /** The reference annotation describing what to look for in the scene */
+  annotation?: string | null
+  /** Per-moment observation guide with timestamps and techniques */
+  observationGuide?: ObservationGuide | null
+  /** The practice steps the user was instructed to perform */
+  practiceSteps?: PracticeStepCtx[] | null
 }
 
 /**
@@ -48,47 +61,65 @@ async function generateWithAI(
     ? `mimicking ${ctx.characterName}${ctx.actorName ? ` (${ctx.actorName})` : ''} from ${ctx.movieTitle}`
     : `practicing a scene from ${ctx.movieTitle}`
 
-  const prompt = `You are an expert body language coach analyzing a student's practice attempt.
+  // Build observation guide moments text (the specific things the user was told to watch for)
+  const guideMomentsText = ctx.observationGuide?.moments?.length
+    ? ctx.observationGuide.moments
+        .map((m, i) => `  ${i + 1}. At ${m.atSecond}s — ${m.technique}: ${m.what} (Why: ${m.why})`)
+        .join('\n')
+    : ''
 
-The student was practicing: ${ctx.skillCategory.replace('-', ' ')}
-${characterLine}
-Scene: ${ctx.sceneDescription}
-${ctx.script ? `Script: "${ctx.script}"` : ''}
+  // Build practice steps text (the specific exercises the user was instructed to perform)
+  const stepsText = ctx.practiceSteps?.length
+    ? ctx.practiceSteps
+        .map(s => `  Step ${s.stepNumber} — ${s.skillFocus}: ${s.instruction}${s.tip ? ` (Tip: ${s.tip})` : ''}`)
+        .join('\n')
+    : ''
 
-Their MediaPipe analysis scores: Overall ${metrics.overallScore}/100, ${dimText}
+  const prompt = `You are an expert body language coach analyzing a student's practice attempt. You must reference the SPECIFIC clip and practice steps they followed — generic feedback is forbidden.
 
-Analyze their performance with SPECIFIC, ACTIONABLE feedback:
+THIS SPECIFIC CLIP — what the student practiced:
+- Skill focus: ${ctx.skillCategory.replace('-', ' ')}
+- ${characterLine}
+- Scene: ${ctx.sceneDescription}
+${ctx.annotation ? `- Reference behavior to mimic: ${ctx.annotation}` : ''}
+${ctx.script ? `- Dialogue: "${String(ctx.script).slice(0, 400)}"` : ''}
 
-1. TECHNIQUE SCORES were measured as: ${dimText}
+${guideMomentsText ? `KEY MOMENTS THE STUDENT WAS TOLD TO OBSERVE:\n${guideMomentsText}\n` : ''}
+${stepsText ? `PRACTICE STEPS THE STUDENT WAS INSTRUCTED TO PERFORM:\n${stepsText}\n` : ''}
 
-2. WHAT THEY DID WELL — be specific about exact movements/expressions observed. Name body parts, facial muscles (orbicularis oculi, zygomaticus, frontalis), and timing.
+THEIR MEASURED PERFORMANCE (from MediaPipe analysis):
+- Overall score: ${metrics.overallScore}/100
+- Dimensions: ${dimText}
 
-3. AREAS TO IMPROVE — give specific corrections, not generic advice:
-   - Name the exact muscle group or body part
-   - Describe what should change (direction, intensity, timing)
-   - Give a "try this" exercise they can do immediately
-
-4. COMPARISON TO REFERENCE — what matched and what differed from the target expression in the scene
-
-5. NEXT STEP — what to practice next to build on this skill, with progressive difficulty
+Your job: write feedback that explicitly references the clip context above. Do NOT write generic ${ctx.skillCategory.replace('-', ' ')} advice that could apply to any clip. Every sentence must connect to either:
+(a) the specific scene/character they were mimicking,
+(b) one of the observation moments above,
+(c) one of the practice steps they followed, OR
+(d) a specific dimension score they got.
 
 Generate coaching feedback as JSON:
 {
-  "summary": "<2 sentences — specific observations about their technique, referencing what matched the reference and what needs adjustment. NEVER say generic things like 'great job' without specifics.>",
-  "positives": ["<specific observation naming exact body part/movement — e.g. 'Your eyebrow raise using the frontalis muscle was well-timed'>", "<another specific positive referencing the scene context>"],
-  "improvements": ["<specific correction — e.g. 'Your orbicularis oculi (eye muscles) didn't fully engage — try squinting slightly while maintaining the brow raise'>", "<another specific correction with a concrete exercise>"],
+  "summary": "<2 sentences — must mention the character/scene by name AND reference at least one specific dimension score. Example: 'Your imitation of Don Corleone's restrained gaze captured the stillness well (Eye Opening: 8/10), but the head tilt was too pronounced compared to his subtle weight shift.'>",
+  "positives": [
+    "<specific observation tied to ONE of the observation moments OR practice steps above. Mention the moment timestamp or step number. Name a body part.>",
+    "<another specific positive tied to a different moment/step>"
+  ],
+  "improvements": [
+    "<specific correction referencing a SPECIFIC observation moment they missed OR practice step they didn't fully execute. Include a 'try this' exercise.>",
+    "<another correction tied to their lowest-scoring dimension AND the reference behavior they were mimicking>"
+  ],
   "steps": [
-    {"number": 1, "action": "<specific physical action targeting their weakest dimension — name exact body part>", "why": "<why this matters for the skill, reference the scene>"},
-    {"number": 2, "action": "<progressive exercise building on step 1>", "why": "<1 sentence connecting to the reference performance>"},
-    {"number": 3, "action": "<integration exercise combining multiple elements>", "why": "<1 sentence about naturalness and timing>"}
+    {"number": 1, "action": "<physical action targeting their weakest dimension AND tied to the scene>", "why": "<reference the character/scene specifically>"},
+    {"number": 2, "action": "<progressive exercise building on step 1, tied to one of the observation moments>", "why": "<connect to what the character does in the clip>"},
+    {"number": 3, "action": "<integration exercise combining multiple elements from the practice steps>", "why": "<about achieving the natural quality the character has>"}
   ],
   "tips": [
-    {"title": "<technique name>", "body": "<2-3 sentences with a specific exercise. Include muscle names, hold durations, and repetitions. Reference how the character in the scene uses this technique.>"},
-    {"title": "<technique name>", "body": "<2-3 sentences targeting their second-weakest dimension. Include a mirror exercise or recording exercise they can try.>"}
+    {"title": "<technique name from the scene>", "body": "<2-3 sentences with a specific exercise. Reference HOW the character in this scene uses this technique.>"},
+    {"title": "<technique name>", "body": "<2-3 sentences targeting their second-weakest dimension. Reference one of the practice steps above.>"}
   ]
 }
 
-Be encouraging but HONEST. A score of 70+ means they're doing well but can still improve specific elements. Never give generic feedback — every sentence must reference a specific body part, movement, timing, or comparison to the reference scene.`
+CRITICAL: If a sentence in your output could be copied to feedback for ANY ${ctx.skillCategory.replace('-', ' ')} clip, rewrite it to reference THIS specific clip. Mention the character's name, the scene, the timestamps of observation moments, or specific practice step numbers.`
 
   const response = await openai.chat.completions.create({
     model: 'gpt-4o',
