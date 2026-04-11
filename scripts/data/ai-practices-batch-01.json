@@ -1,0 +1,682 @@
+[
+  {
+    "id": "ai-practice-001",
+    "title": "The Café Welcome",
+    "skillCategory": "eye-contact",
+    "difficulty": "beginner",
+    "characterName": "Maple",
+    "characterDescription": "A friendly young giant panda in a yellow t-shirt and blue jeans, with a warm round face, bright eyes, and a soft natural smile.",
+    "sceneDescription": "Maple walks into a sunlit café and greets three animal friends, locking eyes with each one in turn for two full seconds before sitting down.",
+    "annotation": "Notice how Maple holds eye contact for two seconds with each friend before moving to the next. This sweep & hold pattern signals genuine recognition vs perfunctory greeting — every friend feels individually seen, not collectively acknowledged.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Kung Fu Panda. Maple, a friendly young giant panda in a yellow t-shirt and blue jeans, walks into a sunlit cozy café with warm color palette and soft golden hour lighting. He sees three animal friends — a rabbit, a fox, and a meerkat — seated at a wooden round table. Beat 1 (0-5s): Maple approaches the table and locks eyes first with the rabbit on the left, holding the gaze with a warm smile. Beat 2 (5-10s): Maple's gaze sweeps right to the fox in the middle, holds for two seconds with a widening smile. Beat 3 (10-15s): Maple completes the sweep to the meerkat on the right, smiles, then waves with both hands and says 'Hey friends!' in a warm English voice. Acoustic café background music with ambient cup-clinking. Medium-wide shot with a slight handheld feel."
+    },
+    "observationGuide": {
+      "headline": "How Maple earns instant trust with the sweep & hold technique",
+      "moments": [
+        { "atSecond": 2, "technique": "Approach Lock", "what": "Maple locks eyes with the first friend before reaching the table.", "why": "Establishes connection before proximity, signaling intentionality." },
+        { "atSecond": 6, "technique": "Sweep Transition", "what": "His gaze deliberately moves left to right without skipping anyone.", "why": "Each friend feels individually seen, not collectively greeted." },
+        { "atSecond": 10, "technique": "Two-Second Hold", "what": "Each gaze lock lasts a full two seconds before moving on.", "why": "Two seconds is the minimum for the brain to register real attention." },
+        { "atSecond": 13, "technique": "Smile-Sync Release", "what": "Smile widens at the moment of eye contact, then voice and hands join in.", "why": "Layering eyes + smile + voice + hands creates a full-spectrum welcome." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Approach Lock", "instruction": "Before you reach the room, pick the first person you'll greet. Lock eyes with them as you walk toward them, holding the gaze for at least two seconds.", "tip": "Don't break gaze until they acknowledge you back.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up: Maple the panda walking toward camera in a sunlit café, eyes locked forward with a warm focused gaze. Five seconds of confident approach, no speech, subtle ambient café sounds.", "imagePrompt": "Minimalist sketch of a friendly panda character mid-stride, eyes locked forward in a warm gaze, gentle smile, confident posture. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Sweep Transition", "instruction": "Move your eyes deliberately from one person to the next. Don't skip anyone. The motion should feel intentional, not scanning.", "tip": "Imagine you're painting each face with your gaze before moving on.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D medium shot of Maple's face from chest up. His eyes deliberately move left, hold, then right, hold, then center, hold. Each hold lasts about a second. Soft background blur, no speech.", "imagePrompt": "Minimalist sketch of a panda character's face in medium shot, eyes mid-transition between left and right, eyebrows relaxed, soft smile. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Two-Second Hold", "instruction": "When your eyes lock with someone, count one Mississippi, two Mississippi before moving on. Two full seconds is the minimum.", "tip": "If two seconds feels too long, focus on noticing one detail about their face.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D tight close-up of Maple the panda's face, eyes locked directly into camera. He holds the gaze still for five full seconds, blinking softly, with a calm warm expression. No speech.", "imagePrompt": "Minimalist sketch of a panda's face in tight close-up, eyes locked directly at viewer with a sustained warm gaze. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Smile-Sync Release", "instruction": "At the moment your eyes lock, let your smile widen by a fraction. Don't smile before — let the eye contact trigger the smile.", "tip": "The smile should arrive a fraction of a second after the eye lock, never before.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Maple's face. His eyes lock onto the viewer, hold for one beat, then his smile slowly widens into a Duchenne smile that crinkles the eyes. No speech, soft chime sound.", "imagePrompt": "Minimalist sketch of a panda character's face mid-smile, eyes already locked with viewer, smile blossoming with crinkled eyes. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-002",
+    "title": "The Power Pause",
+    "skillCategory": "eye-contact",
+    "difficulty": "intermediate",
+    "characterName": "Coco",
+    "characterDescription": "A tall slender meerkat in a cozy turtleneck sweater, expressive eyes, theatrical hand gestures, the energy of a natural storyteller.",
+    "sceneDescription": "Coco the meerkat is telling a story to two friends around a campfire, then suddenly stops mid-sentence and locks eyes with one listener for a full two seconds before delivering the next line.",
+    "annotation": "Notice how Coco breaks the rhythm of speech to create an eye-contact spotlight. The pause + locked gaze tells the listener 'this part is for you.' Most speakers fill silence; the best ones use it as a beam.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Madagascar. Coco the meerkat in a cozy turtleneck sweater is sitting cross-legged in front of a small campfire with two friends — a fennec fox and a bushbaby. Warm orange firelight, evening forest setting, gentle crickets in the background. Beat 1 (0-5s): Coco is mid-story, gesturing animatedly with both paws, says 'And then I opened the door and you'll never guess what I saw...' Beat 2 (5-10s): Coco suddenly stops speaking, eyes lock onto the fennec fox, holds the gaze for two full seconds while the campfire crackles. Beat 3 (10-15s): Still holding eye contact, Coco whispers 'A cake. With my name on it.' English voice, warm and conspiratorial. The two friends lean in. Soft acoustic guitar plus crackling fire SFX. Medium two-shot of Coco and fox."
+    },
+    "observationGuide": {
+      "headline": "How Coco turns silence into a spotlight",
+      "moments": [
+        { "atSecond": 3, "technique": "Story Build", "what": "Coco gestures rapidly while building anticipation in the story.", "why": "Establishes a baseline rhythm that the pause will break." },
+        { "atSecond": 6, "technique": "Hard Stop", "what": "Coco abruptly stops mid-sentence and locks eyes with one listener.", "why": "The sudden silence + gaze focuses 100% of attention on the chosen target." },
+        { "atSecond": 9, "technique": "Two-Second Hold", "what": "The eye lock is held for a full two seconds without blinking away.", "why": "Long enough to feel intentional, short enough not to feel hostile." },
+        { "atSecond": 12, "technique": "Whispered Release", "what": "Coco delivers the punchline in a whisper while still holding the gaze.", "why": "Drops in volume amplify the closeness already built by the eye contact." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Build Rhythm First", "instruction": "Start your story at a natural pace with normal eye-contact patterns. The pause only works if there's a rhythm to break.", "tip": "If you pause from a slow start, it just feels like you forgot what to say.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D medium shot: Coco the meerkat gesturing animatedly while telling a story by a campfire. Hands moving, eyes scanning between two listeners. Five seconds of natural storytelling rhythm. English voice but words muffled.", "imagePrompt": "Minimalist sketch of a meerkat character mid-story, paws raised, mouth open, eyes scanning. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Hard Stop", "instruction": "Mid-sentence, stop speaking completely. Don't trail off. Pick one listener and lock eyes with them.", "tip": "The cleaner the stop, the bigger the spotlight.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up: Coco's face mid-word, then suddenly her mouth closes and her eyes snap to lock onto a single listener off-camera. The transition is sharp. No speech after the snap.", "imagePrompt": "Minimalist sketch of a meerkat character with mouth half-open, eyes intensely locked forward. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Two-Second Hold", "instruction": "Once your eyes lock, hold them there for two full seconds. Resist the urge to break the silence.", "tip": "Count two slow heartbeats before you continue.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Coco's face holding a steady eye contact for five seconds straight. Slight blink at second three, otherwise locked. Faint campfire crackle in the background. No speech.", "imagePrompt": "Minimalist sketch of a meerkat character face in close-up, eyes locked directly at viewer, calm expression, slight forward tilt of head. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Whispered Release", "instruction": "When you finally speak again, drop your voice slightly and stay locked on the same person. Don't break eye contact while delivering the line.", "tip": "Lowering your voice while keeping the gaze doubles the intimacy.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D close-up: Coco still locked on the listener, then her lips move in a soft whisper. Eyes don't move. English voice, conspiratorial whisper, says 'with my name on it.'", "imagePrompt": "Minimalist sketch of a meerkat character whispering, lips slightly parted, eyes still locked forward. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-003",
+    "title": "The Triangle Trick",
+    "skillCategory": "eye-contact",
+    "difficulty": "intermediate",
+    "characterName": "Rio",
+    "characterDescription": "A bright tropical toucan with an oversized colorful beak, sitting at a coffee shop table, intelligent and attentive eyes.",
+    "sceneDescription": "Rio the toucan is listening to a friend speak across a coffee table. His gaze rotates in a slow triangle — left eye, right eye, mouth — never staring rigidly at one spot.",
+    "annotation": "Notice how Rio's eyes never freeze on a single point. The slow triangle (eye, eye, mouth) keeps the gaze warm and engaged without feeling intense. Holding one spot too long reads as challenge; the triangle reads as connection.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Coco. Rio the tropical toucan with a vibrant orange-and-yellow beak sits at a small wooden coffee shop table across from a friend (off-camera). Warm cozy lighting, plants in the background, latte steam rising. Beat 1 (0-5s): Tight close-up of Rio's face, his eyes look at the friend's left eye, holding for a beat. Beat 2 (5-10s): His gaze drifts gently to the friend's right eye, holds, then drifts down to the friend's mouth. Beat 3 (10-15s): The triangle continues — back up to the left eye, hold, soft attentive expression throughout. No speech, just soft acoustic café music and ambient murmur. Tight close-up of Rio's face the entire time. Subtle camera push-in over the 15 seconds."
+    },
+    "observationGuide": {
+      "headline": "How Rio uses the triangle to stay warm without staring",
+      "moments": [
+        { "atSecond": 2, "technique": "Left Eye Anchor", "what": "Rio's gaze lands on the friend's left eye and holds for about two seconds.", "why": "Anchoring on one eye first feels like genuine focus, not scanning." },
+        { "atSecond": 6, "technique": "Slow Drift", "what": "His gaze drifts smoothly to the right eye — no jump, no flick.", "why": "Slow drifts read as engaged thinking; fast flicks read as nervous." },
+        { "atSecond": 10, "technique": "Mouth Stop", "what": "Gaze drops to the friend's mouth for a beat, then back up.", "why": "Looking at the mouth signals you're listening to words, not just observing." },
+        { "atSecond": 13, "technique": "Triangle Loop", "what": "The cycle restarts back at the left eye.", "why": "The repeating loop maintains active attention without ever locking too long." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Left Eye Anchor", "instruction": "Start by looking at the speaker's left eye. Hold for about two seconds. Don't move yet.", "tip": "Pick one eye to start — never try to look at both at once.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D tight close-up of Rio the toucan's face, gaze locked on a single point. Five seconds of steady focus, no movement. Soft café sounds, no speech.", "imagePrompt": "Minimalist sketch of a toucan character's face in close-up, large eyes focused on a single point, calm expression. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Slow Drift to Right Eye", "instruction": "After two seconds, slowly drift your gaze to the speaker's other eye. The motion should be smooth, not a flick.", "tip": "Think of it as your eye sliding, not jumping.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Rio's face, eyes drifting slowly from one position to another over five seconds. Smooth motion, no speech, attentive expression.", "imagePrompt": "Minimalist sketch of a toucan character's face with eyes mid-drift between two positions. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Drop to Mouth", "instruction": "Next, let your gaze drop to the speaker's mouth for one or two seconds. This shows you're tracking their words.", "tip": "Don't stay at the mouth too long — it's a stop, not a destination.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Rio's face, eyes drop slightly downward for two seconds, then begin to rise. Subtle natural motion, no speech.", "imagePrompt": "Minimalist sketch of a toucan character with eyes looking slightly downward, attentive expression. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Loop the Triangle", "instruction": "Cycle back to the first eye and repeat. Each segment of the triangle should last about two seconds.", "tip": "Don't count out loud — the rhythm should feel natural after a few rotations.", "targetDurationSec": 25, "videoPrompt": "Pixar 3D close-up of Rio the toucan, eyes performing a slow triangle pattern: left eye, hold, right eye, hold, mouth, hold, repeat. Ten seconds total of smooth gaze cycling. No speech.", "imagePrompt": "Minimalist sketch of a toucan character with three small directional indicators showing eye-eye-mouth triangle pattern. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-004",
+    "title": "The Stage Sweep",
+    "skillCategory": "eye-contact",
+    "difficulty": "advanced",
+    "characterName": "Sara",
+    "characterDescription": "A young woman in her late twenties wearing a smart casual blazer and jeans, calm posture, confident but approachable presence.",
+    "sceneDescription": "Sara stands on a small stage in front of an audience of about thirty people. Before saying her first word, she scans the room with deliberate two-second holds on three different faces — left, center, right.",
+    "annotation": "Notice how Sara establishes connection with the entire audience before opening her mouth. The three-point sweep with held gazes makes every section of the audience feel addressed personally. Speakers who skip this step start their talk feeling disconnected from the room.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Sara, a young woman in her late twenties wearing a navy blazer and jeans, stands on a small wooden stage in front of an audience of about thirty people in a bright modern auditorium. Beat 1 (0-5s): Sara walks to her mark, takes a slow breath, looks at one person in the front-left section, holds eye contact for two full seconds with a soft smile. Beat 2 (5-10s): Her gaze moves smoothly to a person in the center-back, holds for two seconds, eyes warm. Beat 3 (10-15s): Gaze sweeps to the front-right, holds, then she says 'Good morning everyone' in a calm warm English voice. Subtle ambient room tone, no music. Wide shot from side angle showing both Sara and the audience faces. Slow camera push-in over the 15 seconds."
+    },
+    "observationGuide": {
+      "headline": "How Sara builds room-wide connection before her first word",
+      "moments": [
+        { "atSecond": 1, "technique": "Pre-Sweep Breath", "what": "Sara takes one slow breath before looking up at the audience.", "why": "The breath resets her nervous system and signals composure." },
+        { "atSecond": 4, "technique": "First Anchor", "what": "She picks one specific face on the left and holds it for two seconds.", "why": "Looking at one person, not 'the audience,' is what makes the gaze feel real." },
+        { "atSecond": 8, "technique": "Center Sweep", "what": "Her gaze moves smoothly to a face at the back-center.", "why": "Including the back rows tells everyone they matter, not just the front." },
+        { "atSecond": 12, "technique": "Right Anchor", "what": "She holds the right side last, then opens her mouth to speak.", "why": "By the time she speaks, every section feels personally addressed." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Pre-Sweep Breath", "instruction": "Before you look up at the audience, take one full slow breath. Don't rush this — it sets the entire pace of your opening.", "tip": "Breathe in through the nose for three counts before lifting your eyes.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Sara on stage, eyes lowered, taking one slow deep breath. Five seconds, no speech, soft auditorium ambient sound.", "imagePrompt": "Minimalist sketch of a young woman in a blazer standing calm with eyes closed, mid-breath. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "First Anchor", "instruction": "Pick one specific face in the left section of the audience. Lock eyes with them for a full two seconds. Don't look at 'the crowd.'", "tip": "If you can't pick a face, your gaze is hitting empty seats — choose a person.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Sara from over the audience's shoulder, her gaze locked on one viewer in the front-left. Five seconds of held eye contact, no speech.", "imagePrompt": "Minimalist sketch of a presenter looking deliberately to one side at a single point in the audience. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Smooth Center Sweep", "instruction": "After two seconds, move your gaze smoothly to a face in the center, ideally toward the back. Hold for two seconds.", "tip": "Smooth means your head can move slightly with your eyes — don't keep your face frozen.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Sara, head turning gently from left to center, eyes following. Smooth natural motion over five seconds, no speech.", "imagePrompt": "Minimalist sketch of a presenter mid-turn, gaze in motion from left to center. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Right Anchor & Open", "instruction": "Complete the sweep on the right side, hold for two seconds, then begin speaking. Your first word should land while your eyes are still locked on the right anchor.", "tip": "Speaking out of an eye lock makes your opening land twice as hard.", "targetDurationSec": 20, "videoPrompt": "Realistic cinematic medium shot of Sara holding eye contact with someone on the right of frame, then speaking 'Good morning everyone' in a warm calm English voice while still locked.", "imagePrompt": "Minimalist sketch of a presenter looking right with mouth slightly open mid-word. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-005",
+    "title": "The Genuine Smile",
+    "skillCategory": "facial-expressions",
+    "difficulty": "beginner",
+    "characterName": "Bao",
+    "characterDescription": "A round and gentle koala with soft grey fur, wearing a pastel pink sweater, with bright thoughtful eyes and a mouth that crinkles naturally when she smiles.",
+    "sceneDescription": "Bao the koala is handed a small wrapped gift by a friend. She first reacts with a quick polite smile that doesn't reach her eyes, pauses, then breaks into a real Duchenne smile where her cheeks lift and her eyes crinkle.",
+    "annotation": "Notice the difference between the first smile (mouth only) and the second smile (eyes + cheeks + mouth). The Duchenne smile is the only smile humans can't fake on demand — it requires a genuine internal shift. The trick is to think of something that genuinely delights you.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Coco. Bao the gentle grey koala in a pastel pink sweater is sitting on a sunlit garden bench. A friend (off-camera) hands her a small wrapped gift. Warm afternoon light, soft greenery in the background. Beat 1 (0-5s): Bao receives the gift, her mouth pulls into a quick polite smile — corners up but eyes neutral. She pauses. Beat 2 (5-10s): A flicker of recognition crosses her face. Her cheeks slowly lift, her eyes start to crinkle, and the smile grows from the inside out. Beat 3 (10-15s): The full Duchenne smile blooms — eyes squinting with joy, cheeks high, she says 'Oh wow, thank you!' in a warm sincere English voice. Soft acoustic ukulele music plus a gentle 'aww' SFX. Tight medium shot of Bao's face throughout."
+    },
+    "observationGuide": {
+      "headline": "How Bao shows the difference between a polite smile and a real smile",
+      "moments": [
+        { "atSecond": 3, "technique": "Polite Smile", "what": "Her mouth corners go up but her eyes stay neutral and unchanged.", "why": "This is the smile we make on autopilot — it doesn't activate the eye muscles." },
+        { "atSecond": 7, "technique": "Internal Shift", "what": "Her face goes still for a beat as she processes a real feeling.", "why": "The Duchenne smile requires a genuine emotion to trigger." },
+        { "atSecond": 10, "technique": "Cheek Lift", "what": "Her cheeks rise, pushing the lower eyelids up and crinkling them.", "why": "The cheek lift is the visible signature of a real smile." },
+        { "atSecond": 13, "technique": "Eye Crinkle", "what": "Her eyes squint slightly into crescent shapes as the smile peaks.", "why": "Crinkled eyes are the only part of a smile humans can't consciously fake." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Polite Smile", "instruction": "Pull only the corners of your mouth up. Keep your eyes still. Notice how empty this feels — that's the polite smile.", "tip": "Look in a mirror — if your eyes don't change, it's a polite smile.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Bao the koala's face. Mouth corners pull into a flat polite smile, eyes completely neutral. Five seconds of held expression, no speech.", "imagePrompt": "Minimalist sketch of a koala character face with a small mouth-only smile, eyes neutral and unchanged. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Trigger a Real Memory", "instruction": "Think of something that genuinely delights you — a person, a memory, a place. Let the feeling arrive before the smile does.", "tip": "Don't smile first and try to find the feeling — let the feeling come first.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D close-up of Bao's face going still, eyes softening as a memory crosses her mind. Five seconds of subtle internal shift, no speech.", "imagePrompt": "Minimalist sketch of a koala face in still contemplation, eyes softened as if remembering something pleasant. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Cheek Lift", "instruction": "Let your cheeks rise on their own as the feeling builds. Don't push them — they should lift because of the emotion underneath.", "tip": "If your cheeks aren't moving, the feeling isn't strong enough yet.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Bao's face, cheeks slowly rising, eyes beginning to narrow as a real smile builds. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a koala face with cheeks visibly lifted, smile starting to spread. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Eye Crinkle", "instruction": "Notice your eyes squinting slightly as the smile peaks. This is the Duchenne marker — the involuntary signature of a real smile.", "tip": "If your eyes are wide open during a smile, it's not landing as warm.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Bao's face at full Duchenne smile, eyes crinkled into crescents, cheeks high, soft warmth. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a koala face in full warm smile with crinkled eyes and lifted cheeks. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-006",
+    "title": "The Curiosity Look",
+    "skillCategory": "facial-expressions",
+    "difficulty": "beginner",
+    "characterName": "Pip",
+    "characterDescription": "A small playful sea otter with whiskery cheeks and big alert eyes, wearing a striped scarf, the kind of character who always looks like they're about to ask a question.",
+    "sceneDescription": "Pip the otter is listening to a friend share a surprising piece of news. He tilts his head to one side, raises one eyebrow, and leans in slightly, his whole face becoming a question mark.",
+    "annotation": "Notice how Pip's curiosity shows up in three layers stacked together: head tilt, eyebrow raise, and forward lean. Each layer alone would be ambiguous; together they unmistakably say 'tell me more.' The forward lean is what makes the curiosity feel inviting rather than skeptical.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Madagascar. Pip the playful sea otter in a striped red scarf is sitting on a wooden dock by a calm lake, talking with a friend (off-camera). Soft afternoon light, gentle water reflections. Beat 1 (0-5s): Pip is listening with a neutral attentive expression. Beat 2 (5-10s): His head tilts gently to the right, then his right eyebrow lifts in a single sharp curve. Beat 3 (10-15s): He leans forward slightly, his eyes widen with interest, and he says 'Wait — really?' in a playful curious English voice. Soft acoustic mandolin music plus gentle lake water sounds. Tight medium shot of Pip's face."
+    },
+    "observationGuide": {
+      "headline": "How Pip stacks three signals to show genuine curiosity",
+      "moments": [
+        { "atSecond": 3, "technique": "Neutral Baseline", "what": "Pip starts with a neutral attentive expression — nothing exaggerated.", "why": "The curiosity has more impact when it arrives from a calm baseline." },
+        { "atSecond": 6, "technique": "Head Tilt", "what": "His head tilts about ten degrees to one side.", "why": "The tilt signals his brain is processing something new and interesting." },
+        { "atSecond": 9, "technique": "Single Eyebrow Lift", "what": "One eyebrow lifts in a sharp curve while the other stays still.", "why": "Asymmetrical eyebrow lift reads as curiosity; both up reads as surprise." },
+        { "atSecond": 12, "technique": "Forward Lean", "what": "He leans slightly forward at the same time his eyes widen.", "why": "The lean turns the curiosity into an invitation for the speaker to continue." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Neutral Baseline", "instruction": "Start with a calm, neutral attentive face. No frown, no smile. The curiosity needs to arrive from somewhere.", "tip": "If you're already smiling, the curiosity will look fake.", "targetDurationSec": 10, "videoPrompt": "Pixar 3D close-up of Pip the otter's face in calm neutral attention, eyes soft. Five seconds of held expression, no speech.", "imagePrompt": "Minimalist sketch of an otter character's face in calm attentive neutral. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Head Tilt", "instruction": "Tilt your head about ten degrees to one side. Keep the rest of your face still.", "tip": "Don't tilt too far — small movements read as thoughtful, big tilts read as confused.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Pip's face slowly tilting ten degrees to the right. Five seconds of held tilt, neutral expression, no speech.", "imagePrompt": "Minimalist sketch of an otter character with head tilted ten degrees to one side. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Single Eyebrow Lift", "instruction": "Lift only one eyebrow — the one on the same side as the tilt. Keep the other eyebrow still.", "tip": "Practice in a mirror. If both eyebrows go up, slow down and focus on one.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D extreme close-up of Pip's eyes and forehead, one eyebrow lifting in a sharp curve while the other stays still. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of an otter character with one eyebrow visibly raised. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Forward Lean", "instruction": "Lean your upper body slightly forward — about ten degrees. Pair it with widening your eyes by a fraction.", "tip": "The lean turns curiosity into 'tell me more' — without it you might look skeptical.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Pip the otter leaning slightly forward, head tilted, eyebrow raised, eyes wide. Says 'Wait — really?' in a playful curious English voice.", "imagePrompt": "Minimalist sketch of an otter character leaning slightly forward, head tilted, one eyebrow raised, eyes wide with interest. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-007",
+    "title": "The Empathy Mirror",
+    "skillCategory": "facial-expressions",
+    "difficulty": "intermediate",
+    "characterName": "Lulu",
+    "characterDescription": "A soft-spoken white rabbit with long ears, wearing a knit cardigan, gentle eyes that read emotion easily, the kind of friend you tell hard things to.",
+    "sceneDescription": "Lulu the rabbit is sitting across from a friend who is sharing some bad news. As the friend speaks, Lulu's expression slowly shifts to mirror the friend's worry — eyebrows softening, mouth corners turning down a fraction — without overdoing it.",
+    "annotation": "Notice how Lulu doesn't perform sadness — she lets her face match her friend's at about 50% intensity. Mirroring at full intensity makes the listener feel like the focus has shifted to you. Half-intensity mirroring tells the speaker 'I feel this with you' while keeping them at the center.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Coco. Lulu the soft-spoken white rabbit in a beige knit cardigan is sitting cross-legged on a couch across from a friend (off-camera). Warm cozy living room lighting, soft golden lamps. Beat 1 (0-5s): Lulu listens with a calm open expression as her friend begins to speak. Beat 2 (5-10s): Slowly, her brow softens, her eyebrows draw in slightly toward each other, her mouth corners turn down a fraction — she's matching the friend's worry but at half intensity. Beat 3 (10-15s): Lulu nods slowly once, holds the soft worried expression, and lets out a quiet 'mhm' in a warm caring English voice. Very subtle piano music plus the soft hum of the room. Tight medium shot of Lulu's face throughout."
+    },
+    "observationGuide": {
+      "headline": "How Lulu mirrors at half intensity to show real empathy",
+      "moments": [
+        { "atSecond": 3, "technique": "Calm Open Start", "what": "Lulu's face starts neutral and open, not pre-loaded with concern.", "why": "Starting concerned would look like she expected bad news." },
+        { "atSecond": 7, "technique": "Brow Softening", "what": "Her eyebrows draw together slightly and her forehead creases just a bit.", "why": "The brow is the first place real empathy shows up — before the mouth." },
+        { "atSecond": 10, "technique": "Half-Intensity Match", "what": "Her mouth turns down only a fraction, not into a frown.", "why": "Full mirroring makes the listener feel like the spotlight shifted to you." },
+        { "atSecond": 13, "technique": "Quiet Verbal Anchor", "what": "She offers one soft 'mhm' to confirm she's still with the speaker.", "why": "A small sound at the end of a held expression locks the connection." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Calm Open Start", "instruction": "Begin the conversation with a relaxed neutral face. Don't preload concern — let the speaker bring it.", "tip": "If your face is already worried, the speaker will hesitate to share more.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Lulu the rabbit's face in calm open neutral, eyes soft and ready to listen. Five seconds of held expression, no speech.", "imagePrompt": "Minimalist sketch of a rabbit character with a calm open expression, eyes soft. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Brow Softening", "instruction": "As the speaker shares something hard, let your eyebrows soften and draw together a fraction. Start at the brow, not the mouth.", "tip": "Real empathy almost always starts in the forehead.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Lulu's face, eyebrows slowly drawing together as she listens. Subtle change over five seconds, no speech.", "imagePrompt": "Minimalist sketch of a rabbit character with eyebrows softly drawn together, gentle concern. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Half-Intensity Match", "instruction": "Let your mouth corners turn down only a fraction. You're reflecting the feeling, not performing it.", "tip": "If your face is more sad than theirs, you've taken over the moment.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Lulu's face with mouth corners barely turned down, gentle empathetic expression at half intensity. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a rabbit face with subtle empathetic expression, mouth corners only slightly down. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Quiet Verbal Anchor", "instruction": "After holding the mirrored expression for a few seconds, offer one quiet sound — a soft 'mhm' or 'mm.' This confirms you're still with them.", "tip": "Don't say 'I'm so sorry' yet — the small sound carries more weight at this point.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Lulu's face still holding the soft empathetic expression, then she gives one slow nod and a quiet 'mhm' in a warm English voice.", "imagePrompt": "Minimalist sketch of a rabbit character with empathetic expression and head slightly nodding. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-008",
+    "title": "The Reset Face",
+    "skillCategory": "facial-expressions",
+    "difficulty": "advanced",
+    "characterName": "Alina",
+    "characterDescription": "A young woman in her late twenties with shoulder-length dark hair, wearing a simple grey sweater, sitting at a wooden desk with a laptop, calm but visibly tense.",
+    "sceneDescription": "Alina catches herself with a tense frown during a high-stakes video interview. She takes one slow breath and consciously resets her face to a neutral calm expression before answering the next question.",
+    "annotation": "Notice how Alina doesn't just relax her face — she does an intentional reset sequence: notice the tension, breathe, neutral. The reset face is the most underrated skill in high-stakes communication. Most people stay locked in their first reaction; the calm ones reset.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Alina, a young woman in her late twenties with dark hair and a grey sweater, is sitting at a wooden desk in front of an open laptop. The room is bright and quiet. Beat 1 (0-5s): Tight close-up of Alina's face — her brow is furrowed, jaw slightly clenched, lips tight. She catches her own reflection in the laptop screen and registers the tension. Beat 2 (5-10s): She closes her eyes for a moment, takes one slow deep breath in through her nose. Her shoulders drop a fraction. Beat 3 (10-15s): She opens her eyes — face fully reset to a calm neutral expression, brow smooth, jaw soft, mouth relaxed. Subtle ambient room tone, no music. Tight close-up of her face throughout. No speech."
+    },
+    "observationGuide": {
+      "headline": "How Alina resets her face under pressure",
+      "moments": [
+        { "atSecond": 2, "technique": "Notice the Tension", "what": "Alina becomes aware of her own furrowed brow and clenched jaw.", "why": "You can't reset what you don't notice — awareness is the first step." },
+        { "atSecond": 6, "technique": "Close & Breathe", "what": "She closes her eyes for a single slow breath through her nose.", "why": "Closing the eyes briefly cuts the visual loop that was reinforcing the tension." },
+        { "atSecond": 9, "technique": "Shoulder Drop", "what": "Her shoulders fall a fraction as the breath releases.", "why": "Facial reset doesn't stick if the body is still tight." },
+        { "atSecond": 12, "technique": "Open to Neutral", "what": "Her eyes open to a fully neutral face — no frown, no fake smile.", "why": "Neutral is the goal, not 'positive' — neutral is a stable launchpad." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Notice the Tension", "instruction": "Pause and check in with your face. Where are you holding tension? Forehead, jaw, around the eyes?", "tip": "Most people don't realize their face is tight until they're told.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Alina's face with visible tension — furrowed brow, slightly clenched jaw. Five seconds of held tension as she becomes aware of it.", "imagePrompt": "Minimalist sketch of a young woman's face showing tension in the brow and jaw. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Close & Breathe", "instruction": "Close your eyes briefly and take one slow breath in through your nose, out through your mouth. Don't rush this.", "tip": "Even one second of closed eyes gives your face permission to release.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Alina with eyes closed, taking one slow deep breath. Five seconds of held breath cycle, no speech.", "imagePrompt": "Minimalist sketch of a young woman's face with eyes gently closed, mid-breath. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Shoulder Drop", "instruction": "As you exhale, let your shoulders drop a fraction. The face won't fully reset if your body is still tight.", "tip": "Roll your shoulders back and down once — this resets the body line.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Alina exhaling, shoulders visibly dropping a fraction. Five seconds of subtle motion, no speech.", "imagePrompt": "Minimalist sketch of a young woman with relaxed shoulders dropping into a calm posture. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Open to Neutral", "instruction": "Open your eyes to a neutral face — not a smile, not a frown. Neutral is the goal because it's stable.", "tip": "If you try to jump straight to 'positive,' it usually looks forced.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Alina opening her eyes to a fully reset calm neutral expression — brow smooth, jaw soft, mouth relaxed. Five seconds of held neutral, no speech.", "imagePrompt": "Minimalist sketch of a young woman's face in fully neutral, calm composed expression. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-009",
+    "title": "The Welcoming Stance",
+    "skillCategory": "open-posture",
+    "difficulty": "beginner",
+    "characterName": "Toby",
+    "characterDescription": "A friendly golden retriever character standing on his hind legs in a green hoodie and jeans, broad shoulders, wagging tail, the warmest 'come on in' energy.",
+    "sceneDescription": "Toby the golden retriever opens the front door to welcome a friend. He stands with feet shoulder-width apart, hands open at his sides with palms facing forward, and his whole body says 'come in.'",
+    "annotation": "Notice how Toby's stance is geometrically open — no part of his body is blocking the doorway, his hands aren't crossed, his feet are stable. The open palms are the strongest single signal of welcome. Compare to a stance with hands in pockets and feet together — same words, completely different message.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Madagascar. Toby the friendly golden retriever in a green hoodie and jeans is opening the front door of a cozy wooden cabin. Warm afternoon light streaming in, autumn leaves visible outside. Beat 1 (0-5s): Toby pulls the door open and steps back, planting his feet shoulder-width apart, his arms relaxed at his sides. Beat 2 (5-10s): He rotates his palms forward at his sides — open and visible. His shoulders are back, chest open. Beat 3 (10-15s): He gestures with both open hands toward the inside of the cabin and says 'Come in, come in!' in a warm hearty English voice. His tail wags. Soft acoustic banjo music plus rustling leaves SFX. Wide shot of the doorway showing his full body."
+    },
+    "observationGuide": {
+      "headline": "How Toby's open stance reads as 'welcome' before he says a word",
+      "moments": [
+        { "atSecond": 3, "technique": "Feet Plant", "what": "Toby plants his feet shoulder-width apart, weight evenly distributed.", "why": "A stable base reads as confident hosting, not nervous shuffling." },
+        { "atSecond": 6, "technique": "Open Palms", "what": "His palms rotate forward at his sides — open and visible.", "why": "Open palms are the strongest single signal of trust and welcome." },
+        { "atSecond": 9, "technique": "Chest Open", "what": "His shoulders pull back slightly and his chest opens.", "why": "An open chest signals 'I have nothing to hide.' Hunched shoulders close that off." },
+        { "atSecond": 12, "technique": "Inviting Gesture", "what": "He gestures into the room with both open hands, body angled to the side.", "why": "Angling the body sideways tells the guest 'the path is yours, not mine.'" }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Feet Plant", "instruction": "Stand with your feet shoulder-width apart. Distribute your weight evenly between both feet. Don't shift or sway.", "tip": "Feet too close together reads as nervous or formal.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D wide shot of Toby the golden retriever planting his feet shoulder-width apart in a doorway. Five seconds of stable balanced stance, no speech.", "imagePrompt": "Minimalist sketch of a golden retriever character standing with feet shoulder-width apart, balanced posture. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Open Palms", "instruction": "Let your hands hang at your sides and rotate your palms so they face forward. Don't put them in pockets or behind your back.", "tip": "Open palms are the single biggest difference between 'closed' and 'open' posture.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Toby's hands at his sides, palms slowly rotating forward to face the viewer. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a character standing with hands at sides, palms rotated forward and visible. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Chest Open", "instruction": "Pull your shoulders back gently and let your chest open. Imagine a string pulling the top of your sternum forward.", "tip": "Don't puff up your chest — the goal is open, not military.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Toby pulling his shoulders back, chest opening, head lifting slightly. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a character with shoulders rolled back and chest open, calm confident posture. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Inviting Gesture", "instruction": "Make one gesture toward the space with both hands open. Step slightly to the side so the path into the room is clear.", "tip": "Stepping aside as you gesture turns 'come in' into 'this space is yours.'", "targetDurationSec": 15, "videoPrompt": "Pixar 3D wide shot of Toby gesturing with both open hands toward the room interior, body angled to the side. Says 'Come in, come in!' in a warm English voice.", "imagePrompt": "Minimalist sketch of a character gesturing with both open hands toward an interior space, body angled aside. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-010",
+    "title": "The Founder's Pitch",
+    "skillCategory": "open-posture",
+    "difficulty": "intermediate",
+    "characterName": "Mei",
+    "characterDescription": "A young confident female panda in a grey blazer over a white t-shirt, standing in front of a small whiteboard, calm and grounded with deliberate hand gestures.",
+    "sceneDescription": "Mei the panda founder pitches her idea to a small group of three investors around a table. She stands tall with chest open, hands gesturing in the chest-to-shoulder zone, never crossing in front of her body.",
+    "annotation": "Notice how Mei keeps her gestures in the 'power zone' between her chest and shoulders. Gestures below the waist disappear; gestures above the head feel erratic. The chest-to-shoulder zone is where confident founders live. Combined with an open chest, it tells the room 'I built this and I know it.'",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Kung Fu Panda. Mei, a young confident female panda in a grey blazer and white t-shirt, stands at the head of a small wooden meeting table in a modern startup office. Three investors (off-camera) are seated around the table. Soft daylight from large windows. Beat 1 (0-5s): Mei plants her feet shoulder-width apart and pulls her shoulders back, chest open, hands at chest level with palms facing each other. Beat 2 (5-10s): She gestures with both hands in the chest-to-shoulder zone, slowly opening her arms outward as she says 'Here's the thing about our product...' Beat 3 (10-15s): She brings her hands together at chest height, fingers loosely interlocked, holds eye contact with the room, calm and grounded. Subtle modern ambient music plus office room tone. Medium shot from the perspective of one investor."
+    },
+    "observationGuide": {
+      "headline": "How Mei pitches with an open chest and power-zone gestures",
+      "moments": [
+        { "atSecond": 2, "technique": "Grounded Plant", "what": "Mei plants her feet shoulder-width and locks her core.", "why": "A stable base lets the upper body move without looking shaky." },
+        { "atSecond": 5, "technique": "Chest Open", "what": "Her shoulders draw back and her chest opens fully.", "why": "An open chest is the visual signature of 'I believe in what I'm saying.'" },
+        { "atSecond": 8, "technique": "Power Zone Gestures", "what": "Both hands gesture in the space between her chest and shoulders.", "why": "This zone is where the audience's eyes naturally focus — gestures here land." },
+        { "atSecond": 12, "technique": "Hand Anchor", "what": "She brings her hands together at chest height to mark a key point.", "why": "Anchoring hands signals 'this is the conclusion' and keeps her grounded." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Grounded Plant", "instruction": "Stand with feet shoulder-width apart, knees soft. Plant yourself before you speak. Don't shift from foot to foot.", "tip": "If you can feel both feet on the floor, you're grounded.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D wide shot of Mei the panda standing planted in front of a meeting table, feet shoulder-width, posture stable. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a panda character standing in a planted founder stance, feet shoulder-width apart. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Chest Open", "instruction": "Pull your shoulders back gently. Let your chest open without puffing it out.", "tip": "Imagine a string pulling the top of your sternum slightly forward.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Mei pulling her shoulders back, chest opening, head lifting slightly. Five seconds of held posture, no speech.", "imagePrompt": "Minimalist sketch of a panda character with shoulders back and chest open, calm composed expression. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Power Zone Gestures", "instruction": "Keep your hand gestures between your chest and your shoulders. Avoid gestures below the waist or above your head.", "tip": "Practice once with hands taped together, then once with full motion — feel the difference.", "targetDurationSec": 20, "videoPrompt": "Pixar 3D medium shot of Mei the panda gesturing with both hands in the chest-to-shoulder zone, arms opening outward. Says 'Here's the thing about our product...' in a calm confident English voice.", "imagePrompt": "Minimalist sketch of a panda character gesturing with both hands at chest level. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Hand Anchor", "instruction": "When you reach a key point, bring your hands together at chest height with fingers loosely interlocked. This anchors the moment.", "tip": "The anchor tells the room 'this is the part that matters.'", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Mei bringing both hands together at chest height, fingers loosely interlocked, holding the position with steady eye contact. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a panda character with hands joined at chest height, calm grounded posture. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-011",
+    "title": "Open vs Closed",
+    "skillCategory": "open-posture",
+    "difficulty": "advanced",
+    "characterName": "Daniel",
+    "characterDescription": "A young man in his early thirties with a button-down shirt and jeans, sitting at a meeting room table, calm composed presence.",
+    "sceneDescription": "Daniel demonstrates the same statement delivered twice in a meeting. First with his arms crossed and shoulders rounded (closed); then with arms uncrossed, palms visible, chest open (open).",
+    "annotation": "Notice how the exact same words land completely differently when the body is closed vs open. In the closed version, his statement sounds defensive. In the open version, the same sentence sounds collaborative. Body language doesn't just amplify words — it can reverse their meaning.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Daniel, a young man in his early thirties wearing a light blue button-down shirt and jeans, is sitting at a modern meeting room table. Bright daylight from a window, plain white walls. Beat 1 (0-5s): Daniel sits with arms tightly crossed across his chest, shoulders slightly rounded forward. He says 'I think we should reconsider this' in a measured English voice — but the tone reads as defensive because of the body. Beat 2 (5-10s): He uncrosses his arms, places both hands palm-up on the table, and opens his shoulders. Same neutral face. Beat 3 (10-15s): With the open posture, he repeats the same line — 'I think we should reconsider this' — and now it lands as collaborative. Subtle ambient meeting room tone, no music. Medium shot from across the table."
+    },
+    "observationGuide": {
+      "headline": "How the same words become defensive or collaborative based on posture",
+      "moments": [
+        { "atSecond": 2, "technique": "Closed Defensive Setup", "what": "Daniel's arms are crossed tightly and his shoulders are rounded forward.", "why": "Crossed arms across the chest read as a barrier between speaker and listener." },
+        { "atSecond": 4, "technique": "Same Words, Defensive", "what": "He says the line with a neutral voice, but the body makes it sound combative.", "why": "Listeners interpret words through the body language wrapper around them." },
+        { "atSecond": 8, "technique": "Open Reset", "what": "He uncrosses his arms and places his palms flat on the table.", "why": "Visible palms instantly remove the perceived barrier." },
+        { "atSecond": 12, "technique": "Same Words, Collaborative", "what": "The exact same line now sounds like an invitation to discuss.", "why": "Open body + same words = the meaning of the words shifts." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Notice Closed Defaults", "instruction": "Check your default sitting posture. Are your arms crossed? Hands hidden under the table? Shoulders rounded? These are closed defaults.", "tip": "Most people don't notice their default until they catch themselves on video.", "targetDurationSec": 10, "videoPrompt": "Realistic cinematic medium shot of Daniel sitting with arms tightly crossed across his chest, shoulders rounded. Five seconds of held closed posture, no speech.", "imagePrompt": "Minimalist sketch of a young man sitting with arms crossed and shoulders rounded forward. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Uncross & Place Palms", "instruction": "Uncross your arms. Place both hands on the table with palms visible. This single move resets your body language signal.", "tip": "If the table is round, hands at four and eight o'clock; if rectangular, both hands flat in front of you.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Daniel's hands moving from crossed across the chest to flat on the table, palms visible. Five seconds of slow motion, no speech.", "imagePrompt": "Minimalist sketch of a pair of hands transitioning from crossed to flat on a table with palms visible. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Open the Chest", "instruction": "Pull your shoulders back gently and open your chest. Don't sit back — sit forward but tall.", "tip": "Sitting back while open looks aloof; sitting forward while open looks engaged.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Daniel pulling his shoulders back, opening his chest, leaning slightly forward at the table. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a man at a table sitting forward with shoulders back and chest open. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Repeat the Line", "instruction": "Now say the sentence you wanted to say. With the open body, the same words will land as collaborative instead of defensive.", "tip": "If you want to feel the difference, record both versions and play them back-to-back.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Daniel in fully open posture saying 'I think we should reconsider this' in a calm collaborative English voice. Five seconds.", "imagePrompt": "Minimalist sketch of a man at a table in open posture, mid-sentence, palms visible. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-012",
+    "title": "The Forward Lean",
+    "skillCategory": "active-listening",
+    "difficulty": "beginner",
+    "characterName": "Coral",
+    "characterDescription": "A small graceful seahorse character with soft purple and blue gradients, gentle eyes, sitting on a coral bench in an underwater garden.",
+    "sceneDescription": "Coral the seahorse is sitting across from a friend who is telling exciting news. As the friend speaks, Coral leans her upper body forward by about ten degrees, her whole posture saying 'tell me more.'",
+    "annotation": "Notice how Coral doesn't say a word, but her forward lean shifts the energy. A ten-degree lean is enough — anything more starts to feel intense or invasive. The lean is the cheapest, simplest signal of engagement, and it almost always goes unused.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Coco but underwater. Coral the small graceful seahorse with soft purple-blue gradient body sits on a curved coral bench in a sunlit underwater garden. Soft caustic light filters down through the water, gentle bubbles drift past. A friend (off-camera) is speaking. Beat 1 (0-5s): Coral sits upright in a neutral attentive posture, gently swaying with the water. Beat 2 (5-10s): As the friend's news builds, Coral slowly tilts her upper body forward about ten degrees, her tail still anchored to the bench. Beat 3 (10-15s): She holds the forward lean, eyes wide and engaged, the smallest 'mhm' sound from her mouth. Soft underwater ambient sound plus a gentle harp melody. Medium shot of Coral from the side."
+    },
+    "observationGuide": {
+      "headline": "How Coral signals engagement with a single forward lean",
+      "moments": [
+        { "atSecond": 2, "technique": "Neutral Upright", "what": "Coral starts in a neutral upright posture, calm and present.", "why": "The lean only reads as engagement if it arrives from a calm baseline." },
+        { "atSecond": 6, "technique": "Slow Lean", "what": "Her upper body tilts forward about ten degrees over two seconds.", "why": "Slow movements feel intentional; sudden leans feel reactive." },
+        { "atSecond": 10, "technique": "Anchor Below", "what": "Her tail and lower body stay rooted while her upper body shifts.", "why": "Anchoring keeps the lean from looking like she's about to interrupt." },
+        { "atSecond": 13, "technique": "Hold the Lean", "what": "She holds the forward position rather than springing back.", "why": "The hold says 'I'm staying with you' — bouncing back says 'okay, my turn.'" }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Neutral Upright", "instruction": "Sit upright with a calm neutral posture before the conversation starts. Don't begin slouched — you'll have nowhere to lean from.", "tip": "Imagine a string lifting the crown of your head.", "targetDurationSec": 10, "videoPrompt": "Pixar 3D medium shot of Coral the seahorse in a calm upright posture on a coral bench, gently swaying with the water. Five seconds of held neutral, no speech.", "imagePrompt": "Minimalist sketch of a seahorse character in upright neutral posture. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Slow Lean", "instruction": "As your friend speaks, slowly tilt your upper body forward about ten degrees. Make the motion smooth — not a sudden jerk.", "tip": "Count two seconds for the lean to complete.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Coral's upper body slowly tilting forward over five seconds, eyes engaged. No speech.", "imagePrompt": "Minimalist sketch of a seahorse character mid-lean, upper body tilted forward ten degrees. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Anchor Below", "instruction": "Keep your lower body still as you lean. Hips planted, feet on the floor. Only the upper body moves.", "tip": "If your whole body slides forward, it looks like you're about to interrupt.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D wide shot of Coral with tail anchored to the bench, only her upper body shifting forward. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a seahorse character leaning forward with tail clearly anchored to a bench. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Hold the Lean", "instruction": "Hold the forward position for at least five seconds. Don't bounce back to upright as soon as your friend pauses.", "tip": "Bouncing back too fast tells them 'I was waiting to talk.'", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Coral holding her forward lean steady, eyes engaged. Five seconds of sustained position, soft 'mhm' sound at the end.", "imagePrompt": "Minimalist sketch of a seahorse character holding a sustained forward lean, attentive expression. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-013",
+    "title": "The Slow Nod",
+    "skillCategory": "active-listening",
+    "difficulty": "intermediate",
+    "characterName": "Sage",
+    "characterDescription": "A wise old owl with round glasses perched on his beak, soft brown feathers, sitting in a worn leather armchair, the kind of presence that makes you want to keep talking.",
+    "sceneDescription": "Sage the owl shows two contrasting nods. First a fast nervous nod (quick small bobs that signal 'go faster'), then a single slow deliberate nod (signaling 'I really hear you').",
+    "annotation": "Notice the difference between Sage's two nods. The fast nod tells the speaker 'okay okay okay get on with it.' The single slow nod says 'that landed.' Most people default to the fast nod when they're trying to look engaged, but it has the opposite effect.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Madagascar. Sage the wise old brown owl with round glasses perched on his beak sits in a cozy worn leather armchair in a softly lit study. Books on shelves in the background, warm reading lamp. Beat 1 (0-5s): Sage demonstrates the fast nervous nod — five small quick bobs of his head, eyes a bit too wide, the kind of nod that begs the speaker to wrap up. Beat 2 (5-10s): Pause. He resets to a calm neutral expression. Beat 3 (10-15s): Now he gives a single slow deliberate nod — head down for a full second, then back up — and softly says 'mm-hmm' in a calm warm English voice. Soft jazz piano in the background plus the gentle ticking of a wall clock. Tight medium shot of Sage's head and shoulders."
+    },
+    "observationGuide": {
+      "headline": "How Sage shows the difference between a fast and slow nod",
+      "moments": [
+        { "atSecond": 2, "technique": "Fast Nervous Nod", "what": "Sage bobs his head quickly five times in two seconds.", "why": "Fast nods read as 'hurry up' even when you mean 'I agree.'" },
+        { "atSecond": 6, "technique": "Reset Pause", "what": "He pauses and resets his face and head to neutral.", "why": "The reset makes the contrast between the two nods visible." },
+        { "atSecond": 10, "technique": "Single Slow Down", "what": "His head slowly tilts down a full inch over one second.", "why": "Slow downward motion is the visible signature of 'I'm taking this in.'" },
+        { "atSecond": 13, "technique": "Hold & Verbal Anchor", "what": "He holds the bottom of the nod for a beat and says 'mm-hmm.'", "why": "The hold + sound locks the moment of acknowledgment." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Catch the Fast Default", "instruction": "Notice when you're nodding fast. Most people do it when they're nervous or want to look engaged. Catch the impulse.", "tip": "Fast nods almost always come from anxiety, not real agreement.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Sage the owl bobbing his head quickly five times in a row. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of an owl character with multiple small head positions showing rapid nodding. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Reset to Still", "instruction": "Stop nodding. Hold your head completely still for a moment. Stillness creates space for the slow nod to land.", "tip": "If you can't hold still, you're not really listening yet.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Sage holding his head completely still in a calm neutral position. Five seconds of stillness, no speech.", "imagePrompt": "Minimalist sketch of an owl character with head completely still, calm centered. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Single Slow Down", "instruction": "Tilt your head down about an inch slowly — count one full second on the way down. No bobbing.", "tip": "The slower the nod, the more it weighs.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Sage's head slowly tilting down one inch over a full second, then holding. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of an owl character with head mid-slow-nod, just past center. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Hold & Anchor", "instruction": "At the bottom of the nod, hold for a beat and add a soft sound — 'mm-hmm' or 'mm.' Then slowly come back up.", "tip": "The sound at the bottom locks the moment of acknowledgment.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Sage holding the bottom of his slow nod, says 'mm-hmm' in a calm warm English voice, then slowly raises his head back up.", "imagePrompt": "Minimalist sketch of an owl character at the bottom of a slow nod with mouth slightly open. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-014",
+    "title": "The Echo & Pause",
+    "skillCategory": "active-listening",
+    "difficulty": "advanced",
+    "characterName": "Rina",
+    "characterDescription": "A young woman in her late twenties with long dark hair pulled back, wearing a soft cream sweater, sitting on a couch in a sunlit living room, the calm presence of a good friend.",
+    "sceneDescription": "Rina is listening to a friend share something painful. After the friend says 'I felt invisible,' Rina softly repeats the last three words back, then holds two full seconds of silence before responding.",
+    "annotation": "Notice the structure: echo the speaker's exact words, then hold silence. Echoing proves you heard the literal words; the silence proves you let them land. Most people respond too fast — Rina's two-second pause is what makes her presence feel rare.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Rina, a young woman in her late twenties with dark hair and a cream sweater, sits cross-legged on a couch in a sunlit living room. A friend (off-camera) is across from her. Soft afternoon light, warm beige tones. Beat 1 (0-5s): Tight medium shot of Rina's face — calm, attentive, eyes soft. She is listening quietly. Beat 2 (5-10s): The off-camera friend's voice trails off after saying 'I felt invisible.' Rina softly echoes 'You felt invisible' in a warm low English voice, eyes still locked on her friend. Beat 3 (10-15s): Rina holds two full seconds of silence — not awkward, just present — then says 'That sounds really hard' in a slow gentle voice. Subtle ambient room tone, very faint piano. Tight medium shot the entire time."
+    },
+    "observationGuide": {
+      "headline": "How Rina uses echo and silence to make her friend feel heard",
+      "moments": [
+        { "atSecond": 3, "technique": "Calm Attentive Listen", "what": "Rina's face is fully present — no phone, no fidget, no head tilt of skepticism.", "why": "Real echoing requires you to actually be there, not just look like you are." },
+        { "atSecond": 7, "technique": "Soft Verbatim Echo", "what": "She repeats the friend's exact words back in a low warm tone.", "why": "Verbatim echoing proves you heard the literal words, not just a summary." },
+        { "atSecond": 10, "technique": "Two-Second Hold", "what": "She holds two full seconds of silence after the echo.", "why": "Silence after the echo lets the words land — speaking too fast erases the moment." },
+        { "atSecond": 13, "technique": "Slow Acknowledgment", "what": "Her response comes slowly and is short — 'That sounds really hard.'", "why": "Slow short responses feel earned; fast long responses feel rehearsed." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Calm Attentive Listen", "instruction": "Before any echoing, just listen. Eyes soft, body still, no rehearsing your response in your head.", "tip": "If you're rehearsing what to say, you can't echo what they actually said.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Rina's face in calm attentive listening, eyes soft and present. Five seconds of held attention, no speech.", "imagePrompt": "Minimalist sketch of a young woman's face in calm focused listening. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Soft Verbatim Echo", "instruction": "When the speaker pauses, repeat their last few words back to them using their exact phrasing. Don't paraphrase.", "tip": "If you find yourself rewording, you've already stopped listening.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Rina speaking the words 'You felt invisible' in a low warm English voice, eyes locked on her friend. Five seconds.", "imagePrompt": "Minimalist sketch of a young woman speaking gently with eyes locked on someone off-frame. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Two-Second Hold", "instruction": "After the echo, hold silence for two full seconds. Don't rush in with your response.", "tip": "Count two slow heartbeats. Don't fill the space.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Rina's face holding silence after speaking, eyes still locked, calm and present. Five seconds of pure silence, no speech.", "imagePrompt": "Minimalist sketch of a young woman's face in calm attentive silence after speaking. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Slow Short Response", "instruction": "Respond slowly and briefly. One short sentence is enough. Don't try to fix or explain.", "tip": "Short and slow lands ten times harder than long and quick.", "targetDurationSec": 20, "videoPrompt": "Realistic cinematic close-up of Rina speaking the words 'That sounds really hard' in a slow gentle English voice. Five seconds.", "imagePrompt": "Minimalist sketch of a young woman speaking with a soft gentle expression. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-015",
+    "title": "The Punchline Pause",
+    "skillCategory": "vocal-pacing",
+    "difficulty": "beginner",
+    "characterName": "Joey",
+    "characterDescription": "A bouncy young kangaroo in a colorful t-shirt with a wide grin, expressive eyes, the energy of a class clown who loves the setup more than the joke.",
+    "sceneDescription": "Joey the kangaroo is telling a joke to a friend at a park bench. He delivers the setup at normal pace, then pauses for two full seconds while raising his eyebrows, before delivering the punchline.",
+    "annotation": "Notice how the pause does most of the work. The setup is just words; the silence is what builds anticipation. Bad joke-tellers rush the punchline. Good ones let the silence stretch until the listener is leaning in waiting for it.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Madagascar. Joey, a bouncy young kangaroo in a colorful red and yellow t-shirt, sits on a wooden park bench next to a friend (off-camera). Bright sunny park setting, green grass, soft tree shade. Beat 1 (0-5s): Joey turns to his friend with a mischievous grin and says 'So I went to the dentist...' in a normal upbeat English voice. Beat 2 (5-10s): He pauses completely. His mouth closes. His eyebrows lift in a slow exaggerated arc. Two full seconds of silence with the friend's anticipation visible in Joey's eyes. Beat 3 (10-15s): He delivers the punchline with a slight smirk: 'and he said I had cavity-tea.' Audience laughter sound effect. His tail bounces. Cheerful ukulele music plus park ambient sounds. Medium two-shot of Joey on the bench."
+    },
+    "observationGuide": {
+      "headline": "How Joey uses the pause to make a simple joke land",
+      "moments": [
+        { "atSecond": 3, "technique": "Setup Delivery", "what": "Joey says the setup at a normal upbeat pace with no rush.", "why": "Calm setup tells the audience 'something is coming.'" },
+        { "atSecond": 6, "technique": "Hard Stop", "what": "His mouth closes and he goes completely silent.", "why": "A hard stop creates the silence that the punchline will fill." },
+        { "atSecond": 8, "technique": "Eyebrow Arc", "what": "His eyebrows lift slowly through the silence.", "why": "The eyebrow lift signals 'wait for it' without saying it." },
+        { "atSecond": 12, "technique": "Punchline Drop", "what": "After two seconds of silence, he delivers the punchline with a smirk.", "why": "The longer the pause, the bigger the punchline payoff." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Setup Delivery", "instruction": "Say the setup of your joke at a normal calm pace. Don't rush. The setup is just the runway.", "tip": "If you're talking faster than usual, you've already lost the rhythm.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Joey the kangaroo speaking the joke setup 'So I went to the dentist...' in a calm upbeat English voice. Five seconds.", "imagePrompt": "Minimalist sketch of a kangaroo character mid-sentence with relaxed mouth and bright eyes. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Hard Stop", "instruction": "When the setup ends, stop completely. Close your mouth. Don't trail off into 'um' or 'and so.'", "tip": "The cleaner the stop, the bigger the silence.", "targetDurationSec": 10, "videoPrompt": "Pixar 3D close-up of Joey's mouth closing crisply at the end of a sentence, going still. Three seconds of held silence, no speech.", "imagePrompt": "Minimalist sketch of a kangaroo character with mouth firmly closed, mid-pause expression. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Eyebrow Arc", "instruction": "During the pause, slowly lift your eyebrows. This signals 'wait for it' to your audience.", "tip": "The eyebrow lift is the only visible sign you should be making during the pause.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Joey's face during a held silence, eyebrows slowly arching up over four seconds, mouth closed.", "imagePrompt": "Minimalist sketch of a kangaroo character with eyebrows arched high in a 'wait for it' expression. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Punchline Drop", "instruction": "After two full seconds of pause, deliver the punchline with a small smirk. Don't oversell it — the pause already did the work.", "tip": "Lean back slightly as you drop the punchline — it makes the joke land lighter.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Joey delivering 'and he said I had cavity-tea' with a small smirk. Audience laughter sound effect at the end.", "imagePrompt": "Minimalist sketch of a kangaroo character delivering a punchline with a smirk. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-016",
+    "title": "Slow-Down Storytelling",
+    "skillCategory": "vocal-pacing",
+    "difficulty": "intermediate",
+    "characterName": "Nala",
+    "characterDescription": "A young lion cub with a fluffy mane and bright amber eyes, wearing a small explorer scarf, sitting cross-legged by a small campfire, a natural-born storyteller.",
+    "sceneDescription": "Nala the lion cub is telling a spooky story to friends around a campfire. As she reaches the climax, she dramatically slows her speech down, drawing out each word with longer gaps between them.",
+    "annotation": "Notice how Nala doesn't get louder for emphasis — she gets slower. Slowing down forces the listener's brain to fill in the suspense. Speed signals confidence; slowness signals importance. Use both, never just one.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Kung Fu Panda. Nala, a young lion cub with a fluffy mane and bright amber eyes, sits cross-legged in front of a small campfire wearing a tiny explorer scarf. Three friends are visible around the fire (silhouetted). Night sky, warm orange firelight on her face. Beat 1 (0-5s): Nala speaks in a normal lively pace — 'And then I heard footsteps coming closer and closer.' Beat 2 (5-10s): She visibly slows her voice — 'And... then... very... slowly...' — each word stretched, with half-second gaps. Her eyes widen. Beat 3 (10-15s): The climax word arrives in a near-whisper, painfully slow — '...the door creaked open.' Friends gasp. The fire crackles louder. English voice, theatrical young storyteller. Soft mysterious flute music plus campfire crackle. Tight close-up of Nala's face."
+    },
+    "observationGuide": {
+      "headline": "How Nala slows speech to amplify the climax",
+      "moments": [
+        { "atSecond": 2, "technique": "Normal Pace Build", "what": "Nala starts at a lively normal pace, building the story.", "why": "You can't slow down for emphasis if you didn't build a baseline rhythm." },
+        { "atSecond": 6, "technique": "Speed Drop", "what": "Her speech rate suddenly halves with longer gaps between words.", "why": "The contrast in pace tells the listener 'this is the important part.'" },
+        { "atSecond": 9, "technique": "Word Stretch", "what": "She stretches individual words ('verrrry slowwwly') a fraction.", "why": "Stretching makes each word feel more weighty without louder volume." },
+        { "atSecond": 12, "technique": "Whispered Climax", "what": "The final reveal is delivered in a slow near-whisper.", "why": "Slow + quiet is the signature of suspenseful storytelling." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Normal Pace Build", "instruction": "Start your story at your normal speaking pace. The slowdown only works if there's a baseline to drop from.", "tip": "If you start slow, you have nowhere to go for emphasis.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Nala the lion cub speaking a story setup at a lively normal pace, gestures animated. Five seconds, English voice.", "imagePrompt": "Minimalist sketch of a young lion cub character mid-storytelling with animated face. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Speed Drop", "instruction": "Just before the climax, cut your speech rate in half. Add a half-second gap between words.", "tip": "Don't lower your volume yet — just slow the words.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Nala's face slowing her speech, speaking 'And... then... very...' with stretched gaps. Five seconds, English voice.", "imagePrompt": "Minimalist sketch of a young lion cub character mid-deliberate slow speech, mouth open in a held vowel. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Word Stretch", "instruction": "Stretch the vowels of important words. 'Slowwwly' carries more weight than 'slowly.' Don't overdo it.", "tip": "Stretch the vowel of one word per sentence — never the whole sentence.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Nala speaking with one word's vowel visibly stretched, eyes growing wide. Five seconds, English voice.", "imagePrompt": "Minimalist sketch of a young lion cub character with mouth open in a stretched vowel and wide eyes. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Whispered Climax", "instruction": "Deliver the final word or phrase in a slow near-whisper. Slow + quiet is the suspense signature.", "tip": "If the audience leans in to hear, you've done it right.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Nala whispering '...the door creaked open' in a slow near-whisper, eyes wide, firelight flickering. English voice with subtle gasps from off-camera friends.", "imagePrompt": "Minimalist sketch of a young lion cub character mid-whisper, eyes wide, intense focused expression. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-017",
+    "title": "The Question Lift",
+    "skillCategory": "vocal-pacing",
+    "difficulty": "advanced",
+    "characterName": "Mr. Chen",
+    "characterDescription": "A young teacher in his early thirties wearing a button-down shirt and chinos, standing in front of a classroom whiteboard, calm warm presence.",
+    "sceneDescription": "Mr. Chen demonstrates two versions of the same question. First flat-pitched ('What do you think.') which closes the conversation. Then with a rising pitch at the end ('What do you think?') which opens it.",
+    "annotation": "Notice how a question without a pitch lift sounds like a statement — and shuts the room down. The lift at the end is what makes it actually feel like an invitation. Most people who feel like 'no one engages with my questions' are accidentally delivering them flat.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Mr. Chen, a young teacher in his early thirties wearing a light blue button-down and khakis, stands in front of a small classroom whiteboard. Bright daylight from a window, the suggestion of student desks in soft focus in the foreground. Beat 1 (0-5s): Mr. Chen looks at his students and says 'What do you think.' with a flat falling pitch — like a statement. He pauses. The room is silent. Beat 2 (5-10s): He smiles slightly and says 'Let me try that again.' Beat 3 (10-15s): He repeats the line with a clear rising pitch — 'What do you think?' — and you can almost feel the room opening up. English voice, calm warm teacher tone. Subtle classroom ambient sound, no music. Medium shot of Mr. Chen from a student perspective."
+    },
+    "observationGuide": {
+      "headline": "How Mr. Chen turns a flat question into an open invitation",
+      "moments": [
+        { "atSecond": 3, "technique": "Flat-Pitch Question", "what": "Mr. Chen delivers the question with a falling pitch like a statement.", "why": "Falling pitch reads as 'I'm telling you,' not 'I'm asking you.'" },
+        { "atSecond": 5, "technique": "Awkward Silence", "what": "The room stays silent because no one knows it was a question.", "why": "Without the lift, the audience doesn't know they're invited to respond." },
+        { "atSecond": 8, "technique": "Same Words", "what": "He restates the line word for word — only the pitch changes.", "why": "Proves the words don't matter; the melody does." },
+        { "atSecond": 12, "technique": "Rising Pitch Lift", "what": "His voice clearly lifts on the last word.", "why": "The lift is the universal sound signature of 'now it's your turn.'" }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Notice Flat Defaults", "instruction": "Catch yourself when you ask questions with a falling pitch. Most people do it without realizing.", "tip": "Record yourself asking three questions and listen back — flat is more common than you'd guess.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Mr. Chen saying 'What do you think.' with a flat falling pitch. Five seconds, English voice.", "imagePrompt": "Minimalist sketch of a teacher standing at a whiteboard with neutral expression, mouth mid-word. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Practice the Lift", "instruction": "Say the same sentence three times with a clear rising pitch on the last word. Exaggerate at first to feel it.", "tip": "The pitch should rise on the very last syllable, not the whole word.", "targetDurationSec": 20, "videoPrompt": "Realistic cinematic close-up of Mr. Chen practicing the rising pitch on 'What do you think?' three times, each with a clearer lift. Six seconds, English voice.", "imagePrompt": "Minimalist sketch of a teacher's face mid-question with raised eyebrows on the last word. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Pair Lift with Eyebrow", "instruction": "When your pitch lifts, let your eyebrows lift slightly too. The body matches the voice.", "tip": "Lifted eyebrows + lifted pitch is the body signature of an open question.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Mr. Chen asking a question with both his pitch and eyebrows lifting on the last word. Five seconds, English voice.", "imagePrompt": "Minimalist sketch of a teacher's face with eyebrows raised and an open inviting expression. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Hold the Open Pause", "instruction": "After the lifted question, hold silence. Don't fill it. The lift gave the audience permission to speak — let them.", "tip": "If you fill the silence, you cancel the invitation.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic medium shot of Mr. Chen after asking the question, holding silent eye contact with the room. Five seconds of pure silence.", "imagePrompt": "Minimalist sketch of a teacher standing in calm silence after asking a question, eyes scanning the room. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-018",
+    "title": "The Calm No",
+    "skillCategory": "confident-disagreement",
+    "difficulty": "beginner",
+    "characterName": "Olive",
+    "characterDescription": "A small calm owl with soft grey feathers and round eyes, wearing a tiny scarf, the kind of friend who can say no without apologizing.",
+    "sceneDescription": "Olive the owl is invited to a late event by a friend. She declines politely but firmly with steady eye contact, an open body, and no apologetic over-explaining.",
+    "annotation": "Notice how Olive doesn't add five reasons why she can't come. She doesn't apologize three times. She says 'thank you' and 'I can't,' holds eye contact, and stops talking. The over-explaining is what makes a 'no' feel awkward — the calm silence after is what makes it feel respectful.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Coco. Olive the small grey owl in a tiny knit scarf is standing at the doorway of her cozy tree-hollow home, talking with a friend (off-camera) on the porch. Soft evening light, warm porch lantern. Beat 1 (0-5s): Olive listens to the friend's invitation with a calm open expression, no apology pre-loaded on her face. Beat 2 (5-10s): She gives one slow nod, makes eye contact, and says 'Thank you, but I can't tonight' in a warm steady English voice. Beat 3 (10-15s): She holds the eye contact, smiles softly, and stays calmly silent — no over-explaining, no apologetic body language. Soft acoustic guitar plus porch wind chime SFX. Medium shot of Olive at the doorway."
+    },
+    "observationGuide": {
+      "headline": "How Olive declines without apologizing herself out of respect",
+      "moments": [
+        { "atSecond": 3, "technique": "Calm Open Listen", "what": "Olive's face stays open and calm as she hears the invitation.", "why": "Closing your face during the ask signals you're already preparing to refuse." },
+        { "atSecond": 6, "technique": "Slow Nod Acknowledge", "what": "She gives a single slow nod before responding.", "why": "The nod tells the asker 'I heard you' before the answer arrives." },
+        { "atSecond": 9, "technique": "Short Clear No", "what": "She says 'Thank you, but I can't tonight' — short and complete.", "why": "Short refusals respect the asker's time and don't invite negotiation." },
+        { "atSecond": 13, "technique": "Calm Silent Hold", "what": "She holds eye contact and stays silent rather than over-explaining.", "why": "The silence is what makes the no feel firm without feeling cold." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Calm Open Listen", "instruction": "When someone makes an ask you'll need to refuse, keep your face calm and open. Don't pre-load 'no' on your face.", "tip": "If your face starts closing during the ask, the answer feels like an attack.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Olive the owl listening with a calm open expression, eyes soft. Five seconds of held attentive listening, no speech.", "imagePrompt": "Minimalist sketch of an owl character with a calm open listening expression. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Slow Nod Acknowledge", "instruction": "Before answering, give one slow nod. This tells the asker you actually heard them.", "tip": "The nod buys you a beat to compose your answer.", "targetDurationSec": 10, "videoPrompt": "Pixar 3D close-up of Olive giving one slow deliberate nod. Three seconds, no speech.", "imagePrompt": "Minimalist sketch of an owl character mid-slow-nod, calm expression. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Short Clear No", "instruction": "Say one short complete sentence. 'Thank you, but I can't.' That's it. No reasons, no five qualifiers.", "tip": "If you add 'because...' you're inviting negotiation.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Olive saying 'Thank you, but I can't tonight' in a warm steady English voice, holding eye contact. Five seconds.", "imagePrompt": "Minimalist sketch of an owl character mid-sentence with a calm steady expression. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Calm Silent Hold", "instruction": "After the no, hold eye contact and stay silent. Don't fill the gap with apologies. Let the no be enough.", "tip": "The silence is uncomfortable for two seconds, then it isn't.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Olive holding eye contact with a calm soft smile after declining. Five seconds of silence, no speech.", "imagePrompt": "Minimalist sketch of an owl character holding calm eye contact with a soft closed-mouth smile. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-019",
+    "title": "The Stand Your Ground",
+    "skillCategory": "confident-disagreement",
+    "difficulty": "intermediate",
+    "characterName": "Bruno",
+    "characterDescription": "A big calm brown bear in a flannel shirt and suspenders, gentle eyes, the size of someone who never needs to raise his voice to be taken seriously.",
+    "sceneDescription": "Bruno the bear is mid-story at a dinner table when a friend tries to interrupt with 'Wait, but —' Bruno holds his posture, maintains eye contact, raises one open palm, and calmly says 'Let me finish — I'll get to that part.'",
+    "annotation": "Notice how Bruno doesn't get louder, doesn't get tense, and doesn't snap. He simply doesn't yield. The open palm is the secret — it stops the interruption while signaling 'I'm not attacking you.' Most people lose their ground because they let their body shrink the moment they're interrupted.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Kung Fu Panda. Bruno, a big calm brown bear in a red flannel shirt and brown suspenders, sits at a long wooden dinner table mid-story. Two friends (off-camera) are listening. Warm dining room lighting, candles, soft chatter in the background. Beat 1 (0-5s): Bruno is mid-sentence, calm and grounded, gesturing softly. Beat 2 (5-10s): An off-camera friend tries to interrupt — 'Wait, but —' Bruno holds his posture, maintains eye contact, and slowly raises his right palm in a soft 'pause' gesture. His shoulders don't lift, his face doesn't tense. Beat 3 (10-15s): Bruno calmly says 'Let me finish — I'll get to that part' in a warm steady English voice, then gently lowers his hand and continues his story. Soft acoustic background music plus dinner ambient sounds. Medium shot of Bruno from across the table."
+    },
+    "observationGuide": {
+      "headline": "How Bruno holds his ground without raising his voice",
+      "moments": [
+        { "atSecond": 3, "technique": "Grounded Mid-Story", "what": "Bruno is gesturing softly and his body is calm and stable.", "why": "A stable body before the interruption is what makes holding it possible." },
+        { "atSecond": 6, "technique": "No Posture Shrink", "what": "When the interruption comes, his shoulders don't lift and his chest doesn't close.", "why": "Most people physically shrink at interruptions — this signals submission." },
+        { "atSecond": 9, "technique": "Open Palm Stop", "what": "He raises his right palm in a soft pause gesture with the palm facing the interrupter.", "why": "Open palm stops the interruption without reading as aggressive." },
+        { "atSecond": 12, "technique": "Calm Verbal Anchor", "what": "He says 'Let me finish — I'll get to that part' in a warm steady tone.", "why": "Calm tone + clear words = firm without conflict." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Grounded Baseline", "instruction": "Before any interruption could happen, sit with your shoulders back and your body grounded. You can't hold what you don't have.", "tip": "Grounded posture has to be your default, not your reaction.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Bruno the bear sitting calmly at a dinner table with grounded posture, mid-story gestures. Five seconds, English voice but words muffled.", "imagePrompt": "Minimalist sketch of a bear character sitting calm and grounded at a table, mid-gesture. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "No Posture Shrink", "instruction": "When someone interrupts, do NOT lift your shoulders or close your chest. Notice the impulse and don't follow it.", "tip": "The shrink happens in a fraction of a second — you have to catch it.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Bruno's face and shoulders when an interruption hits — eyes calm, shoulders stay down, no shrink. Five seconds, no speech.", "imagePrompt": "Minimalist sketch of a bear character with shoulders deliberately held down and chest open. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Open Palm Stop", "instruction": "Raise one palm in a soft pause gesture. Palm faces the interrupter, fingers relaxed, not stiff.", "tip": "A stiff palm reads as aggressive; a relaxed palm reads as 'wait a moment.'", "targetDurationSec": 15, "videoPrompt": "Pixar 3D close-up of Bruno's right paw rising slowly into a soft open palm gesture. Five seconds of held position, no speech.", "imagePrompt": "Minimalist sketch of a bear character raising one open palm in a soft pause gesture. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Calm Verbal Anchor", "instruction": "Say a short clear sentence to acknowledge the interrupter without yielding. 'Let me finish — I'll get to that.'", "tip": "The 'I'll get to that' part respects the interrupter without surrendering the floor.", "targetDurationSec": 15, "videoPrompt": "Pixar 3D medium shot of Bruno saying 'Let me finish — I'll get to that part' in a warm steady English voice, palm still raised. Five seconds.", "imagePrompt": "Minimalist sketch of a bear character speaking calmly with one palm raised. White background, no text." }
+    ]
+  },
+  {
+    "id": "ai-practice-020",
+    "title": "The Reframe",
+    "skillCategory": "confident-disagreement",
+    "difficulty": "advanced",
+    "characterName": "Marcus",
+    "characterDescription": "A young man in his early thirties wearing a charcoal sweater, sitting at a small round meeting table, calm composed presence, the kind of person who never raises his voice.",
+    "sceneDescription": "Marcus is in a meeting where a colleague has just pushed back hard on his timeline concern. He pauses, acknowledges what the colleague said, then calmly restates his position with new framing — without raising his voice or backing down.",
+    "annotation": "Notice the structure: pause, acknowledge, restate with reframe. Marcus doesn't repeat his original argument louder. He validates the pushback first, then comes back from a different angle. The reframe is the most advanced disagreement skill — it works because it makes the other person feel heard before they hear the disagreement.",
+    "filmingStyle": "realistic",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Realistic cinematic short film with warm naturalism and soft natural lighting. Marcus, a young man in his early thirties wearing a charcoal grey sweater, sits at a small round meeting table. A colleague (off-camera) has just finished a forceful pushback. Bright daylight from a window, the soft hum of an open office. Beat 1 (0-5s): Tight medium shot of Marcus's face. He pauses for a full second, calm and composed, then gives a small slow nod. Beat 2 (5-10s): He says 'I hear you' in a warm steady English voice, holding eye contact with the colleague. A short pause. Beat 3 (10-15s): He calmly continues: 'My point is still that the timeline is too tight — let me explain why.' His tone never rises. He stays grounded. Subtle ambient meeting room sound, no music. Medium shot of Marcus throughout."
+    },
+    "observationGuide": {
+      "headline": "How Marcus reframes a disagreement without escalating",
+      "moments": [
+        { "atSecond": 2, "technique": "Composed Pause", "what": "Marcus pauses for a full second after the pushback before reacting.", "why": "The pause prevents reactive body language and signals he's actually considering it." },
+        { "atSecond": 5, "technique": "Small Acknowledge Nod", "what": "He gives a single slow nod to acknowledge the colleague was heard.", "why": "Acknowledgment first makes the disagreement that follows land softer." },
+        { "atSecond": 8, "technique": "Validating Phrase", "what": "He says 'I hear you' before stating his position.", "why": "Two words of validation reduce defensiveness more than ten words of evidence." },
+        { "atSecond": 12, "technique": "Reframed Restate", "what": "He restates his position with new framing — not louder, not the same words.", "why": "Restating the same words louder loses; reframing from a new angle keeps the room open." }
+      ]
+    },
+    "practiceSteps": [
+      { "stepNumber": 1, "skillFocus": "Composed Pause", "instruction": "When someone pushes back on you, pause for a full second before saying anything. Don't react fast.", "tip": "The pause is uncomfortable but it's the difference between escalation and reframe.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Marcus's face after a verbal pushback, holding a calm composed pause for five seconds, no speech.", "imagePrompt": "Minimalist sketch of a young man's face in a calm composed pause, eyes steady. White background, no text." },
+      { "stepNumber": 2, "skillFocus": "Small Acknowledge Nod", "instruction": "Give a single slow nod. This tells the other person you actually heard them, not just waited to talk.", "tip": "The nod has to be slow — a fast nod reads as 'yes yes get on with it.'", "targetDurationSec": 10, "videoPrompt": "Realistic cinematic close-up of Marcus giving one slow deliberate nod after a pause. Three seconds, no speech.", "imagePrompt": "Minimalist sketch of a young man's face mid-slow-nod with calm expression. White background, no text." },
+      { "stepNumber": 3, "skillFocus": "Validating Phrase", "instruction": "Say two or three words that acknowledge their point: 'I hear you' or 'That makes sense.' Don't go longer than that.", "tip": "Long validation feels like flattery — short validation feels real.", "targetDurationSec": 15, "videoPrompt": "Realistic cinematic close-up of Marcus saying 'I hear you' in a warm steady English voice with held eye contact. Five seconds.", "imagePrompt": "Minimalist sketch of a young man speaking briefly with steady eye contact and calm composed face. White background, no text." },
+      { "stepNumber": 4, "skillFocus": "Reframed Restate", "instruction": "Restate your position from a new angle. Not louder. Not the same sentence. Find a different framing.", "tip": "If you only know one way to say your point, you're not ready to reframe yet.", "targetDurationSec": 20, "videoPrompt": "Realistic cinematic medium shot of Marcus calmly saying 'My point is still that the timeline is too tight — let me explain why' in a steady English voice. Six seconds.", "imagePrompt": "Minimalist sketch of a young man speaking calmly at a meeting table, palms visible on the table. White background, no text." }
+    ]
+  }
+]
