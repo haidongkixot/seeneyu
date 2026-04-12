@@ -33,8 +33,16 @@ export async function POST(
       return NextResponse.json({ error: 'Request not found' }, { status: 404 })
     }
 
-    if (!request.imagePrompt) {
-      return NextResponse.json({ error: 'Image prompt is empty. Edit the request first.' }, { status: 400 })
+    const selectedPrompt = assetType === 'video'
+      ? request.videoPrompt ?? request.imagePrompt
+      : request.imagePrompt
+
+    if (!selectedPrompt) {
+      return NextResponse.json({
+        error: assetType === 'video'
+          ? 'Video prompt is empty. Edit the request first.'
+          : 'Image prompt is empty. Edit the request first.',
+      }, { status: 400 })
     }
 
     const resolvedProvider = provider || request.provider
@@ -59,7 +67,7 @@ export async function POST(
             type: assetType,
             provider: resolvedProvider,
             model: resolvedModel,
-            prompt: request.imagePrompt!,
+            prompt: selectedPrompt,
             status: 'generating',
           },
         }),
@@ -68,10 +76,10 @@ export async function POST(
 
     // Kick off generation — waitUntil keeps Vercel alive until the promise resolves
     if (assetType === 'video') {
-      waitUntil(generateVideoAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id, options)
+      waitUntil(generateVideoAsync(assets.map((a) => a.id), selectedPrompt, resolvedProvider, resolvedModel, id, options)
         .catch(console.error))
     } else {
-      waitUntil(generateAsync(assets.map((a) => a.id), request.imagePrompt!, resolvedProvider, resolvedModel, id, options)
+      waitUntil(generateAsync(assets.map((a) => a.id), selectedPrompt, resolvedProvider, resolvedModel, id, options)
         .catch(console.error))
     }
 

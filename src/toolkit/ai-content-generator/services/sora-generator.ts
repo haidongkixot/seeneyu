@@ -26,7 +26,7 @@ const SIZE_MAP: Record<string, Record<string, string>> = {
 export async function submitSoraJob(
   prompt: string,
   model?: string,
-  options?: { aspectRatio?: string; resolution?: string },
+  options?: { aspectRatio?: string; resolution?: string; duration?: number },
 ): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) throw new Error('OPENAI_API_KEY not configured')
@@ -35,6 +35,7 @@ export async function submitSoraJob(
   const resolution = options?.resolution ?? '720p'
   const aspectRatio = options?.aspectRatio ?? '16:9'
   const size = SIZE_MAP[resolution]?.[aspectRatio] ?? '1280x720'
+  const seconds = normalizeSeconds(options?.duration)
 
   const createRes = await fetch(`${BASE}/videos`, {
     method: 'POST',
@@ -42,7 +43,7 @@ export async function submitSoraJob(
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ model: modelId, prompt, size }),
+    body: JSON.stringify({ model: modelId, prompt, size, seconds }),
   })
 
   if (!createRes.ok) {
@@ -53,6 +54,25 @@ export async function submitSoraJob(
   const job = await createRes.json()
   if (!job.id) throw new Error(`Sora returned no job ID: ${JSON.stringify(job).slice(0, 200)}`)
   return job.id as string
+}
+
+function normalizeSeconds(duration?: number): '4' | '8' | '12' {
+  const supported = [4, 8, 12]
+  if (!duration || Number.isNaN(duration)) return '8'
+
+  const requested = Math.max(1, Math.round(duration))
+  let closest = supported[0]
+  let bestDistance = Math.abs(requested - closest)
+
+  for (const candidate of supported.slice(1)) {
+    const distance = Math.abs(requested - candidate)
+    if (distance < bestDistance) {
+      closest = candidate
+      bestDistance = distance
+    }
+  }
+
+  return String(closest) as '4' | '8' | '12'
 }
 
 /**

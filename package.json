@@ -15,6 +15,7 @@
     "verify": "cd roles/data-engineer/pipelines && tsx verify-youtube-ids.ts",
     "admin:create": "tsx scripts/create-admin.ts",
     "user:create": "tsx scripts/create-user.ts",
+    "practice:generate:sora": "tsx scripts/generate-sora-practice.ts",
     "session:start": "powershell -ExecutionPolicy Bypass -File scripts/start-session.ps1",
     "session:checkpoint": "tsx scripts/checkpoint-all.ts"
   },
