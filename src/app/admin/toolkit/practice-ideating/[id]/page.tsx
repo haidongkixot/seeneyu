@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { ArrowLeft, Download, FileJson, FileText, ChevronDown, ChevronUp, Loader2, AlertCircle, Copy, Check, Sparkles, X, ExternalLink } from 'lucide-react'
 
 interface Moment {
@@ -78,8 +78,8 @@ const FALLBACK_PROVIDERS = [
 
 const CONCURRENCY_OPTIONS = [1, 3, 5]
 
-export default function BatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function BatchDetailPage() {
+  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [batch, setBatch] = useState<Batch | null>(null)
   const [loading, setLoading] = useState(true)
