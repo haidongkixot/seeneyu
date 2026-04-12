@@ -881,8 +881,13 @@ model AiContentRequest {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   assets               AiGeneratedAsset[]
+  // Collection grouping — links multiple requests into one batch from Practice Ideating
+  collectionId         String?
+  sourcePracticeIdeaId String?
+  collectionTitle      String?            // cached title for UI without re-fetching batch
   @@index([status])
   @@index([expressionType])
+  @@index([collectionId])
 }
 
 model AiGeneratedAsset {

@@ -2,7 +2,8 @@
 
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Download, FileJson, FileText, ChevronDown, ChevronUp, Loader2, AlertCircle, Copy, Check } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ArrowLeft, Download, FileJson, FileText, ChevronDown, ChevronUp, Loader2, AlertCircle, Copy, Check, Sparkles, X, ExternalLink } from 'lucide-react'
 
 interface Moment {
   atSecond: number
@@ -66,12 +67,33 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
+// ── Provider options (fallback) ──────────────────────────────────────
+
+const FALLBACK_PROVIDERS = [
+  { value: 'openai-sora', label: 'OpenAI Sora' },
+  { value: 'kling-video', label: 'Kling Video' },
+  { value: 'runway', label: 'Runway' },
+  { value: 'luma', label: 'Luma' },
+]
+
+const CONCURRENCY_OPTIONS = [1, 3, 5]
+
 export default function BatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
+  const router = useRouter()
   const [batch, setBatch] = useState<Batch | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+
+  // Push to Generator state
+  const [showPushModal, setShowPushModal] = useState(false)
+  const [pushProviders, setPushProviders] = useState<{ value: string; label: string }[]>(FALLBACK_PROVIDERS)
+  const [pushProvider, setPushProvider] = useState(FALLBACK_PROVIDERS[0].value)
+  const [pushConcurrency, setPushConcurrency] = useState(3)
+  const [pushing, setPushing] = useState(false)
+  const [pushError, setPushError] = useState<string | null>(null)
+  const [pushedAt, setPushedAt] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -88,6 +110,61 @@ export default function BatchDetailPage({ params }: { params: Promise<{ id: stri
     }
     load()
   }, [id])
+
+  // Fetch providers when modal opens
+  useEffect(() => {
+    if (!showPushModal) return
+    async function loadProviders() {
+      try {
+        const res = await fetch('/api/admin/toolkit/ai-generator/providers')
+        if (res.ok) {
+          const data = await res.json()
+          if (Array.isArray(data) && data.length > 0) {
+            const mapped = data
+              .filter((p: any) => p.available)
+              .map((p: any) => ({ value: p.id, label: p.name }))
+            if (mapped.length > 0) {
+              setPushProviders(mapped)
+              setPushProvider(mapped[0].value)
+            }
+          }
+        }
+      } catch {
+        // Use fallback providers
+      }
+    }
+    loadProviders()
+  }, [showPushModal])
+
+  async function handlePushToGenerator() {
+    if (!batch) return
+    setPushing(true)
+    setPushError(null)
+    try {
+      const res = await fetch('/api/admin/toolkit/ai-generator/push-from-ideating', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          batchId: batch.id,
+          provider: pushProvider,
+          model: null,
+          options: { duration: 15, aspectRatio: '16:9' },
+          concurrency: pushConcurrency,
+        }),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || 'Failed to push to generator')
+      }
+      setPushedAt(new Date().toISOString())
+      setShowPushModal(false)
+      router.push(`/admin/toolkit/ai-generator/collections/${batch.id}`)
+    } catch (err: any) {
+      setPushError(err.message)
+    } finally {
+      setPushing(false)
+    }
+  }
 
   const ideas = batch?.ideas ?? []
   const skills: Record<string, number> = {}
@@ -151,6 +228,23 @@ export default function BatchDetailPage({ params }: { params: Promise<{ id: stri
         </div>
         {batch.status === 'complete' && (
           <div className="flex items-center gap-2">
+            {pushedAt ? (
+              <Link
+                href={`/admin/toolkit/ai-generator/collections/${batch.id}`}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-semibold hover:bg-emerald-500/15 transition-colors"
+              >
+                <ExternalLink size={14} />
+                View Collection
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowPushModal(true)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 text-sm font-semibold hover:bg-purple-500/15 transition-colors"
+              >
+                <Sparkles size={14} />
+                Push to Generator
+              </button>
+            )}
             <a
               href={`/api/admin/toolkit/practice-ideating/batches/${batch.id}/export?format=json`}
               download
@@ -327,6 +421,121 @@ export default function BatchDetailPage({ params }: { params: Promise<{ id: stri
           )
         })}
       </div>
+
+      {/* Push to Generator Modal */}
+      {showPushModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setShowPushModal(false)}>
+          <div
+            className="bg-bg-surface border border-black/8 rounded-2xl p-6 w-full max-w-md shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <Sparkles size={18} className="text-purple-400" />
+                <h2 className="text-lg font-bold text-text-primary">Push to AI Generator</h2>
+              </div>
+              <button
+                onClick={() => setShowPushModal(false)}
+                className="text-text-muted hover:text-text-secondary transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <p className="text-sm text-text-secondary mb-5">
+              Generate video clips for all {batch?.count || 0} practice ideas in this batch.
+            </p>
+
+            <div className="space-y-4">
+              {/* Provider */}
+              <div>
+                <label className="block text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1.5">
+                  Provider
+                </label>
+                <select
+                  value={pushProvider}
+                  onChange={(e) => setPushProvider(e.target.value)}
+                  className="w-full bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-400/50"
+                >
+                  {pushProviders.map((p) => (
+                    <option key={p.value} value={p.value}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Duration (locked) */}
+              <div>
+                <label className="block text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1.5">
+                  Duration
+                </label>
+                <div className="bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-muted">
+                  15 seconds (fixed)
+                </div>
+              </div>
+
+              {/* Aspect Ratio (display only) */}
+              <div>
+                <label className="block text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1.5">
+                  Aspect Ratio
+                </label>
+                <div className="bg-bg-inset border border-black/10 rounded-lg px-3 py-2 text-sm text-text-muted">
+                  16:9
+                </div>
+              </div>
+
+              {/* Concurrency */}
+              <div>
+                <label className="block text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1.5">
+                  Concurrency
+                </label>
+                <div className="flex items-center gap-1 bg-bg-inset rounded-lg p-0.5">
+                  {CONCURRENCY_OPTIONS.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setPushConcurrency(c)}
+                      className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                        pushConcurrency === c
+                          ? 'bg-bg-surface text-text-primary shadow-sm'
+                          : 'text-text-muted hover:text-text-secondary'
+                      }`}
+                    >
+                      {c} at a time
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Push error */}
+            {pushError && (
+              <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-xs text-red-400">
+                {pushError}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-2 mt-6">
+              <button
+                onClick={() => setShowPushModal(false)}
+                className="px-4 py-2 text-sm font-medium text-text-muted hover:text-text-secondary transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePushToGenerator}
+                disabled={pushing}
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-xl hover:bg-purple-500/20 transition-colors disabled:opacity-50"
+              >
+                {pushing ? (
+                  <><Loader2 size={14} className="animate-spin" /> Pushing...</>
+                ) : (
+                  <><Sparkles size={14} /> Confirm &amp; Push</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
