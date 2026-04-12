@@ -7,10 +7,7 @@ export const dynamic = 'force-dynamic'
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions)
-  if (!session || (session.user as any).role !== 'admin') {
-    throw new Error('Unauthorized')
-  }
-  return session
+  if (!session || (session.user as any).role !== 'admin') throw new Error('Unauthorized')
 }
 
 export async function GET(
@@ -21,51 +18,69 @@ export async function GET(
     await requireAdmin()
     const { batchId } = await params
 
-    // Load all requests in this collection with their assets
     const requests = await (prisma as any).aiContentRequest.findMany({
       where: { collectionId: batchId },
-      include: { assets: true },
+      include: { assets: { orderBy: { createdAt: 'asc' } } },
       orderBy: { createdAt: 'asc' },
     })
 
     if (requests.length === 0) {
-      return NextResponse.json(
-        { error: 'No requests found for this collection' },
-        { status: 404 },
-      )
+      return NextResponse.json({ error: 'No requests found for this collection' }, { status: 404 })
     }
 
-    // Load the source batch name for display
     const batch = await (prisma as any).practiceIdeaBatch.findUnique({
       where: { id: batchId },
       select: { name: true },
     })
 
-    // Compute progress by status
-    const progress = { draft: 0, generating: 0, review: 0, published: 0, failed: 0 }
-    for (const r of requests) {
-      const status = r.status as keyof typeof progress
-      if (status in progress) {
-        progress[status]++
-      }
-    }
+    // Compute progress across ALL assets (not just requests)
+    let totalAssets = 0
+    let readyAssets = 0
+    let generatingAssets = 0
+    let failedAssets = 0
 
-    // Map requests to a slim response shape
+    const requestProgress = { draft: 0, generating: 0, review: 0, published: 0, failed: 0 }
+
     const mappedRequests = requests.map((r: any) => {
-      const readyAsset = r.assets?.find((a: any) => a.status === 'ready')
-      const failedAsset = r.assets?.find((a: any) => a.status === 'failed')
+      const status = r.status as keyof typeof requestProgress
+      if (status in requestProgress) requestProgress[status]++
+
+      const assets = (r.assets || []) as any[]
+      const mainAsset = assets.find((a: any) => a.metadata?.role === 'main')
+      const stepAssets = assets
+        .filter((a: any) => a.metadata?.role === 'step')
+        .sort((a: any, b: any) => (a.metadata?.stepNumber || 0) - (b.metadata?.stepNumber || 0))
+
+      for (const a of assets) {
+        totalAssets++
+        if (a.status === 'ready') readyAssets++
+        else if (a.status === 'failed') failedAssets++
+        else generatingAssets++
+      }
 
       return {
         id: r.id,
-        collectionTitle: r.collectionTitle,
+        collectionTitle: r.collectionTitle || '(untitled)',
         sourcePracticeIdeaId: r.sourcePracticeIdeaId,
         status: r.status,
-        provider: r.provider,
-        model: r.model,
-        assetUrl: readyAsset?.blobUrl || null,
-        error: failedAsset?.errorMessage || null,
-        createdAt: r.createdAt,
-        updatedAt: r.updatedAt,
+        mainVideo: mainAsset ? {
+          id: mainAsset.id,
+          status: mainAsset.status,
+          blobUrl: mainAsset.blobUrl || null,
+          error: mainAsset.errorMessage || null,
+          durationSec: mainAsset.metadata?.durationSec || 15,
+        } : null,
+        steps: stepAssets.map((a: any) => ({
+          id: a.id,
+          stepNumber: a.metadata?.stepNumber || 0,
+          skillFocus: a.metadata?.skillFocus || '',
+          status: a.status,
+          blobUrl: a.blobUrl || null,
+          error: a.errorMessage || null,
+          durationSec: a.metadata?.durationSec || 5,
+        })),
+        totalAssets: assets.length,
+        readyAssets: assets.filter((a: any) => a.status === 'ready').length,
       }
     })
 
@@ -73,14 +88,13 @@ export async function GET(
       batchId,
       batchName: batch?.name || null,
       totalRequests: requests.length,
-      progress,
+      totalAssets,
+      assetProgress: { ready: readyAssets, generating: generatingAssets, failed: failedAssets },
+      requestProgress,
       requests: mappedRequests,
     })
   } catch (err: any) {
-    if (err.message === 'Unauthorized') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    console.error('Collection status fetch failed:', err)
+    if (err.message === 'Unauthorized') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
