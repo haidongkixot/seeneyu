@@ -160,10 +160,10 @@ export default function AiGeneratorPage() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href="/admin/toolkit/practice-ideating"
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-overlay border border-black/8 rounded-xl transition-colors"
+              href="/admin/toolkit/ai-generator/collections"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-purple-400 border border-purple-400/30 rounded-xl hover:bg-purple-400/10 transition-colors"
             >
-              <Sparkles size={14} /> Practice Ideating Batches &rarr;
+              <Sparkles size={14} /> Practice Collections
             </Link>
             <Link
               href="/admin/toolkit/ai-generator/agent"
