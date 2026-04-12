@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 const TIER_THRESHOLDS = [
   { name: 'Diamond', minXp: 50000, color: '#B9F2FF' },
   { name: 'Platinum', minXp: 15000, color: '#E5E4E2' },
