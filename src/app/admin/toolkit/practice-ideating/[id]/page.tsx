@@ -166,7 +166,48 @@ export default function BatchDetailPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  const ideas = batch?.ideas ?? []
+  // Safely coerce ideas from JSON — might be any shape from GPT
+  const rawIdeas = batch?.ideas
+  const ideas: Idea[] = Array.isArray(rawIdeas)
+    ? rawIdeas.map((raw: any, idx: number) => ({
+        id: String(raw?.id ?? `idea-${idx}`),
+        title: String(raw?.title ?? ''),
+        skillCategory: String(raw?.skillCategory ?? ''),
+        difficulty: String(raw?.difficulty ?? ''),
+        characterName: String(raw?.characterName ?? ''),
+        characterDescription: String(raw?.characterDescription ?? ''),
+        sceneDescription: String(raw?.sceneDescription ?? ''),
+        annotation: String(raw?.annotation ?? ''),
+        filmingStyle: String(raw?.filmingStyle ?? ''),
+        mainVideo: {
+          durationSec: Number(raw?.mainVideo?.durationSec) || 15,
+          prompt: String(raw?.mainVideo?.prompt ?? ''),
+        },
+        observationGuide: {
+          headline: String(raw?.observationGuide?.headline ?? ''),
+          moments: Array.isArray(raw?.observationGuide?.moments)
+            ? raw.observationGuide.moments.map((m: any) => ({
+                atSecond: Number(m?.atSecond) || 0,
+                technique: String(m?.technique ?? ''),
+                what: String(m?.what ?? ''),
+                why: String(m?.why ?? ''),
+              }))
+            : [],
+        },
+        practiceSteps: Array.isArray(raw?.practiceSteps)
+          ? raw.practiceSteps.map((s: any, si: number) => ({
+              stepNumber: Number(s?.stepNumber) || si + 1,
+              skillFocus: String(s?.skillFocus ?? ''),
+              instruction: String(s?.instruction ?? ''),
+              tip: String(s?.tip ?? ''),
+              targetDurationSec: Number(s?.targetDurationSec) || 20,
+              videoPrompt: String(s?.videoPrompt ?? ''),
+              imagePrompt: String(s?.imagePrompt ?? ''),
+            }))
+          : [],
+      }))
+    : []
+
   const skills: Record<string, number> = {}
   const difficulties: Record<string, number> = {}
   const styles: Record<string, number> = {}
@@ -268,7 +309,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ id: stri
       {batch.status === 'failed' && batch.error && (
         <div className="bg-error/10 border border-error/30 rounded-xl p-4 text-sm text-error mb-6">
           <p className="font-semibold mb-1">Generation failed</p>
-          <p className="text-xs">{batch.error}</p>
+          <p className="text-xs">{typeof batch.error === 'string' ? batch.error : JSON.stringify(batch.error)}</p>
         </div>
       )}
 
