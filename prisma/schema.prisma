@@ -229,6 +229,26 @@ model PracticeStep {
   @@index([clipId])
 }
 
+// ── Practice Ideating (Admin Toolkit) ─────────────────────────────────────────
+// Stores batches of AI-generated practice ideas produced from a PM prompt.
+// Each batch contains 10-50 practice objects ready for a video-generation tool.
+
+model PracticeIdeaBatch {
+  id         String   @id @default(cuid())
+  name       String
+  status     String   @default("draft") // draft | generating | complete | failed
+  config     Json     // { totalCount, skills, difficultyMix, stylePixarRatio, tone, language, characterTheme, pmPrompt }
+  ideas      Json?    // array of generated practice idea objects (same shape as ai-practices-batch-01.json)
+  count      Int      @default(0)
+  error      String?  @db.Text
+  createdBy  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+}
+
 model MicroSession {
   id           String   @id @default(cuid())
   sessionId    String?

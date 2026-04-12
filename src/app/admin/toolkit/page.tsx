@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target, Sparkles, Eye, Bot, Zap, BarChart3 } from 'lucide-react'
+import { Database, Gamepad2, FileText, Image, Clock, CheckCircle2, Users, Target, Sparkles, Eye, Bot, Zap, BarChart3, Lightbulb } from 'lucide-react'
 
 interface ToolkitStats {
   contentSources: { total: number; raw: number; curated: number; published: number }
@@ -29,22 +29,32 @@ interface AgentStats {
   latestStatus: string | null
 }
 
+interface IdeatingStats {
+  totalBatches: number
+  completeBatches: number
+  generating: number
+  failed: number
+  totalIdeas: number
+}
+
 export default function AdminToolkitPage() {
   const [stats, setStats] = useState<ToolkitStats | null>(null)
   const [gameStats, setGameStats] = useState<MiniGameStats | null>(null)
   const [aiStats, setAiStats] = useState<AiGeneratorStats | null>(null)
   const [agentStats, setAgentStats] = useState<AgentStats | null>(null)
+  const [ideatingStats, setIdeatingStats] = useState<IdeatingStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [sourcesRes, expressionsRes, analyticsRes, aiRes, agentRes] = await Promise.all([
+        const [sourcesRes, expressionsRes, analyticsRes, aiRes, agentRes, ideatingRes] = await Promise.all([
           fetch('/api/admin/toolkit/crawler/jobs?page=1'),
           fetch('/api/admin/toolkit/crawler/expressions?page=1'),
           fetch('/api/admin/toolkit/mini-games/analytics').catch(() => null),
           fetch('/api/admin/toolkit/ai-generator/stats').catch(() => null),
           fetch('/api/admin/toolkit/ai-generator/agent/stats').catch(() => null),
+          fetch('/api/admin/toolkit/practice-ideating/stats').catch(() => null),
         ])
         const sourcesData = await sourcesRes.json()
         const expressionsData = await expressionsRes.json()
@@ -82,6 +92,10 @@ export default function AdminToolkitPage() {
 
         if (agentRes && agentRes.ok) {
           setAgentStats(await agentRes.json())
+        }
+
+        if (ideatingRes && ideatingRes.ok) {
+          setIdeatingStats(await ideatingRes.json())
         }
       } catch {
         setStats(null)
@@ -135,6 +149,17 @@ export default function AdminToolkitPage() {
         { label: 'Cycles', value: agentStats.totalCycles, Icon: BarChart3 },
         { label: 'Pending', value: agentStats.pendingReview, Icon: Clock },
         { label: 'Generated', value: agentStats.completed, Icon: Zap },
+      ] : [],
+    },
+    {
+      href: '/admin/toolkit/practice-ideating',
+      label: 'Practice Ideating',
+      description: 'Generate batches of AI-designed practice ideas with video prompts, observation guides, and step-by-step guidance — ready to feed into your video generation tool.',
+      Icon: Lightbulb,
+      stats: ideatingStats ? [
+        { label: 'Batches', value: ideatingStats.totalBatches, Icon: FileText },
+        { label: 'Ideas', value: ideatingStats.totalIdeas, Icon: Sparkles },
+        { label: 'Running', value: ideatingStats.generating, Icon: Clock },
       ] : [],
     },
   ]
