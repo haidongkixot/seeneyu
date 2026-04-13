@@ -73,13 +73,22 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         videoRef.current.muted = true
+        await new Promise<void>((resolve) => {
+          const v = videoRef.current!
+          v.onloadeddata = () => resolve()
+          v.play().catch(() => resolve())
+        })
+        // Warmup MediaPipe inference to prevent 7-8s freeze on first recording frame
+        if (mpReady && detectAll && videoRef.current) {
+          try { detectAll(videoRef.current, performance.now()) } catch { /* warmup — OK to fail */ }
+        }
       }
       setState('ready')
     } catch {
       setError('Camera access denied — check browser permissions')
       setState('error')
     }
-  }, [])
+  }, [mpReady, detectAll])
 
   const beginCountdown = useCallback((onDone: () => void) => {
     setState('countdown')
@@ -285,10 +294,10 @@ export function RecordClient({ clipId, skillCategory, annotations }: RecordClien
           <>
             <button
               onClick={stopRecording}
-              className="flex-1 border border-black/10 text-text-primary rounded-xl py-3 text-base hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
+              className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
             >
-              <Square size={16} strokeWidth={2} />
-              Stop & Save
+              <Square size={16} fill="currentColor" />
+              I&apos;m Done
             </button>
             <button
               onClick={() => { stopRecording(); discard() }}

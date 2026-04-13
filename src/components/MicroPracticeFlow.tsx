@@ -204,6 +204,7 @@ export function MicroPracticeFlow({ clipId, characterName, skillCategory, clipTi
             <>
               <PracticeRecorder
                 stepNumber={step.stepNumber}
+                maxDurationSec={step.targetDurationSec || 30}
                 onComplete={handleRecordComplete}
                 detectAll={mpReady ? detectAll : undefined}
               />

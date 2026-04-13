@@ -11,6 +11,8 @@ type RecordState = 'idle' | 'ready' | 'countdown' | 'recording' | 'recorded'
 
 interface PracticeRecorderProps {
   stepNumber: number
+  /** Max recording duration in seconds. Defaults to 30. */
+  maxDurationSec?: number
   onComplete: (blob: Blob, frames: Blob[], snapshots?: AnalysisSnapshot[]) => void
   /** MediaPipe detect function — if provided, collects analysis instead of JPEG frames */
   detectAll?: DetectAllFn
@@ -30,11 +32,11 @@ function captureFrame(videoEl: HTMLVideoElement): Promise<Blob | null> {
   })
 }
 
-const MAX_SECS = 30
 const RING_R = 30
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_R
 
-export function PracticeRecorder({ stepNumber, onComplete, detectAll }: PracticeRecorderProps) {
+export function PracticeRecorder({ stepNumber, maxDurationSec = 30, onComplete, detectAll }: PracticeRecorderProps) {
+  const MAX_SECS = maxDurationSec
   const videoRef = useRef<HTMLVideoElement>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -69,20 +71,26 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         videoRef.current.muted = true
-        // Wait for video to actually be playing (avoids frozen first frames)
         await new Promise<void>((resolve) => {
           const v = videoRef.current!
           v.onloadeddata = () => resolve()
           v.play().catch(() => resolve())
         })
-        // Brief warmup delay for camera + MediaPipe
         await new Promise((r) => setTimeout(r, 300))
+        // Warmup MediaPipe inference BEFORE recording starts so the first
+        // real inference during recording doesn't freeze the camera for 7-8s.
+        // The WASM compilation + GPU init happens on the first detectAll() call.
+        if (detectAll && videoRef.current) {
+          try {
+            detectAll(videoRef.current, performance.now())
+          } catch { /* warmup — OK to fail silently */ }
+        }
       }
       setState('ready')
     } catch {
       setError('Camera access denied')
     }
-  }, [])
+  }, [detectAll])
 
   const stopRecording = useCallback(async () => {
     if (hardStopRef.current) clearTimeout(hardStopRef.current)
@@ -308,14 +316,15 @@ export function PracticeRecorder({ stepNumber, onComplete, detectAll }: Practice
           <>
             <button
               onClick={stopRecording}
-              className="flex-1 border border-black/10 text-text-primary rounded-xl py-3 text-sm hover:border-black/20 hover:bg-bg-overlay transition-all duration-150 flex items-center justify-center gap-2"
+              className="flex-1 bg-accent-400 text-text-inverse rounded-pill py-3.5 text-base font-semibold hover:bg-accent-500 hover:shadow-glow-sm transition-all duration-150 flex items-center justify-center gap-2"
             >
-              <Square size={14} strokeWidth={2} />
-              Stop & Save
+              <Square size={16} fill="currentColor" />
+              I&apos;m Done
             </button>
             <button
               onClick={() => { stopRecording(); discard() }}
               className="border border-error/30 text-error rounded-xl py-3 px-4 text-sm hover:bg-error/10 transition-all duration-150"
+              title="Discard and retry"
             >
               <RotateCcw size={14} />
             </button>
