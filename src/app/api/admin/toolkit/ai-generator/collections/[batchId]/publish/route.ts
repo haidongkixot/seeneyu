@@ -23,13 +23,25 @@ export async function POST(
     await requireAdmin()
     const { batchId } = await params
 
+    // Accept optional requestIds to publish specific items
+    let selectedIds: string[] | null = null
+    try {
+      const body = await req.json().catch(() => ({}))
+      if (Array.isArray(body.requestIds) && body.requestIds.length > 0) {
+        selectedIds = body.requestIds
+      }
+    } catch { /* no body = publish all */ }
+
+    const where: any = { collectionId: batchId, status: 'review' }
+    if (selectedIds) where.id = { in: selectedIds }
+
     const requests = await (prisma as any).aiContentRequest.findMany({
-      where: { collectionId: batchId, status: 'review' },
+      where,
       include: { assets: true },
     })
 
     if (requests.length === 0) {
-      return NextResponse.json({ error: 'No requests in review status' }, { status: 400 })
+      return NextResponse.json({ error: 'No matching requests in review status' }, { status: 400 })
     }
 
     let published = 0

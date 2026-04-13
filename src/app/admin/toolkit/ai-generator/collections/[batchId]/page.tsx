@@ -121,6 +121,7 @@ export default function CollectionDetailPage() {
   const [publishing, setPublishing] = useState(false)
   const [doneBanner, setDoneBanner] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const fetchCollection = useCallback(async () => {
@@ -165,14 +166,46 @@ export default function CollectionDetailPage() {
     return () => { if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null } }
   }, [data, fetchCollection, doneBanner])
 
-  async function handlePublishAll() {
-    if (!data || !confirm('Publish all ready practices to the clip library? This creates Clip + PracticeSteps + Tags.')) return
+  function toggleSelect(id: string) {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  function toggleSelectAll() {
+    if (!data) return
+    const reviewIds = data.requests.filter(r => r.status === 'review').map(r => r.id)
+    const allSelected = reviewIds.every(id => selectedIds.has(id))
+    if (allSelected) {
+      setSelectedIds(new Set())
+    } else {
+      setSelectedIds(new Set(reviewIds))
+    }
+  }
+
+  async function handlePublish() {
+    if (!data) return
+    const ids = selectedIds.size > 0 ? Array.from(selectedIds) : null
+    const count = ids ? ids.length : reviewCount
+    const msg = ids
+      ? `Publish ${count} selected practice${count !== 1 ? 's' : ''} to the clip library?`
+      : `Publish all ${reviewCount} ready practices to the clip library?`
+    if (!confirm(msg)) return
+
     setPublishing(true)
     try {
-      const res = await fetch(`/api/admin/toolkit/ai-generator/collections/${batchId}/publish`, { method: 'POST' })
+      const res = await fetch(`/api/admin/toolkit/ai-generator/collections/${batchId}/publish`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ids ? { requestIds: ids } : {}),
+      })
       const body = await res.json()
       if (res.ok) {
         setDoneBanner(`Published ${body.published} practices. ${body.failed > 0 ? `${body.failed} failed.` : ''}`)
+        setSelectedIds(new Set())
         fetchCollection()
       } else {
         setError(body.error || 'Publish failed')
@@ -276,11 +309,22 @@ export default function CollectionDetailPage() {
           const stepsTotal = req.steps.length
 
           return (
-            <div key={req.id} className="bg-bg-surface border border-black/8 rounded-2xl overflow-hidden">
+            <div key={req.id} className={`bg-bg-surface border rounded-2xl overflow-hidden ${selectedIds.has(req.id) ? 'border-accent-400/50' : 'border-black/8'}`}>
               {/* Summary row */}
+              <div className="flex items-center gap-2 p-4 hover:bg-bg-overlay transition-colors">
+                {/* Checkbox — only for review items */}
+                {req.status === 'review' && (
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(req.id)}
+                    onChange={() => toggleSelect(req.id)}
+                    className="w-4 h-4 rounded border-black/20 text-accent-400 focus:ring-accent-400/30 shrink-0 cursor-pointer"
+                  />
+                )}
+                {req.status !== 'review' && <div className="w-4 shrink-0" />}
               <button
                 onClick={() => setExpandedId(expanded ? null : req.id)}
-                className="w-full flex items-center gap-4 p-4 text-left hover:bg-bg-overlay transition-colors"
+                className="flex-1 flex items-center gap-4 text-left"
               >
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-accent-400/10 text-accent-400 text-xs font-bold shrink-0">
                   {i + 1}
@@ -301,6 +345,7 @@ export default function CollectionDetailPage() {
                 <StatusBadge status={req.status} />
                 {expanded ? <ChevronUp size={16} className="text-text-tertiary shrink-0" /> : <ChevronDown size={16} className="text-text-tertiary shrink-0" />}
               </button>
+              </div>
 
               {/* Expanded: main video + step videos */}
               {expanded && (
@@ -368,22 +413,44 @@ export default function CollectionDetailPage() {
 
       {/* Publish footer */}
       {reviewCount > 0 && (
-        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5 flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-text-primary">
-              {reviewCount} practice{reviewCount !== 1 ? 's' : ''} ready to publish
-            </p>
-            <p className="text-xs text-text-muted mt-0.5">
-              Creates Clip + PracticeSteps + ObservationGuide + Tags for each.
-            </p>
+        <div className="bg-bg-surface border border-black/8 rounded-2xl p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* Select All toggle */}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.requests.filter(r => r.status === 'review').every(r => selectedIds.has(r.id))}
+                  onChange={toggleSelectAll}
+                  className="w-4 h-4 rounded border-black/20 text-accent-400 focus:ring-accent-400/30"
+                />
+                <span className="text-xs text-text-secondary">Select all</span>
+              </label>
+              <div>
+                <p className="text-sm font-medium text-text-primary">
+                  {selectedIds.size > 0
+                    ? `${selectedIds.size} selected`
+                    : `${reviewCount} practice${reviewCount !== 1 ? 's' : ''} ready`}
+                </p>
+                <p className="text-xs text-text-muted mt-0.5">
+                  Creates Clip + PracticeSteps + ObservationGuide + Tags for each.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handlePublish}
+              disabled={publishing}
+              className="flex items-center gap-1.5 px-5 py-2.5 text-sm font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
+            >
+              {publishing ? (
+                <><Loader2 size={14} className="animate-spin" /> Publishing...</>
+              ) : selectedIds.size > 0 ? (
+                <><Send size={14} /> Publish {selectedIds.size} Selected</>
+              ) : (
+                <><Send size={14} /> Publish All {reviewCount}</>
+              )}
+            </button>
           </div>
-          <button
-            onClick={handlePublishAll}
-            disabled={publishing}
-            className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
-          >
-            {publishing ? <><Loader2 size={14} className="animate-spin" /> Publishing...</> : <><Send size={14} /> Publish All Ready</>}
-          </button>
         </div>
       )}
     </div>
