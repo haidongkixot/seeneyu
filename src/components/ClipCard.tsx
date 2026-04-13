@@ -27,13 +27,15 @@ export function ClipCard({ clip, locked = false }: ClipCardProps) {
   const [showUpgrade, setShowUpgrade] = useState(false)
   const duration = clip.endSec - clip.startSec
   const isAiImage = clip.mediaType === 'ai_image'
-  const hasYoutubeId = !!clip.youtubeVideoId
+  const isAiVideo = clip.mediaType === 'ai_video'
+  const isAi = isAiImage || isAiVideo
+  const hasRealYoutubeId = !!clip.youtubeVideoId && !clip.youtubeVideoId.startsWith('ai-')
   const thumbnailUrl = isAiImage && clip.mediaUrl
     ? clip.mediaUrl
-    : hasYoutubeId
+    : hasRealYoutubeId
     ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/maxresdefault.jpg`
     : null
-  const fallbackUrl = hasYoutubeId
+  const fallbackUrl = hasRealYoutubeId
     ? `https://img.youtube.com/vi/${clip.youtubeVideoId}/hqdefault.jpg`
     : null
 
@@ -41,7 +43,21 @@ export function ClipCard({ clip, locked = false }: ClipCardProps) {
     <>
       {/* Thumbnail */}
       <div className={`relative ${isAiImage ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-bg-inset`}>
-        {thumbnailUrl ? (
+        {isAiVideo && clip.mediaUrl ? (
+          /* AI video: use <video> element as thumbnail with poster frame */
+          <video
+            src={clip.mediaUrl}
+            muted
+            playsInline
+            preload="metadata"
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03] ${locked ? 'blur-[6px] scale-105' : ''}`}
+            onLoadedData={(e) => {
+              // Seek to 1s to get a meaningful poster frame instead of black
+              const v = e.target as HTMLVideoElement
+              if (v.duration > 1) v.currentTime = 1
+            }}
+          />
+        ) : thumbnailUrl ? (
           <img
             src={thumbnailUrl}
             alt={`${clip.movieTitle} — ${clip.sceneDescription}`}
@@ -54,7 +70,7 @@ export function ClipCard({ clip, locked = false }: ClipCardProps) {
             No thumbnail
           </div>
         )}
-        {isAiImage && !locked && (
+        {isAi && !locked && (
           <div className="absolute top-2 left-2">
             <span className="text-[9px] font-medium text-purple-300 bg-purple-500/30 backdrop-blur-sm border border-purple-400/20 rounded-full px-1.5 py-0.5">
               AI Generated

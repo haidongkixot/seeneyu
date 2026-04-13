@@ -5,7 +5,7 @@ import { DifficultyPill } from '@/components/DifficultyPill'
 import type { SkillTrackNextClip } from '@/lib/types'
 
 interface LearningPathCardProps {
-  clip: SkillTrackNextClip
+  clip: SkillTrackNextClip & { isVideo?: boolean }
 }
 
 export function LearningPathCard({ clip }: LearningPathCardProps) {
@@ -15,7 +15,19 @@ export function LearningPathCard({ clip }: LearningPathCardProps) {
       className="bg-bg-elevated border border-black/8 rounded-xl overflow-hidden hover:border-accent-400/20 hover:shadow-card-hover transition-all duration-200 group block"
     >
       <div className="aspect-video w-full bg-bg-inset relative overflow-hidden">
-        {clip.thumbnailUrl ? (
+        {clip.isVideo && clip.thumbnailUrl ? (
+          <video
+            src={clip.thumbnailUrl}
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            onLoadedData={(e) => {
+              const v = e.target as HTMLVideoElement
+              if (v.duration > 1) v.currentTime = 1
+            }}
+          />
+        ) : clip.thumbnailUrl ? (
           <Image
             src={clip.thumbnailUrl}
             alt={clip.title}

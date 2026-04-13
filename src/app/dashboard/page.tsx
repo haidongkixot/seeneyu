@@ -54,7 +54,7 @@ export default async function DashboardPage() {
     // I3: Clips ready for spaced review
     prisma.userSession.findMany({
       where: { userId, status: 'complete', nextReviewAt: { lte: new Date() } },
-      include: { clip: { select: { id: true, movieTitle: true, skillCategory: true, youtubeVideoId: true } } },
+      include: { clip: { select: { id: true, movieTitle: true, skillCategory: true, youtubeVideoId: true, mediaType: true, mediaUrl: true } } },
       orderBy: { nextReviewAt: 'asc' },
       take: 3,
     }),
@@ -81,14 +81,21 @@ export default async function DashboardPage() {
 
       const nextClipRow = await prisma.clip.findFirst({
         where: { skillCategory: skill, difficulty: currentLevel, isActive: true },
-        select: { id: true, sceneDescription: true, youtubeVideoId: true, difficulty: true, skillCategory: true },
+        select: { id: true, sceneDescription: true, youtubeVideoId: true, difficulty: true, skillCategory: true, mediaType: true, mediaUrl: true },
       })
 
       const nextClip = nextClipRow
         ? {
             id: nextClipRow.id,
             title: nextClipRow.sceneDescription,
-            thumbnailUrl: `https://i.ytimg.com/vi/${nextClipRow.youtubeVideoId}/mqdefault.jpg`,
+            thumbnailUrl: (nextClipRow as any).mediaType === 'ai_video' && (nextClipRow as any).mediaUrl
+              ? (nextClipRow as any).mediaUrl
+              : (nextClipRow as any).mediaType === 'ai_image' && (nextClipRow as any).mediaUrl
+              ? (nextClipRow as any).mediaUrl
+              : nextClipRow.youtubeVideoId && !nextClipRow.youtubeVideoId.startsWith('ai-')
+              ? `https://i.ytimg.com/vi/${nextClipRow.youtubeVideoId}/mqdefault.jpg`
+              : null,
+            isVideo: (nextClipRow as any).mediaType === 'ai_video',
             difficulty: nextClipRow.difficulty as any,
             skillCategory: nextClipRow.skillCategory as SkillCategory,
           }
@@ -173,10 +180,21 @@ export default async function DashboardPage() {
                     className="bg-bg-surface border border-black/8 rounded-xl p-4 hover:border-accent-400/40 transition-all group"
                   >
                     <div className="flex items-start gap-3">
-                      <img
-                        src={`https://i.ytimg.com/vi/${s.clip.youtubeVideoId}/mqdefault.jpg`}
-                        alt="" className="w-16 h-12 rounded-lg object-cover shrink-0"
-                      />
+                      {(s.clip as any).mediaType === 'ai_video' && (s.clip as any).mediaUrl ? (
+                        <video
+                          src={(s.clip as any).mediaUrl}
+                          muted playsInline preload="metadata"
+                          className="w-16 h-12 rounded-lg object-cover shrink-0"
+                          onLoadedData={(e) => { const v = e.target as HTMLVideoElement; if (v.duration > 1) v.currentTime = 1 }}
+                        />
+                      ) : (
+                        <img
+                          src={s.clip.youtubeVideoId && !s.clip.youtubeVideoId.startsWith('ai-')
+                            ? `https://i.ytimg.com/vi/${s.clip.youtubeVideoId}/mqdefault.jpg`
+                            : (s.clip as any).mediaUrl || ''}
+                          alt="" className="w-16 h-12 rounded-lg object-cover shrink-0"
+                        />
+                      )}
                       <div className="min-w-0">
                         <p className="text-text-primary text-sm font-medium truncate group-hover:text-accent-400 transition-colors">
                           {s.clip.movieTitle.slice(0, 30)}
