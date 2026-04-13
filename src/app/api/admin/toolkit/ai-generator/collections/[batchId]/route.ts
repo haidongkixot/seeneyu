@@ -46,7 +46,11 @@ export async function GET(
       if (status in requestProgress) requestProgress[status]++
 
       const assets = (r.assets || []) as any[]
+      // Try role='main' first, fall back to first video asset (old flow without roles)
       const mainAsset = assets.find((a: any) => a.metadata?.role === 'main')
+        || (assets.filter((a: any) => a.metadata?.role === 'step').length === 0
+            ? assets.find((a: any) => a.type === 'video')  // old flow: all assets are main videos
+            : null)
       const stepAssets = assets
         .filter((a: any) => a.metadata?.role === 'step')
         .sort((a: any, b: any) => (a.metadata?.stepNumber || 0) - (b.metadata?.stepNumber || 0))

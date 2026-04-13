@@ -46,10 +46,12 @@ export async function POST(
         }
 
         const assets = (request.assets || []) as any[]
+        // Find main video: try role='main' first, fall back to first ready video asset (old flow)
         const mainAsset = assets.find((a: any) => a.metadata?.role === 'main' && a.status === 'ready')
+          || assets.find((a: any) => a.type === 'video' && a.status === 'ready')
 
         if (!mainAsset || !mainAsset.blobUrl) {
-          errors.push(`${request.collectionTitle}: main video not ready`)
+          errors.push(`${request.collectionTitle}: no ready video asset found`)
           failed++
           continue
         }
