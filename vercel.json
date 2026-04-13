@@ -4,7 +4,7 @@
     { "path": "/api/cron/engagement-check", "schedule": "0 22 * * *" },
     { "path": "/api/cron/content-agent-analyze", "schedule": "0 6 * * 1" },
     { "path": "/api/cron/content-agent-process", "schedule": "0 2 * * *" },
-    { "path": "/api/cron/video-poll", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/video-poll", "schedule": "*/10 * * * *" },
     { "path": "/api/cron/consent-cleanup", "schedule": "0 4 * * *" },
     { "path": "/api/cron/subscription-lifecycle", "schedule": "0 6 * * *" }
   ]
