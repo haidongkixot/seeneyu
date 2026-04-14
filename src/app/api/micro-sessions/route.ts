@@ -138,15 +138,55 @@ export async function POST(req: NextRequest) {
             }
           }
 
+          // Use GPT to generate personalized text from MediaPipe scores
+          // (templates produce identical text for similar scores — GPT makes it specific)
+          let aiFeedback: Partial<MicroFeedback> = {}
+          if (process.env.OPENAI_API_KEY && result.scores) {
+            try {
+              const scoresText = result.scores.map((s: any) => `${s.label}: ${s.score}/100`).join(', ')
+              const aiPrompt = `You are a body language coach giving feedback on a micro-practice attempt.
+
+Practice: ${skillFocus}
+Instruction: ${instruction}
+Skill category: ${skill}
+Overall score: ${result.score}/100
+Verdict: ${result.verdict}
+Dimension scores: ${scoresText}
+
+Based on these SPECIFIC scores, write personalized feedback. Reference the exact scores and what they mean for THIS technique. Do NOT use generic phrases — every sentence must reference a specific score or body part.
+
+Return JSON:
+{
+  "headline": "<10 words — mention the specific weakest AND strongest score by name>",
+  "detail": "<2 sentences — what the scores reveal about their technique, reference specific numbers>",
+  "positives": ["<tied to their HIGHEST scoring dimension with the actual score number>"],
+  "improvements": ["<tied to their LOWEST scoring dimension — specific exercise>", "<tied to 2nd lowest>"],
+  "actionableTip": "<one concrete 15-second exercise targeting their weakest score>",
+  "nextStep": "<what to focus on next based on the score pattern>"
+}`
+              const aiRes = await getOpenAI().chat.completions.create({
+                model: 'gpt-4o-mini',
+                max_tokens: 500,
+                temperature: 0.8,
+                messages: [{ role: 'user', content: aiPrompt }],
+                response_format: { type: 'json_object' },
+              })
+              const aiRaw = aiRes.choices[0]?.message?.content ?? '{}'
+              aiFeedback = JSON.parse(aiRaw)
+            } catch (e) {
+              console.warn('[micro] GPT feedback failed, using templates:', (e as Error).message)
+            }
+          }
+
           const feedback: MicroFeedback = {
             verdict: result.verdict,
-            headline: result.headline,
-            detail: result.detail,
+            headline: String(aiFeedback.headline || result.headline),
+            detail: String(aiFeedback.detail || result.detail),
             scores: result.scores,
-            positives: result.positives,
-            improvements: result.improvements,
-            actionableTip: result.actionableTip,
-            nextStep: result.nextStep,
+            positives: Array.isArray(aiFeedback.positives) ? aiFeedback.positives.map(String) : result.positives,
+            improvements: Array.isArray(aiFeedback.improvements) ? aiFeedback.improvements.map(String) : result.improvements,
+            actionableTip: String(aiFeedback.actionableTip || result.actionableTip),
+            nextStep: String(aiFeedback.nextStep || result.nextStep),
           }
           await prisma.microSession.update({
             where: { id: microSession.id },
