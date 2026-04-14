@@ -3,10 +3,43 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-08T15:27:38.195Z",
-    "open_count": 100
+    "last_updated": "2026-04-14T22:27:54.832Z",
+    "open_count": 107
   },
   "signals": [
+    {
+      "id": "sig_pm_backend-engineer_1776205674669",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-architecture",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Blueprint v1.2.0 Section 20 has 6 architecture lessons. Key: (1) Template feedback = identical text trap — always use GPT with actual scores. (2) Camera cleanup needs 3 layers (unmount + visibilitychange + beforeunload). (3) MediaPipe warmup during camera init, not recording start. (4) Bounded concurrency via semaphore for batch dispatches. (5) Selective publish API: accept optional requestIds[] array. (6) Video thumbnails: use <video preload=metadata> for AI clips, never YouTube CDN with fake IDs.",
+      "timestamp": "2026-04-14T22:27:54.669Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_tester_1776205674426",
+      "from": "pm",
+      "to": "tester",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-test-areas",
+      "priority": "high",
+      "message": "TESTER: Blueprint v1.2.0 adds 12 features to test. Priority areas: (1) Practice Ideating → Generate → Push to Generator → Collections → Selective Publish → verify Clip created in library. (2) Micro-practice feedback: record same clip 3 times, verify ALL three feedback texts are DIFFERENT (was identical before fix). (3) Camera freeze: verify no 7-8s freeze when starting recording. (4) 'I'm Done' button stops recording early. (5) Thumbnails: all 524 steps have demoImageUrl. (6) Arcade hands-free works with voice prompts.",
+      "timestamp": "2026-04-14T22:27:54.426Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1776205674219",
+      "from": "pm",
+      "to": "builder",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-shipped",
+      "priority": "high",
+      "message": "BUILDER: Blueprint v1.2.0 live. Section 20 documents 12 features + 2 schema additions. Key architecture: PracticeIdeaBatch model, AiContentRequest +collectionId/sourcePracticeIdeaId/collectionTitle, useCameraStream hook (src/hooks/useCameraStream.ts), video-poll cron now */10. Snapshot at .blueprint-versions/v1.2.0_2026-04-14_*.md. Commit: dedb941.",
+      "timestamp": "2026-04-14T22:27:54.219Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_tester_1775662058194",
       "from": "pm",
@@ -514,6 +547,50 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_pm_marketer_1776205674831",
+      "from": "pm",
+      "to": "marketer",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-angles",
+      "priority": "normal",
+      "message": "MARKETER: Blueprint v1.2.0 ships Content Creator Pipeline. Marketing angles: (1) 'AI-powered practice creation — from idea to published practice in minutes, not days.' (2) Sora-generated videos as practice content — original, copyright-free. (3) Every practice attempt now gets unique personalized feedback (was identical before). (4) Hands-free arcade mode — practice body language while doing other things.",
+      "timestamp": "2026-04-14T22:27:54.831Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_reporter_1776205674762",
+      "from": "pm",
+      "to": "reporter",
+      "type": "task-assign",
+      "task": "log-blueprint-v1.2.0",
+      "priority": "normal",
+      "message": "REPORTER: Log blueprint v1.2.0 release. 12 features, 2 schema additions, 30 commits since v1.1.0. Content creator pipeline is the headline feature. Snapshot at .blueprint-versions/v1.2.0_2026-04-14_*.md. API blueprint updated at docs/api-blueprint.md.",
+      "timestamp": "2026-04-14T22:27:54.762Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_data-engineer_1776205674589",
+      "from": "pm",
+      "to": "data-engineer",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-pipelines",
+      "priority": "normal",
+      "message": "DATA ENGINEER: Blueprint v1.2.0 documents new pipelines. Thumbnail pipeline: YouTube CDN for YT clips, ffmpeg-static frame extraction for AI clips, Pollinations fallback for deleted YT. Practice Ideating: 2-phase GPT generation (catalog → parallel expansion). Cron fix: video-poll now */10 instead of daily. See Section 20 for full pipeline diagrams.",
+      "timestamp": "2026-04-14T22:27:54.589Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_designer_1776205674342",
+      "from": "pm",
+      "to": "designer",
+      "type": "fyi",
+      "task": "blueprint-v1.2.0-ui-surfaces",
+      "priority": "normal",
+      "message": "DESIGNER: Blueprint v1.2.0 documents 6 new admin UI surfaces: Practice Ideating (list + form + review with expandable idea cards + copy buttons), Practice Collections (auto-polling progress + selective publish checkboxes), Arcade single-viewport layout (sticky action bar + camera fills column + collapsible steps), mobile bottom nav (5 tabs matching desktop), 'I'm Done' button (accent pill replacing subtle outline). Review Section 20 for specs.",
+      "timestamp": "2026-04-14T22:27:54.342Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_marketer_1775661070502",
