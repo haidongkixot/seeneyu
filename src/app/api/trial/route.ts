@@ -16,6 +16,14 @@ export async function POST() {
   const standardPlan = await prisma.plan.findFirst({ where: { slug: 'standard' } })
   if (!standardPlan) return NextResponse.json({ error: 'Standard plan not found' }, { status: 500 })
 
+  // MED-004: Check if user already used a trial — prevent repeats
+  const pastTrial = await (prisma.subscription as any).findFirst({
+    where: { userId, trialStartedAt: { not: null } },
+  })
+  if (pastTrial) {
+    return NextResponse.json({ error: 'You have already used your free trial' }, { status: 400 })
+  }
+
   // Find or create subscription
   const existing = await prisma.subscription.findFirst({ where: { userId, status: { not: 'cancelled' } } })
 

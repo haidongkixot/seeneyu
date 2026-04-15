@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { put } from '@vercel/blob'
 import { prisma } from '@/lib/prisma'
+import { validateUpload, VIDEO_UPLOAD } from '@/lib/upload-validator'
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,6 +20,12 @@ export async function POST(req: NextRequest) {
 
     if (!recording || !clipId) {
       return NextResponse.json({ error: 'Missing recording or clipId' }, { status: 400 })
+    }
+
+    // HIGH-004: Validate file type and size
+    const uploadCheck = validateUpload(recording, VIDEO_UPLOAD)
+    if (!uploadCheck.valid) {
+      return NextResponse.json({ error: uploadCheck.error }, { status: 400 })
     }
 
     // Verify clip exists

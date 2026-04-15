@@ -46,5 +46,11 @@ export async function getUserFromRequest(req: Request): Promise<{
   if (!account?.user) return null
   if (account.user.status !== 'approved') return null
 
+  // HIGH-001: Check token expiry (expires_at is stored as Unix seconds)
+  if (account.expires_at) {
+    const expiresAtMs = account.expires_at * 1000
+    if (Date.now() > expiresAtMs) return null // token expired — force re-login
+  }
+
   return { id: account.user.id, plan: account.user.plan }
 }

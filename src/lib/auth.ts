@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'jwt' },
+  session: { strategy: 'jwt', maxAge: 30 * 24 * 60 * 60 }, // LOW-001: 30-day session expiry
   pages: {
     signIn: '/auth/signin',
     error: '/auth/signin',

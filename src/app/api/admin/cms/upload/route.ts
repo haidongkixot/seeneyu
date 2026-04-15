@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { put } from '@vercel/blob'
+import { validateUpload, CMS_UPLOAD } from '@/lib/upload-validator'
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions)
@@ -18,6 +19,10 @@ export async function POST(req: Request) {
     const file = formData.get('file') as File | null
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    }
+    const uploadCheck = validateUpload(file, CMS_UPLOAD)
+    if (!uploadCheck.valid) {
+      return NextResponse.json({ error: uploadCheck.error }, { status: 400 })
     }
     const blob = await put(`cms/${Date.now()}-${file.name}`, file, {
       access: 'public',

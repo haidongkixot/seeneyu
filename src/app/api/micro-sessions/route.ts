@@ -3,6 +3,7 @@ import { put, del } from '@vercel/blob'
 import OpenAI from 'openai'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { validateUpload, VIDEO_UPLOAD } from '@/lib/upload-validator'
 
 export const maxDuration = 60
 import { prisma } from '@/lib/prisma'
@@ -68,6 +69,12 @@ Be encouraging but HONEST. Reference specific facial muscles (orbicularis oculi,
 
 export async function POST(req: NextRequest) {
   try {
+    // CRIT-002: Auth gate — prevent unauthenticated uploads + GPT abuse
+    const authSession = await getServerSession(authOptions)
+    if (!authSession?.user) {
+      return NextResponse.json({ error: 'Sign in to submit practice recordings' }, { status: 401 })
+    }
+
     const formData = await req.formData()
     const recording = formData.get('recording') as File | null
     const clipId = formData.get('clipId') as string | null
@@ -78,6 +85,12 @@ export async function POST(req: NextRequest) {
 
     if (!recording || !clipId || !stepNumberRaw || !skillFocus || !instruction) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    // HIGH-004: Validate file type and size
+    const uploadCheck = validateUpload(recording, VIDEO_UPLOAD)
+    if (!uploadCheck.valid) {
+      return NextResponse.json({ error: uploadCheck.error }, { status: 400 })
     }
 
     const stepNumber = parseInt(stepNumberRaw, 10)

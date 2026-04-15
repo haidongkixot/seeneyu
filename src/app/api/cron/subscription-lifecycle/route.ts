@@ -14,7 +14,7 @@ import { fireEmailTrigger } from '@/engine/learning-assistant/triggers/email-tri
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET
-  if (secret && req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
