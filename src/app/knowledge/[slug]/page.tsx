@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 export const dynamic = 'force-dynamic'
 
@@ -79,7 +80,7 @@ export default async function KnowledgeChapterPage({ params }: PageProps) {
             prose-li:text-text-secondary
             prose-code:text-accent-400 prose-code:bg-bg-inset prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
           "
-          dangerouslySetInnerHTML={{ __html: post.body }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
         />
 
         {/* Prev/Next navigation */}

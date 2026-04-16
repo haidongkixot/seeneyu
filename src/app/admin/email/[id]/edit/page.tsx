@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Save, Loader2, CheckCircle, Eye, Send } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 export default function EditEmailTemplatePage() {
   const { id } = useParams<{ id: string }>()
@@ -200,7 +201,7 @@ export default function EditEmailTemplatePage() {
               </div>
               <button onClick={() => setShowPreview(false)} className="text-gray-400 hover:text-gray-600 text-sm">Close</button>
             </div>
-            <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(previewHtml) }} />
           </div>
         </div>
       )}

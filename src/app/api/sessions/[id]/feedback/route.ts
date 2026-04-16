@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 import OpenAI from 'openai'
 
 export const maxDuration = 60
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { del } from '@vercel/blob'
+import { checkUserRateLimit, AI_FEEDBACK_LIMIT } from '@/lib/rate-limit-user'
 import { scoreFullPerformanceFromAnalysis, combineVisualAndVoiceScores } from '@/services/expression-scorer'
 import { generateTextFeedback, getVoiceTips } from '@/services/feedback-generator'
 import { shouldStoreRecording } from '@/services/consent-manager'
@@ -92,6 +95,20 @@ export async function POST(
   const { id } = await params
 
   try {
+    // HIGH-003: require auth + per-user rate limit on expensive GPT path.
+    const authSess = await getServerSession(authOptions)
+    if (!authSess?.user) {
+      return NextResponse.json({ error: 'Sign in to view feedback' }, { status: 401 })
+    }
+    const authUserId = (authSess.user as any).id as string
+    const rl = checkUserRateLimit({ key: 'feedback:gen', userId: authUserId, ...AI_FEEDBACK_LIMIT })
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many feedback requests. Please try again later.' },
+        { status: 429 },
+      )
+    }
+
     const session = await prisma.userSession.findUnique({
       where: { id },
       include: {

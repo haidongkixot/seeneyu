@@ -183,8 +183,10 @@ export async function POST(req: NextRequest) {
       }
     }
   } catch (err: any) {
+    // MED-004: Log internals but never leak them in the response body —
+    // Stripe only needs a non-2xx to trigger retry.
     console.error(`[stripe-webhook] error handling ${event.type}:`, err.message)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    return NextResponse.json({ error: 'Processing failed' }, { status: 500 })
   }
 
   return NextResponse.json({ received: true })

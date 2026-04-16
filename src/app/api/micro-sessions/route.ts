@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put, del } from '@vercel/blob'
+import { randomUUID } from 'crypto'
 import OpenAI from 'openai'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { validateUpload, VIDEO_UPLOAD } from '@/lib/upload-validator'
+import { checkUserRateLimit, AI_MICRO_LIMIT } from '@/lib/rate-limit-user'
 
 export const maxDuration = 60
 import { prisma } from '@/lib/prisma'
@@ -74,6 +76,16 @@ export async function POST(req: NextRequest) {
     if (!authSession?.user) {
       return NextResponse.json({ error: 'Sign in to submit practice recordings' }, { status: 401 })
     }
+    const authUserId0 = (authSession.user as any).id as string
+
+    // HIGH-003: Per-user rate limit (30 micro-sessions / hour)
+    const rl = checkUserRateLimit({ key: 'micro:upload', userId: authUserId0, ...AI_MICRO_LIMIT })
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many micro-practice attempts. Please try again later.' },
+        { status: 429 },
+      )
+    }
 
     const formData = await req.formData()
     const recording = formData.get('recording') as File | null
@@ -96,10 +108,14 @@ export async function POST(req: NextRequest) {
     const stepNumber = parseInt(stepNumberRaw, 10)
     const ts = Date.now()
 
+    // CRIT-001: Opaque per-user UUID paths so recording URLs cannot be enumerated.
+    const uploadToken = randomUUID()
+
     // Upload recording
-    const blob = await put(`micro/${clipId}/step${stepNumber}/${ts}.webm`, recording, {
+    const blob = await put(`micro/${authUserId0}/${uploadToken}.webm`, recording, {
       access: 'public',
       contentType: 'video/webm',
+      addRandomSuffix: true,
     })
 
     // Upload frames (up to 4)
@@ -107,9 +123,10 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < 4; i++) {
       const frame = formData.get(`frame_${i}`) as File | null
       if (!frame) break
-      const frameBlob = await put(`micro/${clipId}/step${stepNumber}/${ts}_f${i}.jpg`, frame, {
+      const frameBlob = await put(`micro/${authUserId0}/${uploadToken}_f${i}.jpg`, frame, {
         access: 'public',
         contentType: 'image/jpeg',
+        addRandomSuffix: true,
       })
       frameUrls.push(frameBlob.url)
     }

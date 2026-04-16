@@ -1,18 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getTrustedCorsHeaders } from '@/lib/cors'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-}
-
-export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: corsHeaders })
+export async function OPTIONS(req: Request) {
+  const headers = getTrustedCorsHeaders(req.headers.get('origin'))
+  return new NextResponse(null, { status: 204, headers })
 }
 
 // GET /api/arcade — List all arcade bundles
-export async function GET() {
+export async function GET(req: Request) {
+  const corsHeaders = getTrustedCorsHeaders(req.headers.get('origin'))
   try {
     const bundles = await (prisma as any).arcadeBundle.findMany({
       orderBy: { createdAt: 'asc' },

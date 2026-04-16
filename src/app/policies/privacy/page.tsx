@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface CmsPage {
   title: string
@@ -44,7 +45,7 @@ export default async function PrivacyPage() {
             className="prose prose-invert prose-amber max-w-none
               prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-accent-400
               prose-strong:text-text-primary prose-li:text-text-secondary"
-            dangerouslySetInnerHTML={{ __html: page.content.html }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content.html) }}
           />
         )}
       </div>

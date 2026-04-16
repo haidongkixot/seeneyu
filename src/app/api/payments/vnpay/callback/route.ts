@@ -10,6 +10,7 @@ export async function GET(req: Request) {
   const query: Record<string, string> = {}
   searchParams.forEach((v, k) => { query[k] = v })
 
+  // HIGH-002: HMAC-SHA512 signature verification on every callback param.
   const { valid, orderId, responseCode } = verifyVNPayCallback(query)
 
   if (!valid) {
@@ -20,39 +21,40 @@ export async function GET(req: Request) {
     return NextResponse.redirect(new URL('/pricing?error=payment_failed', req.url))
   }
 
-  // Extract userId from orderId format: userId-last8_timestamp
-  // We store planSlug+period in a pending payment record, or pass via vnp_OrderInfo
-  // For simplicity, parse from the order info
-  const orderInfo = searchParams.get('vnp_OrderInfo') || ''
-  const planMatch = orderInfo.match(/seeneyu (\w+) \((\w+)\)/)
-  const planName = planMatch?.[1]?.toLowerCase()
-  const period = (planMatch?.[2] || 'monthly') as 'monthly' | 'annual'
-
-  // Find the plan by name (case-insensitive)
-  const plan = await (prisma as any).plan.findFirst({
-    where: { name: { contains: planName || '', mode: 'insensitive' } },
-  })
-
-  if (!plan) {
-    return NextResponse.redirect(new URL('/pricing?error=plan_not_found', req.url))
+  // HIGH-001: Retrieve payment intent by EXACT orderId match.
+  // No more substring/endsWith matching against user IDs.
+  const intent = await (prisma as any).paymentIntent.findUnique({ where: { orderId } })
+  if (!intent || intent.gateway !== 'vnpay') {
+    return NextResponse.redirect(new URL('/pricing?error=order_not_found', req.url))
   }
 
-  // Find user by orderId prefix
-  const userIdSuffix = orderId.split('_')[0]
-  const user = await prisma.user.findFirst({
-    where: { id: { endsWith: userIdSuffix } },
-  })
-
-  if (!user) {
-    return NextResponse.redirect(new URL('/pricing?error=user_not_found', req.url))
+  // Prevent replay: if already completed, just redirect
+  if (intent.status === 'completed') {
+    return NextResponse.redirect(new URL(`/payment/success?plan=${intent.planSlug}`, req.url))
   }
-
-  const amount = parseFloat(searchParams.get('vnp_Amount') || '0') / 100
 
   try {
-    await activateSubscription({ userId: user.id, planSlug: plan.slug, period, gateway: 'vnpay', gatewayOrderId: orderId, amount, currency: 'VND' })
-    return NextResponse.redirect(new URL(`/payment/success?plan=${plan.slug}`, req.url))
+    await activateSubscription({
+      userId: intent.userId,
+      planSlug: intent.planSlug,
+      period: intent.period as 'monthly' | 'annual',
+      gateway: 'vnpay',
+      gatewayOrderId: orderId,
+      amount: intent.amount,
+      currency: 'VND',
+    })
+
+    await (prisma as any).paymentIntent.update({
+      where: { orderId },
+      data: { status: 'completed' },
+    })
+
+    return NextResponse.redirect(new URL(`/payment/success?plan=${intent.planSlug}`, req.url))
   } catch {
+    await (prisma as any).paymentIntent.update({
+      where: { orderId },
+      data: { status: 'failed' },
+    }).catch(() => {})
     return NextResponse.redirect(new URL('/pricing?error=activation_failed', req.url))
   }
 }

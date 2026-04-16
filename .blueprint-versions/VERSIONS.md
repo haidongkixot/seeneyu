@@ -17,6 +17,7 @@ looked like at any point in time.
 | Version | Date | Description | Key Commits |
 |---------|------|-------------|-------------|
 | v1.0.0  | 2026-04-08 | Pre-learning-system baseline (M0–M73 platform with onboarding tour, gamification, multi-tenant CMS) | through `5353b82` |
+| v1.2.2  | 2026-04-16 | Cybersecurity infrastructure review remediation — 2 critical 7 high 1 medium fixed | `15633e2` |
 | v1.2.1  | 2026-04-15 | Security hardening — 2 critical 5 high 3 medium 1 low fixed | `f8ba034` |
 | v1.2.0  | 2026-04-14 | Content creator pipeline + micro-feedback fix + arcade redesign | `c57c34e` |
 | v1.1.2  | 2026-04-08 | Camera cleanup hotfix + Hands-Free button relocation | `68aee96` |

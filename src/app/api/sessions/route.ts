@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { put } from '@vercel/blob'
+import { randomUUID } from 'crypto'
 import { prisma } from '@/lib/prisma'
 import { validateUpload, VIDEO_UPLOAD } from '@/lib/upload-validator'
+import { checkUserRateLimit, AI_FEEDBACK_LIMIT } from '@/lib/rate-limit-user'
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +15,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Sign in to submit a recording' }, { status: 401 })
     }
     const userId = (session.user as any).id as string
+
+    // HIGH-003: Per-user rate limit (15 recordings / hour)
+    const rl = checkUserRateLimit({ key: 'sessions:upload', userId, ...AI_FEEDBACK_LIMIT })
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many practice uploads. Please try again later.' },
+        { status: 429 },
+      )
+    }
 
     const formData = await req.formData()
     const recording = formData.get('recording') as File | null
@@ -34,12 +45,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Clip not found' }, { status: 404 })
     }
 
-    const ts = Date.now()
+    // CRIT-001: Opaque UUID path so recording URLs cannot be enumerated.
+    // Paths are further randomised by Vercel Blob's default addRandomSuffix.
+    const uploadToken = randomUUID()
 
     // Upload recording to Vercel Blob
-    const blob = await put(`recordings/${clipId}/${ts}.webm`, recording, {
+    const blob = await put(`recordings/${userId}/${uploadToken}.webm`, recording, {
       access: 'public',
       contentType: 'video/webm',
+      addRandomSuffix: true,
     })
 
     // Upload frame snapshots (sent as frame_0, frame_1, … by RecordClient)
@@ -47,9 +61,10 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < 4; i++) {
       const frame = formData.get(`frame_${i}`) as File | null
       if (!frame) break
-      const frameBlob = await put(`frames/${clipId}/${ts}_${i}.jpg`, frame, {
+      const frameBlob = await put(`frames/${userId}/${uploadToken}_${i}.jpg`, frame, {
         access: 'public',
         contentType: 'image/jpeg',
+        addRandomSuffix: true,
       })
       frameUrls.push(frameBlob.url)
     }

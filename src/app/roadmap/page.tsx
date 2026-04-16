@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface CmsPage {
   title: string
@@ -36,7 +37,7 @@ export default async function RoadmapPage() {
               prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-accent-400
               prose-strong:text-text-primary prose-li:text-text-secondary
               prose-blockquote:border-accent-400/30 prose-blockquote:text-text-secondary"
-            dangerouslySetInnerHTML={{ __html: page.content.html }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content.html) }}
           />
         )}
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle2, XCircle } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface Example {
   id: string
@@ -76,7 +77,7 @@ export default function LessonClient({ lesson, existingProgress, isLoggedIn }: P
         </h2>
         <div
           className="prose prose-invert prose-sm max-w-none text-text-secondary [&_h3]:text-text-primary [&_h3]:font-semibold [&_h3]:text-base [&_strong]:text-text-primary [&_ul]:text-text-secondary [&_li]:marker:text-accent-400"
-          dangerouslySetInnerHTML={{ __html: lesson.theoryHtml }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(lesson.theoryHtml) }}
         />
       </section>
 

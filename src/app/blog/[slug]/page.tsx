@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface BlogPost {
   title: string
@@ -80,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             prose-strong:text-text-primary prose-li:text-text-secondary
             prose-blockquote:border-accent-400/30 prose-blockquote:text-text-secondary
             prose-code:text-accent-400 prose-pre:bg-bg-elevated"
-          dangerouslySetInnerHTML={{ __html: post.body }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
         />
       </article>
     </div>

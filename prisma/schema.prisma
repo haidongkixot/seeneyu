@@ -31,17 +31,17 @@ model Clip {
   screenplaySource      String?
   screenplayText        String?  @db.Text
   observationGuide      Json?
-  mediaType             String?  // 'youtube' (default/null) | 'ai_image' | 'ai_video'
-  mediaUrl              String?  // direct URL for ai_image/ai_video
+  mediaType             String? // 'youtube' (default/null) | 'ai_image' | 'ai_video'
+  mediaUrl              String? // direct URL for ai_image/ai_video
   aiContentRequestId    String?
   isActive              Boolean  @default(true)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
-  annotations    Annotation[]
-  sessions       UserSession[]
-  practiceSteps  PracticeStep[]
-  tags           ClipTag[]
+  annotations   Annotation[]
+  sessions      UserSession[]
+  practiceSteps PracticeStep[]
+  tags          ClipTag[]
 
   @@index([skillCategory])
   @@index([difficulty])
@@ -61,24 +61,24 @@ model Annotation {
 }
 
 model UserSession {
-  id           String    @id @default(cuid())
-  clipId       String
-  clip         Clip      @relation(fields: [clipId], references: [id])
-  recordingUrl String?
-  recordingKey String?
-  thumbnailUrl String?
-  frameUrls    String?   @db.Text   // JSON array of image URLs for GPT-4o Vision
-  status       String    @default("recording")
-  feedback     Json?
-  scores       Json?
+  id                   String    @id @default(cuid())
+  clipId               String
+  clip                 Clip      @relation(fields: [clipId], references: [id])
+  recordingUrl         String?
+  recordingKey         String?
+  thumbnailUrl         String?
+  frameUrls            String?   @db.Text // JSON array of image URLs for GPT-4o Vision
+  status               String    @default("recording")
+  feedback             Json?
+  scores               Json?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   completedAt          DateTime?
   userId               String?
   user                 User?     @relation(fields: [userId], references: [id])
   // ── I2: Feedforward ──
-  snapshotScores       Json?     // [{sec: number, score: number}] per-frame scores for peak detection
-  recordingDurationSec Int?      // needed for timestamp calculation
+  snapshotScores       Json? // [{sec: number, score: number}] per-frame scores for peak detection
+  recordingDurationSec Int? // needed for timestamp calculation
   // ── I3: Spaced Review ──
   nextReviewAt         DateTime?
   reviewCount          Int       @default(0)
@@ -92,45 +92,45 @@ model UserSession {
 // ── Auth models (NextAuth.js v4 Prisma adapter) ────────────────────────────
 
 model User {
-  id                 String          @id @default(cuid())
-  email              String          @unique
-  name               String?
-  image              String?
-  role               String          @default("learner")
-  status             String          @default("pending") // pending | approved | rejected | suspended
-  statusNote         String?         @db.Text
-  approvedAt         DateTime?
-  approvedBy         String?
-  passwordHash       String?
-  emailVerified      DateTime?
-  bio                String?         @db.Text
-  avatarUrl          String?
-  phone              String?
-  location           String?
-  onboardingComplete Boolean         @default(false)
-  tourCompleted      Boolean         @default(false)
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
-  accounts           Account[]
-  authSessions       AuthSession[]
-  userSessions       UserSession[]
-  skillBaselines     SkillBaseline[]
-  foundationProgress FoundationProgress[]
-  arcadeAttempts     ArcadeAttempt[]
-  activityEvents     ActivityEvent[]
-  plan               String          @default("basic")
-  subscriptions      Subscription[]
-  comments           Comment[]
+  id                     String                  @id @default(cuid())
+  email                  String                  @unique
+  name                   String?
+  image                  String?
+  role                   String                  @default("learner")
+  status                 String                  @default("pending") // pending | approved | rejected | suspended
+  statusNote             String?                 @db.Text
+  approvedAt             DateTime?
+  approvedBy             String?
+  passwordHash           String?
+  emailVerified          DateTime?
+  bio                    String?                 @db.Text
+  avatarUrl              String?
+  phone                  String?
+  location               String?
+  onboardingComplete     Boolean                 @default(false)
+  tourCompleted          Boolean                 @default(false)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  accounts               Account[]
+  authSessions           AuthSession[]
+  userSessions           UserSession[]
+  skillBaselines         SkillBaseline[]
+  foundationProgress     FoundationProgress[]
+  arcadeAttempts         ArcadeAttempt[]
+  activityEvents         ActivityEvent[]
+  plan                   String                  @default("basic")
+  subscriptions          Subscription[]
+  comments               Comment[]
   assistantConversations AssistantConversation[]
-  gamification       UserGamification?
-  learnerProfile     LearnerProfile?
-  coupons            CouponRedemption[]
-  referralsGiven     Referral[]      @relation("ReferralsGiven")
-  referralsReceived  Referral[]      @relation("ReferralsReceived")
-  teamPlanId         String?
-  teamPlan           TeamPlan?       @relation(fields: [teamPlanId], references: [id])
-  managedTeams       TeamPlan[]      @relation("TeamAdmin")
-  preferences        UserPreferences?
+  gamification           UserGamification?
+  learnerProfile         LearnerProfile?
+  coupons                CouponRedemption[]
+  referralsGiven         Referral[]              @relation("ReferralsGiven")
+  referralsReceived      Referral[]              @relation("ReferralsReceived")
+  teamPlanId             String?
+  teamPlan               TeamPlan?               @relation(fields: [teamPlanId], references: [id])
+  managedTeams           TeamPlan[]              @relation("TeamAdmin")
+  preferences            UserPreferences?
 
   @@index([status])
 }
@@ -140,8 +140,8 @@ model SkillBaseline {
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   skillCategory String
-  level         String   // 'beginner' | 'intermediate' | 'advanced'
-  selfRating    String   // original self-report ('beginner' | 'intermediate' | 'advanced')
+  level         String // 'beginner' | 'intermediate' | 'advanced'
+  selfRating    String // original self-report ('beginner' | 'intermediate' | 'advanced')
   createdAt     DateTime @default(now())
 
   @@unique([userId, skillCategory])
@@ -154,8 +154,8 @@ model ClipTag {
   id         String   @id @default(cuid())
   clipId     String
   clip       Clip     @relation(fields: [clipId], references: [id], onDelete: Cascade)
-  category   String   // 'genre' | 'purpose' | 'trait'
-  value      String   // e.g. 'drama', 'for-work', 'confident'
+  category   String // 'genre' | 'purpose' | 'trait'
+  value      String // e.g. 'drama', 'for-work', 'confident'
   source     String   @default("manual") // 'manual' | 'ai-auto' | 'ai-confirmed'
   confidence Float?
   createdAt  DateTime @default(now())
@@ -170,11 +170,11 @@ model UserPreferences {
   id        String   @id @default(cuid())
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  goal      String?  // 'job-interview' | 'public-speaking' | 'dating-social' | 'leadership' | 'performing-career' | 'education'
+  goal      String? // 'job-interview' | 'public-speaking' | 'dating-social' | 'leadership' | 'performing-career' | 'education'
   genres    Json     @default("[]") // String[] of genre slugs
   purposes  Json     @default("[]") // String[] of purpose slugs
   traits    Json     @default("[]") // String[] of trait slugs
-  gender    String?  // 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
+  gender    String? // 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
@@ -214,17 +214,17 @@ model VerificationToken {
 }
 
 model PracticeStep {
-  id                String @id @default(cuid())
+  id                String  @id @default(cuid())
   clipId            String
-  clip              Clip   @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  clip              Clip    @relation(fields: [clipId], references: [id], onDelete: Cascade)
   stepNumber        Int
   skillFocus        String
-  instruction       String @db.Text
+  instruction       String  @db.Text
   tip               String? @db.Text
   targetDurationSec Int     @default(20)
-  demoImageUrl      String?           // AI-generated demo image for this step
-  subSteps          Json?             // [{order, text, imageUrl?}]
-  voiceUrl          String?           // ElevenLabs TTS audio URL (Vercel Blob)
+  demoImageUrl      String? // AI-generated demo image for this step
+  subSteps          Json? // [{order, text, imageUrl?}]
+  voiceUrl          String? // ElevenLabs TTS audio URL (Vercel Blob)
 
   @@index([clipId])
 }
@@ -234,16 +234,16 @@ model PracticeStep {
 // Each batch contains 10-50 practice objects ready for a video-generation tool.
 
 model PracticeIdeaBatch {
-  id         String   @id @default(cuid())
-  name       String
-  status     String   @default("draft") // draft | generating | complete | failed
-  config     Json     // { totalCount, skills, difficultyMix, stylePixarRatio, tone, language, characterTheme, pmPrompt }
-  ideas      Json?    // array of generated practice idea objects (same shape as ai-practices-batch-01.json)
-  count      Int      @default(0)
-  error      String?  @db.Text
-  createdBy  String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  status    String   @default("draft") // draft | generating | complete | failed
+  config    Json // { totalCount, skills, difficultyMix, stylePixarRatio, tone, language, characterTheme, pmPrompt }
+  ideas     Json? // array of generated practice idea objects (same shape as ai-practices-batch-01.json)
+  count     Int      @default(0)
+  error     String?  @db.Text
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([createdAt])
   @@index([status])
@@ -327,12 +327,12 @@ model CrawlJob {
   name          String
   skillCategory String
   technique     String?
-  keywords      Json          // String[]
-  difficulty    String?       // 'beginner' | 'intermediate' | 'advanced' | 'all'
+  keywords      Json // String[]
+  difficulty    String? // 'beginner' | 'intermediate' | 'advanced' | 'all'
   maxResults    Int           @default(20)
   status        String        @default("pending") // pending | running | complete | failed
   errorMessage  String?       @db.Text
-  createdBy     String        // admin userId
+  createdBy     String // admin userId
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   results       CrawlResult[]
@@ -353,7 +353,7 @@ model CrawlResult {
   durationSec    Int?
   publishedAt    String?
   viewCount      Int?
-  relevanceScore Float    @default(0)  // 0-10 from GPT-4o
+  relevanceScore Float    @default(0) // 0-10 from GPT-4o
   aiAnalysis     String?  @db.Text
   status         String   @default("pending") // pending | approved | rejected
   approvedClipId String?
@@ -382,21 +382,21 @@ model FoundationProgress {
 // ── Arcade models ────────────────────────────────────────────────────
 
 model ArcadeBundle {
-  id          String             @id @default(cuid())
+  id          String            @id @default(cuid())
   title       String
-  description String             @db.Text
+  description String            @db.Text
   theme       String
   difficulty  String
-  xpReward    Int                @default(100)
+  xpReward    Int               @default(100)
   challenges  ArcadeChallenge[]
-  createdAt   DateTime           @default(now())
+  createdAt   DateTime          @default(now())
 }
 
 model ArcadeChallenge {
   id                String          @id @default(cuid())
   bundleId          String
   bundle            ArcadeBundle    @relation(fields: [bundleId], references: [id], onDelete: Cascade)
-  type              String          // facial | gesture
+  type              String // facial | gesture
   title             String
   description       String          @db.Text
   context           String          @db.Text
@@ -404,11 +404,11 @@ model ArcadeChallenge {
   mediaUrl          String?
   mediaType         String?
   sourceClipId      String?
-  sourceTimestamp    Int?
+  sourceTimestamp   Int?
   difficulty        String
   xpReward          Int             @default(20)
   orderIndex        Int
-  guidanceSteps     Json?           // [{stepNumber, instruction, tip?, imageUrl?, voiceUrl?}]
+  guidanceSteps     Json? // [{stepNumber, instruction, tip?, imageUrl?, voiceUrl?}]
   attempts          ArcadeAttempt[]
   comments          Comment[]
 
@@ -416,16 +416,16 @@ model ArcadeChallenge {
 }
 
 model ArcadeAttempt {
-  id           String           @id @default(cuid())
+  id           String          @id @default(cuid())
   userId       String
-  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   challengeId  String
-  challenge    ArcadeChallenge  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  challenge    ArcadeChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
   score        Int
   breakdown    Json
-  feedbackLine String?          @db.Text
+  feedbackLine String?         @db.Text
   recordingUrl String?
-  createdAt    DateTime         @default(now())
+  createdAt    DateTime        @default(now())
 
   @@index([userId])
   @@index([challengeId])
@@ -523,6 +523,25 @@ model Payment {
   @@index([gateway, gatewayOrderId])
 }
 
+// Pending payment intent — links gateway orderId to user/plan BEFORE callback
+// so we never have to pattern-match orderId suffix against user IDs.
+model PaymentIntent {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  userId    String
+  planSlug  String
+  period    String
+  amount    Float
+  currency  String
+  gateway   String
+  status    String   @default("pending") // pending | completed | failed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([gateway, status])
+}
+
 // ── Discussion models ────────────────────────────────────────────────
 
 model Comment {
@@ -552,13 +571,13 @@ model Comment {
 // ── AI Assistant models ──────────────────────────────────────────────
 
 model AssistantConversation {
-  id        String              @id @default(cuid())
+  id        String             @id @default(cuid())
   userId    String
-  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   context   String
   messages  AssistantMessage[]
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 
   @@index([userId])
   @@index([userId, context])
@@ -579,33 +598,33 @@ model AssistantMessage {
 // ── Toolkit: Data Crawler models ──────────────────────────────────────
 
 model ContentSource {
-  id           String   @id @default(cuid())
-  type         String   // 'article' | 'research_paper' | 'expression_db' | 'youtube_timestamp'
-  url          String
-  title        String
-  rawContent   String?  @db.Text
-  metadata     Json?
-  status       String   @default("raw") // raw | curated | published | rejected
-  curatedBy    String?
-  curatedAt    DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id         String    @id @default(cuid())
+  type       String // 'article' | 'research_paper' | 'expression_db' | 'youtube_timestamp'
+  url        String
+  title      String
+  rawContent String?   @db.Text
+  metadata   Json?
+  status     String    @default("raw") // raw | curated | published | rejected
+  curatedBy  String?
+  curatedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   @@index([type, status])
   @@index([createdAt])
 }
 
 model ExpressionAsset {
-  id           String   @id @default(cuid())
-  imageUrl     String
-  sourceUrl    String?
-  label        String   // "surprise", "contempt", etc.
-  description  String?  @db.Text
-  tags         Json     // String[] of descriptive tags
-  confidence   Float?
-  userVotes    Int      @default(0)
-  status       String   @default("pending") // pending | verified | rejected
-  createdAt    DateTime @default(now())
+  id          String   @id @default(cuid())
+  imageUrl    String
+  sourceUrl   String?
+  label       String // "surprise", "contempt", etc.
+  description String?  @db.Text
+  tags        Json // String[] of descriptive tags
+  confidence  Float?
+  userVotes   Int      @default(0)
+  status      String   @default("pending") // pending | verified | rejected
+  createdAt   DateTime @default(now())
 
   @@index([label])
   @@index([status])
@@ -614,18 +633,19 @@ model ExpressionAsset {
 // ── Gamification models ──────────────────────────────────────────────
 
 model UserGamification {
-  id               String   @id @default(cuid())
-  userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  totalXp          Int      @default(0)
-  level            Int      @default(1)
-  currentStreak    Int      @default(0)
-  longestStreak    Int      @default(0)
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalXp          Int       @default(0)
+  level            Int       @default(1)
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
   lastActivityDate String?
-  streakFreezes    Int      @default(0)
-  hearts           Int      @default(5)
+  streakFreezes    Int       @default(0)
+  hearts           Int       @default(5)
   heartsRefillAt   DateTime?
-  updatedAt        DateTime @updatedAt
+  updatedAt        DateTime  @updatedAt
+
   @@index([totalXp])
   @@index([currentStreak])
 }
@@ -638,6 +658,7 @@ model XpTransaction {
   sourceId  String?
   metadata  Json?
   createdAt DateTime @default(now())
+
   @@index([userId, createdAt])
 }
 
@@ -652,6 +673,7 @@ model DailyQuest {
   xpReward    Int      @default(50)
   completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
+
   @@unique([userId, date, questType])
   @@index([userId, date])
 }
@@ -669,11 +691,12 @@ model Badge {
 }
 
 model UserBadge {
-  id        String   @id @default(cuid())
-  userId    String
-  badgeId   String
-  badge     Badge    @relation(fields: [badgeId], references: [id])
-  earnedAt  DateTime @default(now())
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  badge    Badge    @relation(fields: [badgeId], references: [id])
+  earnedAt DateTime @default(now())
+
   @@unique([userId, badgeId])
   @@index([userId])
 }
@@ -681,40 +704,42 @@ model UserBadge {
 // ── Mini-Games models ──────────────────────────────────────────────────
 
 model MiniGame {
-  id          String       @id @default(cuid())
-  type        String       @unique // 'guess_expression' | 'match_expression' | 'expression_king'
+  id          String            @id @default(cuid())
+  type        String            @unique // 'guess_expression' | 'match_expression' | 'expression_king'
   title       String
-  description String       @db.Text
-  isActive    Boolean      @default(true)
-  config      Json         // { timePerRound, totalRounds, passingScore }
-  createdAt   DateTime     @default(now())
+  description String            @db.Text
+  isActive    Boolean           @default(true)
+  config      Json // { timePerRound, totalRounds, passingScore }
+  createdAt   DateTime          @default(now())
   rounds      MiniGameRound[]
   sessions    MiniGameSession[]
 }
 
 model MiniGameRound {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   gameId        String
-  game          MiniGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  game          MiniGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
   orderIndex    Int
-  prompt        String    @db.Text
+  prompt        String   @db.Text
   imageUrl      String?
   correctAnswer String?
-  options       Json?     // String[] for multiple choice
+  options       Json? // String[] for multiple choice
+
   @@index([gameId])
 }
 
 model MiniGameSession {
-  id            String    @id @default(cuid())
-  gameId        String
-  game          MiniGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  playerId      String?
-  playerName    String?
-  score         Int       @default(0)
-  totalRounds   Int
-  responses     Json      // Array of { roundId, answer, correct, timeMs }
-  completedAt   DateTime?
-  createdAt     DateTime  @default(now())
+  id          String    @id @default(cuid())
+  gameId      String
+  game        MiniGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  playerId    String?
+  playerName  String?
+  score       Int       @default(0)
+  totalRounds Int
+  responses   Json // Array of { roundId, answer, correct, timeMs }
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
   @@index([gameId, score])
   @@index([playerId])
 }
@@ -728,6 +753,7 @@ model ExpressionSubmission {
   aiAnalysis     String?  @db.Text
   status         String   @default("pending") // pending | approved | rejected
   createdAt      DateTime @default(now())
+
   @@index([challengeLabel])
   @@index([status])
 }
@@ -735,17 +761,17 @@ model ExpressionSubmission {
 // ── Error Logging ──────────────────────────────────────────────────
 
 model ErrorLog {
-  id          String   @id @default(cuid())
-  level       String   // 'error' | 'warn' | 'info'
-  source      String   // 'api' | 'client' | 'user-report' | 'cron'
-  message     String   @db.Text
-  stack       String?  @db.Text
-  metadata    Json?
-  userId      String?
-  resolved    Boolean  @default(false)
-  resolvedBy  String?
-  resolvedAt  DateTime?
-  createdAt   DateTime @default(now())
+  id         String    @id @default(cuid())
+  level      String // 'error' | 'warn' | 'info'
+  source     String // 'api' | 'client' | 'user-report' | 'cron'
+  message    String    @db.Text
+  stack      String?   @db.Text
+  metadata   Json?
+  userId     String?
+  resolved   Boolean   @default(false)
+  resolvedBy String?
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   @@index([level])
   @@index([source])
@@ -756,68 +782,72 @@ model ErrorLog {
 // ── CMS models ──────────────────────────────────────────────────────
 
 model CmsPage {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String    @id @default(cuid())
+  slug        String    @unique
   title       String
   content     Json
-  status      String   @default("draft")
+  status      String    @default("draft")
   publishedAt DateTime?
   createdBy   String?
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime  @default(now())
+
   @@index([slug, status])
 }
 
 model BlogPost {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String    @id @default(cuid())
+  slug        String    @unique
   title       String
-  excerpt     String?  @db.Text
-  body        String   @db.Text
+  excerpt     String?   @db.Text
+  body        String    @db.Text
   coverImage  String?
   tags        Json?
-  status      String   @default("draft")
+  status      String    @default("draft")
   authorId    String?
-  category    String   @default("blog") // "blog" | "knowledge"
+  category    String    @default("blog") // "blog" | "knowledge"
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
   @@index([status, publishedAt])
   @@index([category, status])
 }
 
 model SiteSettings {
-  id          String   @id @default(cuid())
-  key         String   @unique
-  value       Json
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
 }
 
 model TeamMember {
-  id          String   @id @default(cuid())
-  name        String
-  title       String
-  bio         String?  @db.Text
-  avatarUrl   String?
-  order       Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  bio       String?  @db.Text
+  avatarUrl String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
   @@index([isActive, order])
 }
 
 // ── Game Data Pipeline models ──────────────────────────────────────────
 
 model GameDataExport {
-  id            String    @id @default(cuid())
-  name          String
-  format        String    // 'csv' | 'json'
-  filters       Json
-  recordCount   Int       @default(0)
-  fileUrl       String?
-  status        String    @default("pending")
-  createdBy     String
-  createdAt     DateTime  @default(now())
-  completedAt   DateTime?
+  id          String    @id @default(cuid())
+  name        String
+  format      String // 'csv' | 'json'
+  filters     Json
+  recordCount Int       @default(0)
+  fileUrl     String?
+  status      String    @default("pending")
+  createdBy   String
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
   @@index([status])
 }
 
@@ -829,6 +859,7 @@ model TrainingDataLabel {
   validatedBy     String?
   validatedAt     DateTime?
   createdAt       DateTime  @default(now())
+
   @@index([expressionLabel])
   @@index([submissionId])
 }
@@ -841,6 +872,7 @@ model Leaderboard {
   period    String
   entries   Json
   updatedAt DateTime @updatedAt
+
   @@unique([type, period])
 }
 
@@ -849,63 +881,67 @@ model UserFollow {
   followerId  String
   followingId String
   createdAt   DateTime @default(now())
+
   @@unique([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
 }
 
 model PushSubscription {
-  id           String   @id @default(cuid())
-  userId       String
-  endpoint     String   @db.Text
-  keys         Json
-  createdAt    DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @db.Text
+  keys      Json
+  createdAt DateTime @default(now())
+
   @@index([userId])
 }
 
 // ── AI Content Generator models ──────────────────────────────────────
 
 model AiContentRequest {
-  id                   String   @id @default(cuid())
+  id                   String             @id @default(cuid())
   expressionType       String
   bodyLanguageType     String
-  scenePrompt          String?  @db.Text
+  scenePrompt          String?            @db.Text
   generatedDescription Json?
-  imagePrompt          String?  @db.Text
-  videoPrompt          String?  @db.Text
-  provider             String   @default("pollinations")
+  imagePrompt          String?            @db.Text
+  videoPrompt          String?            @db.Text
+  provider             String             @default("pollinations")
   model                String?
-  status               String   @default("draft")
+  status               String             @default("draft")
   createdBy            String
   publishedClipId      String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
   assets               AiGeneratedAsset[]
   // Collection grouping — links multiple requests into one batch from Practice Ideating
   collectionId         String?
   sourcePracticeIdeaId String?
-  collectionTitle      String?            // cached title for UI without re-fetching batch
+  collectionTitle      String? // cached title for UI without re-fetching batch
+
   @@index([status])
   @@index([expressionType])
   @@index([collectionId])
 }
 
 model AiGeneratedAsset {
-  id           String   @id @default(cuid())
+  id           String           @id @default(cuid())
   requestId    String
   request      AiContentRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
   type         String
   provider     String
   model        String?
-  prompt       String   @db.Text
+  prompt       String           @db.Text
   blobUrl      String?
   width        Int?
   height       Int?
   durationMs   Int?
   metadata     Json?
-  status       String   @default("generating")
-  errorMessage String?  @db.Text
-  createdAt    DateTime @default(now())
+  status       String           @default("generating")
+  errorMessage String?          @db.Text
+  createdAt    DateTime         @default(now())
+
   @@index([requestId])
   @@index([status])
 }
@@ -913,29 +949,30 @@ model AiGeneratedAsset {
 // ── Learning Assistant Engine models ──────────────────────────────────
 
 model LearnerProfile {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  timezone              String   @default("UTC")
-  preferredChannels     Json     @default("[]")
-  optOutChannels        Json     @default("[]")
-  optimalPracticeTime   String?
-  practiceTimeConfidence Float   @default(0)
-  avgSessionsPerWeek    Float    @default(0)
-  engagementScore       Float    @default(50)
-  lastEngagementCalc    DateTime?
-  weakSkills            Json     @default("[]")
-  strongSkills          Json     @default("[]")
-  skillGapUpdatedAt     DateTime?
-  notificationFrequency String   @default("normal")
-  whatsappPhone         String?
-  whatsappOptIn         Boolean  @default(false)
+  id                       String    @id @default(cuid())
+  userId                   String    @unique
+  user                     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timezone                 String    @default("UTC")
+  preferredChannels        Json      @default("[]")
+  optOutChannels           Json      @default("[]")
+  optimalPracticeTime      String?
+  practiceTimeConfidence   Float     @default(0)
+  avgSessionsPerWeek       Float     @default(0)
+  engagementScore          Float     @default(50)
+  lastEngagementCalc       DateTime?
+  weakSkills               Json      @default("[]")
+  strongSkills             Json      @default("[]")
+  skillGapUpdatedAt        DateTime?
+  notificationFrequency    String    @default("normal")
+  whatsappPhone            String?
+  whatsappOptIn            Boolean   @default(false)
   // Data consent (opt-out model — default: agree to store)
-  dataConsentStorageAgreed Boolean  @default(true)
+  dataConsentStorageAgreed Boolean   @default(true)
   dataConsentUpdatedAt     DateTime?
-  dataConsentVersion       Int      @default(1)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  dataConsentVersion       Int       @default(1)
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
   @@index([engagementScore])
 }
 
@@ -950,6 +987,7 @@ model LearningPlan {
   totalCount     Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
   @@unique([userId, type, date])
   @@index([userId, status])
 }
@@ -967,25 +1005,27 @@ model ScheduledNotification {
   lastAttemptAt DateTime?
   errorMessage  String?   @db.Text
   createdAt     DateTime  @default(now())
+
   @@index([status, scheduledFor])
   @@index([userId, triggerType])
 }
 
 model NotificationLog {
-  id              String    @id @default(cuid())
-  userId          String
-  notificationId  String?
-  triggerType     String
-  channel         String
-  title           String
-  body            String    @db.Text
-  deepLink        String?
-  deliveryStatus  String
-  deliveredAt     DateTime?
-  openedAt        DateTime?
-  clickedAt       DateTime?
-  metadata        Json?
-  createdAt       DateTime  @default(now())
+  id             String    @id @default(cuid())
+  userId         String
+  notificationId String?
+  triggerType    String
+  channel        String
+  title          String
+  body           String    @db.Text
+  deepLink       String?
+  deliveryStatus String
+  deliveredAt    DateTime?
+  openedAt       DateTime?
+  clickedAt      DateTime?
+  metadata       Json?
+  createdAt      DateTime  @default(now())
+
   @@index([userId, createdAt])
   @@index([triggerType])
 }
@@ -1003,20 +1043,21 @@ model NotificationTemplate {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
   @@unique([triggerType, channel, locale])
 }
 
 // ── Coupon & Trial models ────────────────────────────────────────────
 
 model Coupon {
-  id           String             @id @default(cuid())
-  code         String             @unique
-  discountPct  Int                // 0-100
-  maxUses      Int                @default(100)
-  usedCount    Int                @default(0)
-  expiresAt    DateTime?
-  createdAt    DateTime           @default(now())
-  redemptions  CouponRedemption[]
+  id          String             @id @default(cuid())
+  code        String             @unique
+  discountPct Int // 0-100
+  maxUses     Int                @default(100)
+  usedCount   Int                @default(0)
+  expiresAt   DateTime?
+  createdAt   DateTime           @default(now())
+  redemptions CouponRedemption[]
 }
 
 model CouponRedemption {
@@ -1026,21 +1067,22 @@ model CouponRedemption {
   createdAt DateTime @default(now())
   coupon    Coupon   @relation(fields: [couponId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+
   @@unique([couponId, userId])
 }
 
 // ── Growth: Referral & Teams models ─────────────────────────────────
 
 model Referral {
-  id           String   @id @default(cuid())
-  referrerId   String
-  referredId   String?
-  code         String   @unique
-  status       String   @default("pending") // pending | converted
-  createdAt    DateTime @default(now())
-  convertedAt  DateTime?
-  referrer     User     @relation("ReferralsGiven", fields: [referrerId], references: [id])
-  referred     User?    @relation("ReferralsReceived", fields: [referredId], references: [id])
+  id          String    @id @default(cuid())
+  referrerId  String
+  referredId  String?
+  code        String    @unique
+  status      String    @default("pending") // pending | converted
+  createdAt   DateTime  @default(now())
+  convertedAt DateTime?
+  referrer    User      @relation("ReferralsGiven", fields: [referrerId], references: [id])
+  referred    User?     @relation("ReferralsReceived", fields: [referredId], references: [id])
 
   @@index([referrerId])
   @@index([code])
@@ -1064,9 +1106,9 @@ model TeamPlan {
 
 model ContentAgentCycle {
   id               String              @id @default(cuid())
-  type             String              // 'daily' | 'weekly'
+  type             String // 'daily' | 'weekly'
   status           String              @default("analyzing") // analyzing | suggestions_ready | approved | generating | completed | failed
-  analysisData     Json?               // full gap analysis snapshot
+  analysisData     Json? // full gap analysis snapshot
   suggestionsCount Int                 @default(0)
   approvedCount    Int                 @default(0)
   generatedCount   Int                 @default(0)
@@ -1087,27 +1129,27 @@ model ContentAgentCycle {
 }
 
 model ContentSuggestion {
-  id                String              @id @default(cuid())
+  id                String               @id @default(cuid())
   cycleId           String
-  cycle             ContentAgentCycle   @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  cycle             ContentAgentCycle    @relation(fields: [cycleId], references: [id], onDelete: Cascade)
   expressionType    String
   bodyLanguageType  String
   skillCategory     String
-  difficulty        String              // beginner | intermediate | advanced
-  rationale         String              @db.Text
-  gapType           String              // skill_gap | difficulty_gap | engagement_gap | content_variety
-  priority          Int                 @default(5) // 1 = highest
+  difficulty        String // beginner | intermediate | advanced
+  rationale         String               @db.Text
+  gapType           String // skill_gap | difficulty_gap | engagement_gap | content_variety
+  priority          Int                  @default(5) // 1 = highest
   suggestedProvider String?
   suggestedModel    String?
-  mediaType         String              // 'image' | 'video'
-  classification    String              @default("for_later") // 'for_public' | 'for_later'
-  publishTargets    Json?               // ['library', 'foundation', 'arcade']
-  status            String              @default("pending") // pending | approved | rejected | generating | completed | failed
-  adminNote         String?             @db.Text
-  contentRequestId  String?             // links to AiContentRequest once generation starts
+  mediaType         String // 'image' | 'video'
+  classification    String               @default("for_later") // 'for_public' | 'for_later'
+  publishTargets    Json? // ['library', 'foundation', 'arcade']
+  status            String               @default("pending") // pending | approved | rejected | generating | completed | failed
+  adminNote         String?              @db.Text
+  contentRequestId  String? // links to AiContentRequest once generation starts
   estimatedCost     Float?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
   generationJobs    AgentGenerationJob[]
 
   @@index([cycleId])
@@ -1119,14 +1161,14 @@ model ContentSuggestion {
 model ContentGapSnapshot {
   id                 String   @id @default(cuid())
   cycleId            String?
-  skillCoverage      Json     // { "eye-contact": { total, beginner, intermediate, advanced }, ... }
-  difficultyCoverage Json     // { "beginner": 45, "intermediate": 30, "advanced": 15 }
-  practiceFrequency  Json     // { "eye-contact": 340, "facial-expressions": 520, ... }
-  engagementBySkill  Json?    // avg engagement score per skill
-  contentFreshness   Json     // days since last content added per skill
+  skillCoverage      Json // { "eye-contact": { total, beginner, intermediate, advanced }, ... }
+  difficultyCoverage Json // { "beginner": 45, "intermediate": 30, "advanced": 15 }
+  practiceFrequency  Json // { "eye-contact": 340, "facial-expressions": 520, ... }
+  engagementBySkill  Json? // avg engagement score per skill
+  contentFreshness   Json // days since last content added per skill
   totalUsers         Int      @default(0)
   activeUsers        Int      @default(0) // active in last 30 days
-  recommendations    Json?    // AI-generated text summary
+  recommendations    Json? // AI-generated text summary
   createdAt          DateTime @default(now())
 
   @@index([createdAt])
@@ -1136,28 +1178,28 @@ model CloudStorageConfig {
   id        String   @id @default(cuid())
   provider  String   @unique // 'google_drive' | 'onedrive' | 'vercel_blob'
   isEnabled Boolean  @default(false)
-  config    Json     // { folderId, accessToken, refreshToken, basePath, etc. }
+  config    Json // { folderId, accessToken, refreshToken, basePath, etc. }
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model AgentGenerationJob {
-  id               String             @id @default(cuid())
+  id               String            @id @default(cuid())
   suggestionId     String
-  suggestion       ContentSuggestion  @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
+  suggestion       ContentSuggestion @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
   contentRequestId String?
   provider         String
   model            String?
-  status           String             @default("queued") // queued | generating | uploading | completed | failed
-  providerTaskId   String?            // external task ID for polling
+  status           String            @default("queued") // queued | generating | uploading | completed | failed
+  providerTaskId   String? // external task ID for polling
   blobUrl          String?
   cloudStorageUrl  String?
-  errorMessage     String?            @db.Text
-  retryCount       Int                @default(0)
+  errorMessage     String?           @db.Text
+  retryCount       Int               @default(0)
   startedAt        DateTime?
   completedAt      DateTime?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   @@index([status])
   @@index([suggestionId])

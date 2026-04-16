@@ -55,6 +55,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Email already in use' }, { status: 409 })
   }
   const passwordHash = await bcrypt.hash(password, 12)
+  // HIGH-007: self-serve signup is intentionally auto-approved (no admin gate)
+  // so new learners can start practicing immediately. Abuse is mitigated by
+  // the IP rate limit above and bcrypt-12 password hashing; email verification
+  // will take over for non-repudiation once the flow ships (M44).
   const newUser = await prisma.user.create({
     data: { name, email, passwordHash, role: 'learner', status: 'approved' },
   })

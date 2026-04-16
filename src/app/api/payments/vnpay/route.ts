@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { createVNPayUrl } from '@/services/payment-gateway'
 import { prisma } from '@/lib/prisma'
+import { randomUUID } from 'crypto'
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
@@ -19,10 +20,26 @@ export async function POST(req: Request) {
   if (usdAmount <= 0) return NextResponse.json({ error: 'Cannot pay for free plan' }, { status: 400 })
   const vndAmount = Math.round(usdAmount * 25000) // approximate USD→VND
 
-  const orderId = `${userId.slice(-8)}_${Date.now()}`
+  // HIGH-001: orderId is an opaque UUID; the userId/plan/period are stored in
+  // PaymentIntent so the callback can look them up by exact orderId match
+  // rather than substring-matching against user IDs.
+  const orderId = `SN${randomUUID().replace(/-/g, '')}`.slice(0, 32)
   const ipAddr = req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
 
   try {
+    await (prisma as any).paymentIntent.create({
+      data: {
+        orderId,
+        userId,
+        planSlug,
+        period,
+        amount: vndAmount,
+        currency: 'VND',
+        gateway: 'vnpay',
+        status: 'pending',
+      },
+    })
+
     const paymentUrl = createVNPayUrl(
       vndAmount,
       orderId,
