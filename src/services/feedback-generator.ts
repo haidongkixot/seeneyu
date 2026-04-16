@@ -75,51 +75,66 @@ async function generateWithAI(
         .join('\n')
     : ''
 
-  const prompt = `You are an expert body language coach analyzing a student's practice attempt. You must reference the SPECIFIC clip and practice steps they followed — generic feedback is forbidden.
+  const sortedDims = [...metrics.dimensions].sort((a, b) => a.score - b.score)
+  const bestDim = sortedDims[sortedDims.length - 1]
+  const worstDim = sortedDims[0]
 
-THIS SPECIFIC CLIP — what the student practiced:
-- Skill focus: ${ctx.skillCategory.replace('-', ' ')}
-- ${characterLine}
-- Scene: ${ctx.sceneDescription}
-${ctx.annotation ? `- Reference behavior to mimic: ${ctx.annotation}` : ''}
-${ctx.script ? `- Dialogue: "${String(ctx.script).slice(0, 400)}"` : ''}
+  const prompt = `You are an expert body language coach analyzing a student's practice attempt. YOU MUST make this feedback SPECIFIC to THIS clip — generic feedback that could apply to any clip is forbidden.
 
-${guideMomentsText ? `KEY MOMENTS THE STUDENT WAS TOLD TO OBSERVE:\n${guideMomentsText}\n` : ''}
-${stepsText ? `PRACTICE STEPS THE STUDENT WAS INSTRUCTED TO PERFORM:\n${stepsText}\n` : ''}
+━━ THE SCENE THEY PRACTICED ━━
+Character: ${ctx.characterName ?? 'N/A'} (${ctx.actorName ?? 'actor unknown'}) in ${ctx.movieTitle}
+Skill: ${ctx.skillCategory.replace('-', ' ')}
+Scene detail: ${ctx.sceneDescription}
+${ctx.annotation ? `What to look for: ${ctx.annotation}` : ''}
+${ctx.script ? `Script they practiced: "${String(ctx.script).slice(0, 300)}"` : ''}
 
-THEIR MEASURED PERFORMANCE (from MediaPipe analysis):
-- Overall score: ${metrics.overallScore}/100
-- Dimensions: ${dimText}
+${guideMomentsText ? `✓ KEY MOMENTS THEY WERE TOLD TO WATCH:\n${guideMomentsText}` : ''}
+${stepsText ? `\n✓ PRACTICE STEPS THEY WERE INSTRUCTED TO FOLLOW:\n${stepsText}` : ''}
 
-Your job: write feedback that explicitly references the clip context above. Do NOT write generic ${ctx.skillCategory.replace('-', ' ')} advice that could apply to any clip. Every sentence must connect to either:
-(a) the specific scene/character they were mimicking,
-(b) one of the observation moments above,
-(c) one of the practice steps they followed, OR
-(d) a specific dimension score they got.
+━━ THEIR ACTUAL PERFORMANCE ━━
+Overall: ${metrics.overallScore}/100
+Best: ${bestDim.label} (${bestDim.score}/100) — they nailed this
+Weakest: ${worstDim.label} (${worstDim.score}/100) — focus here
+All scores: ${dimText}
 
-Generate coaching feedback as JSON:
+━━ YOUR JOB ━━
+Write feedback that makes them feel like a coach watched them practice THIS specific scene. Every sentence must reference:
+- The character they mimicked (${ctx.characterName ?? 'the character'})
+- A specific observation moment (with timestamp)
+- A practice step they attempted
+- A dimension score they got
+- OR something unique about this scene
+
+EXAMPLES OF GOOD FEEDBACK:
+- BAD: "Work on eye contact."
+- GOOD: "When you mimicked Marcus's confrontation stance at 12s, your eye contact held for 3 seconds, which matches his intensity. But his jaw stays slightly clenched—yours relaxed. Try the Step 2 exercise: mirror his jaw tension for 5 seconds."
+
+- BAD: "Your hand gestures were good."
+- GOOD: "In the scene where Cardi signs the deal, your hand opening at 8s was nearly perfect (Hand Openness: 9/10), but you broke the gesture too early. His hands stay open for the full 4-second beat."
+
+Generate coaching feedback as strict JSON (no markdown, no extra text):
 {
-  "summary": "<2 sentences — must mention the character/scene by name AND reference at least one specific dimension score. Example: 'Your imitation of Don Corleone's restrained gaze captured the stillness well (Eye Opening: 8/10), but the head tilt was too pronounced compared to his subtle weight shift.'>",
+  "summary": "<1-2 punchy sentences using the character name, scene context, and comparing their strongest vs weakest score. EXAMPLE: 'You captured Don's cold authority—your stillness was impeccable (Timing: 94/100). But his jaw stays tensely shut, and yours was too relaxed (Facial Expression: 48/100). That tension is key to the power.'>",
   "positives": [
-    "<specific observation tied to ONE of the observation moments OR practice steps above. Mention the moment timestamp or step number. Name a body part.>",
-    "<another specific positive tied to a different moment/step>"
+    "<ONE specific thing they did well. Name a body part + dimension score + reference the character/moment. Example: 'At 12s, your forward lean matched Cardi's engagement perfectly (Forward Lean: 8/10), showing you understand how her active listening looks.'>",
+    "<ANOTHER specific positive from a different moment or dimension. Include score.>"
   ],
   "improvements": [
-    "<specific correction referencing a SPECIFIC observation moment they missed OR practice step they didn't fully execute. Include a 'try this' exercise.>",
-    "<another correction tied to their lowest-scoring dimension AND the reference behavior they were mimicking>"
+    "<ONE correction tied to their lowest-scoring dimension AND this specific scene. Include a 15-second micro-exercise. Example: 'You relaxed your jaw, but Don keeps it tight—watch 11-15s of the clip again. Try this: clench your teeth lightly while saying 'I'm not angry' 3 times to build muscle memory.'>",
+    "<ANOTHER correction with a specific practice step or moment timestamp.>"
   ],
   "steps": [
-    {"number": 1, "action": "<physical action targeting their weakest dimension AND tied to the scene>", "why": "<reference the character/scene specifically>"},
-    {"number": 2, "action": "<progressive exercise building on step 1, tied to one of the observation moments>", "why": "<connect to what the character does in the clip>"},
-    {"number": 3, "action": "<integration exercise combining multiple elements from the practice steps>", "why": "<about achieving the natural quality the character has>"}
+    {"number": 1, "action": "<A 20-second warmup targeting their weakest dimension, referencing this scene>", "why": "<Why this matters for the character they're mimicking>"},
+    {"number": 2, "action": "<A 30-second drill combining observation moment + practice step they partially missed>", "why": "<How this builds on step 1 AND the character's behavior>"},
+    {"number": 3, "action": "<Record themselves doing steps 1+2 together, then compare to the original clip>", "why": "<How this integrates everything for this specific scene>"}
   ],
   "tips": [
-    {"title": "<technique name from the scene>", "body": "<2-3 sentences with a specific exercise. Reference HOW the character in this scene uses this technique.>"},
-    {"title": "<technique name>", "body": "<2-3 sentences targeting their second-weakest dimension. Reference one of the practice steps above.>"}
+    {"title": "<A specific technique FROM THE CLIP (e.g., 'Tight Jaw Authority' or 'The Cold Stare')>", "body": "<3-4 sentences explaining HOW the character uses this technique at a specific moment in the scene, then a micro-exercise the student should try. Reference timestamps.>"},
+    {"title": "<Another technique unique to this character/scene>", "body": "<Same: HOW the character does it, specific example from the clip, micro-exercise.>"}
   ]
 }
 
-CRITICAL: If a sentence in your output could be copied to feedback for ANY ${ctx.skillCategory.replace('-', ' ')} clip, rewrite it to reference THIS specific clip. Mention the character's name, the scene, the timestamps of observation moments, or specific practice step numbers.`
+DO NOT GENERIC. If a sentence could work for ANY ${ctx.skillCategory.replace('-', ' ')} practice, DELETE IT and rewrite it with a character name, scene detail, or score reference.`
 
   const response = await openai.chat.completions.create({
     model: 'gpt-4o',
@@ -136,10 +151,10 @@ CRITICAL: If a sentence in your output could be copied to feedback for ANY ${ctx
   return {
     overallScore: metrics.overallScore,
     dimensions: metrics.dimensions,
-    summary: parsed.summary || templateSummary(metrics.overallScore, ctx.skillCategory),
-    positives: parsed.positives || templatePositives(metrics, ctx.skillCategory),
-    improvements: parsed.improvements || templateImprovements(metrics, ctx.skillCategory),
-    steps: parsed.steps || templateSteps(metrics, ctx.skillCategory),
+    summary: parsed.summary || templateSummary(metrics.overallScore, ctx),
+    positives: parsed.positives || templatePositives(metrics, ctx),
+    improvements: parsed.improvements || templateImprovements(metrics, ctx),
+    steps: parsed.steps || templateSteps(metrics, ctx),
     tips: parsed.tips || templateTips(ctx.skillCategory),
     modelUsed: 'mediapipe+gpt-4o-text',
   }
@@ -154,21 +169,24 @@ function generateFromTemplates(
   return {
     overallScore: metrics.overallScore,
     dimensions: metrics.dimensions,
-    summary: templateSummary(metrics.overallScore, ctx.skillCategory),
-    positives: templatePositives(metrics, ctx.skillCategory),
-    improvements: templateImprovements(metrics, ctx.skillCategory),
-    steps: templateSteps(metrics, ctx.skillCategory),
+    summary: templateSummary(metrics.overallScore, ctx),
+    positives: templatePositives(metrics, ctx),
+    improvements: templateImprovements(metrics, ctx),
+    steps: templateSteps(metrics, ctx),
     tips: templateTips(ctx.skillCategory),
     modelUsed: 'mediapipe-local',
   }
 }
 
-function templateSummary(score: number, skill: string): string {
-  const skillName = skill.replace(/-/g, ' ')
-  if (score >= 80) return `Excellent ${skillName} performance! You're showing strong command of this skill.`
-  if (score >= 60) return `Good progress on ${skillName}. You're building solid foundations — keep it up!`
-  if (score >= 40) return `You're developing your ${skillName} skills. Focus on the action steps below to improve.`
-  return `${skillName.charAt(0).toUpperCase() + skillName.slice(1)} takes practice. Review the tips below and try again — you'll get there!`
+function templateSummary(score: number, ctx: FeedbackContext): string {
+  const skillName = ctx.skillCategory.replace(/-/g, ' ')
+  const character = ctx.characterName ? ` as ${ctx.characterName}` : ''
+  const movie = ctx.movieTitle ? ` (${ctx.movieTitle})` : ''
+
+  if (score >= 80) return `Excellent ${skillName} work${character}${movie}! Your performance shows strong command of this technique.`
+  if (score >= 60) return `Good progress on ${skillName}${character}${movie}. You're building solid foundations—keep refining the details below.`
+  if (score >= 40) return `You're developing your ${skillName} skills${character}${movie}. Focus on the action steps below to tighten your technique.`
+  return `${skillName.charAt(0).toUpperCase() + skillName.slice(1)} requires deliberate practice. Work through the exercises below and record again—you'll see rapid improvement.`
 }
 
 const SKILL_POSITIVES: Record<string, string[][]> = {
@@ -198,11 +216,21 @@ const SKILL_POSITIVES: Record<string, string[][]> = {
   ],
 }
 
-function templatePositives(metrics: FullPerformanceMetrics, skill: string): string[] {
+function templatePositives(metrics: FullPerformanceMetrics, ctx: FeedbackContext): string[] {
+  const skill = ctx.skillCategory
   const pool = SKILL_POSITIVES[skill] ?? SKILL_POSITIVES['eye-contact']
   const bestDim = metrics.dimensions.reduce((best, d) => d.score > best.score ? d : best)
   const idx = metrics.dimensions.indexOf(bestDim)
   const set = pool[Math.min(idx, pool.length - 1)]
+
+  // If we have character context, prefix with character-specific encouragement
+  if (ctx.characterName && set) {
+    const character = ctx.characterName
+    return [
+      `${character}'s ${skill.replace(/-/g, ' ')} has that quality—and you captured it: ${set[0]}`,
+      set[1],
+    ]
+  }
   return set
 }
 
@@ -233,22 +261,35 @@ const SKILL_IMPROVEMENTS: Record<string, string[][]> = {
   ],
 }
 
-function templateImprovements(metrics: FullPerformanceMetrics, skill: string): string[] {
+function templateImprovements(metrics: FullPerformanceMetrics, ctx: FeedbackContext): string[] {
+  const skill = ctx.skillCategory
   const pool = SKILL_IMPROVEMENTS[skill] ?? SKILL_IMPROVEMENTS['eye-contact']
   const worstDim = metrics.dimensions.reduce((worst, d) => d.score < worst.score ? d : worst)
   const idx = metrics.dimensions.indexOf(worstDim)
   const set = pool[Math.min(idx, pool.length - 1)]
+
+  // If we have character context, add character-specific guidance
+  if (ctx.characterName && ctx.annotation && set) {
+    const character = ctx.characterName
+    return [
+      `Watch how ${character} handles ${worstDim.label.toLowerCase()} in the scene: ${ctx.annotation}. Then: ${set[0]}`,
+      set[1],
+    ]
+  }
   return set
 }
 
-function templateSteps(metrics: FullPerformanceMetrics, skill: string): ActionPlanStep[] {
+function templateSteps(metrics: FullPerformanceMetrics, ctx: FeedbackContext): ActionPlanStep[] {
   const sorted = [...metrics.dimensions].sort((a, b) => a.score - b.score)
+  const character = ctx.characterName ?? 'the character'
+  const movieRef = ctx.movieTitle ? ` (like ${character} in ${ctx.movieTitle})` : ''
+
   const steps: ActionPlanStep[] = sorted.slice(0, 3).map((dim, i) => ({
     number: i + 1,
-    action: `Focus on improving your ${dim.label.toLowerCase()}`,
+    action: `Drill ${dim.label.toLowerCase()}${movieRef}`,
     why: dim.score <= 5
-      ? `This area scored ${dim.score}/10 — it's your biggest opportunity for growth.`
-      : `At ${dim.score}/10, small improvements here will push your overall score higher.`,
+      ? `Scoring ${dim.score}/10, this is your biggest opportunity. Watch how ${character} handles this, then mirror it for 30 seconds.`
+      : `At ${dim.score}/10, tightening this dimension will push your overall score meaningfully higher. Practice the specific movements ${character} uses.`,
   }))
   return steps
 }
