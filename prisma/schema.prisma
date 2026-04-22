@@ -970,10 +970,51 @@ model LearnerProfile {
   dataConsentStorageAgreed Boolean   @default(true)
   dataConsentUpdatedAt     DateTime?
   dataConsentVersion       Int       @default(1)
+  // M46 Mirror Mode: explicit opt-in for extension aggregate metrics (default false)
+  extensionMetricsOptIn    Boolean   @default(false)
+  extensionMetricsOptInAt  DateTime?
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
 
   @@index([engagementScore])
+}
+
+// ── M46 Mirror Mode: browser-extension models ──────────────────────────
+// Local-only MediaPipe HUD during real Zoom/Meet/Teams calls. Raw frames
+// never leave the device. Only opt-in aggregate metrics sync here.
+
+model ExtensionToken {
+  id               String    @id @default(cuid())
+  userId           String
+  tokenHash        String    @unique // SHA-256(accessToken)
+  refreshHash      String    @unique // SHA-256(refreshToken)
+  extensionId      String // chrome.runtime.id, pinned (T5)
+  userAgent        String?
+  issuedAt         DateTime  @default(now())
+  expiresAt        DateTime // access-token expiry (+15 min), MANDATORY
+  refreshExpiresAt DateTime // refresh-token expiry (+30 days)
+  revokedAt        DateTime?
+  lastUsedAt       DateTime?
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([userId, revokedAt])
+}
+
+model ExtensionSession {
+  id               String   @id @default(cuid())
+  userId           String
+  startedAt        DateTime
+  endedAt          DateTime
+  durationSeconds  Int
+  avgEyeContactPct Float?
+  avgPostureScore  Float?
+  avgVocalPaceWpm  Float?
+  sampleCount      Int
+  clientVersion    String
+  createdAt        DateTime @default(now())
+
+  @@index([userId, startedAt])
 }
 
 model LearningPlan {

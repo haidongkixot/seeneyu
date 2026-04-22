@@ -1,0 +1,24 @@
+{
+  "name": "@seeneyu/extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Seeneyu Mirror Mode — Chrome / Edge extension (MV3)",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@seeneyu/scoring": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.4.0",
+    "vite": "^5.4.0"
+  }
+}

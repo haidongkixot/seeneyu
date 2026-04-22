@@ -3,10 +3,43 @@
     "version": 2,
     "description": "Active signal board — unread/open signals only. All roles read this single file and filter by their 'to' field.",
     "protocol": "When you complete a task: update status to 'done' and run: node scripts/signal-done.js <signal-id>. To send a new signal: node scripts/signal-send.js",
-    "last_updated": "2026-04-14T22:27:54.832Z",
-    "open_count": 107
+    "last_updated": "2026-04-22T18:12:54.401Z",
+    "open_count": 111
   },
   "signals": [
+    {
+      "id": "sig_pm_tester_1776207317806",
+      "from": "pm",
+      "to": "tester",
+      "type": "task-assign",
+      "task": "security-verification",
+      "priority": "high",
+      "message": "TESTER: After security fixes ship, verify: (1) .env.vercel.prod not in git. (2) /api/micro-sessions returns 401 without auth. (3) Mobile login: 11th attempt in 15 min → 429. (4) Cron endpoints without CRON_SECRET → 401. (5) Upload 100MB file → rejected. (6) Upload .exe → rejected. (7) X-Frame-Options header present. (8) /api/debug/library-test → 404 or 401. (9) Trial activation twice → rejected. Report: docs/security-audit-2026-04-15.md.",
+      "timestamp": "2026-04-14T22:55:17.806Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_backend-engineer_1776207317696",
+      "from": "pm",
+      "to": "backend-engineer",
+      "type": "task-assign",
+      "task": "security-sprint1-2-fixes",
+      "priority": "high",
+      "message": "BACKEND ENGINEER: Security fixes from audit (docs/security-audit-2026-04-15.md). CRITICAL: Add auth gate to /api/micro-sessions (CRIT-002). HIGH: (1) Add 30-day token expiry to mobile login + getUserFromRequest check (HIGH-001). (2) Add IP rate limit to mobile login, max 10/15min (HIGH-002). (3) Fix ALL 7 cron routes: change 'if (secret &&' to 'if (!secret ||' (HIGH-003). (4) Create src/lib/upload-validator.ts and apply to 4 upload routes — validate MIME type + max size (HIGH-004). MEDIUM: (1) Sanitize dangerouslySetInnerHTML with DOMPurify (MED-002). (2) Add trial-already-used check to /api/trial (MED-004). (3) Review CORS on /api/foundation (MED-006). LOW: Add maxAge 30 days to NextAuth session (LOW-001), validate PayPal planSlug server-side (LOW-003).",
+      "timestamp": "2026-04-14T22:55:17.696Z",
+      "status": "unread"
+    },
+    {
+      "id": "sig_pm_builder_1776207317571",
+      "from": "pm",
+      "to": "builder",
+      "type": "task-assign",
+      "task": "security-sprint1-secrets",
+      "priority": "high",
+      "message": "BUILDER: CRITICAL security fix. (1) Add .env.vercel.prod to .gitignore immediately. (2) Run: git rm --cached .env.vercel.prod. (3) User must rotate ALL keys on provider dashboards (OpenAI, Neon DB, NEXTAUTH_SECRET, Blob token, ElevenLabs, Kling, Google AI). (4) Delete src/app/api/debug/library-test/route.ts (HIGH-005). (5) Add security headers to next.config (X-Frame-Options: SAMEORIGIN, CSP frame-ancestors self). See: docs/security-audit-2026-04-15.md CRIT-001, HIGH-005, MED-005.",
+      "timestamp": "2026-04-14T22:55:17.572Z",
+      "status": "unread"
+    },
     {
       "id": "sig_pm_backend-engineer_1776205674669",
       "from": "pm",
@@ -547,6 +580,17 @@
       "timestamp": "2026-03-22T20:00:00Z",
       "status": "unread",
       "to": "marketer"
+    },
+    {
+      "id": "sig_backend_pm_1776881574399",
+      "from": "backend",
+      "to": "pm",
+      "type": "fyi",
+      "task": null,
+      "priority": "medium",
+      "message": "M46 Mirror Mode backend scaffold landed on develop: Prisma models (ExtensionToken, ExtensionSession, LearnerProfile.extensionMetricsOptIn), 5 API routes under /api/extension/ (pair, token/issue|refresh|revoke, metrics, preferences), lib/extension-auth|cors|id-allowlist, packages/scoring workspace package, extension/ directory with MV3 manifest + side panel + offscreen doc + service worker. Next: please add M46 entry to milestones.json (status: in-progress), signal Designer for HUD mockups, signal Builder for EXTENSION_IDS+EXTENSION_ENABLED env vars + Chrome Web Store prep. See docs/m46-mirror-mode.md.",
+      "timestamp": "2026-04-22T18:12:54.399Z",
+      "status": "unread"
     },
     {
       "id": "sig_pm_marketer_1776205674831",

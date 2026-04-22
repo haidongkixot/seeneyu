@@ -38,3 +38,10 @@ export function checkUserRateLimit(opts: UserRateLimitOptions): UserRateLimitRes
 export const AI_FEEDBACK_LIMIT = { max: 15, windowMs: 60 * 60 * 1000 }
 export const AI_MICRO_LIMIT = { max: 30, windowMs: 60 * 60 * 1000 }
 export const AI_CHAT_LIMIT = { max: 60, windowMs: 24 * 60 * 60 * 1000 }
+
+// M46 Mirror Mode — extension limits
+export const EXT_TOKEN_ISSUE_LIMIT = { max: 5, windowMs: 15 * 60 * 1000 }
+export const EXT_TOKEN_REFRESH_LIMIT = { max: 30, windowMs: 60 * 60 * 1000 }
+export const EXT_TOKEN_REVOKE_LIMIT = { max: 10, windowMs: 60 * 60 * 1000 }
+export const EXT_METRICS_LIMIT = { max: 60, windowMs: 60 * 60 * 1000 }
+export const EXT_PREFERENCES_LIMIT = { max: 30, windowMs: 60 * 60 * 1000 }
