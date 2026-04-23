@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-011",
+  "title": "Open vs Closed",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-011",
+  "generatedAt": "2026-04-12T01:11:36.432Z",
+  "jobId": "video_69daf14bb26c81988ecf6c40a62046d804980a0726430ea6",
+  "submittedAt": "2026-04-12T01:11:39.702Z",
+  "submission": {
+    "id": "video_69daf14bb26c81988ecf6c40a62046d804980a0726430ea6",
+    "object": "video",
+    "created_at": 1775956299,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. Realistic cinematic short film with warm naturalism and soft natural lighting. Daniel, a young man in his early thirties wearing a light blue button-down shirt and jeans, is sitting at a modern meeting room table. Bright daylight from a window, plain white walls. Beat 1 (0-5s): Daniel sits with arms tightly crossed across his chest, shoulders slightly rounded forward. He says 'I think we should reconsider this' in a measured English voice — but the tone reads as defensive because of the body. Beat 2 (5-10s): He uncrosses his arms, places both hands palm-up on the table, and opens his shoulders. Same neutral face. Beat 3 (10-15s): With the open posture, he repeats the same line — 'I think we should reconsider this' — and now it lands as collaborative. Subtle ambient meeting room tone, no music. Medium shot from across the table. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

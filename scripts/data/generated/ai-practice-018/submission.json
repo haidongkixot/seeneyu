@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-018",
+  "title": "The Calm No",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-018",
+  "generatedAt": "2026-04-12T01:33:09.390Z",
+  "jobId": "video_69daf656793081909b56356aa570b2ec00073a91bb082c9e",
+  "submittedAt": "2026-04-12T01:33:10.424Z",
+  "submission": {
+    "id": "video_69daf656793081909b56356aa570b2ec00073a91bb082c9e",
+    "object": "video",
+    "created_at": 1775957590,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Olive the small grey owl in a tiny knit scarf is standing at the doorway of her cozy tree-hollow home, talking with a friend (off-camera) on the porch. Soft evening light, warm porch lantern. Beat 1 (0-5s): Olive listens to the friend's invitation with a calm open expression, no apology pre-loaded on her face. Beat 2 (5-10s): She gives one slow nod, makes eye contact, and says 'Thank you, but I can't tonight' in a warm steady English voice. Beat 3 (10-15s): She holds the eye contact, smiles softly, and stays calmly silent — no over-explaining, no apologetic body language. Soft acoustic guitar plus porch wind chime SFX. Medium shot of Olive at the doorway. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

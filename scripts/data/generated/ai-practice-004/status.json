@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T00:48:07.789Z",
+  "attempt": 9,
+  "status": {
+    "id": "video_69daeb1a5f5881939d0876aa699ee2f4066b5c06ad10775e",
+    "object": "video",
+    "created_at": 1775954714,
+    "status": "completed",
+    "completed_at": 1775954871,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776127671,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. Realistic cinematic short film with warm naturalism and soft natural lighting. Sara, a young woman in her late twenties wearing a navy blazer and jeans, stands on a small wooden stage in front of an audience of about thirty people in a bright modern auditorium. Beat 1 (0-5s): Sara walks to her mark, takes a slow breath, looks at one person in the front-left section, holds eye contact for two full seconds with a soft smile. Beat 2 (5-10s): Her gaze moves smoothly to a person in the center-back, holds for two seconds, eyes warm. Beat 3 (10-15s): Gaze sweeps to the front-right, holds, then she says 'Good morning everyone' in a calm warm English voice. Subtle ambient room tone, no music. Wide shot from side angle showing both Sara and the audience faces. Slow camera push-in over the 15 seconds. Keep the story complete within the requested duration. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

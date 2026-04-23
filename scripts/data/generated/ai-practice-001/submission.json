@@ -1,0 +1,25 @@
+{
+  "jobId": "video_69da89b407f08193a3e1a597e5bcaa3402c3ba1675e0a840",
+  "model": "sora-2",
+  "prompt": "Create a 12-second original stylized 3D animated short film scene with synced dialogue and ambient cafe audio. Character: Maple, a friendly young anthropomorphic giant panda wearing a yellow t-shirt and blue jeans, with a warm round face, bright eyes, and a soft natural smile. Setting: a cozy sunlit cafe with a warm color palette, golden-hour light, wood furniture, and subtle cup-clinking ambience. Supporting characters: a rabbit seated on the left, a fox seated in the center, and a meerkat seated on the right at a round wooden table. Beat 1 (0-4s): Maple walks toward the table, makes eye contact with the rabbit on the left, and holds the gaze with a warm smile. Beat 2 (4-8s): Maple smoothly shifts eye contact to the fox in the center and holds it with a slightly wider smile. Beat 3 (8-12s): Maple shifts eye contact to the meerkat on the right, smiles, gives a friendly two-handed wave, and says in English, \"Hey friends!\" Camera: medium-wide shot with gentle handheld realism, clear facial visibility, readable eye-line direction, natural character motion, polished family-friendly animation. Avoid text overlays, subtitles, logos, watermarks, extra limbs, distorted eyes, or abrupt cuts.",
+  "size": "1280x720",
+  "seconds": "12",
+  "submittedAt": "2026-04-11T17:49:40.275Z",
+  "createData": {
+    "id": "video_69da89b407f08193a3e1a597e5bcaa3402c3ba1675e0a840",
+    "object": "video",
+    "created_at": 1775929780,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second original stylized 3D animated short film scene with synced dialogue and ambient cafe audio. Character: Maple, a friendly young anthropomorphic giant panda wearing a yellow t-shirt and blue jeans, with a warm round face, bright eyes, and a soft natural smile. Setting: a cozy sunlit cafe with a warm color palette, golden-hour light, wood furniture, and subtle cup-clinking ambience. Supporting characters: a rabbit seated on the left, a fox seated in the center, and a meerkat seated on the right at a round wooden table. Beat 1 (0-4s): Maple walks toward the table, makes eye contact with the rabbit on the left, and holds the gaze with a warm smile. Beat 2 (4-8s): Maple smoothly shifts eye contact to the fox in the center and holds it with a slightly wider smile. Beat 3 (8-12s): Maple shifts eye contact to the meerkat on the right, smiles, gives a friendly two-handed wave, and says in English, \"Hey friends!\" Camera: medium-wide shot with gentle handheld realism, clear facial visibility, readable eye-line direction, natural character motion, polished family-friendly animation. Avoid text overlays, subtitles, logos, watermarks, extra limbs, distorted eyes, or abrupt cuts.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

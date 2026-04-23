@@ -1,0 +1,10 @@
+{
+  "practiceId": "ai-practice-014",
+  "title": "The Echo & Pause",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-014",
+  "generatedAt": "2026-04-12T01:20:14.667Z"
+}

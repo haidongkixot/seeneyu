@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-006",
+  "title": "The Curiosity Look",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-006",
+  "generatedAt": "2026-04-12T00:54:06.143Z",
+  "jobId": "video_69daed2fcbbc81918ed6d29755d3cc9b0a3359b16dcbaaaf",
+  "submittedAt": "2026-04-12T00:54:08.232Z",
+  "submission": {
+    "id": "video_69daed2fcbbc81918ed6d29755d3cc9b0a3359b16dcbaaaf",
+    "object": "video",
+    "created_at": 1775955248,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Pip the playful sea otter in a striped red scarf is sitting on a wooden dock by a calm lake, talking with a friend (off-camera). Soft afternoon light, gentle water reflections. Beat 1 (0-5s): Pip is listening with a neutral attentive expression. Beat 2 (5-10s): His head tilts gently to the right, then his right eyebrow lifts in a single sharp curve. Beat 3 (10-15s): He leans forward slightly, his eyes widen with interest, and he says 'Wait — really?' in a playful curious English voice. Soft acoustic mandolin music plus gentle lake water sounds. Tight medium shot of Pip's face. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

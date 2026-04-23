@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T05:06:35.264Z",
+  "attempt": 7,
+  "status": {
+    "id": "video_69daf7075f448190b5f68d54bbea0d6e0184921de37fb818",
+    "object": "video",
+    "created_at": 1775957767,
+    "status": "completed",
+    "completed_at": 1775957924,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776130724,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Bruno, a big calm brown bear in a red flannel shirt and brown suspenders, sits at a long wooden dinner table mid-story. Two friends (off-camera) are listening. Warm dining room lighting, candles, soft chatter in the background. Beat 1 (0-5s): Bruno is mid-sentence, calm and grounded, gesturing softly. Beat 2 (5-10s): An off-camera friend tries to interrupt — 'Wait, but —' Bruno holds his posture, maintains eye contact, and slowly raises his right palm in a soft 'pause' gesture. His shoulders don't lift, his face doesn't tense. Beat 3 (10-15s): Bruno calmly says 'Let me finish — I'll get to that part' in a warm steady English voice, then gently lowers his hand and continues his story. Soft acoustic background music plus dinner ambient sounds. Medium shot of Bruno from across the table. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

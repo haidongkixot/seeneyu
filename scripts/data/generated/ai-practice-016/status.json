@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T01:29:47.024Z",
+  "attempt": 13,
+  "status": {
+    "id": "video_69daf48e7adc81939d5ad219af1c2365069384ba10d363a7",
+    "object": "video",
+    "created_at": 1775957134,
+    "status": "completed",
+    "completed_at": 1775957373,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776130173,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Nala, a young lion cub with a fluffy mane and bright amber eyes, sits cross-legged in front of a small campfire wearing a tiny explorer scarf. Three friends are visible around the fire (silhouetted). Night sky, warm orange firelight on her face. Beat 1 (0-5s): Nala speaks in a normal lively pace — 'And then I heard footsteps coming closer and closer.' Beat 2 (5-10s): She visibly slows her voice — 'And... then... very... slowly...' — each word stretched, with half-second gaps. Her eyes widen. Beat 3 (10-15s): The climax word arrives in a near-whisper, painfully slow — '...the door creaked open.' Friends gasp. The fire crackles louder. English voice, theatrical young storyteller. Soft mysterious flute music plus campfire crackle. Tight close-up of Nala's face. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

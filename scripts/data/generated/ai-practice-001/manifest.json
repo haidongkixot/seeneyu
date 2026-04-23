@@ -1,0 +1,10 @@
+{
+  "practiceId": "ai-practice-001",
+  "title": "The Café Welcome",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01-first.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-001",
+  "generatedAt": "2026-04-11T18:00:20.507Z"
+}

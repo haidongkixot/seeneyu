@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-010",
+  "title": "The Founder's Pitch",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-010",
+  "generatedAt": "2026-04-12T01:08:41.671Z",
+  "jobId": "video_69daf09afa408193a61d8afc6f4b7b4e062439cf69c6a576",
+  "submittedAt": "2026-04-12T01:08:43.098Z",
+  "submission": {
+    "id": "video_69daf09afa408193a61d8afc6f4b7b4e062439cf69c6a576",
+    "object": "video",
+    "created_at": 1775956123,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Mei, a young confident female panda in a grey blazer and white t-shirt, stands at the head of a small wooden meeting table in a modern startup office. Three investors (off-camera) are seated around the table. Soft daylight from large windows. Beat 1 (0-5s): Mei plants her feet shoulder-width apart and pulls her shoulders back, chest open, hands at chest level with palms facing each other. Beat 2 (5-10s): She gestures with both hands in the chest-to-shoulder zone, slowly opening her arms outward as she says 'Here's the thing about our product...' Beat 3 (10-15s): She brings her hands together at chest height, fingers loosely interlocked, holds eye contact with the room, calm and grounded. Subtle modern ambient music plus office room tone. Medium shot from the perspective of one investor. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

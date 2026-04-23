@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-005",
+  "title": "The Genuine Smile",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-005",
+  "generatedAt": "2026-04-12T00:48:12.397Z",
+  "jobId": "video_69daebce251c8198b6c220ff422837990cdb00fa83fbac73",
+  "submittedAt": "2026-04-12T00:48:14.252Z",
+  "submission": {
+    "id": "video_69daebce251c8198b6c220ff422837990cdb00fa83fbac73",
+    "object": "video",
+    "created_at": 1775954894,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. Pixar-style 3D animation in the visual tone of Coco. Bao the gentle grey koala in a pastel pink sweater is sitting on a sunlit garden bench. A friend (off-camera) hands her a small wrapped gift. Warm afternoon light, soft greenery in the background. Beat 1 (0-5s): Bao receives the gift, her mouth pulls into a quick polite smile — corners up but eyes neutral. She pauses. Beat 2 (5-10s): A flicker of recognition crosses her face. Her cheeks slowly lift, her eyes start to crinkle, and the smile grows from the inside out. Beat 3 (10-15s): The full Duchenne smile blooms — eyes squinting with joy, cheeks high, she says 'Oh wow, thank you!' in a warm sincere English voice. Soft acoustic ukulele music plus a gentle 'aww' SFX. Tight medium shot of Bao's face throughout. Keep the story complete within the requested duration. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

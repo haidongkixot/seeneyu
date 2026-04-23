@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-013",
+  "title": "The Slow Nod",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-013",
+  "generatedAt": "2026-04-12T01:17:19.675Z",
+  "jobId": "video_69daf2a1096c8198881fd70d2ca9ffaa0f0313cedb01634f",
+  "submittedAt": "2026-04-12T01:17:21.089Z",
+  "submission": {
+    "id": "video_69daf2a1096c8198881fd70d2ca9ffaa0f0313cedb01634f",
+    "object": "video",
+    "created_at": 1775956641,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Sage the wise old brown owl with round glasses perched on his beak sits in a cozy worn leather armchair in a softly lit study. Books on shelves in the background, warm reading lamp. Beat 1 (0-5s): Sage demonstrates the fast nervous nod — five small quick bobs of his head, eyes a bit too wide, the kind of nod that begs the speaker to wrap up. Beat 2 (5-10s): Pause. He resets to a calm neutral expression. Beat 3 (10-15s): Now he gives a single slow deliberate nod — head down for a full second, then back up — and softly says 'mm-hmm' in a calm warm English voice. Soft jazz piano in the background plus the gentle ticking of a wall clock. Tight medium shot of Sage's head and shoulders. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

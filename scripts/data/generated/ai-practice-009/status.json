@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T01:08:36.444Z",
+  "attempt": 13,
+  "status": {
+    "id": "video_69daef96c0cc81919160c159e0f0c5e0089764325dcb68c8",
+    "object": "video",
+    "created_at": 1775955863,
+    "status": "completed",
+    "completed_at": 1775956106,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776128906,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Toby the friendly golden retriever in a green hoodie and jeans is opening the front door of a cozy wooden cabin. Warm afternoon light streaming in, autumn leaves visible outside. Beat 1 (0-5s): Toby pulls the door open and steps back, planting his feet shoulder-width apart, his arms relaxed at his sides. Beat 2 (5-10s): He rotates his palms forward at his sides — open and visible. His shoulders are back, chest open. Beat 3 (10-15s): He gestures with both open hands toward the inside of the cabin and says 'Come in, come in!' in a warm hearty English voice. His tail wags. Soft acoustic banjo music plus rustling leaves SFX. Wide shot of the doorway showing his full body. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

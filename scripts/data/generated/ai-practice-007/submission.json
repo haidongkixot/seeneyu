@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-007",
+  "title": "The Empathy Mirror",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-007",
+  "generatedAt": "2026-04-12T00:59:17.847Z",
+  "jobId": "video_69daee675714819194861b30298426bd098b196f9d0d4b68",
+  "submittedAt": "2026-04-12T00:59:19.897Z",
+  "submission": {
+    "id": "video_69daee675714819194861b30298426bd098b196f9d0d4b68",
+    "object": "video",
+    "created_at": 1775955560,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Lulu the soft-spoken white rabbit in a beige knit cardigan is sitting cross-legged on a couch across from a friend (off-camera). Warm cozy living room lighting, soft golden lamps. Beat 1 (0-5s): Lulu listens with a calm open expression as her friend begins to speak. Beat 2 (5-10s): Slowly, her brow softens, her eyebrows draw in slightly toward each other, her mouth corners turn down a fraction — she's matching the friend's worry but at half intensity. Beat 3 (10-15s): Lulu nods slowly once, holds the soft worried expression, and lets out a quiet 'mhm' in a warm caring English voice. Very subtle piano music plus the soft hum of the room. Tight medium shot of Lulu's face throughout. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

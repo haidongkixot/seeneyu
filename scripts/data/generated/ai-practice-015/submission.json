@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-015",
+  "title": "The Punchline Pause",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-015",
+  "generatedAt": "2026-04-12T01:22:52.366Z",
+  "jobId": "video_69daf3ed9a3881909666952615e6bf160a0a97ec19fdc163",
+  "submittedAt": "2026-04-12T01:22:53.759Z",
+  "submission": {
+    "id": "video_69daf3ed9a3881909666952615e6bf160a0a97ec19fdc163",
+    "object": "video",
+    "created_at": 1775956973,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Joey, a bouncy young kangaroo in a colorful red and yellow t-shirt, sits on a wooden park bench next to a friend (off-camera). Bright sunny park setting, green grass, soft tree shade. Beat 1 (0-5s): Joey turns to his friend with a mischievous grin and says 'So I went to the dentist...' in a normal upbeat English voice. Beat 2 (5-10s): He pauses completely. His mouth closes. His eyebrows lift in a slow exaggerated arc. Two full seconds of silence with the friend's anticipation visible in Joey's eyes. Beat 3 (10-15s): He delivers the punchline with a slight smirk: 'and he said I had cavity-tea.' Audience laughter sound effect. His tail bounces. Cheerful ukulele music plus park ambient sounds. Medium two-shot of Joey on the bench. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

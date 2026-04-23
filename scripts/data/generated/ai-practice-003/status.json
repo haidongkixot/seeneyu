@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T00:44:53.972Z",
+  "attempt": 9,
+  "status": {
+    "id": "video_69daea5ee8108193983fa32421e27ee602bb5034d428b390",
+    "object": "video",
+    "created_at": 1775954527,
+    "status": "completed",
+    "completed_at": 1775954677,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776127477,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. Pixar-style 3D animation in the visual tone of Coco. Rio the tropical toucan with a vibrant orange-and-yellow beak sits at a small wooden coffee shop table across from a friend (off-camera). Warm cozy lighting, plants in the background, latte steam rising. Beat 1 (0-5s): Tight close-up of Rio's face, his eyes look at the friend's left eye, holding for a beat. Beat 2 (5-10s): His gaze drifts gently to the friend's right eye, holds, then drifts down to the friend's mouth. Beat 3 (10-15s): The triangle continues — back up to the left eye, hold, soft attentive expression throughout. No speech, just soft acoustic café music and ambient murmur. Tight close-up of Rio's face the entire time. Subtle camera push-in over the 15 seconds. Keep the story complete within the requested duration. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

@@ -1,0 +1,88 @@
+[
+  {
+    "id": "ai-practice-001",
+    "title": "The Café Welcome",
+    "skillCategory": "eye-contact",
+    "difficulty": "beginner",
+    "characterName": "Maple",
+    "characterDescription": "A friendly young giant panda in a yellow t-shirt and blue jeans, with a warm round face, bright eyes, and a soft natural smile.",
+    "sceneDescription": "Maple walks into a sunlit café and greets three animal friends, locking eyes with each one in turn for two full seconds before sitting down.",
+    "annotation": "Notice how Maple holds eye contact for two seconds with each friend before moving to the next. This sweep & hold pattern signals genuine recognition vs perfunctory greeting — every friend feels individually seen, not collectively acknowledged.",
+    "filmingStyle": "pixar-3d",
+    "tone": "positive, humor",
+    "mediaType": "ai_video",
+    "estimatedDurationSec": 15,
+    "mainVideo": {
+      "durationSec": 15,
+      "aspectRatio": "16:9",
+      "prompt": "Pixar-style 3D animation in the visual tone of Kung Fu Panda. Maple, a friendly young giant panda in a yellow t-shirt and blue jeans, walks into a sunlit cozy café with warm color palette and soft golden hour lighting. He sees three animal friends — a rabbit, a fox, and a meerkat — seated at a wooden round table. Beat 1 (0-5s): Maple approaches the table and locks eyes first with the rabbit on the left, holding the gaze with a warm smile. Beat 2 (5-10s): Maple's gaze sweeps right to the fox in the middle, holds for two seconds with a widening smile. Beat 3 (10-15s): Maple completes the sweep to the meerkat on the right, smiles, then waves with both hands and says 'Hey friends!' in a warm English voice. Acoustic café background music with ambient cup-clinking. Medium-wide shot with a slight handheld feel."
+    },
+    "observationGuide": {
+      "headline": "How Maple earns instant trust with the sweep & hold technique",
+      "moments": [
+        {
+          "atSecond": 2,
+          "technique": "Approach Lock",
+          "what": "Maple locks eyes with the first friend before reaching the table.",
+          "why": "Establishes connection before proximity, signaling intentionality."
+        },
+        {
+          "atSecond": 6,
+          "technique": "Sweep Transition",
+          "what": "His gaze deliberately moves left to right without skipping anyone.",
+          "why": "Each friend feels individually seen, not collectively greeted."
+        },
+        {
+          "atSecond": 10,
+          "technique": "Two-Second Hold",
+          "what": "Each gaze lock lasts a full two seconds before moving on.",
+          "why": "Two seconds is the minimum for the brain to register real attention."
+        },
+        {
+          "atSecond": 13,
+          "technique": "Smile-Sync Release",
+          "what": "Smile widens at the moment of eye contact, then voice and hands join in.",
+          "why": "Layering eyes + smile + voice + hands creates a full-spectrum welcome."
+        }
+      ]
+    },
+    "practiceSteps": [
+      {
+        "stepNumber": 1,
+        "skillFocus": "Approach Lock",
+        "instruction": "Before you reach the room, pick the first person you'll greet. Lock eyes with them as you walk toward them, holding the gaze for at least two seconds.",
+        "tip": "Don't break gaze until they acknowledge you back.",
+        "targetDurationSec": 15,
+        "videoPrompt": "Pixar 3D close-up: Maple the panda walking toward camera in a sunlit café, eyes locked forward with a warm focused gaze. Five seconds of confident approach, no speech, subtle ambient café sounds.",
+        "imagePrompt": "Minimalist sketch of a friendly panda character mid-stride, eyes locked forward in a warm gaze, gentle smile, confident posture. White background, no text."
+      },
+      {
+        "stepNumber": 2,
+        "skillFocus": "Sweep Transition",
+        "instruction": "Move your eyes deliberately from one person to the next. Don't skip anyone. The motion should feel intentional, not scanning.",
+        "tip": "Imagine you're painting each face with your gaze before moving on.",
+        "targetDurationSec": 20,
+        "videoPrompt": "Pixar 3D medium shot of Maple's face from chest up. His eyes deliberately move left, hold, then right, hold, then center, hold. Each hold lasts about a second. Soft background blur, no speech.",
+        "imagePrompt": "Minimalist sketch of a panda character's face in medium shot, eyes mid-transition between left and right, eyebrows relaxed, soft smile. White background, no text."
+      },
+      {
+        "stepNumber": 3,
+        "skillFocus": "Two-Second Hold",
+        "instruction": "When your eyes lock with someone, count one Mississippi, two Mississippi before moving on. Two full seconds is the minimum.",
+        "tip": "If two seconds feels too long, focus on noticing one detail about their face.",
+        "targetDurationSec": 20,
+        "videoPrompt": "Pixar 3D tight close-up of Maple the panda's face, eyes locked directly into camera. He holds the gaze still for five full seconds, blinking softly, with a calm warm expression. No speech.",
+        "imagePrompt": "Minimalist sketch of a panda's face in tight close-up, eyes locked directly at viewer with a sustained warm gaze. White background, no text."
+      },
+      {
+        "stepNumber": 4,
+        "skillFocus": "Smile-Sync Release",
+        "instruction": "At the moment your eyes lock, let your smile widen by a fraction. Don't smile before — let the eye contact trigger the smile.",
+        "tip": "The smile should arrive a fraction of a second after the eye lock, never before.",
+        "targetDurationSec": 15,
+        "videoPrompt": "Pixar 3D close-up of Maple's face. His eyes lock onto the viewer, hold for one beat, then his smile slowly widens into a Duchenne smile that crinkles the eyes. No speech, soft chime sound.",
+        "imagePrompt": "Minimalist sketch of a panda character's face mid-smile, eyes already locked with viewer, smile blossoming with crinkled eyes. White background, no text."
+      }
+    ]
+  }
+]

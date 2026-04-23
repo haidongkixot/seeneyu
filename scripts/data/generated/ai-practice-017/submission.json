@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-017",
+  "title": "The Question Lift",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-017",
+  "generatedAt": "2026-04-12T01:30:13.326Z",
+  "jobId": "video_69daf5a6fc208198afcb513a190c31740011f3bca9867e0e",
+  "submittedAt": "2026-04-12T01:30:15.411Z",
+  "submission": {
+    "id": "video_69daf5a6fc208198afcb513a190c31740011f3bca9867e0e",
+    "object": "video",
+    "created_at": 1775957415,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. Realistic cinematic short film with warm naturalism and soft natural lighting. Mr. Chen, a young teacher in his early thirties wearing a light blue button-down and khakis, stands in front of a small classroom whiteboard. Bright daylight from a window, the suggestion of student desks in soft focus in the foreground. Beat 1 (0-5s): Mr. Chen looks at his students and says 'What do you think.' with a flat falling pitch — like a statement. He pauses. The room is silent. Beat 2 (5-10s): He smiles slightly and says 'Let me try that again.' Beat 3 (10-15s): He repeats the line with a clear rising pitch — 'What do you think?' — and you can almost feel the room opening up. English voice, calm warm teacher tone. Subtle classroom ambient sound, no music. Medium shot of Mr. Chen from a student perspective. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

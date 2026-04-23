@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-020",
+  "title": "The Reframe",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-020",
+  "generatedAt": "2026-04-12T05:07:36.943Z",
+  "jobId": "video_69db289b5ed48191aa2182a3d1b3faab072e2e97d339e2e5",
+  "submittedAt": "2026-04-12T05:07:38.861Z",
+  "submission": {
+    "id": "video_69db289b5ed48191aa2182a3d1b3faab072e2e97d339e2e5",
+    "object": "video",
+    "created_at": 1775970459,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. Realistic cinematic short film with warm naturalism and soft natural lighting. Marcus, a young man in his early thirties wearing a charcoal grey sweater, sits at a small round meeting table. A colleague (off-camera) has just finished a forceful pushback. Bright daylight from a window, the soft hum of an open office. Beat 1 (0-5s): Tight medium shot of Marcus's face. He pauses for a full second, calm and composed, then gives a small slow nod. Beat 2 (5-10s): He says 'I hear you' in a warm steady English voice, holding eye contact with the colleague. A short pause. Beat 3 (10-15s): He calmly continues: 'My point is still that the timeline is too tight — let me explain why.' His tone never rises. He stays grounded. Subtle ambient meeting room sound, no music. Medium shot of Marcus throughout. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

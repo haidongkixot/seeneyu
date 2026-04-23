@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-04-12T01:17:14.243Z",
+  "attempt": 9,
+  "status": {
+    "id": "video_69daf1f1e9548198862017238594819e0e6abde04450795c",
+    "object": "video",
+    "created_at": 1775956466,
+    "status": "completed",
+    "completed_at": 1775956625,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": 1776129425,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 100,
+    "prompt": "Create a 12-second video. stylized family-friendly 3D animation Coral the small graceful seahorse with soft purple-blue gradient body sits on a curved coral bench in a sunlit underwater garden. Soft caustic light filters down through the water, gentle bubbles drift past. A friend (off-camera) is speaking. Beat 1 (0-5s): Coral sits upright in a neutral attentive posture, gently swaying with the water. Beat 2 (5-10s): As the friend's news builds, Coral slowly tilts her upper body forward about ten degrees, her tail still anchored to the bench. Beat 3 (10-15s): She holds the forward lean, eyes wide and engaged, the smallest 'mhm' sound from her mouth. Soft underwater ambient sound plus a gentle harp melody. Medium shot of Coral from the side. Adjust all story beats proportionally so the full action fits cleanly within the requested duration. Use original character and scene design rather than referencing any existing franchise or copyrighted style. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

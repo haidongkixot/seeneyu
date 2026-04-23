@@ -1,0 +1,29 @@
+{
+  "practiceId": "ai-practice-002",
+  "title": "The Power Pause",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-002",
+  "generatedAt": "2026-04-12T00:38:48.857Z",
+  "jobId": "video_69dae99acbc8819082b5a413d8e1129004133efd48e69b31",
+  "submittedAt": "2026-04-12T00:38:50.892Z",
+  "submission": {
+    "id": "video_69dae99acbc8819082b5a413d8e1129004133efd48e69b31",
+    "object": "video",
+    "created_at": 1775954330,
+    "status": "queued",
+    "completed_at": null,
+    "edited_from_video_id": null,
+    "error": null,
+    "expires_at": null,
+    "extended_from_video_id": null,
+    "model": "sora-2",
+    "progress": 0,
+    "prompt": "Create a 12-second video. Pixar-style 3D animation in the visual tone of Madagascar. Coco the meerkat in a cozy turtleneck sweater is sitting cross-legged in front of a small campfire with two friends — a fennec fox and a bushbaby. Warm orange firelight, evening forest setting, gentle crickets in the background. Beat 1 (0-5s): Coco is mid-story, gesturing animatedly with both paws, says 'And then I opened the door and you'll never guess what I saw...' Beat 2 (5-10s): Coco suddenly stops speaking, eyes lock onto the fennec fox, holds the gaze for two full seconds while the campfire crackles. Beat 3 (10-15s): Still holding eye contact, Coco whispers 'A cake. With my name on it.' English voice, warm and conspiratorial. The two friends lean in. Soft acoustic guitar plus crackling fire SFX. Medium two-shot of Coco and fox. Keep the story complete within the requested duration. Avoid text overlays, subtitles, logos, watermarks, abrupt cuts, and visible glitches.",
+    "remixed_from_video_id": null,
+    "seconds": "12",
+    "size": "1280x720"
+  }
+}

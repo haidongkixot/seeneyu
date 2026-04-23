@@ -1,0 +1,10 @@
+{
+  "practiceId": "ai-practice-017",
+  "title": "The Question Lift",
+  "sourceFile": "D:\\Claude Projects\\seeneyu\\scripts\\data\\ai-practices-batch-01.json",
+  "requestedSeconds": 15,
+  "effectiveSeconds": "12",
+  "size": "1280x720",
+  "outputDir": "D:\\Claude Projects\\seeneyu\\scripts\\data\\generated\\ai-practice-017",
+  "generatedAt": "2026-04-12T01:30:13.326Z"
+}
