@@ -17,11 +17,19 @@ let audioCtx: AudioContext | null = null
 let pipeline: MirrorPipeline | null = null
 let loopActive = false
 let sessionStart = 0
+let tickTimer: number | null = null
 const syllableBuckets: number[] = [] // rolling 30s of per-second syllable counts
+
+function status(msg: string, error?: unknown) {
+  const payload: any = { type: 'mirror/status', running: loopActive, message: msg }
+  if (error) payload.error = String((error as Error)?.message ?? error)
+  chrome.runtime.sendMessage(payload).catch(() => {})
+}
 
 async function start() {
   if (loopActive) return
   try {
+    status('Requesting camera and microphone…')
     stream = await navigator.mediaDevices.getUserMedia({
       video: { width: 640, height: 480, frameRate: 15 },
       audio: true,
@@ -29,34 +37,58 @@ async function start() {
     sessionStart = Date.now()
     loopActive = true
 
+    // Video must be attached to the DOM for Chrome to actually decode frames in
+    // a hidden offscreen document. Off-screen positioning keeps it invisible.
     video = document.createElement('video')
     video.srcObject = stream
     video.muted = true
     video.playsInline = true
+    video.autoplay = true
+    video.width = 640
+    video.height = 480
+    video.style.position = 'fixed'
+    video.style.left = '-9999px'
+    video.style.top = '0'
+    document.body.appendChild(video)
     await video.play()
 
-    startAudioAnalyser(stream)
-    pipeline = await loadMirrorPipeline()
+    // Wait for the first decoded frame before we start scoring — otherwise
+    // MediaPipe's detectForVideo returns empty landmarks and the HUD just
+    // shows "—" forever.
+    if (video.readyState < 2) {
+      await new Promise<void>((resolve) => {
+        const onReady = () => resolve()
+        video!.addEventListener('loadeddata', onReady, { once: true })
+        setTimeout(onReady, 3000) // fail-open so we at least start trying
+      })
+    }
 
-    chrome.runtime.sendMessage({ type: 'mirror/status', running: true })
-    tick()
+    startAudioAnalyser(stream)
+
+    status('Loading coaching models…')
+    pipeline = await loadMirrorPipeline()
+    status('Running', undefined)
+
+    // Stable 2 Hz via setInterval — rAF is throttled in hidden docs.
+    tickTimer = window.setInterval(tick, 500)
   } catch (err) {
     loopActive = false
-    chrome.runtime.sendMessage({
-      type: 'mirror/status',
-      running: false,
-      error: String((err as Error)?.message || err),
-    })
+    status('Start failed', err)
   }
 }
 
 function stop() {
   loopActive = false
+  if (tickTimer !== null) {
+    clearInterval(tickTimer)
+    tickTimer = null
+  }
   stream?.getTracks().forEach((t) => t.stop())
   stream = null
   if (video) {
     video.pause()
     video.srcObject = null
+    video.remove()
     video = null
   }
   pipeline?.close()
@@ -68,37 +100,49 @@ function stop() {
 
 function tick() {
   if (!loopActive || !video || !pipeline) return
+  if (video.readyState < 2 || video.videoWidth === 0 || video.videoHeight === 0) {
+    // Not yet producing frames. Emit null sample so the HUD at least pulses.
+    emitSample(null, null)
+    return
+  }
 
   const now = performance.now()
   let faceLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
   let poseLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
+  let faceErr: unknown = null
+  let poseErr: unknown = null
 
   try {
     const faceResult = pipeline.face.detectForVideo(video, now)
-    faceLandmarks = faceResult.faceLandmarks?.[0] ?? null
-  } catch {
-    faceLandmarks = null
+    faceLandmarks = (faceResult.faceLandmarks?.[0] as any) ?? null
+  } catch (err) {
+    faceErr = err
   }
   try {
     const poseResult = pipeline.pose.detectForVideo(video, now)
-    poseLandmarks = poseResult.landmarks?.[0] ?? null
-  } catch {
-    poseLandmarks = null
+    poseLandmarks = (poseResult.landmarks?.[0] as any) ?? null
+  } catch (err) {
+    poseErr = err
   }
 
+  if (faceErr || poseErr) {
+    status('Detection error', faceErr || poseErr)
+  }
+
+  emitSample(faceLandmarks, poseLandmarks)
+}
+
+function emitSample(
+  faceLandmarks: Array<{ x: number; y: number; z?: number }> | null,
+  poseLandmarks: Array<{ x: number; y: number; z?: number }> | null,
+) {
   const sample: MirrorMetricSample = {
     t: Date.now() - sessionStart,
     eyeContact: scoreEyeContactFromLandmarks(faceLandmarks),
     posture: scorePostureFromLandmarks(poseLandmarks),
     vocalPaceWpm: estimateVocalPaceWpm(syllableBuckets.slice(-30)),
   }
-
-  chrome.runtime.sendMessage({ type: 'mirror/sample', sample })
-
-  // Throttle to ~2 Hz to stay light on the main thread.
-  setTimeout(() => {
-    if (loopActive) requestAnimationFrame(tick)
-  }, 500)
+  chrome.runtime.sendMessage({ type: 'mirror/sample', sample }).catch(() => {})
 }
 
 function startAudioAnalyser(src: MediaStream) {
@@ -147,6 +191,6 @@ chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
   }
 })
 
-// The offscreen doc is only created by the service worker when the user
-// clicks Start Mirror, so running as soon as this script loads is safe.
+// The offscreen doc is only created when the user clicks Start Mirror, so
+// running as soon as this script loads is safe.
 start()

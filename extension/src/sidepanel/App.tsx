@@ -19,11 +19,19 @@ export function App() {
   const [running, setRunning] = useState(false)
   const [sample, setSample] = useState<MirrorMetricSample | null>(null)
   const [optIn, setOptIn] = useState(false)
+  const [statusLine, setStatusLine] = useState<string>('')
+  const [errorLine, setErrorLine] = useState<string>('')
 
   useEffect(() => {
     loadTokens().then((t) => setStage(t ? 'paired' : 'unpaired'))
     const handler = (msg: any) => {
-      if (msg?.type === 'mirror/sample') setSample(msg.sample)
+      if (msg?.type === 'mirror/sample') {
+        setSample(msg.sample)
+        if (msg.sample) setStatusLine('Running')
+      } else if (msg?.type === 'mirror/status') {
+        if (msg.message) setStatusLine(msg.message)
+        setErrorLine(msg.error || '')
+      }
     }
     chrome.runtime.onMessage.addListener(handler)
     return () => chrome.runtime.onMessage.removeListener(handler)
@@ -81,6 +89,12 @@ export function App() {
       </header>
 
       <Hud sample={sample} running={running} />
+
+      {running && (statusLine || errorLine) && (
+        <div style={{ fontSize: 11, color: errorLine ? '#f87171' : '#9ca3af' }}>
+          {errorLine || statusLine}
+        </div>
+      )}
 
       <div>
         {running ? (
