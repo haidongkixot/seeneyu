@@ -21,7 +21,7 @@ export async function loadMirrorPipeline(): Promise<MirrorPipeline> {
   const face = await FaceLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath: `${base}/face_landmarker.task`,
-      delegate: 'CPU',
+      delegate: 'GPU',
     },
     runningMode: 'VIDEO',
     numFaces: 1,
@@ -32,7 +32,7 @@ export async function loadMirrorPipeline(): Promise<MirrorPipeline> {
   const pose = await PoseLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath: `${base}/pose_landmarker_lite.task`,
-      delegate: 'CPU',
+      delegate: 'GPU',
     },
     runningMode: 'VIDEO',
     numPoses: 1,

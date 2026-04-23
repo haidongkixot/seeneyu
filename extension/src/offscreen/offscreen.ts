@@ -29,6 +29,21 @@ function status(msg: string, error?: unknown) {
 async function start() {
   if (loopActive) return
   try {
+    // MediaPipe needs a live WebGL context to exist in this document —
+    // create an off-screen canvas and prime the context before the model
+    // initializes. Without this MediaPipe crashes with
+    // "Cannot read properties of undefined (reading 'activeTexture')".
+    const primer = document.createElement('canvas')
+    primer.width = 1
+    primer.height = 1
+    primer.style.position = 'fixed'
+    primer.style.left = '-9999px'
+    document.body.appendChild(primer)
+    const gl = (primer.getContext('webgl2') || primer.getContext('webgl')) as WebGLRenderingContext | null
+    if (!gl) {
+      throw new Error('WebGL is not available in this browser/context')
+    }
+
     status('Requesting camera and microphone…')
     stream = await navigator.mediaDevices.getUserMedia({
       video: { width: 640, height: 480, frameRate: 15 },
