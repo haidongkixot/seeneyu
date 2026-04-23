@@ -31,10 +31,12 @@ export async function issueTokens(pairingCode: string): Promise<TokenPair> {
       'Content-Type': 'application/json',
       'X-Extension-Id': chrome.runtime.id,
     },
-    credentials: 'include',
     body: JSON.stringify({ extensionId: chrome.runtime.id, pairingCode }),
   })
-  if (!res.ok) throw new Error(`Issue failed: ${res.status}`)
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '')
+    throw new Error(`Issue failed: ${res.status}${detail ? ` — ${detail.slice(0, 160)}` : ''}`)
+  }
   const pair = (await res.json()) as TokenPair
   await saveTokens(pair)
   return pair

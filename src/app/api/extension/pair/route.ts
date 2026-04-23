@@ -24,6 +24,6 @@ export async function POST(_req: NextRequest) {
     return NextResponse.json({ error: 'Rate limited' }, { status: 429 })
   }
 
-  const code = issuePairingCode(userId)
+  const code = await issuePairingCode(userId)
   return NextResponse.json({ code, expiresInSec: 120 })
 }

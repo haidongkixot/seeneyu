@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { checkUserRateLimit, EXT_TOKEN_ISSUE_LIMIT } from '@/lib/rate-limit-user'
 import { getExtensionCorsHeaders } from '@/lib/extension-cors'
 import { isAllowedExtensionId, isExtensionEnabled } from '@/lib/extension-id-allowlist'
 import { consumePairingCode, issueExtensionTokenPair } from '@/lib/extension-auth'
 
+// Device-code flow: the 6-digit code is the authenticator. No session cookie
+// is required — and cannot be required — because the extension runs on a
+// chrome-extension:// origin from which seeneyu.com cookies are not sent.
+// Rate limit by IP since we have no userId before the code is validated.
 export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, { headers: getExtensionCorsHeaders(req.headers.get('origin')) })
 }
@@ -16,13 +18,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Extension disabled' }, { status: 503, headers: cors })
   }
 
-  const session = await getServerSession(authOptions)
-  const userId = (session?.user as any)?.id as string | undefined
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors })
-  }
-
-  const rl = checkUserRateLimit({ key: 'ext:issue', userId, ...EXT_TOKEN_ISSUE_LIMIT })
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  const rl = checkUserRateLimit({
+    key: 'ext:issue:ip',
+    userId: ip,
+    ...EXT_TOKEN_ISSUE_LIMIT,
+  })
   if (!rl.allowed) {
     return NextResponse.json({ error: 'Rate limited' }, { status: 429, headers: cors })
   }
@@ -37,13 +38,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Extension not allowed' }, { status: 403, headers: cors })
   }
 
-  const pairedUserId = consumePairingCode(pairingCode)
-  if (!pairedUserId || pairedUserId !== userId) {
-    return NextResponse.json({ error: 'Invalid pairing code' }, { status: 400, headers: cors })
+  const pairedUserId = await consumePairingCode(pairingCode)
+  if (!pairedUserId) {
+    return NextResponse.json({ error: 'Invalid or expired pairing code' }, { status: 400, headers: cors })
   }
 
   const pair = await issueExtensionTokenPair({
-    userId,
+    userId: pairedUserId,
     extensionId,
     userAgent: req.headers.get('user-agent'),
   })

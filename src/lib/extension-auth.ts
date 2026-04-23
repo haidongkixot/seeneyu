@@ -125,28 +125,36 @@ export async function revokeAllUserExtensionTokens(userId: string): Promise<numb
   return res.count as number
 }
 
-// ── Pairing code (in-memory, single-process only; fine for MVP) ──
-interface PairingEntry {
-  userId: string
-  expiresAt: number
-}
-const pairingCodes = new Map<string, PairingEntry>()
+// ── Pairing code (DB-backed — survives serverless Lambda cold-splits) ──
 const PAIRING_TTL_MS = 120_000
 
-export function issuePairingCode(userId: string): string {
-  const now = Date.now()
-  pairingCodes.forEach((entry, code) => {
-    if (entry.expiresAt <= now) pairingCodes.delete(code)
+export async function issuePairingCode(userId: string): Promise<string> {
+  // Opportunistically clean expired codes, and wipe any prior code this user
+  // had outstanding — one active pairing code per user at a time.
+  await (prisma as any).extensionPairingCode.deleteMany({
+    where: { OR: [{ expiresAt: { lte: new Date() } }, { userId }] },
   })
-  const code = Math.floor(100000 + Math.random() * 900000).toString()
-  pairingCodes.set(code, { userId, expiresAt: now + PAIRING_TTL_MS })
-  return code
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    try {
+      await (prisma as any).extensionPairingCode.create({
+        data: { code, userId, expiresAt: new Date(Date.now() + PAIRING_TTL_MS) },
+      })
+      return code
+    } catch (err: any) {
+      if (err?.code !== 'P2002') throw err // retry only on unique-constraint collision
+    }
+  }
+  throw new Error('Could not generate pairing code after 5 attempts')
 }
 
-export function consumePairingCode(code: string): string | null {
-  const entry = pairingCodes.get(code)
-  if (!entry) return null
-  pairingCodes.delete(code)
-  if (entry.expiresAt <= Date.now()) return null
-  return entry.userId
+export async function consumePairingCode(code: string): Promise<string | null> {
+  if (!/^\d{6}$/.test(code)) return null
+  const row = await (prisma as any).extensionPairingCode.findUnique({ where: { code } })
+  if (!row) return null
+  // Single-use: delete regardless of validity so a replay can't succeed.
+  await (prisma as any).extensionPairingCode.delete({ where: { code } })
+  if (row.expiresAt.getTime() <= Date.now()) return null
+  return row.userId as string
 }

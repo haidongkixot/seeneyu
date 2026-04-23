@@ -1017,6 +1017,20 @@ model ExtensionSession {
   @@index([userId, startedAt])
 }
 
+// Short-lived (2 min) pairing code issued from the web UI and consumed once
+// by the extension's /token/issue call. DB-backed so it survives Vercel
+// serverless Lambda cold-splits. The code itself is the authenticator for
+// /token/issue — session cookies don't flow from chrome-extension:// origins.
+model ExtensionPairingCode {
+  code      String   @id
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+  @@index([userId])
+}
+
 model LearningPlan {
   id             String   @id @default(cuid())
   userId         String
