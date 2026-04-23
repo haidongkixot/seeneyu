@@ -18,6 +18,12 @@ let pipeline: MirrorPipeline | null = null
 let loopActive = false
 let sessionStart = 0
 let tickTimer: number | null = null
+let lastDiagAt = 0
+let tickCount = 0
+let faceHits = 0
+let poseHits = 0
+let lastFaceLandmarkCount = 0
+let lastPoseLandmarkCount = 0
 const syllableBuckets: number[] = [] // rolling 30s of per-second syllable counts
 
 function status(msg: string, error?: unknown) {
@@ -142,6 +148,23 @@ function tick() {
 
   if (faceErr || poseErr) {
     status('Detection error', faceErr || poseErr)
+  }
+
+  tickCount++
+  if (faceLandmarks) { faceHits++; lastFaceLandmarkCount = faceLandmarks.length }
+  if (poseLandmarks) { poseHits++; lastPoseLandmarkCount = poseLandmarks.length }
+
+  // Every ~2.5s emit a diagnostic so the HUD can show whether detection
+  // is actually working (useful when dials stay at "—").
+  const nowMs = Date.now()
+  if (nowMs - lastDiagAt > 2500) {
+    lastDiagAt = nowMs
+    status(
+      `face ${faceHits}/${tickCount} (${lastFaceLandmarkCount} lmk) · pose ${poseHits}/${tickCount} (${lastPoseLandmarkCount} lmk)`,
+    )
+    tickCount = 0
+    faceHits = 0
+    poseHits = 0
   }
 
   emitSample(faceLandmarks, poseLandmarks)

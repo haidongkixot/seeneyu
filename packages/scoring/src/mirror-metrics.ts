@@ -84,26 +84,34 @@ function irisCentered(
 }
 
 export function scoreEyeContactFromLandmarks(landmarks: FaceLandmark[] | null): boolean | null {
-  if (!landmarks || landmarks.length < 478) return null
-  const left = irisCentered(
-    landmarks[LEFT_IRIS],
-    landmarks[LEFT_EYE_INNER],
-    landmarks[LEFT_EYE_OUTER],
-  )
-  const right = irisCentered(
-    landmarks[RIGHT_IRIS],
-    landmarks[RIGHT_EYE_INNER],
-    landmarks[RIGHT_EYE_OUTER],
-  )
-  if (left === null || right === null) return null
-  return left && right
+  if (!landmarks || landmarks.length === 0) return null
+  // Prefer iris-centering when iris landmarks are present (478-point model).
+  if (landmarks.length >= 478 && landmarks[LEFT_IRIS] && landmarks[RIGHT_IRIS]) {
+    const left = irisCentered(
+      landmarks[LEFT_IRIS], landmarks[LEFT_EYE_INNER], landmarks[LEFT_EYE_OUTER],
+    )
+    const right = irisCentered(
+      landmarks[RIGHT_IRIS], landmarks[RIGHT_EYE_INNER], landmarks[RIGHT_EYE_OUTER],
+    )
+    if (left !== null && right !== null) return left && right
+  }
+  // Fallback for 468-point model without iris: a face that is present and
+  // oriented toward the camera (eyes roughly level) counts as eye contact.
+  // This is coarser than iris tracking but non-null is better than silent "—".
+  const leftEyeInner = landmarks[LEFT_EYE_INNER]
+  const rightEyeInner = landmarks[RIGHT_EYE_INNER]
+  if (!leftEyeInner || !rightEyeInner) return null
+  const dy = Math.abs(leftEyeInner.y - rightEyeInner.y)
+  const dx = Math.abs(leftEyeInner.x - rightEyeInner.x) + 1e-6
+  const tilt = dy / dx
+  return tilt < 0.25
 }
 
 // Convenience wrapper around scorePosture for MediaPipe PoseLandmarker output.
 // PoseLandmarker emits 33 landmarks. Key indices:
 // - 0: nose, 11: left shoulder, 12: right shoulder
 export function scorePostureFromLandmarks(landmarks: FaceLandmark[] | null): number | null {
-  if (!landmarks || landmarks.length < 33) return null
+  if (!landmarks || landmarks.length === 0) return null
   return scorePosture({
     leftShoulder: landmarks[11] ?? null,
     rightShoulder: landmarks[12] ?? null,
