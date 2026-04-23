@@ -35,19 +35,31 @@ function status(msg: string, error?: unknown) {
 async function start() {
   if (loopActive) return
   try {
-    // MediaPipe needs a live WebGL context to exist in this document —
-    // create an off-screen canvas and prime the context before the model
-    // initializes. Without this MediaPipe crashes with
-    // "Cannot read properties of undefined (reading 'activeTexture')".
-    const primer = document.createElement('canvas')
-    primer.width = 1
-    primer.height = 1
-    primer.style.position = 'fixed'
-    primer.style.left = '-9999px'
-    document.body.appendChild(primer)
-    const gl = (primer.getContext('webgl2') || primer.getContext('webgl')) as WebGLRenderingContext | null
-    if (!gl) {
-      throw new Error('WebGL is not available in this browser/context')
+    // Best-effort WebGL primer: create one canvas per attempt because
+    // a canvas can only commit to one context type — if getContext('webgl2')
+    // returns null, a subsequent getContext('webgl') on the SAME canvas also
+    // returns null. We try webgl2 first, then fall back to a fresh canvas
+    // for webgl1. If neither is available MediaPipe will surface the real
+    // error a moment later when its own init runs.
+    let primed = false
+    try {
+      const c2 = document.createElement('canvas')
+      c2.width = 1; c2.height = 1
+      c2.style.cssText = 'position:fixed;left:-9999px;top:0'
+      document.body.appendChild(c2)
+      if (c2.getContext('webgl2')) primed = true
+      if (!primed) {
+        const c1 = document.createElement('canvas')
+        c1.width = 1; c1.height = 1
+        c1.style.cssText = 'position:fixed;left:-9999px;top:0'
+        document.body.appendChild(c1)
+        if (c1.getContext('webgl')) primed = true
+      }
+    } catch {
+      /* primer failures are not fatal — let MediaPipe try */
+    }
+    if (!primed) {
+      status('WebGL not detected — MediaPipe will attempt its own context')
     }
 
     status('Requesting camera and microphone…')
