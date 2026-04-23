@@ -134,7 +134,13 @@ export function App() {
 
       <Hud sample={sample} running={running} />
 
-      {statusLine && <StatusCard status={statusLine} lastError={lastError} />}
+      {statusLine && (
+        <StatusCard
+          status={statusLine}
+          lastError={lastError}
+          onRetryGpu={() => send({ type: 'mirror/force-gpu-retry' })}
+        />
+      )}
 
       <div>
         {running ? (
@@ -153,7 +159,15 @@ export function App() {
   )
 }
 
-function StatusCard({ status, lastError }: { status: StatusMessage; lastError: string }) {
+function StatusCard({
+  status,
+  lastError,
+  onRetryGpu,
+}: {
+  status: StatusMessage
+  lastError: string
+  onRetryGpu: () => void
+}) {
   const palette =
     status.kind === 'error'
       ? { bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.35)', fg: '#fca5a5' }
@@ -163,15 +177,11 @@ function StatusCard({ status, lastError }: { status: StatusMessage; lastError: s
           ? { bg: 'rgba(234,179,8,0.06)', border: 'rgba(234,179,8,0.3)', fg: '#facc15' }
           : { bg: 'transparent', border: 'transparent', fg: '#9ca3af' }
 
-  async function copySettingsUrl() {
-    try {
-      await navigator.clipboard.writeText('chrome://settings/system')
-    } catch {
-      /* ignore */
-    }
+  async function copy(url: string) {
+    try { await navigator.clipboard.writeText(url) } catch { /* ignore */ }
   }
 
-  const mentionsSettings = !!status.hint?.includes('chrome://settings')
+  const isDegradedOrError = status.kind === 'degraded' || status.kind === 'error'
 
   return (
     <div
@@ -187,25 +197,33 @@ function StatusCard({ status, lastError }: { status: StatusMessage; lastError: s
     >
       <div style={{ fontWeight: status.kind === 'info' ? 400 : 600 }}>{status.message}</div>
       {status.hint && (
-        <div style={{ marginTop: 6, color: '#cbd5e1', fontSize: 11 }}>
+        <div style={{ marginTop: 6, color: '#cbd5e1', fontSize: 11, lineHeight: 1.6 }}>
           {status.hint}
-          {mentionsSettings && (
-            <button
-              onClick={copySettingsUrl}
-              style={{
-                marginLeft: 8,
-                background: 'transparent',
-                color: '#93c5fd',
-                border: '1px solid #1e3a8a',
-                padding: '2px 8px',
-                borderRadius: 4,
-                fontSize: 10,
-                cursor: 'pointer',
-              }}
-            >
-              Copy URL
-            </button>
-          )}
+        </div>
+      )}
+      {isDegradedOrError && (
+        <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <button onClick={() => copy('chrome://settings/system')} style={chipBtn}>
+            Copy chrome://settings/system
+          </button>
+          <button onClick={() => copy('chrome://gpu')} style={chipBtn}>
+            Copy chrome://gpu
+          </button>
+          <button onClick={() => copy('chrome://flags/#ignore-gpu-blocklist')} style={chipBtn}>
+            Copy chrome://flags
+          </button>
+          <button
+            onClick={onRetryGpu}
+            style={{
+              ...chipBtn,
+              background: '#f59e0b',
+              color: '#0d0d14',
+              borderColor: '#f59e0b',
+              fontWeight: 600,
+            }}
+          >
+            Try anyway
+          </button>
         </div>
       )}
       {lastError && status.kind !== 'info' && (
@@ -240,4 +258,8 @@ const btnPrimary: React.CSSProperties = {
 const btnGhost: React.CSSProperties = {
   background: 'transparent', color: '#9ca3af', border: '1px solid #374151',
   padding: '4px 10px', borderRadius: 6, cursor: 'pointer', fontSize: 12,
+}
+const chipBtn: React.CSSProperties = {
+  background: 'transparent', color: '#93c5fd', border: '1px solid #1e3a8a',
+  padding: '4px 8px', borderRadius: 4, cursor: 'pointer', fontSize: 10,
 }

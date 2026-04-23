@@ -29,7 +29,11 @@ let poseHits = 0
 let lastFaceLandmarkCount = 0
 let lastPoseLandmarkCount = 0
 let degraded = false
+let forceGpuAttempt = false
 const syllableBuckets: number[] = []
+
+const WEBGL_HINT =
+  "Try these in order: (1) chrome://settings/system → 'Use graphics acceleration when available' → relaunch. (2) chrome://gpu — check the 'WebGL' row. If it says 'software only' or 'disabled', your GPU is on Chrome's blocklist. (3) chrome://flags → search 'ignore-gpu-blocklist' → set to Enabled → relaunch. After relaunch reload the Seeneyu extension and click Try anyway below."
 
 type StatusKind = 'info' | 'warn' | 'error' | 'degraded'
 function status(message: string, opts: { kind?: StatusKind; error?: unknown; hint?: string } = {}) {
@@ -96,31 +100,30 @@ async function start() {
     // Audio pipeline runs regardless of GPU availability.
     startAudioAnalyser(stream)
 
-    // Try MediaPipe only if WebGL is available. Skipping this step is not
-    // fatal — we degrade to pace-only and tell the user how to fix it.
-    if (!hasWebGL()) {
+    // Try MediaPipe if WebGL looks available — OR if the user explicitly
+    // clicked 'Try anyway' (force flag), because hasWebGL() can be a false
+    // negative in offscreen contexts even when MediaPipe's own WebGL creation
+    // would succeed. If MediaPipe fails we surface the real error.
+    const shouldAttempt = hasWebGL() || forceGpuAttempt
+    if (!shouldAttempt) {
       degraded = true
       status('GPU acceleration is off — running in pace-only mode.', {
         kind: 'degraded',
-        hint:
-          "Open chrome://settings/system, turn on 'Use graphics acceleration when available', then relaunch Chrome to unlock eye contact and posture tracking.",
+        hint: WEBGL_HINT,
       })
     } else {
-      status('Loading coaching models…')
+      status(forceGpuAttempt ? 'Trying GPU anyway…' : 'Loading coaching models…')
       try {
         pipeline = await loadMirrorPipeline()
+        forceGpuAttempt = false
         status('Running', { kind: 'info' })
       } catch (err) {
-        // MediaPipe init can fail for reasons beyond our control (blacklisted
-        // GPU, driver issues). Fall through to pace-only mode so the session
-        // still provides value.
         degraded = true
         pipeline = null
-        status('Coaching models unavailable — running in pace-only mode.', {
+        status('Coaching models could not load — running in pace-only mode.', {
           kind: 'degraded',
           error: err,
-          hint:
-            "This often clears after enabling chrome://settings/system → 'Use graphics acceleration when available', then relaunching Chrome.",
+          hint: WEBGL_HINT,
         })
       }
     }
@@ -288,6 +291,12 @@ chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
     stop()
     sendResponse({ ok: true })
     return false
+  }
+  if (msg?.type === 'mirror/force-gpu-retry') {
+    forceGpuAttempt = true
+    stop()
+    start().then(() => sendResponse({ ok: true }))
+    return true
   }
 })
 
