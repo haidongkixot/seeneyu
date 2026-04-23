@@ -2,6 +2,10 @@
 // MediaPipe + WebAudio run here. We emit scored numbers (not frames) to the
 // service worker via chrome.runtime.sendMessage. Raw media never leaves this
 // document and is discarded on stop.
+//
+// Degraded mode: if WebGL is unavailable (Chrome hardware acceleration off),
+// MediaPipe cannot run. We still run the WebAudio-only pace meter so the
+// user gets partial value and a clear message telling them how to enable GPU.
 
 import {
   estimateVocalPaceWpm,
@@ -24,44 +28,42 @@ let faceHits = 0
 let poseHits = 0
 let lastFaceLandmarkCount = 0
 let lastPoseLandmarkCount = 0
-const syllableBuckets: number[] = [] // rolling 30s of per-second syllable counts
+let degraded = false
+const syllableBuckets: number[] = []
 
-function status(msg: string, error?: unknown) {
-  const payload: any = { type: 'mirror/status', running: loopActive, message: msg }
-  if (error) payload.error = String((error as Error)?.message ?? error)
-  chrome.runtime.sendMessage(payload).catch(() => {})
+type StatusKind = 'info' | 'warn' | 'error' | 'degraded'
+function status(message: string, opts: { kind?: StatusKind; error?: unknown; hint?: string } = {}) {
+  chrome.runtime
+    .sendMessage({
+      type: 'mirror/status',
+      running: loopActive,
+      message,
+      kind: opts.kind ?? (opts.error ? 'error' : 'info'),
+      error: opts.error ? String((opts.error as Error)?.message ?? opts.error) : undefined,
+      hint: opts.hint,
+    })
+    .catch(() => {})
+}
+
+function hasWebGL(): boolean {
+  try {
+    const c = document.createElement('canvas')
+    c.width = 1
+    c.height = 1
+    if (c.getContext('webgl2')) return true
+    // Fresh canvas because getContext commits the type on first call.
+    const c2 = document.createElement('canvas')
+    c2.width = 1
+    c2.height = 1
+    return !!c2.getContext('webgl')
+  } catch {
+    return false
+  }
 }
 
 async function start() {
   if (loopActive) return
   try {
-    // Best-effort WebGL primer: create one canvas per attempt because
-    // a canvas can only commit to one context type — if getContext('webgl2')
-    // returns null, a subsequent getContext('webgl') on the SAME canvas also
-    // returns null. We try webgl2 first, then fall back to a fresh canvas
-    // for webgl1. If neither is available MediaPipe will surface the real
-    // error a moment later when its own init runs.
-    let primed = false
-    try {
-      const c2 = document.createElement('canvas')
-      c2.width = 1; c2.height = 1
-      c2.style.cssText = 'position:fixed;left:-9999px;top:0'
-      document.body.appendChild(c2)
-      if (c2.getContext('webgl2')) primed = true
-      if (!primed) {
-        const c1 = document.createElement('canvas')
-        c1.width = 1; c1.height = 1
-        c1.style.cssText = 'position:fixed;left:-9999px;top:0'
-        document.body.appendChild(c1)
-        if (c1.getContext('webgl')) primed = true
-      }
-    } catch {
-      /* primer failures are not fatal — let MediaPipe try */
-    }
-    if (!primed) {
-      status('WebGL not detected — MediaPipe will attempt its own context')
-    }
-
     status('Requesting camera and microphone…')
     stream = await navigator.mediaDevices.getUserMedia({
       video: { width: 640, height: 480, frameRate: 15 },
@@ -70,8 +72,8 @@ async function start() {
     sessionStart = Date.now()
     loopActive = true
 
-    // Video must be attached to the DOM for Chrome to actually decode frames in
-    // a hidden offscreen document. Off-screen positioning keeps it invisible.
+    // Attach hidden video — required for Chrome to decode frames in an
+    // offscreen doc.
     video = document.createElement('video')
     video.srcObject = stream
     video.muted = true
@@ -79,34 +81,54 @@ async function start() {
     video.autoplay = true
     video.width = 640
     video.height = 480
-    video.style.position = 'fixed'
-    video.style.left = '-9999px'
-    video.style.top = '0'
+    video.style.cssText = 'position:fixed;left:-9999px;top:0'
     document.body.appendChild(video)
     await video.play()
 
-    // Wait for the first decoded frame before we start scoring — otherwise
-    // MediaPipe's detectForVideo returns empty landmarks and the HUD just
-    // shows "—" forever.
     if (video.readyState < 2) {
       await new Promise<void>((resolve) => {
         const onReady = () => resolve()
         video!.addEventListener('loadeddata', onReady, { once: true })
-        setTimeout(onReady, 3000) // fail-open so we at least start trying
+        setTimeout(onReady, 3000) // don't block forever
       })
     }
 
+    // Audio pipeline runs regardless of GPU availability.
     startAudioAnalyser(stream)
 
-    status('Loading coaching models…')
-    pipeline = await loadMirrorPipeline()
-    status('Running', undefined)
+    // Try MediaPipe only if WebGL is available. Skipping this step is not
+    // fatal — we degrade to pace-only and tell the user how to fix it.
+    if (!hasWebGL()) {
+      degraded = true
+      status('GPU acceleration is off — running in pace-only mode.', {
+        kind: 'degraded',
+        hint:
+          "Open chrome://settings/system, turn on 'Use graphics acceleration when available', then relaunch Chrome to unlock eye contact and posture tracking.",
+      })
+    } else {
+      status('Loading coaching models…')
+      try {
+        pipeline = await loadMirrorPipeline()
+        status('Running', { kind: 'info' })
+      } catch (err) {
+        // MediaPipe init can fail for reasons beyond our control (blacklisted
+        // GPU, driver issues). Fall through to pace-only mode so the session
+        // still provides value.
+        degraded = true
+        pipeline = null
+        status('Coaching models unavailable — running in pace-only mode.', {
+          kind: 'degraded',
+          error: err,
+          hint:
+            "This often clears after enabling chrome://settings/system → 'Use graphics acceleration when available', then relaunching Chrome.",
+        })
+      }
+    }
 
-    // Stable 2 Hz via setInterval — rAF is throttled in hidden docs.
     tickTimer = window.setInterval(tick, 500)
   } catch (err) {
     loopActive = false
-    status('Start failed', err)
+    status('Start failed', { kind: 'error', error: err })
   }
 }
 
@@ -129,12 +151,22 @@ function stop() {
   audioCtx?.close().catch(() => {})
   audioCtx = null
   syllableBuckets.length = 0
+  tickCount = 0
+  faceHits = 0
+  poseHits = 0
+  degraded = false
 }
 
 function tick() {
-  if (!loopActive || !video || !pipeline) return
+  if (!loopActive || !video) return
+
+  // Degraded (pace-only) mode: never touch MediaPipe, just emit audio-only.
+  if (degraded || !pipeline) {
+    emitSample(null, null)
+    return
+  }
+
   if (video.readyState < 2 || video.videoWidth === 0 || video.videoHeight === 0) {
-    // Not yet producing frames. Emit null sample so the HUD at least pulses.
     emitSample(null, null)
     return
   }
@@ -142,37 +174,55 @@ function tick() {
   const now = performance.now()
   let faceLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
   let poseLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
-  let faceErr: unknown = null
-  let poseErr: unknown = null
+  let detectErr: unknown = null
 
   try {
     const faceResult = pipeline.face.detectForVideo(video, now)
     faceLandmarks = (faceResult.faceLandmarks?.[0] as any) ?? null
   } catch (err) {
-    faceErr = err
+    detectErr = err
   }
   try {
     const poseResult = pipeline.pose.detectForVideo(video, now)
     poseLandmarks = (poseResult.landmarks?.[0] as any) ?? null
   } catch (err) {
-    poseErr = err
+    detectErr = detectErr || err
   }
 
-  if (faceErr || poseErr) {
-    status('Detection error', faceErr || poseErr)
+  // If both detectors throw consistently, MediaPipe has broken — drop to
+  // degraded rather than spamming errors.
+  if (detectErr) {
+    const msg = String((detectErr as Error)?.message || detectErr)
+    if (msg.includes('WebGL') || msg.includes('kGpuService') || msg.includes('GPU')) {
+      degraded = true
+      pipeline?.close()
+      pipeline = null
+      status('GPU pipeline broke mid-session — dropping to pace-only mode.', {
+        kind: 'degraded',
+        error: detectErr,
+      })
+      emitSample(null, null)
+      return
+    }
+    status('Detection error', { kind: 'error', error: detectErr })
   }
 
   tickCount++
-  if (faceLandmarks) { faceHits++; lastFaceLandmarkCount = faceLandmarks.length }
-  if (poseLandmarks) { poseHits++; lastPoseLandmarkCount = poseLandmarks.length }
+  if (faceLandmarks) {
+    faceHits++
+    lastFaceLandmarkCount = faceLandmarks.length
+  }
+  if (poseLandmarks) {
+    poseHits++
+    lastPoseLandmarkCount = poseLandmarks.length
+  }
 
-  // Every ~2.5s emit a diagnostic so the HUD can show whether detection
-  // is actually working (useful when dials stay at "—").
   const nowMs = Date.now()
   if (nowMs - lastDiagAt > 2500) {
     lastDiagAt = nowMs
     status(
       `face ${faceHits}/${tickCount} (${lastFaceLandmarkCount} lmk) · pose ${poseHits}/${tickCount} (${lastPoseLandmarkCount} lmk)`,
+      { kind: 'info' },
     )
     tickCount = 0
     faceHits = 0
@@ -241,6 +291,6 @@ chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
   }
 })
 
-// The offscreen doc is only created when the user clicks Start Mirror, so
-// running as soon as this script loads is safe.
+// Offscreen doc is only created when the user clicks Start Mirror, so auto-
+// starting on load is safe.
 start()
