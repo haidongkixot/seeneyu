@@ -51,6 +51,34 @@ export function App() {
   }
 
   async function start() {
+    // MV3 requires the camera/mic prompt to come from a visible context —
+    // the hidden offscreen document cannot show it. We briefly acquire the
+    // stream here (prompt is displayed over the side panel), then stop it
+    // immediately; the permission is now granted to the extension origin and
+    // the offscreen document can acquire its own stream without prompting.
+    setErrorLine('')
+    setStatusLine('Requesting camera and microphone…')
+    let testStream: MediaStream | null = null
+    try {
+      testStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      })
+    } catch (err) {
+      const name = (err as Error)?.name || ''
+      const msg = (err as Error)?.message || 'permission request failed'
+      if (name === 'NotAllowedError') {
+        setErrorLine(
+          'Camera / microphone blocked. Click the camera icon in the address bar and allow, then try again.',
+        )
+      } else {
+        setErrorLine(`Permission failed: ${msg}`)
+      }
+      setStatusLine('')
+      return
+    } finally {
+      testStream?.getTracks().forEach((t) => t.stop())
+    }
     await send({ type: 'mirror/start' })
     setRunning(true)
   }
