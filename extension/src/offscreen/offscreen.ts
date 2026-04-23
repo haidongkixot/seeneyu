@@ -5,14 +5,16 @@
 
 import {
   estimateVocalPaceWpm,
-  scoreEyeContact,
-  scorePosture,
+  scoreEyeContactFromLandmarks,
+  scorePostureFromLandmarks,
   type MirrorMetricSample,
 } from '@seeneyu/scoring'
+import { loadMirrorPipeline, type MirrorPipeline } from '../lib/mediapipe-loader'
 
 let stream: MediaStream | null = null
+let video: HTMLVideoElement | null = null
 let audioCtx: AudioContext | null = null
-let rafId: number | null = null
+let pipeline: MirrorPipeline | null = null
 let loopActive = false
 let sessionStart = 0
 const syllableBuckets: number[] = [] // rolling 30s of per-second syllable counts
@@ -20,12 +22,26 @@ const syllableBuckets: number[] = [] // rolling 30s of per-second syllable count
 async function start() {
   if (loopActive) return
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480, frameRate: 15 },
+      audio: true,
+    })
     sessionStart = Date.now()
     loopActive = true
+
+    video = document.createElement('video')
+    video.srcObject = stream
+    video.muted = true
+    video.playsInline = true
+    await video.play()
+
     startAudioAnalyser(stream)
+    pipeline = await loadMirrorPipeline()
+
+    chrome.runtime.sendMessage({ type: 'mirror/status', running: true })
     tick()
   } catch (err) {
+    loopActive = false
     chrome.runtime.sendMessage({
       type: 'mirror/status',
       running: false,
@@ -36,40 +52,52 @@ async function start() {
 
 function stop() {
   loopActive = false
-  if (rafId !== null) cancelAnimationFrame(rafId)
-  rafId = null
   stream?.getTracks().forEach((t) => t.stop())
   stream = null
+  if (video) {
+    video.pause()
+    video.srcObject = null
+    video = null
+  }
+  pipeline?.close()
+  pipeline = null
   audioCtx?.close().catch(() => {})
   audioCtx = null
   syllableBuckets.length = 0
 }
 
 function tick() {
-  if (!loopActive) return
-  // NOTE: This is the integration seam for MediaPipe. On the first production
-  // build, initialize the Holistic model here and pull face + pose landmarks
-  // from the latest frame. For now, emit null-valued samples at 2 Hz so the
-  // HUD wiring and aggregation buffer can be validated end-to-end before the
-  // heavy ML bundle is wired in.
-  const face = { gazeVector: null as null | { x: number; y: number; z: number } }
-  const pose = {
-    leftShoulder: null as null | { x: number; y: number },
-    rightShoulder: null as null | { x: number; y: number },
-    nose: null as null | { x: number; y: number },
+  if (!loopActive || !video || !pipeline) return
+
+  const now = performance.now()
+  let faceLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
+  let poseLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
+
+  try {
+    const faceResult = pipeline.face.detectForVideo(video, now)
+    faceLandmarks = faceResult.faceLandmarks?.[0] ?? null
+  } catch {
+    faceLandmarks = null
+  }
+  try {
+    const poseResult = pipeline.pose.detectForVideo(video, now)
+    poseLandmarks = poseResult.landmarks?.[0] ?? null
+  } catch {
+    poseLandmarks = null
   }
 
   const sample: MirrorMetricSample = {
     t: Date.now() - sessionStart,
-    eyeContact: scoreEyeContact(face),
-    posture: scorePosture(pose),
+    eyeContact: scoreEyeContactFromLandmarks(faceLandmarks),
+    posture: scorePostureFromLandmarks(poseLandmarks),
     vocalPaceWpm: estimateVocalPaceWpm(syllableBuckets.slice(-30)),
   }
 
   chrome.runtime.sendMessage({ type: 'mirror/sample', sample })
 
+  // Throttle to ~2 Hz to stay light on the main thread.
   setTimeout(() => {
-    rafId = requestAnimationFrame(tick)
+    if (loopActive) requestAnimationFrame(tick)
   }, 500)
 }
 
@@ -119,7 +147,6 @@ chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
   }
 })
 
-// Auto-start on load — the service worker opens the offscreen doc only when
-// the user clicks Start, so by the time we run here the user has already
-// consented to engage.
+// The offscreen doc is only created by the service worker when the user
+// clicks Start Mirror, so running as soon as this script loads is safe.
 start()

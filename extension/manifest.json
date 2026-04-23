@@ -27,7 +27,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["src/offscreen/offscreen.html", "public/wasm/*"],
+      "resources": [
+        "src/offscreen/offscreen.html",
+        "public/wasm/*.wasm",
+        "public/wasm/*.js",
+        "public/wasm/*.task"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

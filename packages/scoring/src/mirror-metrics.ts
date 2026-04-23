@@ -49,6 +49,68 @@ export function scoreEyeContact(face: FaceLandmarksInput): boolean | null {
   return cos >= GAZE_THRESHOLD_COS
 }
 
+// MediaPipe FaceLandmarker emits 478 normalized landmarks. Key indices used here:
+// - Left iris center: 468 (landmarks 468-472 are the left iris ring)
+// - Right iris center: 473
+// - Left eye inner corner: 133 — outer corner: 33
+// - Right eye inner corner: 362 — outer corner: 263
+// Iris-centering is a robust "looking at camera" proxy: both irises centered
+// between inner and outer corners means gaze is aimed at the camera.
+export interface FaceLandmark {
+  x: number
+  y: number
+  z?: number
+}
+
+const LEFT_IRIS = 468
+const RIGHT_IRIS = 473
+const LEFT_EYE_INNER = 133
+const LEFT_EYE_OUTER = 33
+const RIGHT_EYE_INNER = 362
+const RIGHT_EYE_OUTER = 263
+const IRIS_CENTER_TOLERANCE = 0.22 // fraction of half-eye-width
+
+function irisCentered(
+  iris: FaceLandmark | undefined,
+  inner: FaceLandmark | undefined,
+  outer: FaceLandmark | undefined,
+): boolean | null {
+  if (!iris || !inner || !outer) return null
+  const eyeWidth = Math.abs(outer.x - inner.x)
+  if (eyeWidth < 0.01) return null
+  const mid = (inner.x + outer.x) / 2
+  const offsetNorm = Math.abs(iris.x - mid) / (eyeWidth / 2)
+  return offsetNorm <= IRIS_CENTER_TOLERANCE
+}
+
+export function scoreEyeContactFromLandmarks(landmarks: FaceLandmark[] | null): boolean | null {
+  if (!landmarks || landmarks.length < 478) return null
+  const left = irisCentered(
+    landmarks[LEFT_IRIS],
+    landmarks[LEFT_EYE_INNER],
+    landmarks[LEFT_EYE_OUTER],
+  )
+  const right = irisCentered(
+    landmarks[RIGHT_IRIS],
+    landmarks[RIGHT_EYE_INNER],
+    landmarks[RIGHT_EYE_OUTER],
+  )
+  if (left === null || right === null) return null
+  return left && right
+}
+
+// Convenience wrapper around scorePosture for MediaPipe PoseLandmarker output.
+// PoseLandmarker emits 33 landmarks. Key indices:
+// - 0: nose, 11: left shoulder, 12: right shoulder
+export function scorePostureFromLandmarks(landmarks: FaceLandmark[] | null): number | null {
+  if (!landmarks || landmarks.length < 33) return null
+  return scorePosture({
+    leftShoulder: landmarks[11] ?? null,
+    rightShoulder: landmarks[12] ?? null,
+    nose: landmarks[0] ?? null,
+  })
+}
+
 export function scorePosture(pose: PoseLandmarksInput): number | null {
   const { leftShoulder, rightShoulder, nose } = pose
   if (!leftShoulder || !rightShoulder) return null
