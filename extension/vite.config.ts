@@ -1,9 +1,23 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
+import { copyFileSync } from 'node:fs'
+
+function copyManifest() {
+  return {
+    name: 'copy-manifest',
+    closeBundle() {
+      copyFileSync(
+        resolve(__dirname, 'manifest.json'),
+        resolve(__dirname, 'dist/manifest.json'),
+      )
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), copyManifest()],
+  base: './',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
@@ -14,7 +28,10 @@ export default defineConfig({
         offscreen: resolve(__dirname, 'src/offscreen/offscreen.html'),
       },
       output: {
-        entryFileNames: 'src/[name]/[name].js',
+        entryFileNames: (chunk) => {
+          if (chunk.name === 'service-worker') return 'src/background/service-worker.js'
+          return 'src/[name]/[name].js'
+        },
         chunkFileNames: 'chunks/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',
       },

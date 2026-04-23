@@ -13,33 +13,22 @@
     "default_path": "src/sidepanel/index.html"
   },
   "action": {
-    "default_title": "Open Seeneyu Mirror",
-    "default_icon": {
-      "16": "public/icons/icon-16.png",
-      "32": "public/icons/icon-32.png",
-      "48": "public/icons/icon-48.png",
-      "128": "public/icons/icon-128.png"
-    }
+    "default_title": "Open Seeneyu Mirror"
   },
   "permissions": ["sidePanel", "offscreen", "storage", "alarms"],
   "host_permissions": [
+    "http://localhost:3000/*",
     "https://seeneyu.vercel.app/*",
     "https://seeneyu.com/*",
     "https://www.seeneyu.com/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src https://seeneyu.vercel.app https://seeneyu.com https://www.seeneyu.com"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src http://localhost:3000 https://seeneyu.vercel.app https://seeneyu.com https://www.seeneyu.com"
   },
   "web_accessible_resources": [
     {
       "resources": ["src/offscreen/offscreen.html", "public/wasm/*"],
       "matches": ["<all_urls>"]
     }
-  ],
-  "icons": {
-    "16": "public/icons/icon-16.png",
-    "32": "public/icons/icon-32.png",
-    "48": "public/icons/icon-48.png",
-    "128": "public/icons/icon-128.png"
-  }
+  ]
 }
