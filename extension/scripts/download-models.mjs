@@ -1,18 +1,14 @@
-// Copies the TFJS WebAssembly runtime (from node_modules) into
-// extension/public/wasm/tfjs-wasm/ so Chrome can load it from the extension
-// origin. The actual ML model weights are fetched from Google's public TFJS
-// CDN on first use by @tensorflow-models/* and cached by Chrome; they are
-// static files containing zero user data.
+// Copies the TFJS WebAssembly runtime into extension/public/wasm/tfjs-wasm/
+// so Chrome can load it from the extension origin (needed before any model
+// fetch can run). @vladmandic/human bundles the tfjs-backend-wasm binaries
+// alongside its own code under node_modules/@vladmandic/human/dist/.
 //
-// Reasons for this split:
-//   • TFJS WASM runtime is a few small .wasm files (1–3 MB total) — trivial
-//     to bundle and required BEFORE any network I/O can happen.
-//   • Model weights (~20 MB) are better served from Google's CDN, which
-//     handles versioning, compression, and range-caching. Bundling them
-//     would balloon the extension's unpacked size and duplicate what
-//     Chrome's HTTP cache already does well.
+// ML model weights are NOT copied — they're fetched from cdn.jsdelivr.net on
+// first use (public, stable, versioned CDN) and cached by Chrome. Models are
+// static files containing zero user data; serving them from jsdelivr is the
+// same trust model as importing any npm package.
 
-import { mkdirSync, existsSync, readdirSync, cpSync } from 'node:fs'
+import { mkdirSync, existsSync, readdirSync, cpSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -20,19 +16,41 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUT = resolve(__dirname, '..', 'public', 'wasm')
 const NODE_MODULES = resolve(__dirname, '..', 'node_modules')
 
+function locateTfjsWasmDir() {
+  // @vladmandic/human re-exports tfjs; its wasm binaries live inside the
+  // package under dist/ or under the nested tfjs-backend-wasm dep.
+  const candidates = [
+    resolve(NODE_MODULES, '@vladmandic/human/dist'),
+    resolve(NODE_MODULES, '@vladmandic/human/node_modules/@tensorflow/tfjs-backend-wasm/dist'),
+    resolve(NODE_MODULES, '@tensorflow/tfjs-backend-wasm/dist'),
+  ]
+  for (const c of candidates) {
+    if (!existsSync(c)) continue
+    const hasWasm = readdirSync(c).some((f) => f.endsWith('.wasm'))
+    if (hasWasm) return c
+  }
+  return null
+}
+
 function copyTfjsWasm() {
-  const src = resolve(NODE_MODULES, '@tensorflow/tfjs-backend-wasm/dist')
+  const src = locateTfjsWasmDir()
+  if (!src) {
+    throw new Error(
+      'Could not locate tfjs-backend-wasm .wasm files. Try: npm install @tensorflow/tfjs-backend-wasm',
+    )
+  }
   const dest = resolve(OUT, 'tfjs-wasm')
   mkdirSync(dest, { recursive: true })
-  if (!existsSync(src)) {
-    throw new Error('@tensorflow/tfjs-backend-wasm not found — run npm install first.')
-  }
+  let count = 0
   for (const f of readdirSync(src)) {
-    if (f.endsWith('.wasm')) cpSync(resolve(src, f), resolve(dest, f))
+    if (f.endsWith('.wasm')) {
+      cpSync(resolve(src, f), resolve(dest, f))
+      count++
+    }
   }
-  const files = readdirSync(dest).filter((f) => f.endsWith('.wasm'))
-  if (files.length === 0) throw new Error('No tfjs-backend-wasm .wasm files found to copy.')
-  console.log(`✓ TFJS WASM runtime (${files.length} files) → public/wasm/tfjs-wasm/`)
+  if (count === 0) throw new Error(`No .wasm files found in ${src}`)
+  const total = readdirSync(dest).reduce((s, f) => s + statSync(resolve(dest, f)).size, 0)
+  console.log(`✓ TFJS WASM runtime (${count} files, ${(total / 1_048_576).toFixed(1)} MB) from ${src.split(/[\\/]/).slice(-3).join('/')} → public/wasm/tfjs-wasm/`)
 }
 
 mkdirSync(OUT, { recursive: true })

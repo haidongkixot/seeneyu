@@ -131,7 +131,6 @@ function stop() {
 async function tick() {
   if (!loopActive || !video) return
   if (!pipeline) {
-    // Audio-only sample while the model is loading or broken.
     emitSample(null, null, 0, 0)
     return
   }
@@ -146,24 +145,22 @@ async function tick() {
   let detectErr: unknown = null
 
   try {
-    const faces = await pipeline.face.estimateFaces(video, { flipHorizontal: false })
-    // Facemesh returns {keypoints:[{x, y, z, name}, ...]} for each face.
-    // Indices are stable (468-point topology — same as MediaPipe's face mesh)
-    // so our iris/eye-corner scoring still applies when refineLandmarks is off,
-    // and the fallback tilt heuristic kicks in.
-    faceKeypoints = (faces?.[0]?.keypoints ?? null) as any
+    const result = await pipeline.detect(video)
+    // Human face.mesh: Array<[x, y, z]> of 468 points in pixel coordinates.
+    const mesh = result?.face?.[0]?.mesh as Array<[number, number, number?]> | undefined
+    if (mesh && mesh.length > 0) {
+      faceKeypoints = mesh.map(([x, y, z]) => ({ x, y, z }))
+    }
+    // Human body.keypoints: { position: [x, y], score, part }. MoveNet has
+    // 17 keypoints in COCO order — our scorePostureFromMoveNet expects that.
+    const bodyKps = result?.body?.[0]?.keypoints as
+      | Array<{ position: [number, number]; score: number; part: string }>
+      | undefined
+    if (bodyKps && bodyKps.length > 0) {
+      poseKeypoints = bodyKps.map((kp) => ({ x: kp.position[0], y: kp.position[1], score: kp.score }))
+    }
   } catch (err) {
     detectErr = err
-  }
-
-  try {
-    const poses = await pipeline.pose.estimatePoses(video, { flipHorizontal: false })
-    // MoveNet returns {keypoints:[{x, y, score, name}]} — indices differ
-    // from MediaPipe Pose (0=nose, 5=left shoulder, 6=right shoulder).
-    // Coordinates are PIXELS, not normalized — handled in the scorer.
-    poseKeypoints = (poses?.[0]?.keypoints ?? null) as any
-  } catch (err) {
-    detectErr = detectErr || err
   }
 
   if (detectErr) {

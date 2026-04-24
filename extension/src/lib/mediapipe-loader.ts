@@ -1,63 +1,58 @@
-// TFJS WASM-based detector pipeline. Replaces the previous MediaPipe tasks-
-// vision loader. Runs 100% on CPU + WebAssembly (SIMD when available) — no
-// WebGL, no GPU, no chrome://flags tweaks needed. Works on every browser that
-// supports WebAssembly, which is every modern browser.
-//
-// File name kept as mediapipe-loader.ts to minimize churn in offscreen.ts
-// imports. The underlying runtime is pure TFJS.
+// @vladmandic/human-based detector pipeline. Replaces the @tensorflow-models
+// stack because the tfhub.dev URLs they rely on were deprecated by Google in
+// 2024 and the TFJS model storage bucket returns 403 for anonymous reads.
+// Human hosts its models on JSDelivr (a stable, proven, always-on public
+// CDN) and maintains them actively. Internally Human uses TFJS; we configure
+// it to use the WASM backend so no WebGL / GPU is required at any point.
 
-import * as tf from '@tensorflow/tfjs-core'
-import '@tensorflow/tfjs-converter'
-import '@tensorflow/tfjs-backend-wasm'
-import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm'
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
-import * as poseDetection from '@tensorflow-models/pose-detection'
+import { Human, type Config } from '@vladmandic/human'
 
 export interface MirrorPipeline {
-  face: faceLandmarksDetection.FaceLandmarksDetector
-  pose: poseDetection.PoseDetector
+  detect: (video: HTMLVideoElement) => Promise<any>
   close: () => void
 }
 
-let tfInited = false
+let instance: Human | null = null
 
-async function ensureTfBackend() {
-  if (tfInited) return
-  // Point the WASM backend at files shipped inside the extension — no CDN hits.
-  setWasmPaths(chrome.runtime.getURL('public/wasm/tfjs-wasm/'))
-  await tf.setBackend('wasm')
-  await tf.ready()
-  tfInited = true
+const CONFIG: Partial<Config> = {
+  backend: 'wasm',
+  wasmPath: chrome.runtime.getURL('public/wasm/tfjs-wasm/'),
+  modelBasePath: 'https://cdn.jsdelivr.net/npm/@vladmandic/human/models/',
+  cacheSensitivity: 0.7,
+  filter: { enabled: false },
+  face: {
+    enabled: true,
+    detector: { rotation: false, maxDetected: 1, return: false },
+    mesh: { enabled: true }, // 468-point mesh
+    iris: { enabled: false },
+    description: { enabled: false },
+    emotion: { enabled: false },
+    antispoof: { enabled: false },
+    liveness: { enabled: false },
+  },
+  body: {
+    enabled: true,
+    maxDetected: 1,
+    modelPath: 'movenet-lightning.json',
+  },
+  hand: { enabled: false },
+  object: { enabled: false },
+  gesture: { enabled: false },
+  segmentation: { enabled: false },
 }
 
 export async function loadMirrorPipeline(): Promise<MirrorPipeline> {
-  await ensureTfBackend()
-
-  // Default model URLs (tfhub.dev) are used — models are static files with
-  // no user data. Chrome caches the first download so subsequent session
-  // starts are instant and offline-capable.
-  const face = await faceLandmarksDetection.createDetector(
-    faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh,
-    {
-      runtime: 'tfjs',
-      maxFaces: 1,
-      refineLandmarks: false,
-    },
-  )
-
-  const pose = await poseDetection.createDetector(
-    poseDetection.SupportedModels.MoveNet,
-    {
-      modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
-    },
-  )
-
+  if (!instance) {
+    instance = new Human(CONFIG as Config)
+    await instance.load()
+    await instance.warmup()
+  }
+  const human = instance
   return {
-    face,
-    pose,
-    close() {
-      try { face.dispose() } catch {}
-      try { pose.dispose() } catch {}
+    detect: (video) => human.detect(video),
+    close: () => {
+      /* Human instances are reused across sessions — warmup is expensive.
+         We keep the instance alive across stop/start to avoid the ~3s reload. */
     },
   }
 }
