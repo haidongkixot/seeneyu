@@ -119,6 +119,29 @@ export function scorePostureFromLandmarks(landmarks: FaceLandmark[] | null): num
   })
 }
 
+// MoveNet emits 17 COCO-format keypoints. Different indices and — importantly
+// for MoveNet — the returned x/y are in PIXEL coordinates rather than
+// normalized 0..1, so the caller must pass videoWidth/videoHeight to convert.
+// MoveNet indices: 0: nose, 5: left shoulder, 6: right shoulder.
+export function scorePostureFromMoveNet(
+  keypoints: Array<{ x: number; y: number; score?: number }> | null,
+  videoWidth: number,
+  videoHeight: number,
+  minConfidence = 0.3,
+): number | null {
+  if (!keypoints || keypoints.length < 7 || videoWidth <= 0 || videoHeight <= 0) return null
+  const norm = (kp: { x: number; y: number; score?: number } | undefined) => {
+    if (!kp) return null
+    if (typeof kp.score === 'number' && kp.score < minConfidence) return null
+    return { x: kp.x / videoWidth, y: kp.y / videoHeight }
+  }
+  return scorePosture({
+    leftShoulder: norm(keypoints[5]),
+    rightShoulder: norm(keypoints[6]),
+    nose: norm(keypoints[0]),
+  })
+}
+
 export function scorePosture(pose: PoseLandmarksInput): number | null {
   const { leftShoulder, rightShoulder, nose } = pose
   if (!leftShoulder || !rightShoulder) return null

@@ -1,44 +1,30 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
-import { copyFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs'
+import { copyFileSync, cpSync, existsSync } from 'node:fs'
 
-const WASM_RUNTIME_SRC = resolve(__dirname, 'node_modules/@mediapipe/tasks-vision/wasm')
-
-function copyManifestAndAssets() {
+function copyStaticAssets() {
   return {
-    name: 'copy-manifest-and-assets',
+    name: 'copy-static-assets',
     closeBundle() {
       copyFileSync(
         resolve(__dirname, 'manifest.json'),
         resolve(__dirname, 'dist/manifest.json'),
       )
 
-      const wasmOut = resolve(__dirname, 'dist/public/wasm')
-      mkdirSync(wasmOut, { recursive: true })
-
-      // MediaPipe Vision WASM runtime (vision_wasm_internal.{js,wasm}, etc.)
-      if (existsSync(WASM_RUNTIME_SRC)) {
-        for (const f of readdirSync(WASM_RUNTIME_SRC)) {
-          copyFileSync(resolve(WASM_RUNTIME_SRC, f), resolve(wasmOut, f))
-        }
-      }
-
-      // .task model files downloaded by scripts/download-models.mjs
-      const modelSrc = resolve(__dirname, 'public/wasm')
-      if (existsSync(modelSrc)) {
-        for (const f of readdirSync(modelSrc)) {
-          if (f.endsWith('.task')) {
-            copyFileSync(resolve(modelSrc, f), resolve(wasmOut, f))
-          }
-        }
+      // Everything in public/wasm/ (TFJS WASM runtime + downloaded models)
+      // is copied wholesale into dist/public/wasm/ so chrome.runtime.getURL
+      // resolves correctly at runtime.
+      const publicWasm = resolve(__dirname, 'public/wasm')
+      if (existsSync(publicWasm)) {
+        cpSync(publicWasm, resolve(__dirname, 'dist/public/wasm'), { recursive: true })
       }
     },
   }
 }
 
 export default defineConfig({
-  plugins: [react(), copyManifestAndAssets()],
+  plugins: [react(), copyStaticAssets()],
   base: './',
   build: {
     outDir: 'dist',

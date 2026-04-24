@@ -134,13 +134,7 @@ export function App() {
 
       <Hud sample={sample} running={running} />
 
-      {statusLine && (
-        <StatusCard
-          status={statusLine}
-          lastError={lastError}
-          onRetryGpu={() => send({ type: 'mirror/force-gpu-retry' })}
-        />
-      )}
+      {statusLine && <StatusCard status={statusLine} lastError={lastError} />}
 
       <div>
         {running ? (
@@ -159,29 +153,13 @@ export function App() {
   )
 }
 
-function StatusCard({
-  status,
-  lastError,
-  onRetryGpu,
-}: {
-  status: StatusMessage
-  lastError: string
-  onRetryGpu: () => void
-}) {
+function StatusCard({ status, lastError }: { status: StatusMessage; lastError: string }) {
   const palette =
     status.kind === 'error'
       ? { bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.35)', fg: '#fca5a5' }
-      : status.kind === 'degraded'
-        ? { bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.35)', fg: '#fbbf24' }
-        : status.kind === 'warn'
-          ? { bg: 'rgba(234,179,8,0.06)', border: 'rgba(234,179,8,0.3)', fg: '#facc15' }
-          : { bg: 'transparent', border: 'transparent', fg: '#9ca3af' }
-
-  async function copy(url: string) {
-    try { await navigator.clipboard.writeText(url) } catch { /* ignore */ }
-  }
-
-  const isDegradedOrError = status.kind === 'degraded' || status.kind === 'error'
+      : status.kind === 'warn'
+        ? { bg: 'rgba(234,179,8,0.06)', border: 'rgba(234,179,8,0.3)', fg: '#facc15' }
+        : { bg: 'transparent', border: 'transparent', fg: '#9ca3af' }
 
   return (
     <div
@@ -201,32 +179,7 @@ function StatusCard({
           {status.hint}
         </div>
       )}
-      {isDegradedOrError && (
-        <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          <button onClick={() => copy('chrome://settings/system')} style={chipBtn}>
-            Copy chrome://settings/system
-          </button>
-          <button onClick={() => copy('chrome://gpu')} style={chipBtn}>
-            Copy chrome://gpu
-          </button>
-          <button onClick={() => copy('chrome://flags/#ignore-gpu-blocklist')} style={chipBtn}>
-            Copy chrome://flags
-          </button>
-          <button
-            onClick={onRetryGpu}
-            style={{
-              ...chipBtn,
-              background: '#f59e0b',
-              color: '#0d0d14',
-              borderColor: '#f59e0b',
-              fontWeight: 600,
-            }}
-          >
-            Try anyway
-          </button>
-        </div>
-      )}
-      {lastError && status.kind !== 'info' && (
+      {lastError && status.kind === 'error' && (
         <details style={{ marginTop: 6 }}>
           <summary style={{ cursor: 'pointer', fontSize: 10, color: '#6b7280' }}>
             Technical detail

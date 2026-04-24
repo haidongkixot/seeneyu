@@ -1,16 +1,13 @@
 // Offscreen document — the ONLY surface that touches webcam/mic.
-// MediaPipe + WebAudio run here. We emit scored numbers (not frames) to the
-// service worker via chrome.runtime.sendMessage. Raw media never leaves this
-// document and is discarded on stop.
-//
-// Degraded mode: if WebGL is unavailable (Chrome hardware acceleration off),
-// MediaPipe cannot run. We still run the WebAudio-only pace meter so the
-// user gets partial value and a clear message telling them how to enable GPU.
+// TFJS WASM-based ML runtime (no WebGL, no GPU requirement) lets this run on
+// any Chrome with WebAssembly support, i.e. every modern install. Scored
+// numbers only are posted to the service worker; raw frames and audio stay
+// inside this document and are discarded on stop.
 
 import {
   estimateVocalPaceWpm,
   scoreEyeContactFromLandmarks,
-  scorePostureFromLandmarks,
+  scorePostureFromMoveNet,
   type MirrorMetricSample,
 } from '@seeneyu/scoring'
 import { loadMirrorPipeline, type MirrorPipeline } from '../lib/mediapipe-loader'
@@ -26,16 +23,9 @@ let lastDiagAt = 0
 let tickCount = 0
 let faceHits = 0
 let poseHits = 0
-let lastFaceLandmarkCount = 0
-let lastPoseLandmarkCount = 0
-let degraded = false
-let forceGpuAttempt = false
 const syllableBuckets: number[] = []
 
-const WEBGL_HINT =
-  "Try these in order: (1) chrome://settings/system → 'Use graphics acceleration when available' → relaunch. (2) chrome://gpu — check the 'WebGL' row. If it says 'software only' or 'disabled', your GPU is on Chrome's blocklist. (3) chrome://flags → search 'ignore-gpu-blocklist' → set to Enabled → relaunch. After relaunch reload the Seeneyu extension and click Try anyway below."
-
-type StatusKind = 'info' | 'warn' | 'error' | 'degraded'
+type StatusKind = 'info' | 'warn' | 'error'
 function status(message: string, opts: { kind?: StatusKind; error?: unknown; hint?: string } = {}) {
   chrome.runtime
     .sendMessage({
@@ -49,22 +39,6 @@ function status(message: string, opts: { kind?: StatusKind; error?: unknown; hin
     .catch(() => {})
 }
 
-function hasWebGL(): boolean {
-  try {
-    const c = document.createElement('canvas')
-    c.width = 1
-    c.height = 1
-    if (c.getContext('webgl2')) return true
-    // Fresh canvas because getContext commits the type on first call.
-    const c2 = document.createElement('canvas')
-    c2.width = 1
-    c2.height = 1
-    return !!c2.getContext('webgl')
-  } catch {
-    return false
-  }
-}
-
 async function start() {
   if (loopActive) return
   try {
@@ -76,8 +50,8 @@ async function start() {
     sessionStart = Date.now()
     loopActive = true
 
-    // Attach hidden video — required for Chrome to decode frames in an
-    // offscreen doc.
+    // Video must be attached to the DOM for Chrome to decode frames in a
+    // hidden offscreen doc. Keep it off-screen visually.
     video = document.createElement('video')
     video.srcObject = stream
     video.muted = true
@@ -93,45 +67,40 @@ async function start() {
       await new Promise<void>((resolve) => {
         const onReady = () => resolve()
         video!.addEventListener('loadeddata', onReady, { once: true })
-        setTimeout(onReady, 3000) // don't block forever
+        setTimeout(onReady, 3000)
       })
     }
 
-    // Audio pipeline runs regardless of GPU availability.
     startAudioAnalyser(stream)
 
-    // Try MediaPipe if WebGL looks available — OR if the user explicitly
-    // clicked 'Try anyway' (force flag), because hasWebGL() can be a false
-    // negative in offscreen contexts even when MediaPipe's own WebGL creation
-    // would succeed. If MediaPipe fails we surface the real error.
-    const shouldAttempt = hasWebGL() || forceGpuAttempt
-    if (!shouldAttempt) {
-      degraded = true
-      status('GPU acceleration is off — running in pace-only mode.', {
-        kind: 'degraded',
-        hint: WEBGL_HINT,
+    status('Loading coaching models…')
+    try {
+      pipeline = await loadMirrorPipeline()
+      status('Running', { kind: 'info' })
+    } catch (err) {
+      // TFJS WASM should not fail on any modern browser. If it does, surface
+      // the real reason instead of silently degrading — user can report it.
+      pipeline = null
+      status('Coaching models failed to load.', {
+        kind: 'error',
+        error: err,
+        hint: 'Try reloading the extension. If it keeps failing, copy the technical detail below and share it with support.',
       })
-    } else {
-      status(forceGpuAttempt ? 'Trying GPU anyway…' : 'Loading coaching models…')
-      try {
-        pipeline = await loadMirrorPipeline()
-        forceGpuAttempt = false
-        status('Running', { kind: 'info' })
-      } catch (err) {
-        degraded = true
-        pipeline = null
-        status('Coaching models could not load — running in pace-only mode.', {
-          kind: 'degraded',
-          error: err,
-          hint: WEBGL_HINT,
-        })
-      }
     }
 
     tickTimer = window.setInterval(tick, 500)
   } catch (err) {
     loopActive = false
-    status('Start failed', { kind: 'error', error: err })
+    const name = (err as Error)?.name
+    if (name === 'NotAllowedError') {
+      status('Camera or microphone access was denied.', {
+        kind: 'error',
+        error: err,
+        hint: 'Click the camera icon in the address bar and choose Allow, then try again.',
+      })
+    } else {
+      status('Start failed', { kind: 'error', error: err })
+    }
   }
 }
 
@@ -157,92 +126,80 @@ function stop() {
   tickCount = 0
   faceHits = 0
   poseHits = 0
-  degraded = false
 }
 
-function tick() {
+async function tick() {
   if (!loopActive || !video) return
-
-  // Degraded (pace-only) mode: never touch MediaPipe, just emit audio-only.
-  if (degraded || !pipeline) {
-    emitSample(null, null)
+  if (!pipeline) {
+    // Audio-only sample while the model is loading or broken.
+    emitSample(null, null, 0, 0)
     return
   }
 
   if (video.readyState < 2 || video.videoWidth === 0 || video.videoHeight === 0) {
-    emitSample(null, null)
+    emitSample(null, null, 0, 0)
     return
   }
 
-  const now = performance.now()
-  let faceLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
-  let poseLandmarks: Array<{ x: number; y: number; z?: number }> | null = null
+  let faceKeypoints: Array<{ x: number; y: number; z?: number }> | null = null
+  let poseKeypoints: Array<{ x: number; y: number; score?: number }> | null = null
   let detectErr: unknown = null
 
   try {
-    const faceResult = pipeline.face.detectForVideo(video, now)
-    faceLandmarks = (faceResult.faceLandmarks?.[0] as any) ?? null
+    const faces = await pipeline.face.estimateFaces(video, { flipHorizontal: false })
+    // Facemesh returns {keypoints:[{x, y, z, name}, ...]} for each face.
+    // Indices are stable (468-point topology — same as MediaPipe's face mesh)
+    // so our iris/eye-corner scoring still applies when refineLandmarks is off,
+    // and the fallback tilt heuristic kicks in.
+    faceKeypoints = (faces?.[0]?.keypoints ?? null) as any
   } catch (err) {
     detectErr = err
   }
+
   try {
-    const poseResult = pipeline.pose.detectForVideo(video, now)
-    poseLandmarks = (poseResult.landmarks?.[0] as any) ?? null
+    const poses = await pipeline.pose.estimatePoses(video, { flipHorizontal: false })
+    // MoveNet returns {keypoints:[{x, y, score, name}]} — indices differ
+    // from MediaPipe Pose (0=nose, 5=left shoulder, 6=right shoulder).
+    // Coordinates are PIXELS, not normalized — handled in the scorer.
+    poseKeypoints = (poses?.[0]?.keypoints ?? null) as any
   } catch (err) {
     detectErr = detectErr || err
   }
 
-  // If both detectors throw consistently, MediaPipe has broken — drop to
-  // degraded rather than spamming errors.
   if (detectErr) {
-    const msg = String((detectErr as Error)?.message || detectErr)
-    if (msg.includes('WebGL') || msg.includes('kGpuService') || msg.includes('GPU')) {
-      degraded = true
-      pipeline?.close()
-      pipeline = null
-      status('GPU pipeline broke mid-session — dropping to pace-only mode.', {
-        kind: 'degraded',
-        error: detectErr,
-      })
-      emitSample(null, null)
-      return
-    }
     status('Detection error', { kind: 'error', error: detectErr })
   }
 
   tickCount++
-  if (faceLandmarks) {
-    faceHits++
-    lastFaceLandmarkCount = faceLandmarks.length
-  }
-  if (poseLandmarks) {
-    poseHits++
-    lastPoseLandmarkCount = poseLandmarks.length
-  }
+  if (faceKeypoints) faceHits++
+  if (poseKeypoints) poseHits++
 
   const nowMs = Date.now()
   if (nowMs - lastDiagAt > 2500) {
     lastDiagAt = nowMs
-    status(
-      `face ${faceHits}/${tickCount} (${lastFaceLandmarkCount} lmk) · pose ${poseHits}/${tickCount} (${lastPoseLandmarkCount} lmk)`,
-      { kind: 'info' },
-    )
+    status(`face ${faceHits}/${tickCount} · pose ${poseHits}/${tickCount}`, { kind: 'info' })
     tickCount = 0
     faceHits = 0
     poseHits = 0
   }
 
-  emitSample(faceLandmarks, poseLandmarks)
+  emitSample(faceKeypoints, poseKeypoints, video.videoWidth, video.videoHeight)
 }
 
 function emitSample(
-  faceLandmarks: Array<{ x: number; y: number; z?: number }> | null,
-  poseLandmarks: Array<{ x: number; y: number; z?: number }> | null,
+  faceKeypoints: Array<{ x: number; y: number; z?: number }> | null,
+  poseKeypoints: Array<{ x: number; y: number; score?: number }> | null,
+  videoWidth: number,
+  videoHeight: number,
 ) {
+  // Normalize Facemesh keypoints (which are already in 0..1 normalized space
+  // from the TFJS Facemesh runtime when no flip is set) — pass through.
   const sample: MirrorMetricSample = {
     t: Date.now() - sessionStart,
-    eyeContact: scoreEyeContactFromLandmarks(faceLandmarks),
-    posture: scorePostureFromLandmarks(poseLandmarks),
+    eyeContact: scoreEyeContactFromLandmarks(
+      faceKeypoints as any,
+    ),
+    posture: scorePostureFromMoveNet(poseKeypoints, videoWidth, videoHeight),
     vocalPaceWpm: estimateVocalPaceWpm(syllableBuckets.slice(-30)),
   }
   chrome.runtime.sendMessage({ type: 'mirror/sample', sample }).catch(() => {})
@@ -292,14 +249,7 @@ chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
     sendResponse({ ok: true })
     return false
   }
-  if (msg?.type === 'mirror/force-gpu-retry') {
-    forceGpuAttempt = true
-    stop()
-    start().then(() => sendResponse({ ok: true }))
-    return true
-  }
 })
 
-// Offscreen doc is only created when the user clicks Start Mirror, so auto-
-// starting on load is safe.
+// Offscreen doc is only created when the user clicks Start Mirror.
 start()
