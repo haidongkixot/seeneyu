@@ -41,16 +41,24 @@ function copyTfjsWasm() {
   }
   const dest = resolve(OUT, 'tfjs-wasm')
   mkdirSync(dest, { recursive: true })
+
+  // Skip the threaded SIMD variant — it requires SharedArrayBuffer-backed
+  // Worker threads, which need a blob:-URL importScripts() that MV3
+  // extension CSP blocks. Without this file present, TFJS auto-detects
+  // and falls back to the non-threaded SIMD build, which works fine in
+  // extensions and is plenty fast for our 2 Hz sampling.
+  const SKIP = new Set(['tfjs-backend-wasm-threaded-simd.wasm'])
+
   let count = 0
   for (const f of readdirSync(src)) {
-    if (f.endsWith('.wasm')) {
-      cpSync(resolve(src, f), resolve(dest, f))
-      count++
-    }
+    if (!f.endsWith('.wasm')) continue
+    if (SKIP.has(f)) continue
+    cpSync(resolve(src, f), resolve(dest, f))
+    count++
   }
   if (count === 0) throw new Error(`No .wasm files found in ${src}`)
   const total = readdirSync(dest).reduce((s, f) => s + statSync(resolve(dest, f)).size, 0)
-  console.log(`✓ TFJS WASM runtime (${count} files, ${(total / 1_048_576).toFixed(1)} MB) from ${src.split(/[\\/]/).slice(-3).join('/')} → public/wasm/tfjs-wasm/`)
+  console.log(`✓ TFJS WASM runtime (${count} files, ${(total / 1_048_576).toFixed(1)} MB, threaded variant skipped) → public/wasm/tfjs-wasm/`)
 }
 
 mkdirSync(OUT, { recursive: true })
