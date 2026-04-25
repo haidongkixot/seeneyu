@@ -75,16 +75,20 @@ async function start() {
 
     status('Loading coaching models…')
     try {
-      pipeline = await loadMirrorPipeline()
-      status('Running', { kind: 'info' })
+      pipeline = await loadMirrorPipeline({
+        onProgress: (msg) => status(msg, { kind: 'info' }),
+      })
+      status(`Running (${pipeline.backend} backend)`, { kind: 'info' })
     } catch (err) {
-      // TFJS WASM should not fail on any modern browser. If it does, surface
-      // the real reason instead of silently degrading — user can report it.
+      // TFJS WASM should work on any browser with WebAssembly. If something
+      // genuinely fails (corporate proxy blocking jsdelivr, etc.) we surface
+      // the actual error rather than silently spinning.
       pipeline = null
       status('Coaching models failed to load.', {
         kind: 'error',
         error: err,
-        hint: 'Try reloading the extension. If it keeps failing, copy the technical detail below and share it with support.',
+        hint:
+          'Open chrome://extensions, click "service worker" or "inspect views: offscreen.html" on the Seeneyu Mirror card, copy the console error, and share it. Common causes: corporate firewall blocking cdn.jsdelivr.net, or extension reload needed after CSP changes.',
       })
     }
 
