@@ -84,6 +84,21 @@ export async function loadMirrorPipeline(opts: {
   log(`Initializing Human runtime (preferred backend: ${config.backend})…`)
   instance = new Human(config as Config)
 
+  // Explicitly disable the threaded WASM build: it spawns a Worker that
+  // imports a blob: URL via importScripts(), which MV3 extension CSP blocks.
+  // Even when the threaded .wasm file is absent, TFJS detects multi-thread
+  // capability and tries to fetch it. Setting this flag forces the SIMD
+  // (non-threaded) build.
+  try {
+    const env = (instance.tf as any).env?.()
+    if (env?.set) {
+      env.set('WASM_HAS_MULTITHREAD_SUPPORT', false)
+      env.set('WASM_HAS_SIMD_SUPPORT', true)
+    }
+  } catch {
+    /* not fatal */
+  }
+
   log('Downloading models from jsdelivr (first run only — ~3 MB)…')
   await withTimeout(instance.load(), 90_000, 'human.load()')
 
