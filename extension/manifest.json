@@ -24,7 +24,7 @@
     "https://cdn.jsdelivr.net/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src http://localhost:3000 https://seeneyu.vercel.app https://seeneyu.com https://www.seeneyu.com https://cdn.jsdelivr.net"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' data: blob: http://localhost:3000 https://seeneyu.vercel.app https://seeneyu.com https://www.seeneyu.com https://cdn.jsdelivr.net"
   },
   "web_accessible_resources": [
     {
