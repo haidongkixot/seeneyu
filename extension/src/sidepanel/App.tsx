@@ -33,6 +33,7 @@ export function App() {
   const [lastError, setLastError] = useState<string>('')
   const [nudge, setNudge] = useState<CoachingNudge | null>(null)
   const [summary, setSummary] = useState<CoachSummaryPayload | null>(null)
+  const [hasPending, setHasPending] = useState(false)
 
   useEffect(() => {
     loadTokens().then((t) => setStage(t ? 'paired' : 'unpaired'))
@@ -63,6 +64,10 @@ export function App() {
       .then((r) => (r.ok ? r.json() : null))
       .then((p) => setOptIn(!!p?.metricsOptIn))
       .catch(() => {})
+    // Check if a previous session is queued waiting for submission.
+    chrome.runtime.sendMessage({ type: 'mirror/has-pending' }).then((res: any) => {
+      setHasPending(!!res?.hasPending)
+    }).catch(() => {})
   }, [stage])
 
   async function pair(code: string) {
@@ -102,16 +107,60 @@ export function App() {
     try {
       const res: any = await chrome.runtime.sendMessage({ type: 'mirror/stop' })
       setRunning(false)
-      if (res?.summary) {
-        setSummary(res.summary as CoachSummaryPayload)
-      } else {
-        setStatusLine({
-          message: 'Session ended. No summary available — make sure post-call sync is on.',
-          kind: 'warn',
-        })
-      }
+      setSample(null) // clear stale HUD numbers
+      setNudge(null)
+      handleSubmissionResult(res)
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  async function retrySubmit() {
+    setSubmitting(true)
+    try {
+      const res: any = await chrome.runtime.sendMessage({ type: 'mirror/retry-submit' })
+      handleSubmissionResult(res)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  function handleSubmissionResult(res: any) {
+    if (res?.summary) {
+      setSummary(res.summary as CoachSummaryPayload)
+      setHasPending(false)
+      setStatusLine(null)
+      return
+    }
+    // Surface the actual reason so the user can act on it.
+    const reason: string = res?.submitError || res?.error || 'unknown error'
+    const status: number | undefined = res?.submitStatus
+    setHasPending(true)
+
+    if (status === 403 || /opt-?in/i.test(reason)) {
+      setStatusLine({
+        message: 'Session saved locally — needs post-call sync to be on.',
+        kind: 'warn',
+        hint: 'Toggle "Sync post-call summary" below, then click Get summary now.',
+      })
+    } else if (status === 401) {
+      setStatusLine({
+        message: 'Session not submitted — your sign-in expired.',
+        kind: 'error',
+        hint: 'Click Disconnect, then re-pair from /settings/extension on the web app.',
+      })
+    } else if (status === 503) {
+      setStatusLine({
+        message: 'Coaching service is paused on the server.',
+        kind: 'warn',
+        hint: 'Try again in a few minutes.',
+      })
+    } else {
+      setStatusLine({
+        message: 'Session ended — summary failed.',
+        kind: 'warn',
+        hint: `Reason: ${reason}. Click Get summary now to retry.`,
+      })
     }
   }
 
@@ -153,13 +202,25 @@ export function App() {
 
           {statusLine && <StatusCard status={statusLine} lastError={lastError} />}
 
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {running ? (
               <button onClick={stop} disabled={submitting} style={btnPrimary}>
                 {submitting ? 'Coach Ney is reviewing…' : 'Stop & Get Feedback'}
               </button>
             ) : (
-              <button onClick={start} style={btnPrimary}>Start Mirror</button>
+              <>
+                {hasPending && (
+                  <button onClick={retrySubmit} disabled={submitting} style={btnPrimary}>
+                    {submitting ? 'Submitting…' : 'Get summary now'}
+                  </button>
+                )}
+                <button
+                  onClick={start}
+                  style={hasPending ? btnSecondary : btnPrimary}
+                >
+                  {hasPending ? 'Start a new session' : 'Start Mirror'}
+                </button>
+              </>
             )}
           </div>
 
@@ -235,6 +296,10 @@ function StatusCard({ status, lastError }: { status: StatusMessage; lastError: s
 const btnPrimary: React.CSSProperties = {
   background: '#f59e0b', color: '#0d0d14', border: 0,
   padding: '10px 14px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', width: '100%',
+}
+const btnSecondary: React.CSSProperties = {
+  background: 'transparent', color: '#cbd5e1', border: '1px solid #374151',
+  padding: '10px 14px', borderRadius: 6, fontWeight: 600, cursor: 'pointer', width: '100%',
 }
 const btnGhost: React.CSSProperties = {
   background: 'transparent', color: '#9ca3af', border: '1px solid #374151',

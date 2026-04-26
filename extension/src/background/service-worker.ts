@@ -6,6 +6,11 @@ const CLIENT_VERSION = chrome.runtime.getManifest().version
 const buffer = new AggregationBuffer()
 const OFFSCREEN_URL = chrome.runtime.getURL('src/offscreen/offscreen.html')
 
+// Last finalized aggregate from the most recent session — kept in memory so
+// the user can retry submission if it failed (most common cause: forgot to
+// enable post-call sync until after clicking Stop).
+let lastAggregate: SessionAggregate | null = null
+
 async function ensureOffscreen() {
   const existing = await chrome.offscreen.hasDocument?.()
   if (existing) return
@@ -38,19 +43,36 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   }
 })
 
-chrome.runtime.onMessage.addListener((msg: MirrorMessage, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg: any, _sender, sendResponse) => {
   ;(async () => {
     try {
       if (msg.type === 'mirror/start') {
         buffer.start()
+        lastAggregate = null
         await ensureOffscreen()
         sendResponse({ ok: true })
       } else if (msg.type === 'mirror/stop') {
         const aggregate = buffer.finalize(CLIENT_VERSION)
         await closeOffscreen()
-        let summary: any = null
-        if (aggregate) summary = await submitForCoaching(aggregate)
-        sendResponse({ ok: true, aggregate, summary })
+        if (aggregate) {
+          lastAggregate = aggregate
+          const result = await submitForCoaching(aggregate)
+          sendResponse({ ok: true, aggregate, ...result })
+        } else {
+          sendResponse({ ok: true, aggregate: null, summary: null })
+        }
+      } else if (msg.type === 'mirror/retry-submit') {
+        if (!lastAggregate) {
+          sendResponse({ ok: false, error: 'No previous session to retry' })
+        } else {
+          const result = await submitForCoaching(lastAggregate)
+          sendResponse({ ok: true, aggregate: lastAggregate, ...result })
+        }
+      } else if (msg.type === 'mirror/has-pending') {
+        sendResponse({ ok: true, hasPending: !!lastAggregate })
+      } else if (msg.type === 'mirror/clear-pending') {
+        lastAggregate = null
+        sendResponse({ ok: true })
       } else if (msg.type === 'mirror/sample') {
         buffer.push(msg.sample)
         sendResponse({ ok: true })
@@ -59,9 +81,9 @@ chrome.runtime.onMessage.addListener((msg: MirrorMessage, _sender, sendResponse)
         sendResponse({ ok: true })
       } else if (msg.type === 'mirror/flush') {
         const aggregate = buffer.finalize(CLIENT_VERSION)
-        let summary: any = null
-        if (aggregate) summary = await submitForCoaching(aggregate)
-        sendResponse({ ok: true, aggregate, summary })
+        if (aggregate) lastAggregate = aggregate
+        const result = aggregate ? await submitForCoaching(aggregate) : { summary: null }
+        sendResponse({ ok: true, aggregate, ...result })
       } else {
         sendResponse({ ok: false, error: 'Unknown message' })
       }
@@ -72,18 +94,29 @@ chrome.runtime.onMessage.addListener((msg: MirrorMessage, _sender, sendResponse)
   return true
 })
 
-// Submit the session to /api/extension/sessions which always stores the
-// session and (if the user opted in) also runs the Coach Ney summary.
-// Returns the session id + Coach Ney write-up for the side panel to render.
-async function submitForCoaching(aggregate: SessionAggregate): Promise<any> {
+interface SubmitResult {
+  summary: any | null
+  submitError?: string
+  submitStatus?: number
+}
+
+async function submitForCoaching(aggregate: SessionAggregate): Promise<SubmitResult> {
   try {
     const res = await authedFetch('/api/extension/sessions', {
       method: 'POST',
       body: JSON.stringify(aggregate),
     })
-    if (!res.ok) return null
-    return await res.json()
-  } catch {
-    return null
+    if (res.ok) {
+      lastAggregate = null // success — drop the cache
+      return { summary: await res.json() }
+    }
+    let errMsg = `HTTP ${res.status}`
+    try {
+      const body = await res.json()
+      if (body?.error) errMsg = body.error
+    } catch { /* ignore parse failures */ }
+    return { summary: null, submitError: errMsg, submitStatus: res.status }
+  } catch (err) {
+    return { summary: null, submitError: String((err as Error)?.message || err) }
   }
 }
