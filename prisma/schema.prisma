@@ -1002,19 +1002,31 @@ model ExtensionToken {
 }
 
 model ExtensionSession {
-  id               String   @id @default(cuid())
-  userId           String
-  startedAt        DateTime
-  endedAt          DateTime
-  durationSeconds  Int
-  avgEyeContactPct Float?
-  avgPostureScore  Float?
-  avgVocalPaceWpm  Float?
-  sampleCount      Int
-  clientVersion    String
-  createdAt        DateTime @default(now())
+  id                 String    @id @default(cuid())
+  userId             String
+  startedAt          DateTime
+  endedAt            DateTime
+  durationSeconds    Int
+  avgEyeContactPct   Float?
+  avgPostureScore    Float?
+  avgVocalPaceWpm    Float?
+  sampleCount        Int
+  clientVersion      String
+  // Phase B: time series + Coach Ney write-up
+  timeSeries         Json? // [{ t, eyeContact, posture, pace }] downsampled to ~1/s
+  nudgesShown        Json? // [{ at, pattern, headline }]
+  coachHeadline      String?
+  coachSummary       String?   @db.Text
+  coachWhatWorked    Json? // string[]
+  coachWhatToImprove Json? // string[]
+  coachNextSteps     Json? // string[]
+  coachGeneratedAt   DateTime?
+  // Phase C: gamification linkage
+  xpAwarded          Int       @default(0)
+  createdAt          DateTime  @default(now())
 
   @@index([userId, startedAt])
+  @@index([userId, createdAt])
 }
 
 // Short-lived (2 min) pairing code issued from the web UI and consumed once

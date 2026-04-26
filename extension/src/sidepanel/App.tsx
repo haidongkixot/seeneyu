@@ -8,13 +8,15 @@ import {
   revokeAll,
 } from '../lib/auth-client'
 import { send } from '../lib/messaging'
+import type { CoachingNudge } from '../lib/coaching-rules'
 import { Hud } from './components/Hud'
 import { PairingScreen } from './components/PairingScreen'
 import { OptInToggle } from './components/OptInToggle'
+import { CoachingNudgeCard } from './components/CoachingNudgeCard'
+import { SessionSummary, type CoachSummaryPayload } from './components/SessionSummary'
 
 type Stage = 'loading' | 'paired' | 'unpaired'
-
-type StatusKind = 'info' | 'warn' | 'error' | 'degraded'
+type StatusKind = 'info' | 'warn' | 'error'
 interface StatusMessage {
   message: string
   kind: StatusKind
@@ -24,20 +26,23 @@ interface StatusMessage {
 export function App() {
   const [stage, setStage] = useState<Stage>('loading')
   const [running, setRunning] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [sample, setSample] = useState<MirrorMetricSample | null>(null)
   const [optIn, setOptIn] = useState(false)
   const [statusLine, setStatusLine] = useState<StatusMessage | null>(null)
   const [lastError, setLastError] = useState<string>('')
+  const [nudge, setNudge] = useState<CoachingNudge | null>(null)
+  const [summary, setSummary] = useState<CoachSummaryPayload | null>(null)
 
   useEffect(() => {
     loadTokens().then((t) => setStage(t ? 'paired' : 'unpaired'))
     const handler = (msg: any) => {
       if (msg?.type === 'mirror/sample') {
         setSample(msg.sample)
+      } else if (msg?.type === 'mirror/nudge') {
+        setNudge(msg.nudge as CoachingNudge)
       } else if (msg?.type === 'mirror/status') {
-        // Don't let a running diagnostic overwrite a sticky degraded / error.
         setStatusLine((prev) => {
-          if (prev?.kind === 'degraded' && msg.kind === 'info') return prev
           if (prev?.kind === 'error' && msg.kind === 'info') return prev
           return {
             message: msg.message || prev?.message || '',
@@ -66,19 +71,12 @@ export function App() {
   }
 
   async function start() {
-    // MV3 requires the camera/mic prompt to come from a visible context —
-    // the hidden offscreen document cannot show it. We briefly acquire the
-    // stream here (prompt is displayed over the side panel), then stop it
-    // immediately; the permission is now granted to the extension origin and
-    // the offscreen document can acquire its own stream without prompting.
     setLastError('')
+    setSummary(null)
     setStatusLine({ message: 'Requesting camera and microphone…', kind: 'info' })
     let testStream: MediaStream | null = null
     try {
-      testStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      })
+      testStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     } catch (err) {
       const name = (err as Error)?.name || ''
       const msg = (err as Error)?.message || 'permission request failed'
@@ -98,9 +96,23 @@ export function App() {
     await send({ type: 'mirror/start' })
     setRunning(true)
   }
+
   async function stop() {
-    await send({ type: 'mirror/stop' })
-    setRunning(false)
+    setSubmitting(true)
+    try {
+      const res: any = await chrome.runtime.sendMessage({ type: 'mirror/stop' })
+      setRunning(false)
+      if (res?.summary) {
+        setSummary(res.summary as CoachSummaryPayload)
+      } else {
+        setStatusLine({
+          message: 'Session ended. No summary available — make sure post-call sync is on.',
+          kind: 'warn',
+        })
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   async function updateOptIn(next: boolean) {
@@ -116,39 +128,55 @@ export function App() {
     await clearTokens()
     setStage('unpaired')
     setRunning(false)
+    setSummary(null)
   }
 
-  if (stage === 'loading') {
-    return <div style={{ padding: 16 }}>Loading…</div>
-  }
-  if (stage === 'unpaired') {
-    return <PairingScreen onPair={pair} />
-  }
+  if (stage === 'loading') return <div style={{ padding: 16 }}>Loading…</div>
+  if (stage === 'unpaired') return <PairingScreen onPair={pair} />
 
   return (
-    <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16, height: '100%' }}>
+    <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 14, height: '100%' }}>
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h1 style={{ fontSize: 16, margin: 0 }}>Seeneyu Mirror</h1>
         <button onClick={disconnect} style={btnGhost}>Disconnect</button>
       </header>
 
-      <Hud sample={sample} running={running} />
+      {summary ? (
+        <SessionSummary data={summary} onDone={() => setSummary(null)} />
+      ) : (
+        <>
+          <Hud sample={sample} running={running} />
 
-      {statusLine && <StatusCard status={statusLine} lastError={lastError} />}
+          {nudge && running && (
+            <CoachingNudgeCard nudge={nudge} onDismiss={() => setNudge(null)} />
+          )}
 
-      <div>
-        {running ? (
-          <button onClick={stop} style={btnPrimary}>Stop</button>
-        ) : (
-          <button onClick={start} style={btnPrimary}>Start Mirror</button>
-        )}
-      </div>
+          {statusLine && <StatusCard status={statusLine} lastError={lastError} />}
 
-      <OptInToggle value={optIn} onChange={updateOptIn} />
+          <div>
+            {running ? (
+              <button onClick={stop} disabled={submitting} style={btnPrimary}>
+                {submitting ? 'Coach Ney is reviewing…' : 'Stop & Get Feedback'}
+              </button>
+            ) : (
+              <button onClick={start} style={btnPrimary}>Start Mirror</button>
+            )}
+          </div>
 
-      <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 'auto' }}>
-        All analysis runs locally on your device. Video and audio never leave this window.
-      </p>
+          <OptInToggle value={optIn} onChange={updateOptIn} />
+
+          <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 'auto' }}>
+            All analysis runs locally on your device. Video and audio never leave this window.
+          </p>
+        </>
+      )}
+
+      <style>{`
+        @keyframes mirror-pop {
+          from { opacity: 0; transform: translateY(-4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   )
 }
@@ -206,13 +234,9 @@ function StatusCard({ status, lastError }: { status: StatusMessage; lastError: s
 
 const btnPrimary: React.CSSProperties = {
   background: '#f59e0b', color: '#0d0d14', border: 0,
-  padding: '8px 14px', borderRadius: 6, fontWeight: 600, cursor: 'pointer',
+  padding: '10px 14px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', width: '100%',
 }
 const btnGhost: React.CSSProperties = {
   background: 'transparent', color: '#9ca3af', border: '1px solid #374151',
   padding: '4px 10px', borderRadius: 6, cursor: 'pointer', fontSize: 12,
-}
-const chipBtn: React.CSSProperties = {
-  background: 'transparent', color: '#93c5fd', border: '1px solid #1e3a8a',
-  padding: '4px 8px', borderRadius: 4, cursor: 'pointer', fontSize: 10,
 }

@@ -48,15 +48,20 @@ chrome.runtime.onMessage.addListener((msg: MirrorMessage, _sender, sendResponse)
       } else if (msg.type === 'mirror/stop') {
         const aggregate = buffer.finalize(CLIENT_VERSION)
         await closeOffscreen()
-        if (aggregate) await maybeSubmit(aggregate)
-        sendResponse({ ok: true, aggregate })
+        let summary: any = null
+        if (aggregate) summary = await submitForCoaching(aggregate)
+        sendResponse({ ok: true, aggregate, summary })
       } else if (msg.type === 'mirror/sample') {
         buffer.push(msg.sample)
         sendResponse({ ok: true })
+      } else if (msg.type === 'mirror/nudge') {
+        buffer.pushNudge(msg.nudge)
+        sendResponse({ ok: true })
       } else if (msg.type === 'mirror/flush') {
         const aggregate = buffer.finalize(CLIENT_VERSION)
-        if (aggregate) await maybeSubmit(aggregate)
-        sendResponse({ ok: true, aggregate })
+        let summary: any = null
+        if (aggregate) summary = await submitForCoaching(aggregate)
+        sendResponse({ ok: true, aggregate, summary })
       } else {
         sendResponse({ ok: false, error: 'Unknown message' })
       }
@@ -67,18 +72,18 @@ chrome.runtime.onMessage.addListener((msg: MirrorMessage, _sender, sendResponse)
   return true
 })
 
-async function maybeSubmit(aggregate: SessionAggregate) {
+// Submit the session to /api/extension/sessions which always stores the
+// session and (if the user opted in) also runs the Coach Ney summary.
+// Returns the session id + Coach Ney write-up for the side panel to render.
+async function submitForCoaching(aggregate: SessionAggregate): Promise<any> {
   try {
-    const prefsRes = await authedFetch('/api/extension/preferences', { method: 'GET' })
-    if (!prefsRes.ok) return
-    const prefs = (await prefsRes.json()) as { metricsOptIn: boolean }
-    if (!prefs.metricsOptIn) return
-
-    await authedFetch('/api/extension/metrics', {
+    const res = await authedFetch('/api/extension/sessions', {
       method: 'POST',
       body: JSON.stringify(aggregate),
     })
+    if (!res.ok) return null
+    return await res.json()
   } catch {
-    // Network errors silently dropped — metrics are best-effort, never critical.
+    return null
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Chrome, Copy, RefreshCw, Loader2, LogOut, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, Chrome, Copy, RefreshCw, Loader2, LogOut, ShieldCheck, History } from 'lucide-react'
 
 interface Preferences {
   metricsOptIn: boolean
@@ -233,6 +233,37 @@ export default function ExtensionSettingsPage() {
           <div style={{ marginTop: 8, fontSize: 13, color: '#34d399' }}>{revokedMsg}</div>
         )}
       </section>
+
+      {/* ── History ──────────────────────────────────────────── */}
+      <Link
+        href="/settings/extension/sessions"
+        style={{
+          ...section,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          textDecoration: 'none',
+          color: 'inherit',
+        }}
+      >
+        <div
+          style={{
+            background: '#0f172a',
+            border: '1px solid #1f2937',
+            borderRadius: 8,
+            padding: 10,
+            color: '#f59e0b',
+          }}
+        >
+          <History size={20} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 600 }}>Practice history</div>
+          <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+            Every Mirror Mode session with Coach Ney's full write-up.
+          </div>
+        </div>
+      </Link>
 
       {/* ── Privacy summary ─────────────────────────────────────── */}
       <section

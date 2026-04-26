@@ -11,6 +11,7 @@ import {
   type MirrorMetricSample,
 } from '@seeneyu/scoring'
 import { loadMirrorPipeline, type MirrorPipeline } from '../lib/mediapipe-loader'
+import { CoachingEngine } from '../lib/coaching-rules'
 
 let stream: MediaStream | null = null
 let video: HTMLVideoElement | null = null
@@ -24,6 +25,7 @@ let tickCount = 0
 let faceHits = 0
 let poseHits = 0
 const syllableBuckets: number[] = []
+const coach = new CoachingEngine()
 
 type StatusKind = 'info' | 'warn' | 'error'
 function status(message: string, opts: { kind?: StatusKind; error?: unknown; hint?: string } = {}) {
@@ -130,6 +132,7 @@ function stop() {
   tickCount = 0
   faceHits = 0
   poseHits = 0
+  coach.reset()
 }
 
 async function tick() {
@@ -193,17 +196,19 @@ function emitSample(
   videoWidth: number,
   videoHeight: number,
 ) {
-  // Normalize Facemesh keypoints (which are already in 0..1 normalized space
-  // from the TFJS Facemesh runtime when no flip is set) — pass through.
   const sample: MirrorMetricSample = {
     t: Date.now() - sessionStart,
-    eyeContact: scoreEyeContactFromLandmarks(
-      faceKeypoints as any,
-    ),
+    eyeContact: scoreEyeContactFromLandmarks(faceKeypoints as any),
     posture: scorePostureFromMoveNet(poseKeypoints, videoWidth, videoHeight),
     vocalPaceWpm: estimateVocalPaceWpm(syllableBuckets.slice(-30)),
   }
   chrome.runtime.sendMessage({ type: 'mirror/sample', sample }).catch(() => {})
+
+  // Run coaching rules against the rolling buffer; emit a nudge if any pattern fires.
+  const nudge = coach.ingest(sample)
+  if (nudge) {
+    chrome.runtime.sendMessage({ type: 'mirror/nudge', nudge }).catch(() => {})
+  }
 }
 
 function startAudioAnalyser(src: MediaStream) {
