@@ -50,7 +50,9 @@ export class VadFrameBuffer {
     this.exitZcrLow = opts.exitZcrLow ?? 0.02
     this.exitZcrHigh = opts.exitZcrHigh ?? 0.50
     this.enterFrames = opts.enterFrames ?? 2 // ~100ms
-    this.exitFrames = opts.exitFrames ?? 6 // ~300ms hangover
+    this.exitFrames = opts.exitFrames ?? 3 // ~150ms hangover (was 300ms — that
+                                            // inflated speakingMs and dragged
+                                            // wpm down by ~30%)
   }
 
   /** Returns isSpeech for this frame. */
@@ -127,10 +129,18 @@ export class SyllablePeakDetector {
     smoothMs: number; windowMs: number;
     minInterPeakMs: number; minDipDb: number;
   }> = {}) {
-    this.smoothMs = opts.smoothMs ?? 100
+    // 50ms = single-frame envelope (no extra smoothing over neighbors).
+    // 100ms was averaging two frames and blurring syllable boundaries —
+    // peaks merged into plateaus that the picker rejected.
+    this.smoothMs = opts.smoothMs ?? 50
     this.windowMs = opts.windowMs ?? 250
-    this.minInterPeakMs = opts.minInterPeakMs ?? 180
-    this.minDipDb = opts.minDipDb ?? 4
+    // 130ms cap → up to ~460 wpm theoretical. Was 180ms (~333 wpm cap),
+    // which was occasionally clipping fast speech.
+    this.minInterPeakMs = opts.minInterPeakMs ?? 130
+    // Phonetic literature puts syllabic dips at 2–4 dB. 4 dB was the high
+    // end and rejected most natural fast speech. 3 dB matches measured
+    // English speech better.
+    this.minDipDb = opts.minDipDb ?? 3
   }
 
   push(frame: FrameInput, isSpeech: boolean): void {
