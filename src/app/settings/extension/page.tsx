@@ -110,81 +110,77 @@ export default function ExtensionSettingsPage() {
     await navigator.clipboard.writeText(code).catch(() => {})
   }
 
+  const sectionCls =
+    'bg-bg-surface border border-bg-overlay rounded-xl p-5 mt-5'
+  const h2Cls = 'text-base font-semibold text-text-primary m-0 mb-2'
+  const pCls = 'text-text-secondary text-sm m-0 mb-3'
+  const btnPrimaryCls =
+    'inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-text-inverse border-0 px-4 py-2.5 rounded-md font-semibold cursor-pointer disabled:opacity-50'
+  const btnGhostCls =
+    'inline-flex items-center gap-1.5 bg-transparent text-text-secondary border border-bg-overlay hover:border-text-secondary px-3 py-2 rounded-md cursor-pointer text-sm'
+  const btnDangerCls =
+    'inline-flex items-center gap-1.5 bg-transparent text-error border border-error/40 hover:bg-error-dim px-3 py-2 rounded-md cursor-pointer text-sm'
+
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: 24, color: '#e5e7eb' }}>
+    <div className="max-w-3xl mx-auto px-6 py-8 text-text-primary">
       <Link
         href="/settings"
-        style={{
-          color: '#9ca3af', textDecoration: 'none', fontSize: 13,
-          display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16,
-        }}
+        className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary mb-4 no-underline"
       >
         <ArrowLeft size={14} /> Settings
       </Link>
 
-      <h1 style={{ fontSize: 28, margin: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <Chrome size={26} /> Mirror Mode Extension
+      <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3 m-0">
+        <Chrome size={24} className="text-accent-500" /> Mirror Mode Extension
       </h1>
-      <p style={{ color: '#9ca3af', marginTop: 8 }}>
+      <p className="text-text-secondary mt-2 text-sm">
         Connect the Seeneyu browser extension to get private real-time body-language coaching during
         Zoom, Meet, and Teams calls. All analysis runs on your device.
       </p>
 
       {disabled && (
-        <div style={warnBox}>
+        <div className="mt-4 p-3 rounded-lg border border-warning/30 bg-warning-dim text-warning text-sm">
           The extension is currently disabled for your account. Please check back later.
         </div>
       )}
 
-      {error && <div style={errBox}>{error}</div>}
+      {error && (
+        <div className="mt-4 p-3 rounded-lg border border-error/30 bg-error-dim text-error text-sm">
+          {error}
+        </div>
+      )}
 
       {/* ── Pairing ─────────────────────────────────────────────── */}
-      <section style={section}>
-        <h2 style={h2}>1. Pair your extension</h2>
-        <p style={p}>
+      <section className={sectionCls}>
+        <h2 className={h2Cls}>1. Pair your extension</h2>
+        <p className={pCls}>
           Generate a 6-digit code and paste it into the extension side panel. Codes expire after
           2 minutes.
         </p>
 
         {!code && (
-          <button
-            onClick={generateCode}
-            disabled={generating || disabled}
-            style={btnPrimary}
-          >
+          <button onClick={generateCode} disabled={generating || disabled} className={btnPrimaryCls}>
             {generating ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
             Generate pairing code
           </button>
         )}
 
         {code && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div
-              style={{
-                background: '#0f172a', border: '1px solid #1f2937', borderRadius: 8,
-                padding: 20, textAlign: 'center',
-              }}
-            >
-              <div style={{ fontSize: 11, color: '#9ca3af', letterSpacing: 1, textTransform: 'uppercase' }}>
-                Pairing code
-              </div>
-              <div
-                style={{
-                  fontSize: 42, fontWeight: 700, letterSpacing: 8, color: '#f59e0b',
-                  margin: '8px 0', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                }}
-              >
+          <div className="flex flex-col gap-3">
+            <div className="bg-accent-50 border border-accent-200 rounded-lg p-5 text-center">
+              <div className="text-xs text-text-tertiary tracking-widest uppercase">Pairing code</div>
+              <div className="text-4xl font-bold tracking-[0.5rem] text-accent-600 my-2 font-mono">
                 {code}
               </div>
-              <div style={{ fontSize: 12, color: '#9ca3af' }}>
+              <div className="text-xs text-text-secondary">
                 {secondsLeft > 0 ? `Expires in ${secondsLeft}s` : 'Expired — generate a new code'}
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={copyCode} style={btnGhost}>
+            <div className="flex gap-2">
+              <button onClick={copyCode} className={btnGhostCls}>
                 <Copy size={14} /> Copy
               </button>
-              <button onClick={generateCode} disabled={generating} style={btnGhost}>
+              <button onClick={generateCode} disabled={generating} className={btnGhostCls}>
                 <RefreshCw size={14} /> New code
               </button>
             </div>
@@ -193,24 +189,27 @@ export default function ExtensionSettingsPage() {
       </section>
 
       {/* ── Opt-in ──────────────────────────────────────────────── */}
-      <section style={section}>
-        <h2 style={h2}>2. Post-call summary sync</h2>
-        <p style={p}>
+      <section className={sectionCls}>
+        <h2 className={h2Cls}>2. Post-call summary sync</h2>
+        <p className={pCls}>
           After each coached session, the extension can send only an anonymous aggregate
           (duration + averages) to your Seeneyu account so your progress is saved. Raw video and
           audio never leave your device, regardless of this setting.
         </p>
 
-        <label style={toggleRow}>
+        <label className="flex items-start gap-2.5 p-3 bg-bg-elevated border border-bg-overlay rounded-md cursor-pointer">
           <input
             type="checkbox"
             disabled={!prefs || savingPrefs || disabled}
             checked={!!prefs?.metricsOptIn}
             onChange={(e) => updateOptIn(e.target.checked)}
+            className="mt-1"
           />
           <div>
-            <div style={{ fontWeight: 600 }}>Save post-call summaries to my account</div>
-            <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+            <div className="font-semibold text-text-primary">
+              Save post-call summaries to my account
+            </div>
+            <div className="text-xs text-text-secondary mt-0.5">
               {prefs?.metricsOptInAt
                 ? `Enabled on ${new Date(prefs.metricsOptInAt).toLocaleString()}`
                 : 'Off by default — you can change this any time.'}
@@ -220,63 +219,40 @@ export default function ExtensionSettingsPage() {
       </section>
 
       {/* ── Privacy / Revoke ────────────────────────────────────── */}
-      <section style={section}>
-        <h2 style={h2}>3. Connected extensions</h2>
-        <p style={p}>
+      <section className={sectionCls}>
+        <h2 className={h2Cls}>3. Connected extensions</h2>
+        <p className={pCls}>
           Revoking signs out all paired browsers. You'll need to re-pair with a new code.
         </p>
-        <button onClick={revokeAll} disabled={revoking || disabled} style={btnDanger}>
+        <button onClick={revokeAll} disabled={revoking || disabled} className={btnDangerCls}>
           {revoking ? <Loader2 size={14} className="animate-spin" /> : <LogOut size={14} />}
           Revoke all connections
         </button>
-        {revokedMsg && (
-          <div style={{ marginTop: 8, fontSize: 13, color: '#34d399' }}>{revokedMsg}</div>
-        )}
+        {revokedMsg && <div className="mt-2 text-sm text-success">{revokedMsg}</div>}
       </section>
 
       {/* ── History ──────────────────────────────────────────── */}
       <Link
         href="/settings/extension/sessions"
-        style={{
-          ...section,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          textDecoration: 'none',
-          color: 'inherit',
-        }}
+        className={`${sectionCls} flex items-center gap-3 no-underline text-text-primary hover:bg-bg-elevated transition-colors`}
       >
-        <div
-          style={{
-            background: '#0f172a',
-            border: '1px solid #1f2937',
-            borderRadius: 8,
-            padding: 10,
-            color: '#f59e0b',
-          }}
-        >
+        <div className="bg-accent-50 border border-accent-200 rounded-lg p-2.5 text-accent-600">
           <History size={20} />
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 600 }}>Practice history</div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+        <div className="flex-1">
+          <div className="font-semibold text-text-primary">Practice history</div>
+          <div className="text-xs text-text-secondary mt-0.5">
             Every Mirror Mode session with Coach Ney's full write-up.
           </div>
         </div>
       </Link>
 
       {/* ── Privacy summary ─────────────────────────────────────── */}
-      <section
-        style={{
-          ...section,
-          background: 'rgba(16,185,129,0.06)',
-          border: '1px solid rgba(16,185,129,0.3)',
-        }}
-      >
-        <h2 style={{ ...h2, color: '#34d399', display: 'flex', alignItems: 'center', gap: 8 }}>
+      <section className="mt-5 p-5 rounded-xl bg-success-dim border border-success/30">
+        <h2 className="text-base font-semibold text-success m-0 mb-2 flex items-center gap-2">
           <ShieldCheck size={18} /> Privacy summary
         </h2>
-        <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: '#cbd5e1', lineHeight: 1.8 }}>
+        <ul className="m-0 pl-5 text-sm text-text-primary leading-relaxed">
           <li>Video and audio are processed <strong>locally on your device</strong>.</li>
           <li>No frames, no audio, no transcripts are ever uploaded.</li>
           <li>Access tokens expire after 15 minutes and auto-rotate.</li>
@@ -285,42 +261,4 @@ export default function ExtensionSettingsPage() {
       </section>
     </div>
   )
-}
-
-const section: React.CSSProperties = {
-  background: '#111827',
-  border: '1px solid #1f2937',
-  borderRadius: 10,
-  padding: 20,
-  marginTop: 20,
-}
-const h2: React.CSSProperties = { fontSize: 16, margin: '0 0 8px 0' }
-const p: React.CSSProperties = { color: '#9ca3af', fontSize: 13, margin: '0 0 12px 0' }
-const btnPrimary: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: 8,
-  background: '#f59e0b', color: '#0d0d14', border: 0,
-  padding: '10px 16px', borderRadius: 6, fontWeight: 600, cursor: 'pointer',
-}
-const btnGhost: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: 6,
-  background: 'transparent', color: '#9ca3af', border: '1px solid #374151',
-  padding: '8px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13,
-}
-const btnDanger: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: 6,
-  background: 'transparent', color: '#f87171', border: '1px solid #7f1d1d',
-  padding: '8px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13,
-}
-const toggleRow: React.CSSProperties = {
-  display: 'flex', alignItems: 'flex-start', gap: 10,
-  padding: 12, background: '#0f172a',
-  border: '1px solid #1f2937', borderRadius: 6, cursor: 'pointer',
-}
-const warnBox: React.CSSProperties = {
-  marginTop: 16, padding: 12, background: 'rgba(245,158,11,0.1)',
-  border: '1px solid rgba(245,158,11,0.3)', borderRadius: 6, fontSize: 13, color: '#fbbf24',
-}
-const errBox: React.CSSProperties = {
-  marginTop: 16, padding: 12, background: 'rgba(239,68,68,0.08)',
-  border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, fontSize: 13, color: '#f87171',
 }

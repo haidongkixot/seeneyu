@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import {
-  ArrowLeft, Chrome, Clock, Eye, User, Mic, Trophy,
+  ArrowLeft, Chrome, Clock, Trophy,
   CheckCircle2, AlertTriangle, Compass,
 } from 'lucide-react'
 
@@ -57,48 +57,51 @@ export default function ExtensionSessionDetailPage() {
 
   if (error) {
     return (
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: 24, color: '#f87171' }}>
-        <Link href="/settings/extension/sessions" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
+      <div className="max-w-2xl mx-auto px-6 py-8">
+        <Link
+          href="/settings/extension/sessions"
+          className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary mb-4 no-underline"
+        >
           <ArrowLeft size={14} /> All sessions
         </Link>
-        <div>{error}</div>
+        <div className="rounded-lg border border-error/30 bg-error-dim p-4 text-error">{error}</div>
       </div>
     )
   }
   if (!session) {
-    return <div style={{ maxWidth: 720, margin: '0 auto', padding: 24, color: '#9ca3af' }}>Loading…</div>
+    return <div className="max-w-2xl mx-auto px-6 py-8 text-text-secondary">Loading…</div>
   }
 
   const mins = Math.floor(session.durationSeconds / 60)
   const secs = session.durationSeconds % 60
 
   return (
-    <div style={{ maxWidth: 760, margin: '0 auto', padding: 24, color: '#e5e7eb' }}>
+    <div className="max-w-3xl mx-auto px-6 py-8 text-text-primary">
       <Link
         href="/settings/extension/sessions"
-        style={{ color: '#9ca3af', textDecoration: 'none', fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}
+        className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary mb-4 no-underline"
       >
         <ArrowLeft size={14} /> All sessions
       </Link>
 
-      <div style={{ fontSize: 11, color: '#9ca3af', letterSpacing: 1, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="text-xs uppercase tracking-wider text-text-tertiary inline-flex items-center gap-2">
         <Chrome size={12} /> Mirror Mode session · {fmtDate(session.startedAt)}
       </div>
-      <h1 style={{ fontSize: 30, margin: '6px 0 4px 0', lineHeight: 1.2 }}>
+      <h1 className="text-3xl md:text-4xl font-bold leading-tight mt-1.5 mb-1 text-text-primary">
         {session.coachHeadline || 'Session saved'}
       </h1>
-      <div style={{ fontSize: 13, color: '#9ca3af', display: 'flex', alignItems: 'center', gap: 14 }}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+      <div className="text-sm text-text-secondary inline-flex items-center gap-3.5">
+        <span className="inline-flex items-center gap-1">
           <Clock size={12} /> {mins}m {secs}s
         </span>
         {session.xpAwarded > 0 && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: '#fbbf24' }}>
+          <span className="inline-flex items-center gap-1 text-accent-600 font-medium">
             <Trophy size={12} /> +{session.xpAwarded} XP
           </span>
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 20 }}>
+      <div className="grid grid-cols-3 gap-3 mt-5">
         <Dial label="Eye contact" value={session.avgEyeContactPct} suffix="%" />
         <Dial label="Posture" value={session.avgPostureScore} suffix="/100" />
         <Dial label="Pace" value={session.avgVocalPaceWpm} suffix=" wpm" />
@@ -106,7 +109,7 @@ export default function ExtensionSessionDetailPage() {
 
       {session.coachSummary && (
         <Section title="Coach Ney">
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#cbd5e1', margin: 0 }}>
+          <p className="text-base leading-relaxed text-text-primary m-0">
             {session.coachSummary}
           </p>
         </Section>
@@ -116,7 +119,7 @@ export default function ExtensionSessionDetailPage() {
         <BulletSection
           title="What worked"
           items={session.coachWhatWorked}
-          accent="#34d399"
+          accentClass="text-success"
           Icon={CheckCircle2}
         />
       )}
@@ -124,7 +127,7 @@ export default function ExtensionSessionDetailPage() {
         <BulletSection
           title="What to improve"
           items={session.coachWhatToImprove}
-          accent="#fbbf24"
+          accentClass="text-warning"
           Icon={AlertTriangle}
         />
       )}
@@ -132,7 +135,7 @@ export default function ExtensionSessionDetailPage() {
         <BulletSection
           title="Next time, try"
           items={session.coachNextSteps}
-          accent="#a5b4fc"
+          accentClass="text-info"
           Icon={Compass}
         />
       )}
@@ -140,27 +143,20 @@ export default function ExtensionSessionDetailPage() {
       {session.timeSeries && session.timeSeries.length > 0 && (
         <Section title="Timeline">
           <Sparkline data={session.timeSeries} field="eyeContact" label="Eye contact %" color="#f59e0b" />
-          <Sparkline data={session.timeSeries} field="posture" label="Posture" color="#34d399" />
-          <Sparkline data={session.timeSeries} field="pace" label="Pace (wpm)" color="#a5b4fc" />
+          <Sparkline data={session.timeSeries} field="posture" label="Posture" color="#22c55e" />
+          <Sparkline data={session.timeSeries} field="pace" label="Pace (wpm)" color="#3b82f6" />
         </Section>
       )}
 
       {session.nudgesShown && session.nudgesShown.length > 0 && (
         <Section title="Live coaching during the session">
-          <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none' }}>
+          <ul className="m-0 p-0 list-none">
             {session.nudgesShown.map((n, i) => (
               <li
                 key={i}
-                style={{
-                  display: 'flex',
-                  gap: 10,
-                  padding: '8px 0',
-                  borderBottom: '1px solid #1f2937',
-                  fontSize: 13,
-                  color: '#cbd5e1',
-                }}
+                className="flex gap-3 py-2 text-sm text-text-primary border-b border-bg-overlay last:border-b-0"
               >
-                <span style={{ color: '#6b7280', minWidth: 56 }}>{fmtSeconds(n.at)}</span>
+                <span className="text-text-tertiary min-w-14 font-mono">{fmtSeconds(n.at)}</span>
                 <span>{n.headline}</span>
               </li>
             ))}
@@ -173,11 +169,11 @@ export default function ExtensionSessionDetailPage() {
 
 function Dial({ label, value, suffix }: { label: string; value: number | null; suffix: string }) {
   return (
-    <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: 10, padding: 14, textAlign: 'center' }}>
-      <div style={{ fontSize: 11, color: '#9ca3af', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 26, fontWeight: 700, color: '#f59e0b' }}>
+    <div className="bg-bg-surface border border-bg-overlay rounded-xl p-4 text-center">
+      <div className="text-xs text-text-tertiary mb-1">{label}</div>
+      <div className="text-2xl font-bold text-accent-600">
         {value === null ? '—' : Math.round(value)}
-        <span style={{ fontSize: 11, color: '#6b7280', fontWeight: 400 }}>{suffix}</span>
+        <span className="text-xs text-text-tertiary font-normal">{suffix}</span>
       </div>
     </div>
   )
@@ -185,8 +181,8 @@ function Dial({ label, value, suffix }: { label: string; value: number | null; s
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section style={{ marginTop: 24 }}>
-      <h2 style={{ fontSize: 13, color: '#9ca3af', letterSpacing: 0.6, textTransform: 'uppercase', margin: '0 0 10px 0' }}>
+    <section className="mt-6">
+      <h2 className="text-xs text-text-tertiary tracking-wider uppercase mb-2.5 font-medium">
         {title}
       </h2>
       {children}
@@ -197,21 +193,21 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function BulletSection({
   title,
   items,
-  accent,
+  accentClass,
   Icon,
 }: {
   title: string
   items: string[]
-  accent: string
+  accentClass: string
   Icon: any
 }) {
   return (
     <Section title={title}>
-      <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none' }}>
+      <ul className="m-0 p-0 list-none">
         {items.map((it, i) => (
-          <li key={i} style={{ display: 'flex', gap: 10, padding: '8px 0', borderBottom: '1px solid #1f2937' }}>
-            <Icon size={16} color={accent} style={{ flex: 'none', marginTop: 2 }} />
-            <span style={{ fontSize: 14, color: '#e5e7eb', lineHeight: 1.55 }}>{it}</span>
+          <li key={i} className="flex gap-2.5 py-2 border-b border-bg-overlay last:border-b-0">
+            <Icon size={16} className={`${accentClass} flex-none mt-0.5`} />
+            <span className="text-sm text-text-primary leading-relaxed">{it}</span>
           </li>
         ))}
       </ul>
@@ -248,12 +244,12 @@ function Sparkline({
     .filter(Boolean)
     .join(' ')
   return (
-    <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 11, color: '#9ca3af', display: 'flex', justifyContent: 'space-between' }}>
+    <div className="mb-3">
+      <div className="text-xs text-text-tertiary flex justify-between">
         <span>{label}</span>
         <span>min {Math.round(min)} · max {Math.round(max)}</span>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: H, display: 'block', marginTop: 4 }}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full block mt-1" style={{ height: H }}>
         <polyline fill="none" stroke={color} strokeWidth={1.5} points={path} />
       </svg>
     </div>

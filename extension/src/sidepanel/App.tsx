@@ -119,6 +119,18 @@ export function App() {
     setSubmitting(true)
     try {
       const res: any = await chrome.runtime.sendMessage({ type: 'mirror/retry-submit' })
+      // If the service worker was restarted between Stop and the retry click,
+      // its in-memory aggregate is gone — present that as a fresh-start
+      // message rather than a confusing "No previous session" error.
+      if (res?.error === 'No previous session to retry') {
+        setHasPending(false)
+        setStatusLine({
+          message: 'Previous session is no longer cached.',
+          kind: 'warn',
+          hint: 'Start a new session and we\'ll save it as soon as you click Stop.',
+        })
+        return
+      }
       handleSubmissionResult(res)
     } finally {
       setSubmitting(false)
