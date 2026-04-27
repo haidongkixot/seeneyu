@@ -7,3 +7,5 @@
 // current location so this migration does not block M46.
 export * from './mirror-metrics'
 export type { MirrorMetricSample, MirrorMetricAggregate } from './mirror-metrics'
+export * from './vocal-pace'
+export type { FrameInput } from './vocal-pace'

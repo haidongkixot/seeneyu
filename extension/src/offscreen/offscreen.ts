@@ -5,13 +5,14 @@
 // inside this document and are discarded on stop.
 
 import {
-  estimateVocalPaceWpm,
+  PaceTracker,
   scoreEyeContactFromLandmarks,
   scorePostureFromMoveNet,
   type MirrorMetricSample,
 } from '@seeneyu/scoring'
 import { loadMirrorPipeline, type MirrorPipeline } from '../lib/mediapipe-loader'
 import { CoachingEngine } from '../lib/coaching-rules'
+import { PACE_WORKLET_NAME, paceWorkletBlobUrl } from '../lib/audio/pace-worklet'
 
 let stream: MediaStream | null = null
 let video: HTMLVideoElement | null = null
@@ -24,7 +25,10 @@ let lastDiagAt = 0
 let tickCount = 0
 let faceHits = 0
 let poseHits = 0
-const syllableBuckets: number[] = []
+let paceTracker: PaceTracker | null = null
+let workletNode: AudioWorkletNode | null = null
+let scriptProcessor: ScriptProcessorNode | null = null
+let workletBlobUrl: string | null = null
 const coach = new CoachingEngine()
 
 type StatusKind = 'info' | 'warn' | 'error'
@@ -73,7 +77,7 @@ async function start() {
       })
     }
 
-    startAudioAnalyser(stream)
+    await startAudioAnalyser(stream)
 
     status('Loading coaching models…')
     try {
@@ -116,10 +120,22 @@ function stop() {
     clearInterval(tickTimer)
     tickTimer = null
   }
-  if (audioInterval !== null) {
-    clearInterval(audioInterval)
-    audioInterval = null
+  if (workletNode) {
+    try { workletNode.disconnect() } catch {}
+    try { workletNode.port.close() } catch {}
+    workletNode = null
   }
+  if (scriptProcessor) {
+    try { scriptProcessor.disconnect() } catch {}
+    scriptProcessor.onaudioprocess = null
+    scriptProcessor = null
+  }
+  if (workletBlobUrl) {
+    URL.revokeObjectURL(workletBlobUrl)
+    workletBlobUrl = null
+  }
+  paceTracker?.reset()
+  paceTracker = null
   stream?.getTracks().forEach((t) => t.stop())
   stream = null
   if (video) {
@@ -132,7 +148,6 @@ function stop() {
   pipeline = null
   audioCtx?.close().catch(() => {})
   audioCtx = null
-  syllableBuckets.length = 0
   tickCount = 0
   faceHits = 0
   poseHits = 0
@@ -204,7 +219,7 @@ function emitSample(
     t: Date.now() - sessionStart,
     eyeContact: scoreEyeContactFromLandmarks(faceKeypoints as any),
     posture: scorePostureFromMoveNet(poseKeypoints, videoWidth, videoHeight),
-    vocalPaceWpm: estimateVocalPaceWpm(syllableBuckets.slice(-30)),
+    vocalPaceWpm: paceTracker?.currentWpm() ?? null,
   }
   chrome.runtime.sendMessage({ type: 'mirror/sample', sample }).catch(() => {})
 
@@ -215,14 +230,19 @@ function emitSample(
   }
 }
 
-// Vocal pace estimator. Samples audio RMS at 10 Hz (steady setInterval — rAF
-// gets throttled in offscreen docs), detects threshold-crossing peaks with
-// hysteresis as syllable onsets, and emits a count per 1-second bucket.
-// WPM = (peaks/sec) * 60 / 1.5 syllables-per-word — done downstream in
-// estimateVocalPaceWpm() against the rolling buckets.
-let audioInterval: number | null = null
-
-function startAudioAnalyser(src: MediaStream) {
+// Vocal pace pipeline (M47):
+//   AudioWorklet @ 50ms hops → {rms, zcr, t} per frame
+//                            ↓
+//   PaceTracker (VAD → SyllablePeakDetector → speaking-time-normalized WPM)
+//
+// AudioWorklet runs on the audio thread, so it isn't subject to main-thread
+// rAF throttling that broke the previous estimator. PaceTracker normalizes
+// WPM by ACTUAL speaking time, not wall-clock window — the user's bursty
+// real-meeting cadence now reports honestly.
+//
+// Falls back to ScriptProcessorNode on browsers without AudioWorklet, with
+// the same upstream contract (per-frame {rms, zcr, t}).
+async function startAudioAnalyser(src: MediaStream) {
   const audioTracks = src.getAudioTracks()
   if (audioTracks.length === 0) {
     status('No audio track on the captured stream — pace can\'t be measured.', { kind: 'warn' })
@@ -230,70 +250,93 @@ function startAudioAnalyser(src: MediaStream) {
   }
 
   audioCtx = new AudioContext()
-  // Chrome creates contexts in 'suspended' state without a user gesture.
-  // The camera/mic permission already counts as a gesture but we call this
-  // anyway to be defensive.
-  audioCtx.resume().catch(() => {})
+  await audioCtx.resume().catch(() => {})
 
   const sourceNode = audioCtx.createMediaStreamSource(src)
-  const analyser = audioCtx.createAnalyser()
-  analyser.fftSize = 2048
-  analyser.smoothingTimeConstant = 0.4
-  sourceNode.connect(analyser)
+  paceTracker = new PaceTracker()
 
-  const buf = new Float32Array(analyser.fftSize)
-  let bucket = 0
-  let lastBucketTick = Date.now()
-  let inPeak = false
-  let lastEnergyReportAt = Date.now()
-  let recentPeakRms = 0
+  let lastDiagAtAudio = Date.now()
+  let framesSinceDiag = 0
+  let speakingFramesSinceDiag = 0
+  let peakRmsSinceDiag = 0
 
-  // Hysteresis thresholds — onset detection needs to clearly cross UP from
-  // silence, then drop again before we count another syllable.
-  const RMS_ENTER = 0.018 // start of a syllable
-  const RMS_EXIT = 0.008 // end of a syllable
-
-  const tickAudio = () => {
-    if (!loopActive) return
-    if (audioCtx?.state === 'suspended') audioCtx.resume().catch(() => {})
-
-    analyser.getFloatTimeDomainData(buf)
-    let sumSq = 0
-    for (let i = 0; i < buf.length; i++) sumSq += buf[i] * buf[i]
-    const rms = Math.sqrt(sumSq / buf.length)
-    if (rms > recentPeakRms) recentPeakRms = rms
-
-    if (!inPeak && rms > RMS_ENTER) {
-      inPeak = true
-      bucket++ // count the onset as a syllable
-    } else if (inPeak && rms < RMS_EXIT) {
-      inPeak = false
-    }
+  const onFrame = (frame: { rms: number; zcr: number; t: number }) => {
+    if (!loopActive || !paceTracker) return
+    const wasSilent = paceTracker
+      ? false // we only need the bool from VAD via PaceTracker
+      : false
+    paceTracker.push(frame)
+    if (frame.rms > peakRmsSinceDiag) peakRmsSinceDiag = frame.rms
+    framesSinceDiag++
+    // We can't easily extract isSpeech from PaceTracker without exposing it;
+    // approximate via "non-silent frame" using a low energy threshold for
+    // the diagnostic line only.
+    if (frame.rms > 0.005) speakingFramesSinceDiag++
 
     const now = Date.now()
-    if (now - lastBucketTick >= 1000) {
-      syllableBuckets.push(bucket)
-      if (syllableBuckets.length > 30) syllableBuckets.shift()
-      bucket = 0
-      lastBucketTick = now
-    }
-
-    // Emit a one-line audio diag every 5s so the user can see whether the
-    // mic is producing signal at all. Helps distinguish "no mic" from
-    // "speaking but pace not registering".
-    if (now - lastEnergyReportAt > 5000) {
-      const recent = syllableBuckets.slice(-5).reduce((a, b) => a + b, 0)
+    if (now - lastDiagAtAudio > 5000) {
+      const wpm = paceTracker.currentWpm()
+      const wpmText = wpm === null ? '—' : `${wpm} wpm`
       status(
-        `mic peak ${recentPeakRms.toFixed(3)} · syllables (last 5s): ${recent}`,
+        `mic peak ${peakRmsSinceDiag.toFixed(3)} · ${wpmText}`,
         { kind: 'info' },
       )
-      lastEnergyReportAt = now
-      recentPeakRms = 0
+      lastDiagAtAudio = now
+      framesSinceDiag = 0
+      speakingFramesSinceDiag = 0
+      peakRmsSinceDiag = 0
+    }
+    void wasSilent
+  }
+
+  if (audioCtx.audioWorklet) {
+    try {
+      workletBlobUrl = paceWorkletBlobUrl()
+      await audioCtx.audioWorklet.addModule(workletBlobUrl)
+      workletNode = new AudioWorkletNode(audioCtx, PACE_WORKLET_NAME)
+      workletNode.port.onmessage = (e) => onFrame(e.data)
+      sourceNode.connect(workletNode)
+      // Connect to a muted destination so the graph runs (some browsers
+      // optimize away unconnected processor chains). Use a zero-gain node so
+      // we don't echo the mic to speakers.
+      const sink = audioCtx.createGain()
+      sink.gain.value = 0
+      workletNode.connect(sink).connect(audioCtx.destination)
+      return
+    } catch (err) {
+      status('AudioWorklet unavailable, falling back to ScriptProcessor.', {
+        kind: 'warn',
+        error: err,
+      })
     }
   }
 
-  // 10 Hz steady sampling — independent of rAF throttling.
-  audioInterval = window.setInterval(tickAudio, 100)
+  // Fallback: ScriptProcessorNode at 4096-sample buffer (≈85ms @ 48kHz).
+  const SP_BUF = 4096
+  scriptProcessor = audioCtx.createScriptProcessor(SP_BUF, 1, 1)
+  let elapsedMs = 0
+  scriptProcessor.onaudioprocess = (e) => {
+    const ch = e.inputBuffer.getChannelData(0)
+    let sumSq = 0
+    let zc = 0
+    let prev = ch[0]
+    for (let i = 0; i < ch.length; i++) {
+      const v = ch[i]
+      sumSq += v * v
+      if ((prev >= 0 && v < 0) || (prev < 0 && v >= 0)) zc++
+      prev = v
+    }
+    elapsedMs += (ch.length * 1000) / audioCtx!.sampleRate
+    onFrame({
+      rms: Math.sqrt(sumSq / ch.length),
+      zcr: zc / ch.length,
+      t: elapsedMs,
+    })
+  }
+  sourceNode.connect(scriptProcessor)
+  const sink = audioCtx.createGain()
+  sink.gain.value = 0
+  scriptProcessor.connect(sink).connect(audioCtx.destination)
 }
 
 chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {

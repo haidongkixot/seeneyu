@@ -162,20 +162,24 @@ export function scorePosture(pose: PoseLandmarksInput): number | null {
   return Math.round(Math.max(0, Math.min(100, score)))
 }
 
-// Rolling WPM estimator. Pass the last ~30s window of per-second syllable
-// counts (peak onsets, NOT raw frame hits). English averages ~1.5 syllables
-// per word, so words = syllables / 1.5. Returns null when the window is
-// empty OR when the user has been silent the entire window (no signal at all
-// is different from "speaking 0 wpm" — null reads as "—" in the HUD instead
-// of a misleading zero).
+// LEGACY estimator kept for backwards compatibility with callers that have a
+// per-second syllable count array. New code should use PaceTracker from
+// `./vocal-pace` instead — it normalizes WPM by ACTUAL speaking time rather
+// than wall-clock window, which avoids the under-estimation bug where a user
+// who pauses to listen and then talks fast is reported as a slow talker.
+//
+// This implementation now mirrors the speaking-time logic by treating any
+// bucket with > 0 syllables as a "speaking second" — a coarse approximation
+// of the new pipeline that still corrects the worst of the dilution bug.
 export function estimateVocalPaceWpm(syllableCountsLastWindow: number[]): number | null {
   if (syllableCountsLastWindow.length === 0) return null
   const syllables = syllableCountsLastWindow.reduce((a, b) => a + b, 0)
   if (syllables === 0) return null
-  const seconds = syllableCountsLastWindow.length
+  const speakingSeconds = syllableCountsLastWindow.filter((c) => c > 0).length
+  if (speakingSeconds < 3) return null
   const words = syllables / 1.5
-  const wpm = (words / seconds) * 60
-  return Math.round(Math.max(0, Math.min(500, wpm)))
+  const wpm = (words / speakingSeconds) * 60
+  return Math.round(Math.max(0, Math.min(350, wpm)))
 }
 
 export function aggregateSamples(samples: MirrorMetricSample[]): MirrorMetricAggregate {
