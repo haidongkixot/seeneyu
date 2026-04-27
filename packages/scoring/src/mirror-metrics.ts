@@ -162,14 +162,18 @@ export function scorePosture(pose: PoseLandmarksInput): number | null {
   return Math.round(Math.max(0, Math.min(100, score)))
 }
 
-// Rolling WPM estimator. Call once per ~1s bucket; pass the last ~30s window
-// of syllable counts to smooth spiky detections. 1 syllable ≈ 0.6 word.
+// Rolling WPM estimator. Pass the last ~30s window of per-second syllable
+// counts (peak onsets, NOT raw frame hits). English averages ~1.5 syllables
+// per word, so words = syllables / 1.5. Returns null when the window is
+// empty OR when the user has been silent the entire window (no signal at all
+// is different from "speaking 0 wpm" — null reads as "—" in the HUD instead
+// of a misleading zero).
 export function estimateVocalPaceWpm(syllableCountsLastWindow: number[]): number | null {
   if (syllableCountsLastWindow.length === 0) return null
   const syllables = syllableCountsLastWindow.reduce((a, b) => a + b, 0)
+  if (syllables === 0) return null
   const seconds = syllableCountsLastWindow.length
-  if (seconds === 0) return null
-  const words = syllables * 0.6
+  const words = syllables / 1.5
   const wpm = (words / seconds) * 60
   return Math.round(Math.max(0, Math.min(500, wpm)))
 }

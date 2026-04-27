@@ -116,6 +116,10 @@ function stop() {
     clearInterval(tickTimer)
     tickTimer = null
   }
+  if (audioInterval !== null) {
+    clearInterval(audioInterval)
+    audioInterval = null
+  }
   stream?.getTracks().forEach((t) => t.stop())
   stream = null
   if (video) {
@@ -211,38 +215,85 @@ function emitSample(
   }
 }
 
+// Vocal pace estimator. Samples audio RMS at 10 Hz (steady setInterval — rAF
+// gets throttled in offscreen docs), detects threshold-crossing peaks with
+// hysteresis as syllable onsets, and emits a count per 1-second bucket.
+// WPM = (peaks/sec) * 60 / 1.5 syllables-per-word — done downstream in
+// estimateVocalPaceWpm() against the rolling buckets.
+let audioInterval: number | null = null
+
 function startAudioAnalyser(src: MediaStream) {
+  const audioTracks = src.getAudioTracks()
+  if (audioTracks.length === 0) {
+    status('No audio track on the captured stream — pace can\'t be measured.', { kind: 'warn' })
+    return
+  }
+
   audioCtx = new AudioContext()
-  const node = audioCtx.createMediaStreamSource(src)
+  // Chrome creates contexts in 'suspended' state without a user gesture.
+  // The camera/mic permission already counts as a gesture but we call this
+  // anyway to be defensive.
+  audioCtx.resume().catch(() => {})
+
+  const sourceNode = audioCtx.createMediaStreamSource(src)
   const analyser = audioCtx.createAnalyser()
-  analyser.fftSize = 1024
-  node.connect(analyser)
+  analyser.fftSize = 2048
+  analyser.smoothingTimeConstant = 0.4
+  sourceNode.connect(analyser)
 
   const buf = new Float32Array(analyser.fftSize)
   let bucket = 0
-  let lastTick = Date.now()
-  const PEAK_THRESHOLD = 0.04
+  let lastBucketTick = Date.now()
+  let inPeak = false
+  let lastEnergyReportAt = Date.now()
+  let recentPeakRms = 0
 
-  const loop = () => {
+  // Hysteresis thresholds — onset detection needs to clearly cross UP from
+  // silence, then drop again before we count another syllable.
+  const RMS_ENTER = 0.018 // start of a syllable
+  const RMS_EXIT = 0.008 // end of a syllable
+
+  const tickAudio = () => {
     if (!loopActive) return
+    if (audioCtx?.state === 'suspended') audioCtx.resume().catch(() => {})
+
     analyser.getFloatTimeDomainData(buf)
-    let peak = 0
-    for (let i = 0; i < buf.length; i++) {
-      const v = Math.abs(buf[i])
-      if (v > peak) peak = v
+    let sumSq = 0
+    for (let i = 0; i < buf.length; i++) sumSq += buf[i] * buf[i]
+    const rms = Math.sqrt(sumSq / buf.length)
+    if (rms > recentPeakRms) recentPeakRms = rms
+
+    if (!inPeak && rms > RMS_ENTER) {
+      inPeak = true
+      bucket++ // count the onset as a syllable
+    } else if (inPeak && rms < RMS_EXIT) {
+      inPeak = false
     }
-    if (peak > PEAK_THRESHOLD) bucket++
 
     const now = Date.now()
-    if (now - lastTick >= 1000) {
+    if (now - lastBucketTick >= 1000) {
       syllableBuckets.push(bucket)
       if (syllableBuckets.length > 30) syllableBuckets.shift()
       bucket = 0
-      lastTick = now
+      lastBucketTick = now
     }
-    requestAnimationFrame(loop)
+
+    // Emit a one-line audio diag every 5s so the user can see whether the
+    // mic is producing signal at all. Helps distinguish "no mic" from
+    // "speaking but pace not registering".
+    if (now - lastEnergyReportAt > 5000) {
+      const recent = syllableBuckets.slice(-5).reduce((a, b) => a + b, 0)
+      status(
+        `mic peak ${recentPeakRms.toFixed(3)} · syllables (last 5s): ${recent}`,
+        { kind: 'info' },
+      )
+      lastEnergyReportAt = now
+      recentPeakRms = 0
+    }
   }
-  loop()
+
+  // 10 Hz steady sampling — independent of rAF throttling.
+  audioInterval = window.setInterval(tickAudio, 100)
 }
 
 chrome.runtime.onMessage.addListener((msg, _s, sendResponse) => {
